@@ -1,0 +1,3 @@
+class Archetypes::Artificer
+  
+end
