@@ -22,4 +22,12 @@ module Archetypes
   def self.names
     ALL.keys.freeze
   end
+
+  def self.test
+    puts 'this is a test'
+  end
+
+  def self.talk
+    puts 'talks'
+  end
 end
