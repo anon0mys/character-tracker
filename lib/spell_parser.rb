@@ -47,6 +47,10 @@ class SpellParser
     end
   end
 
+  def test
+    puts "something cool"
+  end
+
   def add_level(details)
     spell_info = details[1]
     if spell_info.include?('cantrip')
