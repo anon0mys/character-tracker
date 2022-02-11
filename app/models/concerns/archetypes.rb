@@ -30,4 +30,12 @@ module Archetypes
   def self.talk
     puts 'talks'
   end
+
+  def self.test
+    puts 'this is a test'
+  end
+
+  def self.talk
+    puts 'talks'
+  end
 end
