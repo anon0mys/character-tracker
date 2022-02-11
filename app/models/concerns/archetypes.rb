@@ -1,6 +1,18 @@
 module Archetypes
   ALL = {
-    artificer: Artificer
+    artificer: Artificer,
+    barbarian: Artificer,
+    bard: Artificer,
+    cleric: Artificer,
+    druid: Artificer,
+    fighter: Artificer,
+    monk: Artificer,
+    paladin: Artificer,
+    ranger: Artificer,
+    rogue: Artificer,
+    sorcerer: Artificer,
+    warlock: Artificer,
+    wizard: Artificer,
   }
 
   def self.build(name)
@@ -8,6 +20,6 @@ module Archetypes
   end
 
   def self.names
-    ALL.keys
+    ALL.keys.freeze
   end
 end

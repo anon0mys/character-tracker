@@ -27,6 +27,10 @@ gem 'activeadmin'
 gem 'devise'
 gem 'jwt'
 
+# Web requesets and parsing
+gem 'faraday'
+gem 'nokogiri'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
