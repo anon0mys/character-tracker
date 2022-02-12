@@ -1,0 +1,2 @@
+class Archetypes::Warlock
+end

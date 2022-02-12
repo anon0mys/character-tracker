@@ -1,18 +1,18 @@
 module Archetypes
   ALL = {
     artificer: Artificer,
-    barbarian: Artificer,
-    bard: Artificer,
-    cleric: Artificer,
-    druid: Artificer,
-    fighter: Artificer,
-    monk: Artificer,
-    paladin: Artificer,
-    ranger: Artificer,
-    rogue: Artificer,
-    sorcerer: Artificer,
-    warlock: Artificer,
-    wizard: Artificer,
+    barbarian: Barbarian,
+    bard: Bard,
+    cleric: Cleric,
+    druid: Druid,
+    fighter: Fighter,
+    monk: Monk,
+    paladin: Paladin,
+    ranger: Ranger,
+    rogue: Rogue,
+    sorcerer: Sorcerer,
+    warlock: Warlock,
+    wizard: Wizard,
   }
 
   def self.build(name)

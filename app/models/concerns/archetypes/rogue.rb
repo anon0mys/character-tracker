@@ -1,0 +1,2 @@
+class Archetypes::Rogue
+end

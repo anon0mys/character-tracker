@@ -11,24 +11,12 @@ RSpec.describe Spell, type: :model do
 
     context 'array enums' do
       context 'archetypes' do
-        combinations = (1..Archetypes.names.length).flat_map do |size|
-          Archetypes.names.combination(size).to_a
-        end
-        combinations.each do |combination|
-          it { should allow_value(combination).for(:archetypes) }
-        end
-
+        it { should allow_value(Archetypes.names).for(:archetypes) }
         it { should_not allow_value([:random]).for(:archetypes) }
       end
 
       context 'components' do
-        combinations = (1..Spell::COMPONENTS.length).flat_map do |size|
-          Spell::COMPONENTS.combination(size).to_a
-        end
-        combinations.each do |combination|
-          it { should allow_value(combination).for(:components) }
-        end
-
+        it { should allow_value(Spell::COMPONENTS).for(:components) }
         it { should_not allow_value(['RANDOM']).for(:components) }
       end
     end
