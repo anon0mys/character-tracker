@@ -35,4 +35,16 @@ RSpec.describe Spell, type: :model do
       end
     end
   end
+
+  context 'scopes' do
+    it 'should filter by archetype' do
+      create(:spell, archetypes: %i[artificer wizard])
+      create(:spell, archetypes: %i[artificer druid sorcerer])
+      create(:spell, archetypes: %i[cleric druid])
+
+      expect(Spell.filter_by_archetype('artificer').count).to eq 2
+      expect(Spell.filter_by_archetype('druid').count).to eq 2
+      expect(Spell.filter_by_archetype('cleric').count).to eq 1
+    end
+  end
 end

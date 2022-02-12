@@ -3,6 +3,6 @@ class Api::V1::CharactersController < ApiController
 
   def index
     @characters = current_user.characters.all
-    render json: {characters: @characters}
+    render json: {data: @characters}
   end
 end

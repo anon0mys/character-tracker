@@ -1,6 +1,9 @@
 class ApiController < ApplicationController
+  include Pagy::Backend
+
   respond_to :json
   before_action :authenticate_user
+  after_action { pagy_headers_merge(@pagy) if @pagy }
 
   private
 
