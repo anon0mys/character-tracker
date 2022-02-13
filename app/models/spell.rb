@@ -14,4 +14,6 @@ class Spell < ApplicationRecord
   validates_presence_of :name, :casting_time, :range, :duration
 
   scope :filter_by_archetype, -> (archetype) { where "archetypes && ?", "{#{archetype}}" }
+  scope :filter_by_level, -> (level) { where level: level }
+  scope :filter_by_school, -> (school) { where school: school }
 end

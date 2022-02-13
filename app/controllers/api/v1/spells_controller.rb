@@ -9,6 +9,6 @@ class Api::V1::SpellsController < ApiController
   private
 
   def filtering_params
-    params.slice(:archetype)
+    params.slice(:archetype, :level, :school)
   end
 end

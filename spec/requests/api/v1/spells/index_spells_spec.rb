@@ -31,6 +31,31 @@ describe 'GET /api/v1/spells' do
         data = JSON.parse(response.body)
         expect(data['data'].count).to eq Spell.where('archetypes && ?', '{artificer}').count
       end
+
+      it 'should filter by level' do
+        get api_v1_spells_path + '?level=cantrip', headers: @auth_headers
+        data = JSON.parse(response.body)
+        expect(data['data'].count).to eq Spell.where(level: 'cantrip').count
+      end
+
+      it 'should filter by school' do
+        get api_v1_spells_path + '?school=evocation', headers: @auth_headers
+        data = JSON.parse(response.body)
+        expect(data['data'].count).to eq Spell.where(school: 'evocation').count
+      end
+
+      it 'should be able to combine filters' do
+        create(:spell, school: 'evocation', level: '9', archetypes: ['wizard'])
+        get(
+          api_v1_spells_path + '?school=evocation&archetype=wizard&level=9',
+          headers: @auth_headers
+        )
+        data = JSON.parse(response.body)
+        expect(data['data'].count).to eq Spell
+          .where(level: '9', school: 'evocation')
+          .where('archetypes && ?', '{wizard}')
+          .count
+      end
     end
   end
 end

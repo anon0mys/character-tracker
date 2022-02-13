@@ -46,5 +46,25 @@ RSpec.describe Spell, type: :model do
       expect(Spell.filter_by_archetype('druid').count).to eq 2
       expect(Spell.filter_by_archetype('cleric').count).to eq 1
     end
+
+    it 'should filter by level' do
+      create(:spell, level: 'cantrip')
+      create(:spell, level: 'cantrip')
+      create(:spell, level: '1')
+
+      expect(Spell.filter_by_level('cantrip').count).to eq 2
+      expect(Spell.filter_by_level('1').count).to eq 1
+      expect(Spell.filter_by_level('2').count).to eq 0
+    end
+
+    it 'should filter by school' do
+      create(:spell, school: 'conjuration')
+      create(:spell, school: 'conjuration')
+      create(:spell, school: 'evocation')
+
+      expect(Spell.filter_by_school('conjuration').count).to eq 2
+      expect(Spell.filter_by_school('evocation').count).to eq 1
+      expect(Spell.filter_by_school('abjuration').count).to eq 0
+    end
   end
 end
