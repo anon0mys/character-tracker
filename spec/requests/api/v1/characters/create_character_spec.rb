@@ -14,7 +14,7 @@ describe 'POST /api/v1/characters' do
     before { sign_in(user) }
     before { post api_v1_characters_path, headers: @auth_headers, params: valid_attrs }
 
-    it 'returns creates a new character for the user' do
+    it 'creates a new character for the user' do
       data = JSON.parse(response.body)
       expect(data['data']['name']).to eq('Test Char')
       expect(data['data']['archetype']).to eq('artificer')
