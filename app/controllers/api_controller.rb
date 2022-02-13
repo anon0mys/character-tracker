@@ -4,6 +4,7 @@ class ApiController < ApplicationController
   respond_to :json
   before_action :authenticate_user
   after_action { pagy_headers_merge(@pagy) if @pagy }
+  rescue_from ActiveRecord::RecordInvalid, with: :invalid_post
 
   private
 
@@ -27,5 +28,9 @@ class ApiController < ApplicationController
 
   def signed_in?
     @current_user_id.present?
+  end
+
+  def invalid_post(exception)
+    render json: {errors: exception.message}, status: :unprocessable_entity
   end
 end
