@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_10_034136) do
+ActiveRecord::Schema.define(version: 2022_02_13_221914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,23 @@ ActiveRecord::Schema.define(version: 2022_02_10_034136) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_characters_on_user_id"
+  end
+
+  create_table "spell_list_items", force: :cascade do |t|
+    t.bigint "spell_list_id"
+    t.bigint "spell_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["spell_id"], name: "index_spell_list_items_on_spell_id"
+    t.index ["spell_list_id"], name: "index_spell_list_items_on_spell_list_id"
+  end
+
+  create_table "spell_lists", force: :cascade do |t|
+    t.string "name"
+    t.bigint "character_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_id"], name: "index_spell_lists_on_character_id"
   end
 
   create_table "spells", force: :cascade do |t|
