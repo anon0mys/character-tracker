@@ -4,4 +4,8 @@ class SpellList < ApplicationRecord
   has_many :spells, through: :spell_list_items
 
   validates_presence_of :name
+
+  def add_spell(spell)
+    spell_list_items.create!(spell: spell)
+  end
 end

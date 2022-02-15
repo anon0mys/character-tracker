@@ -11,7 +11,7 @@ describe 'GET /api/v1/characters/:id' do
 
     it 'returns a character for the user' do
       data = JSON.parse(response.body)
-      expect(data['data']['name']).to eq('Test Char')
+      expect(data['character']['name']).to eq('Test Char')
     end
   end
 end

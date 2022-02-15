@@ -3,7 +3,7 @@ class Api::V1::SpellsController < ApiController
 
   def index
     @pagy, @spells = pagy(Spell.filter(filtering_params))
-    render json: { data: @spells }
+    render json: { spells: @spells }
   end
 
   private

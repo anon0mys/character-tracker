@@ -11,17 +11,17 @@ describe 'GET /api/v1/spells' do
       it 'should return a paginated list of spells' do
         get api_v1_spells_path, headers: @auth_headers
         data = JSON.parse(response.body)
-        expect(data['data'].count).to eq 20
-        expect(data['data'][0]['id']).to be 1
-        expect(data['data'][-1]['id']).to be 20
+        expect(data['spells'].count).to eq 20
+        expect(data['spells'][0]['id']).to be 1
+        expect(data['spells'][-1]['id']).to be 20
       end
 
       it 'should be able to return the next page' do
         get api_v1_spells_path + '?page=2', headers: @auth_headers
         data = JSON.parse(response.body)
-        expect(data['data'].count).to eq 20
-        expect(data['data'][0]['id']).to be 21
-        expect(data['data'][-1]['id']).to be 40
+        expect(data['spells'].count).to eq 20
+        expect(data['spells'][0]['id']).to be 21
+        expect(data['spells'][-1]['id']).to be 40
       end
     end
 
@@ -29,19 +29,19 @@ describe 'GET /api/v1/spells' do
       it 'should filter by archetype' do
         get api_v1_spells_path + '?archetype=artificer', headers: @auth_headers
         data = JSON.parse(response.body)
-        expect(data['data'].count).to eq Spell.where('archetypes && ?', '{artificer}').count
+        expect(data['spells'].count).to eq Spell.where('archetypes && ?', '{artificer}').count
       end
 
       it 'should filter by level' do
         get api_v1_spells_path + '?level=cantrip', headers: @auth_headers
         data = JSON.parse(response.body)
-        expect(data['data'].count).to eq Spell.where(level: 'cantrip').count
+        expect(data['spells'].count).to eq Spell.where(level: 'cantrip').count
       end
 
       it 'should filter by school' do
         get api_v1_spells_path + '?school=evocation', headers: @auth_headers
         data = JSON.parse(response.body)
-        expect(data['data'].count).to eq Spell.where(school: 'evocation').count
+        expect(data['spells'].count).to eq Spell.where(school: 'evocation').count
       end
 
       it 'should be able to combine filters' do
@@ -51,7 +51,7 @@ describe 'GET /api/v1/spells' do
           headers: @auth_headers
         )
         data = JSON.parse(response.body)
-        expect(data['data'].count).to eq Spell
+        expect(data['spells'].count).to eq Spell
           .where(level: '9', school: 'evocation')
           .where('archetypes && ?', '{wizard}')
           .count

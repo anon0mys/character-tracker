@@ -14,7 +14,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :characters, only: [:index, :show, :create, :update, :destroy]
+      resources :characters, only: [:index, :show, :create, :update, :destroy] do
+        resources :spell_lists, only: [:index, :create, :show, :update, :destroy] do
+          post '/add_spell', to: 'spell_lists#add_spell'
+        end
+      end
       resources :spells, only: [:index]
     end
   end

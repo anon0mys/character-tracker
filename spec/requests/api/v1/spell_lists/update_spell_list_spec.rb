@@ -1,25 +1,26 @@
 require 'rails_helper'
 
-describe 'POST /api/v1/characters/:character_id/spell_lists' do
+describe 'PATCH /api/v1/characters/:character_id/spell_lists/:spell_list_id' do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:valid_attrs) {{
     spell_list: {
-      name: 'Spellz'
+      name: 'Updated Name'
     }
   }}
 
   context 'as an authenticated user' do
     before { sign_in(user) }
     let(:character) { create(:character, user: user) }
-    before { post api_v1_character_spell_lists_path(character.id),
+    let(:spell_list) { create(:spell_list, character: character, name: 'Spellz') }
+    before { patch api_v1_character_spell_list_path(character.id, spell_list.id),
               headers: @auth_headers,
               params: valid_attrs 
     }
 
-    it 'creates a new spell list for the character' do
+    it 'updates a spell list for the character' do
       data = JSON.parse(response.body)
-      expect(data['spell_list']['name']).to eq('Spellz')
+      expect(data['spell_list']['name']).to eq('Updated Name')
     end
   end
 end

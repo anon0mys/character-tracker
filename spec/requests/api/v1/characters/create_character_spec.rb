@@ -16,9 +16,9 @@ describe 'POST /api/v1/characters' do
 
     it 'creates a new character for the user' do
       data = JSON.parse(response.body)
-      expect(data['data']['name']).to eq('Test Char')
-      expect(data['data']['archetype']).to eq('artificer')
-      expect(data['data']['user_id']).to eq(user.id)
+      expect(data['character']['name']).to eq('Test Char')
+      expect(data['character']['archetype']).to eq('artificer')
+      expect(data['character']['user_id']).to eq(user.id)
     end
   end
 end

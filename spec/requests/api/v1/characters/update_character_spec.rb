@@ -12,7 +12,7 @@ describe 'PATCH /api/v1/characters' do
 
     it 'updates a character for the user' do
       data = JSON.parse(response.body)
-      expect(data['data']['name']).to eq('Test Char')
+      expect(data['character']['name']).to eq('Test Char')
     end
   end
 end
