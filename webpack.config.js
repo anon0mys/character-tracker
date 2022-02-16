@@ -5,7 +5,7 @@ module.exports = {
   mode: "production",
   devtool: "source-map",
   entry: {
-    application: "./app/javascript/app.jsx"
+    application: "./app/javascript/App.jsx"
   },
   module: {
     rules: [

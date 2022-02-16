@@ -1,13 +1,28 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './Navbar'
+import Dashboard from './Dashboard';
+import {Characters, Character} from './characters'
 
 const App = () => {
     return (
-        <div>Hello, Rails 7!</div>
+        <div className="App">
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="characters" element={<Characters />} />
+                <Route path="characters/:id" element={<Character />}/>
+            </Routes>
+        </div>
     )
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const rootEl = document.getElementById('app')
-    ReactDOM.render(<App/>, rootEl)
+    ReactDOM.render(
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>,
+        document.getElementById('app')
+    );
 })

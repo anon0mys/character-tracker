@@ -24,4 +24,6 @@ Rails.application.routes.draw do
       resources :spells, only: [:index]
     end
   end
+
+  get '*path', to: 'home#index'
 end
