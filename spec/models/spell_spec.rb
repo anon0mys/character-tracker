@@ -42,9 +42,9 @@ RSpec.describe Spell, type: :model do
       create(:spell, archetypes: %i[artificer druid sorcerer])
       create(:spell, archetypes: %i[cleric druid])
 
-      expect(Spell.filter_by_archetype('artificer').count).to eq 2
-      expect(Spell.filter_by_archetype('druid').count).to eq 2
-      expect(Spell.filter_by_archetype('cleric').count).to eq 1
+      expect(Spell.archetype_eq('artificer').count).to eq 2
+      expect(Spell.archetype_eq('druid').count).to eq 2
+      expect(Spell.archetype_eq('cleric').count).to eq 1
     end
 
     it 'should filter by level' do
@@ -52,9 +52,9 @@ RSpec.describe Spell, type: :model do
       create(:spell, level: 'cantrip')
       create(:spell, level: '1')
 
-      expect(Spell.filter_by_level('cantrip').count).to eq 2
-      expect(Spell.filter_by_level('1').count).to eq 1
-      expect(Spell.filter_by_level('2').count).to eq 0
+      expect(Spell.level_eq('cantrip').count).to eq 2
+      expect(Spell.level_eq('1').count).to eq 1
+      expect(Spell.level_eq('2').count).to eq 0
     end
 
     it 'should filter by school' do
@@ -62,9 +62,9 @@ RSpec.describe Spell, type: :model do
       create(:spell, school: 'conjuration')
       create(:spell, school: 'evocation')
 
-      expect(Spell.filter_by_school('conjuration').count).to eq 2
-      expect(Spell.filter_by_school('evocation').count).to eq 1
-      expect(Spell.filter_by_school('abjuration').count).to eq 0
+      expect(Spell.school_eq('conjuration').count).to eq 2
+      expect(Spell.school_eq('evocation').count).to eq 1
+      expect(Spell.school_eq('abjuration').count).to eq 0
     end
   end
 end

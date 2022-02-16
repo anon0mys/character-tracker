@@ -1,4 +1,5 @@
 ActiveAdmin.register Spell do
+  config.sort_order = 'name_asc'
 
   index do
     selectable_column
@@ -14,9 +15,9 @@ ActiveAdmin.register Spell do
   end
 
   filter :name
-  filter :archetypes
-  filter :level
-  filter :school
+  filter :archetype, as: :select, collection: Archetypes.names
+  filter :level, as: :select, collection: Spell::LEVELS
+  filter :school, as: :select, collection: Spell::SCHOOLS
   filter :casting_time
   
 end
