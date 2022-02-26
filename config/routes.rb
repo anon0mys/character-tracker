@@ -10,7 +10,7 @@ Rails.application.routes.draw do
                           sessions: :sessions,
                           registrations: :registrations
                          },
-                         path_names: { sign_in: :login }
+                         path_names: { sign_in: :login, sign_out: :logout }
     end
   end
 
