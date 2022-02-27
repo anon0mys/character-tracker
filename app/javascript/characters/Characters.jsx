@@ -16,7 +16,7 @@ const Characters = () => {
         })
     }, [])
 
-    const children = characters.map(character => {
+    const characterCards = characters.map(character => {
         return <CharacterCard key={character.id} character={character} />
     })
 
@@ -24,7 +24,7 @@ const Characters = () => {
         <div>
             <h3>Your Characters</h3>
             <Grid gridTemplateColumns='1fr'>
-                {children.length ? children : <span>You don't have any characters yet</span>}
+                {characterCards.length ? characterCards : <span>You don't have any characters yet</span>}
             </Grid>
         </div>
     )
