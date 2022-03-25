@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Flex } from '../elements/Containers'
+import { Flex } from '../elements'
 
 const SpellLists = ({characterId, spellLists}) => {
     const navigate = useNavigate()

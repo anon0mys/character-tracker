@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import useClient from '../Client'
-import { Flex } from '../elements/Containers'
+import { Flex } from '../elements'
 import SpellRow from '../spells/SpellRow'
 
 const SpellList = () => {
@@ -20,8 +20,12 @@ const SpellList = () => {
             })
     }, [])
 
+    const removeSpell = () => {
+
+    }
+
     const spellRows = spells.map(spell => {
-        return <SpellRow key={spell.id} spell={spell}/>
+        return <SpellRow key={spell.id} spell={spell} inList={true} handleClick={removeSpell}/>
     })
 
     return (

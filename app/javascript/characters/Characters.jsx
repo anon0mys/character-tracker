@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useClient from '../Client'
 import { useAuth } from '../auth/AuthContext'
-import { Grid } from '../elements/Containers'
+import { Grid } from '../elements'
 import CharacterCard from './CharacterCard'
 
 const Characters = () => {

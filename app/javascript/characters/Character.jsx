@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import useClient from '../Client'
-import { Flex } from '../elements/Containers'
+import { Button, Flex } from '../elements'
 import { useAuth } from '../auth/AuthContext'
 import { SpellLists, SpellListModal } from '../spellLists'
 
@@ -37,7 +37,7 @@ const Character = () => {
             <span>Archetype: {character.archetype}</span>
             <span>Level: {character.level}</span>
             <SpellLists characterId={character.id} spellLists={spellLists} />
-            <button onClick={toggleModal}>Create Spell List</button>
+            <Button onClick={toggleModal}>Create Spell List</Button>
             <SpellListModal
                 characterId={character.id}
                 displayed={modalDisplayed}

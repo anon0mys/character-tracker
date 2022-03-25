@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../auth/AuthContext'
 import useClient from '../Client'
+import { Button, Form } from '../elements'
 
 const SpellListModal = ({characterId, displayed, close, onSubmit}) => {
     const auth = useAuth()
@@ -19,20 +20,16 @@ const SpellListModal = ({characterId, displayed, close, onSubmit}) => {
         })
     }
 
-    const spellListForm = displayed ? (
-        <form>
-            <input
-                type='text'
-                placeholder='Spell List Name'
-                onChange={event => setName(event.target.value)}
-            />
-            <button onClick={createSpellList}>Create List</button>
-        </form>
-    ) : <></>
-
     return (
         <div>
-            {spellListForm}
+            <Form display={displayed ? '' : 'none'}>
+                <input
+                    type='text'
+                    placeholder='Spell List Name'
+                    onChange={event => setName(event.target.value)}
+                />
+                <Button onClick={createSpellList}>Create List</Button>
+            </Form>
         </div>
     )
 }

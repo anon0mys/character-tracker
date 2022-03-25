@@ -8,6 +8,7 @@ import PrivateOutlet from './auth/PrivateOutlet'
 import Login from './Login'
 import { Characters, Character } from './characters'
 import { SpellList } from './spellLists'
+import Spells from './spells/Spells'
 
 const App = () => {
     return (
@@ -17,7 +18,8 @@ const App = () => {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/" element={<PrivateOutlet />}>
-                        <Route element={<Dashboard />} />   
+                        <Route element={<Dashboard />} />
+                        <Route path="spells" element={<Spells />} />
                         <Route path="characters/:characterId/spell-lists/:id" element={<SpellList />} />
                         <Route path="characters/:id" element={<Character />} />
                         <Route path="characters" element={<Characters />} />

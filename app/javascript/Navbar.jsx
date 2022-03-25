@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Flex } from './elements/Containers'
+import { Button, Flex, NavLink } from './elements'
 import { useAuth } from './auth/AuthContext'
 
 const Navbar = () => {
@@ -8,17 +8,18 @@ const Navbar = () => {
 
     const logout = (event) => {
         event.preventDefault()
-        auth.signout(() => navigate('/'))
+        auth.signout()
     }
 
     const links = auth.token ? (
         <>
-            <Link to='characters'>Characters</Link>
-            <button onClick={logout}>Logout</button>
+            <NavLink to='characters'>Characters</NavLink>
+            <NavLink to='spells'>Spells</NavLink>
+            <NavLink to='/' onClick={logout}>Logout</NavLink>
         </>
-    ) : <Link to='login'>Login</Link>
+    ) : <NavLink to='login'>Login</NavLink>
     return (
-        <Flex my={50}>
+        <Flex my={50} flexDirection='row' justifyContent='flex-end'>
             {links}
         </Flex>
     )

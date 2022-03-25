@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from './auth/AuthContext'
+import { Button } from './elements'
 
 const Login = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Login = () => {
                     placeholder='password'
                     onChange={event => setPassword(event.target.value)}
                 />
-                <button onClick={login}>Log in</button>
+                <Button onClick={login}>Log in</Button>
             </form>
         </div>
     )
