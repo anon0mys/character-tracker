@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import useClient from '../Client'
 import AddSpellModal from '../spellLists/AddSpellModal'
 import { Button, Grid } from '../elements'
 
-const SpellRow = ({spell, inList}) => {
+const SpellCard = ({spell, inList}) => {
     const auth = useAuth()
     const client = useClient()
+    const navigate = useNavigate()
     const [modalDisplayed, setModalDisplayed] = useState(false)
 
     const toggleModal = () => {
@@ -14,7 +16,7 @@ const SpellRow = ({spell, inList}) => {
     }
 
     const removeSpell = () => {
-        console.log('REMOVE')
+        client.Delete()
     }
 
     const button = inList ?
@@ -22,15 +24,10 @@ const SpellRow = ({spell, inList}) => {
         : <Button onClick={toggleModal}>Add to List</Button>
 
     return (
-        <Grid gridTemplateColumns='2fr 3fr 1fr 1fr 1fr 2fr 3fr 1fr 1fr'>
-            <span>{spell.name}</span>
-            <span>{spell.archetypes}</span>
-            <span>{spell.level}</span>
-            <span>{spell.school}</span>
-            <span>{spell.casting_time}</span>
-            <span>{spell.range}</span>
-            <span>{spell.duration}</span>
-            <span>{spell.components}</span>
+        <Grid width={250} m={20} onClick={() => navigate('/')}>
+            <span>Name: {spell.name}</span>
+            <span>Level: {spell.level}</span>
+            <span>School: {spell.school}</span>
             {button}
             <AddSpellModal
                 displayed={modalDisplayed}
@@ -41,4 +38,4 @@ const SpellRow = ({spell, inList}) => {
     )
 }
 
-export default SpellRow
+export default SpellCard

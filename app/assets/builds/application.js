@@ -2868,7 +2868,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth_AuthContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth/AuthContext */ "./app/javascript/auth/AuthContext.jsx");
 /* harmony import */ var _Client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Client */ "./app/javascript/Client.jsx");
 /* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../elements */ "./app/javascript/elements/index.jsx");
-/* harmony import */ var _spells_SpellRow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../spells/SpellRow */ "./app/javascript/spells/SpellRow.jsx");
+/* harmony import */ var _spells_SpellCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../spells/SpellCard */ "./app/javascript/spells/SpellCard.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -2892,6 +2892,7 @@ var SpellList = function SpellList() {
   var params = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useParams)();
   var auth = (0,_auth_AuthContext__WEBPACK_IMPORTED_MODULE_1__.useAuth)();
   var client = (0,_Client__WEBPACK_IMPORTED_MODULE_2__["default"])();
+  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
       _useState2 = _slicedToArray(_useState, 2),
@@ -2914,17 +2915,21 @@ var SpellList = function SpellList() {
 
   var removeSpell = function removeSpell() {};
 
-  var spellRows = spells.map(function (spell) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spells_SpellRow__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  var spellCards = spells.map(function (spell) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spells_SpellCard__WEBPACK_IMPORTED_MODULE_4__["default"], {
       key: spell.id,
       spell: spell,
       inList: true,
       handleClick: removeSpell
     });
   });
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Spell List: ", name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_3__.Flex, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Spell List: ", name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", {
+    onClick: function onClick() {
+      return navigate("/characters/".concat(params.characterId));
+    }
+  }, "Back"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_3__.Flex, {
     flexDirection: "column"
-  }, spellRows));
+  }, spellCards));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SpellList);
@@ -3020,7 +3025,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 /* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../elements */ "./app/javascript/elements/index.jsx");
 
 
@@ -3029,18 +3034,10 @@ __webpack_require__.r(__webpack_exports__);
 var SpellLists = function SpellLists(_ref) {
   var characterId = _ref.characterId,
       spellLists = _ref.spellLists;
-  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_2__.useNavigate)();
-
-  var showSpellList = function showSpellList(id) {
-    navigate("/characters/".concat(characterId, "/spell-lists/").concat(id));
-  };
-
   var spellListRows = spellLists.map(function (spellList) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
       key: spellList.id,
-      onClick: function onClick() {
-        return showSpellList(spellList.id);
-      }
+      to: "/characters/".concat(characterId, "/spell-lists/").concat(spellList.id)
     }, spellList.name);
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_1__.Flex, {
@@ -3075,10 +3072,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./app/javascript/spells/SpellRow.jsx":
-/*!********************************************!*\
-  !*** ./app/javascript/spells/SpellRow.jsx ***!
-  \********************************************/
+/***/ "./app/javascript/spells/SpellCard.jsx":
+/*!*********************************************!*\
+  !*** ./app/javascript/spells/SpellCard.jsx ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3087,8 +3084,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../spellLists/AddSpellModal */ "./app/javascript/spellLists/AddSpellModal.jsx");
-/* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../elements */ "./app/javascript/elements/index.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
+/* harmony import */ var _auth_AuthContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth/AuthContext */ "./app/javascript/auth/AuthContext.jsx");
+/* harmony import */ var _Client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Client */ "./app/javascript/Client.jsx");
+/* harmony import */ var _spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../spellLists/AddSpellModal */ "./app/javascript/spellLists/AddSpellModal.jsx");
+/* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../elements */ "./app/javascript/elements/index.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3105,26 +3105,112 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var SpellRow = function SpellRow(_ref) {
+
+
+
+var SpellCard = function SpellCard(_ref) {
   var spell = _ref.spell,
       inList = _ref.inList;
+  var auth = (0,_auth_AuthContext__WEBPACK_IMPORTED_MODULE_1__.useAuth)();
+  var client = (0,_Client__WEBPACK_IMPORTED_MODULE_2__["default"])();
+  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       modalDisplayed = _useState2[0],
       setModalDisplayed = _useState2[1];
 
-  var buttonText = inList ? 'Remove from List' : 'Add to List';
+  var toggleModal = function toggleModal() {
+    setModalDisplayed(!modalDisplayed);
+  };
+
+  var removeSpell = function removeSpell() {
+    client.Delete();
+  };
+
+  var button = inList ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Button, {
+    onClick: removeSpell
+  }, "Remove from List") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Button, {
+    onClick: toggleModal
+  }, "Add to List");
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Grid, {
+    width: 250,
+    m: 20,
+    onClick: function onClick() {
+      return navigate('/');
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Name: ", spell.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Level: ", spell.level), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "School: ", spell.school), button, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    displayed: modalDisplayed,
+    close: toggleModal,
+    spellId: spell.id
+  }));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SpellCard);
+
+/***/ }),
+
+/***/ "./app/javascript/spells/SpellRow.jsx":
+/*!********************************************!*\
+  !*** ./app/javascript/spells/SpellRow.jsx ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _auth_AuthContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth/AuthContext */ "./app/javascript/auth/AuthContext.jsx");
+/* harmony import */ var _Client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Client */ "./app/javascript/Client.jsx");
+/* harmony import */ var _spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../spellLists/AddSpellModal */ "./app/javascript/spellLists/AddSpellModal.jsx");
+/* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../elements */ "./app/javascript/elements/index.jsx");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+var SpellRow = function SpellRow(_ref) {
+  var spell = _ref.spell,
+      inList = _ref.inList;
+  var auth = (0,_auth_AuthContext__WEBPACK_IMPORTED_MODULE_1__.useAuth)();
+  var client = (0,_Client__WEBPACK_IMPORTED_MODULE_2__["default"])();
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      modalDisplayed = _useState2[0],
+      setModalDisplayed = _useState2[1];
 
   var toggleModal = function toggleModal() {
     setModalDisplayed(!modalDisplayed);
   };
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_2__.Grid, {
-    gridTemplateColumns: "1fr 2fr 1fr 1fr 1fr 2fr 1fr 1fr 1fr"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.archetypes), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.level), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.school), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.casting_time), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.range), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.duration), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.components), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_2__.Button, {
+  var removeSpell = function removeSpell() {
+    console.log('REMOVE');
+  };
+
+  var button = inList ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Button, {
+    onClick: removeSpell
+  }, "Remove from List") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Button, {
     onClick: toggleModal
-  }, buttonText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }, "Add to List");
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Grid, {
+    gridTemplateColumns: "2fr 3fr 1fr 1fr 1fr 2fr 3fr 1fr 1fr"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.archetypes), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.level), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.school), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.casting_time), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.range), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.duration), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.components), button, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
     displayed: modalDisplayed,
     close: toggleModal,
     spellId: spell.id
@@ -3151,6 +3237,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Client */ "./app/javascript/Client.jsx");
 /* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../elements */ "./app/javascript/elements/index.jsx");
 /* harmony import */ var _SpellRow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SpellRow */ "./app/javascript/spells/SpellRow.jsx");
+/* harmony import */ var _SpellCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SpellCard */ "./app/javascript/spells/SpellCard.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3162,6 +3249,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -3186,16 +3274,14 @@ var Spells = function Spells() {
     });
   }, []);
   var spellRows = spells.map(function (spell) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SpellRow__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SpellCard__WEBPACK_IMPORTED_MODULE_5__["default"], {
       key: spell.id,
       spell: spell
     });
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Spells"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_3__.Flex, {
-    flexDirection: "column"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_3__.Grid, {
-    gridTemplateColumns: "2fr 3fr 1fr 1fr 1fr 2fr 3fr 1fr 1fr"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Archetypes"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Level"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "School"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Casting Time"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Range"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Duration"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Components")), spellRows));
+    flexWrap: "wrap"
+  }, spellRows));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Spells);
