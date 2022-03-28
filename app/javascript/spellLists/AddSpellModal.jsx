@@ -49,7 +49,6 @@ const AddSpellModal = ({ spellId, displayed, close, onSubmit }) => {
         return <option key={character.id} value={character.id}>{character.name}</option>
     })
 
-
     const spellListOptions = spellLists.map(spellList => {
         return <option key={spellList.id} value={spellList.id}>{spellList.name} ({spellList.id})</option>
     })

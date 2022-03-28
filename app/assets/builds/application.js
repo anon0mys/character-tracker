@@ -2551,9 +2551,9 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var Button = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    ", "\n    border-radius: 200px;\n    &:active {\n        transform: scale(0.98);\n    }\n"])), (0,styled_system__WEBPACK_IMPORTED_MODULE_0__.compose)(styled_system__WEBPACK_IMPORTED_MODULE_0__.color, styled_system__WEBPACK_IMPORTED_MODULE_0__.space, styled_system__WEBPACK_IMPORTED_MODULE_0__.layout, styled_system__WEBPACK_IMPORTED_MODULE_0__.position, styled_system__WEBPACK_IMPORTED_MODULE_0__.border, styled_system__WEBPACK_IMPORTED_MODULE_0__.typography));
+var Button = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].button(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n    ", "\n    border-radius: 200px;\n    &:hover {\n        cursor: pointer;\n    }\n    &:active {\n        transform: scale(0.98);\n    }\n"])), (0,styled_system__WEBPACK_IMPORTED_MODULE_0__.compose)(styled_system__WEBPACK_IMPORTED_MODULE_0__.color, styled_system__WEBPACK_IMPORTED_MODULE_0__.space, styled_system__WEBPACK_IMPORTED_MODULE_0__.layout, styled_system__WEBPACK_IMPORTED_MODULE_0__.position, styled_system__WEBPACK_IMPORTED_MODULE_0__.border, styled_system__WEBPACK_IMPORTED_MODULE_0__.typography));
 var Bubble = (0,styled_components__WEBPACK_IMPORTED_MODULE_1__["default"])(Button)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n    background: none;\n    height: 25px;\n    border-radius: 50%;\n    width: 25px;\n    box-shadow: 0px 0px 3px dimgray;\n    border: none;\n    color: dimgray;\n"])));
-var NavLink = (0,styled_components__WEBPACK_IMPORTED_MODULE_1__["default"])(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n\n"])));
+var NavLink = (0,styled_components__WEBPACK_IMPORTED_MODULE_1__["default"])(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n    text-decoration: none;\n    color: black;\n    margin: 10px;\n    &:hover {\n        cursor: pointer;\n        text-decoration: underline;\n    }\n"])));
 
 
 /***/ }),
@@ -3120,82 +3120,8 @@ var SpellCard = function SpellCard(_ref) {
       modalDisplayed = _useState2[0],
       setModalDisplayed = _useState2[1];
 
-  var toggleModal = function toggleModal() {
-    setModalDisplayed(!modalDisplayed);
-  };
-
-  var removeSpell = function removeSpell() {
-    client.Delete();
-  };
-
-  var button = inList ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Button, {
-    onClick: removeSpell
-  }, "Remove from List") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Button, {
-    onClick: toggleModal
-  }, "Add to List");
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Grid, {
-    width: 250,
-    m: 20,
-    onClick: function onClick() {
-      return navigate('/');
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Name: ", spell.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Level: ", spell.level), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "School: ", spell.school), button, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    displayed: modalDisplayed,
-    close: toggleModal,
-    spellId: spell.id
-  }));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SpellCard);
-
-/***/ }),
-
-/***/ "./app/javascript/spells/SpellRow.jsx":
-/*!********************************************!*\
-  !*** ./app/javascript/spells/SpellRow.jsx ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _auth_AuthContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth/AuthContext */ "./app/javascript/auth/AuthContext.jsx");
-/* harmony import */ var _Client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Client */ "./app/javascript/Client.jsx");
-/* harmony import */ var _spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../spellLists/AddSpellModal */ "./app/javascript/spellLists/AddSpellModal.jsx");
-/* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../elements */ "./app/javascript/elements/index.jsx");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-var SpellRow = function SpellRow(_ref) {
-  var spell = _ref.spell,
-      inList = _ref.inList;
-  var auth = (0,_auth_AuthContext__WEBPACK_IMPORTED_MODULE_1__.useAuth)();
-  var client = (0,_Client__WEBPACK_IMPORTED_MODULE_2__["default"])();
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      modalDisplayed = _useState2[0],
-      setModalDisplayed = _useState2[1];
-
-  var toggleModal = function toggleModal() {
+  var toggleModal = function toggleModal(event) {
+    event.stopPropagation();
     setModalDisplayed(!modalDisplayed);
   };
 
@@ -3209,15 +3135,19 @@ var SpellRow = function SpellRow(_ref) {
     onClick: toggleModal
   }, "Add to List");
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_elements__WEBPACK_IMPORTED_MODULE_4__.Grid, {
-    gridTemplateColumns: "2fr 3fr 1fr 1fr 1fr 2fr 3fr 1fr 1fr"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.archetypes), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.level), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.school), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.casting_time), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.range), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.duration), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, spell.components), button, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    width: 250,
+    m: 20,
+    onClick: function onClick() {
+      return navigate('/');
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Name: ", spell.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Level: ", spell.level), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "School: ", spell.school), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Archetypes: ", spell.archetypes.join(', ')), button, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_spellLists_AddSpellModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
     displayed: modalDisplayed,
     close: toggleModal,
     spellId: spell.id
   }));
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SpellRow);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SpellCard);
 
 /***/ }),
 
@@ -3236,8 +3166,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth_AuthContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth/AuthContext */ "./app/javascript/auth/AuthContext.jsx");
 /* harmony import */ var _Client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Client */ "./app/javascript/Client.jsx");
 /* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../elements */ "./app/javascript/elements/index.jsx");
-/* harmony import */ var _SpellRow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SpellRow */ "./app/javascript/spells/SpellRow.jsx");
-/* harmony import */ var _SpellCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SpellCard */ "./app/javascript/spells/SpellCard.jsx");
+/* harmony import */ var _SpellCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SpellCard */ "./app/javascript/spells/SpellCard.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3249,7 +3178,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 
 
 
@@ -3274,7 +3202,7 @@ var Spells = function Spells() {
     });
   }, []);
   var spellRows = spells.map(function (spell) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SpellCard__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SpellCard__WEBPACK_IMPORTED_MODULE_4__["default"], {
       key: spell.id,
       spell: spell
     });

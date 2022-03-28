@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthContext'
 import useClient from '../Client'
-import { Flex, Grid } from '../elements'
-import SpellRow from './SpellRow'
+import { Flex } from '../elements'
 import SpellCard from './SpellCard'
 
 const Spells = () => {

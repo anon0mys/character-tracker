@@ -11,12 +11,13 @@ const SpellCard = ({spell, inList}) => {
     const navigate = useNavigate()
     const [modalDisplayed, setModalDisplayed] = useState(false)
 
-    const toggleModal = () => {
+    const toggleModal = (event) => {
+        event.stopPropagation()
         setModalDisplayed(!modalDisplayed)
     }
 
     const removeSpell = () => {
-        client.Delete()
+        console.log('REMOVE')
     }
 
     const button = inList ?
@@ -28,6 +29,7 @@ const SpellCard = ({spell, inList}) => {
             <span>Name: {spell.name}</span>
             <span>Level: {spell.level}</span>
             <span>School: {spell.school}</span>
+            <span>Archetypes: {spell.archetypes.join(', ')}</span>
             {button}
             <AddSpellModal
                 displayed={modalDisplayed}
