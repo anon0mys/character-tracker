@@ -21,6 +21,10 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+# Use js bundling for javascript assets
+gem 'jsbundling-rails'
+
+# Use Active Admin for admin site
 gem 'activeadmin'
 
 # Use Devise and JWT for authentication

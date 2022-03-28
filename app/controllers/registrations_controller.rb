@@ -1,6 +1,7 @@
 class RegistrationsController < Devise::RegistrationsController
   clear_respond_to
   respond_to :json
+  skip_before_action :verify_authenticity_token
   rescue_from ActiveRecord::RecordInvalid, with: :invalid_signup
 
   def create

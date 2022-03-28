@@ -2,6 +2,7 @@ class ApiController < ApplicationController
   include Pagy::Backend
 
   respond_to :json
+  skip_before_action :verify_authenticity_token
   before_action :authenticate_user
   after_action { pagy_headers_merge(@pagy) if @pagy }
   rescue_from ActiveRecord::RecordInvalid, with: :invalid_post
@@ -9,7 +10,7 @@ class ApiController < ApplicationController
   private
 
   def authenticate_user
-    token = request.headers['Authentication']&.split(' ')&.last
+    token = request.headers['HTTP_AUTHORIZATION']&.split(' ')&.last
     begin
       jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
       @current_user_id = jwt_payload['id']

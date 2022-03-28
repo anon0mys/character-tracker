@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root to: 'home#index'
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -8,7 +10,7 @@ Rails.application.routes.draw do
                           sessions: :sessions,
                           registrations: :registrations
                          },
-                         path_names: { sign_in: :login }
+                         path_names: { sign_in: :login, sign_out: :logout }
     end
   end
 
@@ -22,4 +24,6 @@ Rails.application.routes.draw do
       resources :spells, only: [:index]
     end
   end
+
+  get '*path', to: 'home#index'
 end
