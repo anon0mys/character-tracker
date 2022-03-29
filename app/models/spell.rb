@@ -13,6 +13,7 @@ class Spell < ApplicationRecord
   validates :components, array: { presence: true, inclusion: { in: COMPONENTS } }
   validates_presence_of :name, :casting_time, :range, :duration
 
+  scope :name_eq, -> (name) { where 'name ILIKE ?', "%#{name.downcase}%" }
   scope :archetype_eq, -> (archetype) { where "archetypes && ?", "{#{archetype}}" }
   scope :level_eq, -> (level) { where level: level }
   scope :school_eq, -> (school) { where school: school }

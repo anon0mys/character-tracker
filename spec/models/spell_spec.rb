@@ -47,6 +47,15 @@ RSpec.describe Spell, type: :model do
       expect(Spell.archetype_eq('cleric').count).to eq 1
     end
 
+    it 'should filter by name' do
+      create(:spell, name: 'Thunderwave')
+      create(:spell, name: 'Greater Restoration')
+      create(:spell, name: 'Lesser Restoration')
+
+      expect(Spell.name_eq('thunder').count).to eq 1
+      expect(Spell.name_eq('restoration').count).to eq 2
+    end
+
     it 'should filter by level' do
       create(:spell, level: 'cantrip')
       create(:spell, level: 'cantrip')
