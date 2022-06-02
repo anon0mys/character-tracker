@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Schema#characters' do
+describe 'Schema::Query#characters' do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:other_characters) { create_list(:character, 2, user: other_user) }

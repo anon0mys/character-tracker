@@ -1,5 +1,5 @@
 class Resolvers::AuthenticatedResolver < Resolvers::BaseResolver
-  extension Resolvers::AuthenticationExtension
+  extension Types::AuthenticationExtension
 
   def current_user
     context[:current_user]

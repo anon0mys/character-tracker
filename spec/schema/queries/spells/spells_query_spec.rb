@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Schema#spells' do
+describe 'Schema::Query#spells' do
   before { create_list(:spell, 5) }
 
   it 'should return a list of spells' do

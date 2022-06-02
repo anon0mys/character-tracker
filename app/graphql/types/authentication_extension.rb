@@ -1,4 +1,4 @@
-class Resolvers::AuthenticationExtension < GraphQL::Schema::FieldExtension
+class Types::AuthenticationExtension < GraphQL::Schema::FieldExtension
   def check_authentication!(current_user)
     return if current_user
 
