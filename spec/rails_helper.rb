@@ -37,6 +37,10 @@ RSpec.configure do |config|
   config.include Helpers::ApiAuthentication, type: :request
   config.include Combinable
 
+  config.define_derived_metadata(:file_path => Regexp.new('/spec/schema/')) do |metadata|
+    metadata[:type] = :request
+  end
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
