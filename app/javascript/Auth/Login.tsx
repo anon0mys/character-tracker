@@ -9,7 +9,7 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { from } = location.state || { from: { pathname: "/" } };
+    const { from } = location.state || { from: { pathname: "/dashboard" } };
     const login = (event) => {
         event.preventDefault()
         auth.signin(email, password, () => {

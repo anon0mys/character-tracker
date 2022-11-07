@@ -7,7 +7,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <>
-            { auth.user && <UserProfile /> }
+            <UserProfile />
             <ErrorBanner />
             {children}
         </>

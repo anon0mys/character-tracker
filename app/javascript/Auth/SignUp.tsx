@@ -10,7 +10,7 @@ const SignUp = () => {
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
-    const { from } = location.state || { from: { pathname: "/" } };
+    const { from } = location.state || { from: { pathname: "/dashboard" } };
     const signup = (event) => {
         event.preventDefault()
         auth.signup(email, password, passwordConfirmation, () => {

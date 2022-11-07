@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider, Login, SignUp, PrivateRoute } from './Auth'
-import { Dashboard, Layout } from './Layouts'
+import { Dashboard, Home, Layout } from './Layouts'
 import { ErrorProvider } from './Errors'
 
 const App = () => {
@@ -11,10 +11,11 @@ const App = () => {
                 <AuthProvider>
                     <Layout>
                         <Routes>
+                            <Route path="/" element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/sign-up" element={<SignUp />} />
-                            <Route path="/" element={<PrivateRoute />}>
-                                <Route index element={<Dashboard />} />
+                            <Route element={<PrivateRoute />}>
+                                <Route path="/dashboard" element={<Dashboard />} />
                                 {/* <Route path="spells" element={<Spells />} /> */}
                                 {/* <Route path="characters/:characterId/spell-lists/:id" element={<SpellList />} /> */}
                                 {/* <Route path="characters/:id" element={<Character />} /> */}
