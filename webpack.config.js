@@ -5,19 +5,19 @@ module.exports = {
   mode: "development",
   devtool: "source-map",
   entry: {
-    application: "./app/javascript/App.jsx"
+    application: "./app/javascript/main.tsx"
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx|)$/,
         exclude: /node_modules/,
         use: ['babel-loader'],
       },
     ],
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx', '.tsx'],
   },
   output: {
     filename: "[name].js",

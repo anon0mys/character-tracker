@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from './auth/AuthContext'
-import { Button } from './elements'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from './AuthProvider'
 
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const auth = useAuth();
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     const { from } = location.state || { from: { pathname: "/" } };
     const login = (event) => {
@@ -31,7 +30,8 @@ const Login = () => {
                     placeholder='password'
                     onChange={event => setPassword(event.target.value)}
                 />
-                <Button onClick={login}>Log in</Button>
+                <button onClick={login}>Log in</button>
+                <Link to='/sign-up'>Sign Up</Link>
             </form>
         </div>
     )

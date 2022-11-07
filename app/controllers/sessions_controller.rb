@@ -8,9 +8,18 @@ class SessionsController < Devise::SessionsController
 
     if user && user.valid_password?(sign_in_params[:password])
       @current_user = user
-      render json: { token: @current_user.generate_jwt }
+      render json: {
+        user: user,
+        token: @current_user.generate_jwt
+      }
     else
       render json: { errors: { 'email or password' => 'is invalid' } }, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    # Need to manage api tokens with a storage mechanism to invalidate them here
+    @current_user = nil
+    render head: :accepted
   end
 end
