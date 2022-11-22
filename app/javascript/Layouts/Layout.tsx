@@ -1,10 +1,8 @@
 import React from 'react'
-import { useAuth, UserProfile } from '../Auth'
+import { UserProfile } from '../Auth'
 import { ErrorBanner } from '../Errors'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-    const auth = useAuth()
-
     return (
         <>
             <UserProfile />

@@ -6,6 +6,7 @@ import { useError } from '../Errors'
 
 interface AuthContextType {
     user: UserType | null;
+    getToken: () => string | null;
     signin: (email: string, password: string, callback: VoidFunction) => void;
     signup: (email: string, password: string, passwordConfirmation: string, callback: VoidFunction) => void;
     signout: (callback: VoidFunction) => void;
@@ -73,7 +74,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             })
     };
 
-    const auth = { user, signin, signup, signout }
+    const getToken = () => {
+        return user && user.token
+    }
+
+    const auth = { user, getToken, signin, signup, signout }
 
     return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
 }

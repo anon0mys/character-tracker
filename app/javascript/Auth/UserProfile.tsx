@@ -1,4 +1,3 @@
-import { sign } from 'crypto';
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from './AuthProvider'
@@ -12,7 +11,6 @@ const UserProfile = () => {
             navigate('/');
         });
     };
-    const signedIn = auth.user && auth.user.token
 
     const userData = (
         <div>
@@ -28,7 +26,7 @@ const UserProfile = () => {
         </div>
     )
 
-    return signedIn ? userData : visitor
+    return auth.getToken() ? userData : visitor
 }
 
 export default UserProfile
