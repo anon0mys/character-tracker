@@ -1,7 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { AuthProvider, Login, SignUp, PrivateRoute } from './Auth'
-import { Characters, CharacterDisplay, Dashboard, Home, Layout } from './Layouts'
+import { AuthProvider, PrivateRoute } from './Auth'
+import Layout from './Components/Layout';
+import { Characters, CharacterDisplay, Dashboard, Home, Login, SignUp } from './Pages'
 import { ErrorProvider } from './Errors'
 
 const App = () => {

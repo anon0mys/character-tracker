@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from './AuthProvider'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Container, Form, Header } from 'semantic-ui-react'
+import { useAuth } from '../Auth'
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -19,26 +20,30 @@ const SignUp = () => {
     };
 
     return (
-        <div>
-            <form>
-                <input
+        <Container text>
+            <Header size='small'>Sign Up</Header>
+            <Form>
+                <Form.Input
                     type='email'
                     placeholder='email'
                     onChange={event => setEmail(event.target.value)}
                 />
-                <input
+                <Form.Input
                     type='password'
                     placeholder='password'
                     onChange={event => setPassword(event.target.value)}
                 />
-                <input
+                <Form.Input
                     type='password'
                     placeholder='password confirmation'
                     onChange={event => setPasswordConfirmation(event.target.value)}
                 />
-                <button onClick={signup}>Sign Up</button>
-            </form>
-        </div>
+                <Container textAlign='center'>
+                    <Form.Button onClick={signup}>Sign Up</Form.Button>
+                    <Link to='/login'>Log In</Link>
+                </Container>
+            </Form>
+        </Container>
     )
 }
 

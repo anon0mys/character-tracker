@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Card } from 'semantic-ui-react'
+import { Card, Header } from 'semantic-ui-react'
 import { useAuth } from '../Auth'
 import Client from '../Client'
 import { useError } from '../Errors'
@@ -32,7 +32,7 @@ const Characters = () => {
 
     return (
         <>
-            <h1>Characters</h1>
+            <Header size='large'>Characters</Header>
             <Card.Group>{characterCards}</Card.Group>
         </>
     )
