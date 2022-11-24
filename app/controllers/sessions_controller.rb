@@ -20,6 +20,6 @@ class SessionsController < Devise::SessionsController
   def destroy
     # Need to manage api tokens with a storage mechanism to invalidate them here
     @current_user = nil
-    render head: :accepted
+    render json: {}, status: :accepted
   end
 end

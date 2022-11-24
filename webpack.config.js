@@ -14,6 +14,29 @@ module.exports = {
         exclude: /node_modules/,
         use: ['babel-loader'],
       },
+      {
+        test: /\.css$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+        ],
+        include: [
+          path.join(__dirname, 'app/javascript'),
+          /node_modules/
+        ]
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: ['file-loader']
+      },
     ],
   },
   resolve: {

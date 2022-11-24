@@ -1,13 +1,19 @@
 import React from 'react'
-import { UserProfile } from '../Auth'
+import { Container, Header } from 'semantic-ui-react'
+import { TopNav } from '../Components/Navbar'
 import { ErrorBanner } from '../Errors'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
-            <UserProfile />
+            <Header textAlign='center' size='huge'>
+                <Header.Content>The Name</Header.Content>
+            </Header>
+            <TopNav />
             <ErrorBanner />
-            {children}
+            <div className='content'>
+                {children}
+            </div>
         </>
     )
 }

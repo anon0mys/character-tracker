@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Card } from 'semantic-ui-react'
 import { useAuth } from '../Auth'
-import { CharacterCard } from '../Components/Characters'
 import Client from '../Client'
 import { useError } from '../Errors'
 import { ICharacterType } from '../Components/Characters'
@@ -17,16 +18,22 @@ const Characters = () => {
             .catch(error => errors.setError(error))
     }, [])
 
-    const characterData = characters.map(character => {
-        return <CharacterCard key={character.id} data={character} />
+    const characterCards = characters.map(character => {
+        return (
+            <Card key={character.id} as={Link} to={`/characters/${character.id}`}>
+                <Card.Content>
+                    <Card.Header>{character.name}</Card.Header>
+                    <Card.Meta>{character.archetype}</Card.Meta>
+                    <Card.Meta>Level {character.level}</Card.Meta>
+                </Card.Content>
+            </Card>
+        )
     })
 
     return (
         <>
             <h1>Characters</h1>
-            <div>
-                {characterData}
-            </div>
+            <Card.Group>{characterCards}</Card.Group>
         </>
     )
 }
