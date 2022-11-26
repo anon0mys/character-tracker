@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_13_221914) do
+ActiveRecord::Schema.define(version: 2022_11_26_162519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,52 @@ ActiveRecord::Schema.define(version: 2022_02_13_221914) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_characters_on_user_id"
+  end
+
+  create_table "faction_locations", force: :cascade do |t|
+    t.bigint "faction_id"
+    t.bigint "location_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["faction_id"], name: "index_faction_locations_on_faction_id", unique: true
+    t.index ["location_id"], name: "index_faction_locations_on_location_id", unique: true
+  end
+
+  create_table "faction_npcs", force: :cascade do |t|
+    t.bigint "npc_id"
+    t.bigint "faction_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["faction_id"], name: "index_faction_npcs_on_faction_id", unique: true
+    t.index ["npc_id"], name: "index_faction_npcs_on_npc_id", unique: true
+  end
+
+  create_table "factions", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.bigint "location_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["location_id"], name: "index_factions_on_location_id", unique: true
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "location_type", default: "zone", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "npcs", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "race"
+    t.string "archetype", default: "artificer", null: false
+    t.bigint "location_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["location_id"], name: "index_npcs_on_location_id", unique: true
   end
 
   create_table "spell_list_items", force: :cascade do |t|
@@ -94,4 +140,10 @@ ActiveRecord::Schema.define(version: 2022_02_13_221914) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "faction_locations", "factions"
+  add_foreign_key "faction_locations", "locations"
+  add_foreign_key "faction_npcs", "factions"
+  add_foreign_key "faction_npcs", "npcs"
+  add_foreign_key "factions", "locations"
+  add_foreign_key "npcs", "locations"
 end

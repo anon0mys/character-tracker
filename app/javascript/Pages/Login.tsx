@@ -35,8 +35,7 @@ const Login = () => {
                 <Container textAlign='center'>
                     <Form.Button onClick={login}>Log in</Form.Button>
                     <Link to='/sign-up'>Sign Up</Link>
-                </Container>
-                
+                </Container>      
             </Form>
         </Container>
     )

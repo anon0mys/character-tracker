@@ -1,8 +1,8 @@
-DatabaseCleaner.strategy = :truncation
+DatabaseCleaner.strategy = :transaction
 
 RSpec.configure do |config|
   config.before(:each) do
-    DatabaseCleaner.clean
+    DatabaseCleaner.start
   end
 
   config.after(:each) do
