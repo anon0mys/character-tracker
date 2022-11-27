@@ -72,10 +72,8 @@ ActiveRecord::Schema.define(version: 2022_11_26_162519) do
   create_table "factions", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.bigint "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["location_id"], name: "index_factions_on_location_id", unique: true
   end
 
   create_table "locations", force: :cascade do |t|
@@ -144,6 +142,5 @@ ActiveRecord::Schema.define(version: 2022_11_26_162519) do
   add_foreign_key "faction_locations", "locations"
   add_foreign_key "faction_npcs", "factions"
   add_foreign_key "faction_npcs", "npcs"
-  add_foreign_key "factions", "locations"
   add_foreign_key "npcs", "locations"
 end

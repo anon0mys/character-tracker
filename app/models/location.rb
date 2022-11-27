@@ -5,7 +5,8 @@ class Location < ApplicationRecord
 
   enum location_type: combine_to_hash(LOCATION_TYPES)
 
-  has_many :factions
+  has_many :faction_locations
+  has_many :factions, through: :faction_locations
   has_many :npcs
   
   validates_presence_of :name

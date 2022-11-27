@@ -14,7 +14,7 @@ RSpec.describe Location, type: :model do
   end
 
   context 'relationships' do
-    it { should have_many :factions }
+    it { should have_many(:factions).through(:faction_locations) }
     it { should have_many :npcs }
   end
 end
