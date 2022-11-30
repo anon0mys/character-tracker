@@ -9,4 +9,9 @@ class ApiController < ApplicationController
   def invalid_post(exception)
     render json: {errors: exception.message}, status: :unprocessable_entity
   end
+
+  def paginate(data)
+    @pagy, @data = pagy(data)
+    return pagy_metadata(@pagy).merge({data: @data})
+  end
 end

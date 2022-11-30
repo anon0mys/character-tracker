@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useState, createContext } from 'react'
 import { AuthStore, UserType} from './AuthStore'
-import Client from '../Client'
+import { Client } from '../Api'
 import { useError } from '../Errors'
 
 interface AuthContextType {

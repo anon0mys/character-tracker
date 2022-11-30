@@ -102,9 +102,9 @@ require 'pagy/extras/headers'
 # See https://ddnexus.github.io/pagy/extras/metadata
 # you must require the shared internal extra (BEFORE the metadata extra) ONLY if you need also the :sequels
 # require 'pagy/extras/shared'
-# require 'pagy/extras/metadata'
+require 'pagy/extras/metadata'
 # For performance reasons, you should explicitly set ONLY the metadata you use in the frontend
-# Pagy::DEFAULT[:metadata] = %i[scaffold_url page prev next last]   # example
+Pagy::DEFAULT[:metadata] = %i[page prev next pages]
 
 # Searchkick extra: Paginate `Searchkick::Results` objects
 # See https://ddnexus.github.io/pagy/extras/searchkick

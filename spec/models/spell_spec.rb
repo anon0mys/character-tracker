@@ -44,7 +44,7 @@ RSpec.describe Spell, type: :model do
 
       expect(Spell.archetype_eq('artificer').count).to eq 2
       expect(Spell.archetype_eq('druid').count).to eq 2
-      expect(Spell.archetype_eq('cleric').count).to eq 1
+      expect(Spell.archetype_eq('cleric,sorcerer').count).to eq 2
     end
 
     it 'should filter by name' do
