@@ -16,5 +16,17 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
 
-
-
+  web:
+    build: .
+    command: bundle exec puma -C config/puma.rb
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
