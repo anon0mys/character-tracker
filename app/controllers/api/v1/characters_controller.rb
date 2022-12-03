@@ -27,7 +27,7 @@ class Api::V1::CharactersController < ApiController
 
   def destroy
     current_user.characters.find(params[:id]).destroy
-    head :accepted
+    render json: {}, status: :accepted
   end
 
   private

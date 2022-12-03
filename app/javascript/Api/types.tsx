@@ -1,24 +1,30 @@
 interface ICharacterType {
-    id: number
-    name: string
-    archetype: string
-    level: number
-    created_at: string
+    id: number | null
+    name: string;
+    archetype: string;
+    level: number | null
+    created_at: string;
     updated_at: string
-    user_id: number
+    user_id: number | null
 }
 
 interface ISpellType {
-    id: number
+    id: number | null
     name: string
-    archetypes: [string]
+    archetypes: string[]
     casting_time: string
-    components: [string]
+    components: string[]
     description: string
     duration: string
     level: string
     range: string
     school: string
+}
+
+interface ISpellListType {
+    id: number | null
+    name: string
+    character_id: number | null
 }
 
 interface IPaginationType {
@@ -29,4 +35,4 @@ interface IPaginationType {
     prev: number | null
 }
 
-export {ICharacterType, ISpellType, IPaginationType}
+export {ICharacterType, ISpellType, ISpellListType, IPaginationType}

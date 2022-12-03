@@ -28,7 +28,7 @@ class Api::V1::SpellListsController < ApiController
 
   def destroy
     @character.spell_lists.find(params[:id]).destroy
-    head :accepted
+    render json: {}, status: :accepted
   end
 
   def add_spell

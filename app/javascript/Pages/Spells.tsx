@@ -5,25 +5,7 @@ import { Client, ISpellType, IPaginationType } from '../Api'
 import { useError } from '../Errors'
 import { SpellCard } from '../Components/Spells'
 import { ButtonToggle } from '../Components/Shared'
-
-const archetypes = [
-    'artificer',
-    'barbarian',
-    'bard',
-    'cleric',
-    'druid',
-    'fighter',
-    'monk',
-    'paladin',
-    'ranger',
-    'rogue',
-    'sorcerer',
-    'warlock',
-    'wizard',
-]
-
-const levels = ['cantrip', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-const schools = ['abjuration', 'conjuration', 'divination', 'enchantment', 'evocation', 'illusion', 'necromancy', 'transmutation']
+import { archetypes, spellLevels, schools } from '../Api'
 
 const Spells = () => {
     const [spells, setSpells] = useState<[ISpellType] | []>([])
@@ -134,7 +116,7 @@ const Spells = () => {
     })
 
     const archetypeLables = archetypes.map(archetype => <ButtonToggle key={archetype} onClick={() => archetypeFiltersChange(archetype)}>{archetype}</ButtonToggle>)
-    const levelLables = levels.map(level => <ButtonToggle key={level} onClick={() => levelFiltersChange(level)}>{level}</ButtonToggle>)
+    const levelLables = spellLevels.map(level => <ButtonToggle key={level} onClick={() => levelFiltersChange(level)}>{level}</ButtonToggle>)
     const schoolLables = schools.map(school => <ButtonToggle key={school} onClick={() => schoolFiltersChange(school)}>{school}</ButtonToggle>)
 
     return (
