@@ -19,8 +19,8 @@ describe 'PATCH /api/v1/characters/:character_id/spell_lists/:spell_list_id' do
     }
 
     it 'updates a spell list for the character' do
-      data = JSON.parse(response.body)
-      expect(data['spell_list']['name']).to eq('Updated Name')
+      result = JSON.parse(response.body)
+      expect(result['data']['name']).to eq('Updated Name')
     end
   end
 end

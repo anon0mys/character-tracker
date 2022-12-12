@@ -3,23 +3,23 @@ class Api::V1::CharactersController < ApiController
 
   def index
     @characters = current_user.characters.all
-    render json: {characters: @characters}
+    render json: {data: @characters}
   end
 
   def show
     @character = current_user.characters.find(params[:id])
-    render json: {character: @character}
+    render json: {data: @character}
   end
 
   def create
     @character = current_user.characters.create!(character_params)
-    render json: {character: @character}
+    render json: {data: @character}
   end
 
   def update
     @character = current_user.characters.find(params[:id])
     if @character.update(character_params)
-      render json: {character: @character}
+      render json: {data: @character}
     else
       render json: {errors: 'Invalid attributes'}, status: :unprocessable_entity
     end

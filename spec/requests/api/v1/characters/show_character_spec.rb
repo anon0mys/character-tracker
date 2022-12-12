@@ -10,8 +10,8 @@ describe 'GET /api/v1/characters/:id' do
     before { get api_v1_character_path(character.id), headers: @auth_headers }
 
     it 'returns a character for the user' do
-      data = JSON.parse(response.body)
-      expect(data['character']['name']).to eq('Test Char')
+      result = JSON.parse(response.body)
+      expect(result['data']['name']).to eq('Test Char')
     end
   end
 end

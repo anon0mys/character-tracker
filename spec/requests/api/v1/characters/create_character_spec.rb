@@ -15,10 +15,10 @@ describe 'POST /api/v1/characters' do
     before { post api_v1_characters_path, headers: @auth_headers, params: valid_attrs }
 
     it 'creates a new character for the user' do
-      data = JSON.parse(response.body)
-      expect(data['character']['name']).to eq('Test Char')
-      expect(data['character']['archetype']).to eq('artificer')
-      expect(data['character']['user_id']).to eq(user.id)
+      result = JSON.parse(response.body)
+      expect(result['data']['name']).to eq('Test Char')
+      expect(result['data']['archetype']).to eq('artificer')
+      expect(result['data']['user_id']).to eq(user.id)
     end
   end
 end

@@ -14,7 +14,7 @@ const Characters = () => {
 
     const fetchCharacters = () => {
         client.get({ path: '/characters', token: auth.getToken() })
-            .then(data => setCharacters(data.characters))
+            .then(response => setCharacters(response.data))
             .catch(error => errors.setError(error))
     }
 

@@ -4,23 +4,23 @@ class Api::V1::SpellListsController < ApiController
 
   def index
     @spell_lists = @character.spell_lists.all
-    render json: {spell_lists: @spell_lists}
+    render json: {data: @spell_lists}
   end
 
   def show
     @spell_list = @character.spell_lists.find(params[:id])
-    render json: {spell_list: render_spell_list(@spell_list)}
+    render json: {data: render_spell_list(@spell_list)}
   end
 
   def create
     @spell_list = @character.spell_lists.create!(spell_list_params)
-    render json: {spell_list: render_spell_list(@spell_list)}, status: :created
+    render json: {data: render_spell_list(@spell_list)}, status: :created
   end
 
   def update
     @spell_list = @character.spell_lists.find(params[:id])
     if @spell_list.update(spell_list_params)
-      render json: {spell_list: render_spell_list(@spell_list)}
+      render json: {data: render_spell_list(@spell_list)}
     else
       render json: {errors: 'Invalid attributes'}, status: :unprocessable_entity
     end
@@ -32,9 +32,13 @@ class Api::V1::SpellListsController < ApiController
   end
 
   def add_spell
-    @spell_list = @character.spell_lists.find(params[:spell_list_id])
-    @spell_list.add_spell(validated_spell)
-    render json: {spell_list: render_spell_list(@spell_list)}
+    begin
+      @spell_list = @character.spell_lists.find(params[:spell_list_id])
+      @spell_list.add_spell(validated_spell)
+      render json: {data: render_spell_list(@spell_list)}
+    rescue
+      require 'pry'; binding.pry()
+    end
   end
 
   private

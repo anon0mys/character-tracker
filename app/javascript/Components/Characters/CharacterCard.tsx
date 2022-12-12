@@ -25,7 +25,7 @@ const CharacterCard = ({character, deleteCharacter}: CharacterCardProps) => {
     const submit = (event) => {
         event.preventDefault()
         client.destroy({ path: `/characters/${character.id}`, token: auth.getToken() })
-            .then(data => {
+            .then(response => {
                 deleteCharacter()
                 setOpen(false)
             })

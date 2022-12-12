@@ -19,8 +19,8 @@ describe 'POST /api/v1/characters/:character_id/spell_lists/:spell_list_id/add_s
       }
 
       it 'adds a spell to the spell list' do
-        data = JSON.parse(response.body)
-        expect(data['spell_list']['spells'].length).to eq 1
+        result = JSON.parse(response.body)
+        expect(result['data']['spells'].length).to eq 1
       end
     end
 
@@ -34,8 +34,8 @@ describe 'POST /api/v1/characters/:character_id/spell_lists/:spell_list_id/add_s
       }
 
       it 'responds with a descriptive error message' do
-        data = JSON.parse(response.body)
-        expect(data['errors']).to eq 'Validation failed: Code spell is not availble to this character archetype'
+        result = JSON.parse(response.body)
+        expect(result['errors']).to eq 'Validation failed: Code spell is not availble to this character archetype'
       end
 
       it 'responds with a status 422' do

@@ -18,8 +18,8 @@ describe 'POST /api/v1/characters/:character_id/spell_lists' do
     }
 
     it 'creates a new spell list for the character' do
-      data = JSON.parse(response.body)
-      expect(data['spell_list']['name']).to eq('Spellz')
+      result = JSON.parse(response.body)
+      expect(result['data']['name']).to eq('Spellz')
     end
   end
 end

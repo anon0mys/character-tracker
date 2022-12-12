@@ -13,8 +13,8 @@ describe 'GET /api/v1/characters/:character_id/spell_lists/:spell_list_id' do
     before { get api_v1_character_spell_list_path(character.id, spell_list.id), headers: @auth_headers }
 
     it 'returns a spell list for the character' do
-      data = JSON.parse(response.body)
-      expect(data['spell_list']['spells'].length).to eq 1
+      result = JSON.parse(response.body)
+      expect(result['data']['spells'].length).to eq 1
     end
   end
 end

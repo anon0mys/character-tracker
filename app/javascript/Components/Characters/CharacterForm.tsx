@@ -31,8 +31,8 @@ const CharacterForm = ({ open, setOpen, onSubmit }: CharacterFormProps) => {
             name: name,
             archetype: archetype
         }, token: auth.getToken() })
-        .then(data => {
-            onSubmit(data.character)
+        .then(response => {
+            onSubmit(response.data)
             setOpen(false)
         })
         .catch(error => errors.setError(error))
