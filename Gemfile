@@ -10,6 +10,7 @@ gem 'pg', '~> 1.1'
 # Use Puma as the app server
 gem 'puma', '~> 5.6'
 gem 'net-smtp'
+gem 'mail', '>= 2.8.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
