@@ -5,7 +5,9 @@ interface Request {
 }
 
 const Client = () => {
-    const baseUrl = 'http://localhost:3000/api/v1'
+    const baseUrl = process.env.NODE_ENV == 'production' ?
+    'https://dnd-keeper.herokuapp.com/api/v1'
+    : 'http://localhost:3000/api/v1'
 
     const headers = (token?: string | null) => {
         let headers = {'Content-Type': 'application/json'}
