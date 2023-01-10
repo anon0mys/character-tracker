@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   def parse_auth_token
     token = request.headers['HTTP_AUTHORIZATION']&.split(' ')&.last
     begin
-      jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
+      jwt_payload = JWT.decode(token, Rails.application.credentials.secret_key_base).first
       @current_user = User.find_by(id: jwt_payload['id'])
     rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
       @current_user = nil

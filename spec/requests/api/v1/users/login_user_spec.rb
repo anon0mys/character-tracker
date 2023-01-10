@@ -20,7 +20,7 @@ describe 'POST /api/v1/login' do
 
     it 'should return a JWT token' do
       data = JSON.parse(response.body)
-      jwt_payload = JWT.decode(data['token'], Rails.application.secrets.secret_key_base).first
+      jwt_payload = JWT.decode(data['token'], Rails.application.credentials.secret_key_base).first
       expect(jwt_payload['id']).to eq user.id
     end
   end

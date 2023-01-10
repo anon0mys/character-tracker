@@ -32,13 +32,9 @@ class Api::V1::SpellListsController < ApiController
   end
 
   def add_spell
-    begin
-      @spell_list = @character.spell_lists.find(params[:spell_list_id])
-      @spell_list.add_spell(validated_spell)
-      render json: {data: render_spell_list(@spell_list)}
-    rescue
-      require 'pry'; binding.pry()
-    end
+    @spell_list = @character.spell_lists.find(params[:spell_list_id])
+    @spell_list.add_spell(validated_spell)
+    render json: {data: render_spell_list(@spell_list)}
   end
 
   private
