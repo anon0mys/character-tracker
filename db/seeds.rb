@@ -5,4 +5,8 @@ File.foreach(Rails.root.join('lib', 'seeds', 'spell_data.json')) do |line|
   Spell.create!(spell_data)
 end
 
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+AdminUser.create!(
+  email: 'admin@example.com',
+  password: 'password',
+  password_confirmation: 'password'
+) if Rails.env.development?
