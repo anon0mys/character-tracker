@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu } from 'semantic-ui-react'
+import { Avatar, Divider, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react'
 import { useAuth } from '../../Auth/AuthProvider'
 
-const UserProfile = ({activeLink, setActiveLink}) => {
+const UserProfile = () => {
     const auth = useAuth();
     const navigate = useNavigate();
     const signout = (event) => {
@@ -13,51 +13,34 @@ const UserProfile = ({activeLink, setActiveLink}) => {
         });
     };
 
-    const userData = (
-        <>
-            <Menu.Item
-                name='avatar'
-                position='right'
-                active={activeLink === 'profile'}
-                onClick={() => setActiveLink('profile')}
-            >
-                {auth.user && auth.user.email}
-            </Menu.Item>
-            <Menu.Item
-                name='log-out'
-                active={false}
-                onClick={signout}
-            >
-                Log Out
-            </Menu.Item>
-        </>
+    return (
+        <Menu>
+            <MenuButton
+                as={Avatar}
+                aria-label='Options'
+                name={auth.user && auth.user.email}
+                src=''
+            />
+            <MenuList>
+                <MenuItem as={Link} to='/dashboard'>
+                    Dashboard
+                </MenuItem>
+                <MenuItem as={Link} to='/spells'>
+                    Spells
+                </MenuItem>
+                <MenuItem as={Link} to='/characters'>
+                    Characters
+                </MenuItem>
+                <Divider my='5px' fontSize='2rem' />
+                <MenuItem as={Link} to='/profile'>
+                    Profile
+                </MenuItem>
+                <MenuItem onClick={signout}>
+                    Log Out
+                </MenuItem>
+            </MenuList>
+        </Menu>
     )
-
-    const visitor = (
-        <>
-            <Menu.Item
-                name='login'
-                position='right'
-                active={activeLink === 'login'}
-                as={Link}
-                to='/login'
-                onClick={() => setActiveLink('login')}
-            >
-                Log In
-            </Menu.Item>
-            <Menu.Item
-                name='sign-up'
-                active={activeLink === 'sign-up'}
-                as={Link}
-                to='/sign-up'
-                onClick={() => setActiveLink('sign-up')}
-            >
-                Sign Up
-            </Menu.Item>
-        </>
-    )
-
-    return auth.getToken() ? userData : visitor
 }
 
 export default UserProfile
