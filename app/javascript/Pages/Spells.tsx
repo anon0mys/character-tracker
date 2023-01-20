@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Card, Checkbox, Container, Grid, Header, Label, Pagination, Search } from 'semantic-ui-react'
+import { Card, Header, Pagination, Search } from 'semantic-ui-react'
+import {
+    Box, Button, Checkbox, Menu, MenuButton, MenuList, MenuItem,
+    SimpleGrid, Switch, Wrap
+} from '@chakra-ui/react'
 import { useAuth } from '../Auth'
 import { Client, ISpellType, IPaginationType } from '../Api'
 import { useError } from '../Errors'
@@ -111,19 +115,32 @@ const Spells = () => {
         }
     }
 
+    const buildMenuItem = (item, isActive, handleChange) => {
+        return (
+            <MenuItem
+                as={ButtonToggle}
+                key={item}
+                isActive={isActive}
+                onClick={() => handleChange(item)}
+            >
+                { item }
+            </MenuItem >
+        )
+    }
+
     const spellCards = spells.map(spell => {
         return <SpellCard key={spell.id} spell={spell} />
     })
 
-    const archetypeLables = archetypes.map(archetype => <ButtonToggle key={archetype} onClick={() => archetypeFiltersChange(archetype)}>{archetype}</ButtonToggle>)
-    const levelLables = spellLevels.map(level => <ButtonToggle key={level} onClick={() => levelFiltersChange(level)}>{level}</ButtonToggle>)
-    const schoolLables = schools.map(school => <ButtonToggle key={school} onClick={() => schoolFiltersChange(school)}>{school}</ButtonToggle>)
+    const archetypeLables = archetypes.map(archetype => buildMenuItem(archetype, archetypeFilters.includes(archetype), archetypeFiltersChange))
+    const levelLables = spellLevels.map(level => buildMenuItem(level, levelFilters.includes(level), levelFiltersChange))
+    const schoolLables = schools.map(school => buildMenuItem(school, schoolFilters.includes(school), schoolFiltersChange))
 
     return (
         <>
             <Header size='large'>Spells</Header>
-            <Grid>
-                <Grid.Column>
+            <SimpleGrid columns={{ sm: 1, md: 5 }} py='20px'>
+                <Box py='10px'>
                     <Search
                         loading={loading}
                         placeholder='Search...'
@@ -132,17 +149,28 @@ const Spells = () => {
                         showNoResults={false}
                         value={search}
                     />
-                </Grid.Column>
-                <Grid.Column>
-                    {archetypeLables}
-                </Grid.Column>
-                <Grid.Column>
-                    {levelLables}
-                </Grid.Column>
-                <Grid.Column>
-                    {schoolLables}
-                </Grid.Column>
-            </Grid>
+                </Box>
+                <Wrap py={{ sm: '15px' }}>
+                    <Menu closeOnSelect={false}>
+                        <MenuButton as={Button}>
+                            Archetype
+                        </MenuButton>
+                        <MenuList>{archetypeLables}</MenuList>
+                    </Menu>
+                    <Menu closeOnSelect={false}>
+                        <MenuButton as={Button}>
+                            Level
+                        </MenuButton>
+                        <MenuList>{levelLables}</MenuList>
+                    </Menu>
+                    <Menu closeOnSelect={false}>
+                        <MenuButton as={Button}>
+                            School
+                        </MenuButton>
+                        <MenuList>{schoolLables}</MenuList>
+                    </Menu>
+                </Wrap>
+            </SimpleGrid>
             <Card.Group>{spellCards}</Card.Group>
             <Pagination
                 defaultActivePage={1}

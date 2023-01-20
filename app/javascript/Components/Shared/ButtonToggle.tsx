@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from 'semantic-ui-react'
+import { Button } from '@chakra-ui/react'
 
 const ButtonToggle = (props) => {
     const {onClick, children, ...forwardProps} = props
@@ -13,7 +13,7 @@ const ButtonToggle = (props) => {
     }
 
     return (
-        <Button onClick={clickHandler} color={active ? 'green' : 'grey'} {...forwardProps}>
+        <Button onClick={clickHandler} colorScheme={active ? 'teal' : 'grey'} {...forwardProps}>
             {children}
         </Button>
     )
