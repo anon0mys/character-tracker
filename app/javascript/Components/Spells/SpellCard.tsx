@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
-import { Card } from 'semantic-ui-react'
+// import { Card } from 'semantic-ui-react'
+import {
+    Card, CardHeader, CardBody, CardFooter,
+    Divider, Heading, Stack, Text, useDisclosure
+} from '@chakra-ui/react'
 import { ISpellType } from '../../Api'
 import SpellModal from './SpellModal'
 
@@ -8,19 +12,24 @@ interface SpellCardProps {
 }
 
 const SpellCard = ({ spell }: SpellCardProps) => {
-    const [open, setOpen] = useState(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (
-        <Card key={spell.id} onClick={() => setOpen(true)}>
-            <Card.Content>
-                <Card.Header>{spell.name}</Card.Header>
-                <Card.Meta>Level {spell.level}</Card.Meta>
-                <Card.Meta>{spell.school}</Card.Meta>
-            </Card.Content>
-            <Card.Content extra>
-                <Card.Meta>{spell.archetypes.join(', ')}</Card.Meta>
-            </Card.Content>
-            <SpellModal spell={spell} open={open} setOpen={setOpen} />
+        <Card key={spell.id} variant='elevated' onClick={onOpen}>
+            <CardHeader>
+                <Heading>{spell.name}</Heading>
+            </CardHeader>
+            <CardBody>
+                <Stack>
+                    <Text as='i'>Level {spell.level}</Text>
+                    <Text as='i'>{spell.school}</Text>
+                </Stack>
+            </CardBody>
+            <Divider />
+            <CardFooter>
+                <Text as='i'>{spell.archetypes.join(', ')}</Text>
+            </CardFooter>
+            <SpellModal spell={spell} open={isOpen} close={onClose} />
         </Card>
     )
 }

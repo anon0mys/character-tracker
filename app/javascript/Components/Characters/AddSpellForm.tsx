@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Dropdown, Grid, Modal } from 'semantic-ui-react'
+import {
+    Button, Modal, ModalContent, ModalFooter, ModalHeader,
+    ModalOverlay, Select, Stack
+} from '@chakra-ui/react'
+import { CheckIcon } from '@chakra-ui/icons'
 import { Client, ICharacterType, ISpellListType, ISpellType } from '../../Api'
 import { useAuth } from '../../Auth'
 import { useError } from '../../Errors'
@@ -7,12 +11,11 @@ import { useError } from '../../Errors'
 interface AddSpellProps {
     spell: ISpellType
     open: boolean
-    setOpen: Function
+    close: VoidFunction
 }
 
-const AddSpellForm = ({ spell, open, setOpen }: AddSpellProps) => {
+const AddSpellForm = ({ spell, open, close }: AddSpellProps) => {
     const [character, setCharacter] = useState<ICharacterType>({
-        id: null,
         name: '',
         archetype: '',
         level: null,
@@ -21,7 +24,6 @@ const AddSpellForm = ({ spell, open, setOpen }: AddSpellProps) => {
         user_id: null
     })
     const [spellList, setSpellList] = useState<ISpellListType>({
-        id: null,
         name: '',
         character_id: null
     })
@@ -48,78 +50,73 @@ const AddSpellForm = ({ spell, open, setOpen }: AddSpellProps) => {
         client.post({ path: path, token: auth.getToken(), payload: {spell: {id: spell.id}}})
             .then(response => {
                 console.log('probably add a banner indicating success here')
-                setOpen(false)
+                close()
             })
             .catch(error => errors.setError(error)) 
     }
 
     const characterOptions = characters.map(character => {
-        return {
-            key: character.id,
-            text: character.name,
-            value: character.id,
-        }
+        return <option key={character.id} value={character.id}>{character.name}</option>
     })
 
+    const pickCharacter = (e) => {
+        let char = characters.find(ch => ch.id == e.target.value)
+        if (char) {
+            setCharacter(char)
+            fetchSpellLists(char.id)
+        }
+    }
+
+    const pickSpellList = (e) => {
+        let spellList = spellLists.find(sp => sp.id == e.target.value)
+        if (spellList) {
+            setSpellList(spellList)
+        }
+    }
+
     const characterSelect = (
-        <Dropdown
-                placeholder='Select Character'
-                search
-                selection
-                options={characterOptions}
-                onChange={(e) => {
-                    let char = characters.find(ch => ch.name === e.target.textContent)
-                    if (char) {
-                        setCharacter(char)
-                        fetchSpellLists(char.id)
-                    }
-                }}
-            />
+        <Select
+            placeholder='Select option'
+            onChange={pickCharacter}
+        >
+            {characterOptions}
+        </Select>
     )
 
     const spellListOptions = spellLists.map(spellList => {
-        return {
-            key: spellList.id,
-            text: spellList.name,
-            value: spellList.id,
-        }
+        return <option key={spellList.id} value={spellList.id}>{spellList.name}</option>
     })
 
     const spellListSelect = (
-        <Dropdown
-                placeholder='Select Spell List'
-                search
-                selection
-                options={spellListOptions}
-                onChange={(e) => {
-                    let splst = spellLists.find(sl => sl.name === e.target.textContent)
-                    if (splst) {
-                        setSpellList(splst)
-                    }
-                }}
-            />
+        <Select
+            placeholder='Select option'
+            onChange={pickSpellList}
+        >
+            {spellListOptions}
+        </Select>
     )
 
     return (
-        <Modal
-            onClose={() => setOpen(false)}
-            open={open}
-            size='small'
-        >
-            <Modal.Header>Add to Spell List</Modal.Header>
-            <Modal.Content>
-                <Grid>
-                    <Grid.Row>{characterSelect}</Grid.Row>
-                    <Grid.Row>{character.id && spellListSelect}</Grid.Row>
-                </Grid>
-            </Modal.Content>
-            <Modal.Actions>
-                <Button
-                    icon='check'
-                    content='Add to List'
-                    onClick={submit}
-                />
-            </Modal.Actions>
+        <Modal isOpen={open} onClose={close}>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Add to Spell List</ModalHeader>
+                <Stack>
+                    {characterSelect}
+                    {character.id && spellListSelect}
+                </Stack>
+                <ModalFooter>
+                    <Button
+                        leftIcon={<CheckIcon />}
+                        isDisabled={!!character.id && !!spellList.id}
+                        colorScheme='teal'
+                        variant='solid'
+                        onClick={submit}
+                    >
+                        Add to List
+                    </Button>
+                </ModalFooter>
+            </ModalContent>
         </Modal>
     )
 }

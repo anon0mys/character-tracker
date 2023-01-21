@@ -1,5 +1,5 @@
 interface ICharacterType {
-    id: number | null
+    id?: number;
     name: string;
     archetype: string;
     level: number | null
@@ -22,7 +22,7 @@ interface ISpellType {
 }
 
 interface ISpellListType {
-    id: number | null
+    id?: number
     name: string
     character_id: number | null
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Card, Header, Pagination, Search } from 'semantic-ui-react'
 import {
-    Box, Button, Checkbox, Menu, MenuButton, MenuList, MenuItem,
-    SimpleGrid, Switch, Wrap
+    Box, Button, Menu, MenuButton, MenuList, MenuItem,
+    SimpleGrid, Wrap
 } from '@chakra-ui/react'
 import { useAuth } from '../Auth'
 import { Client, ISpellType, IPaginationType } from '../Api'
@@ -171,7 +171,9 @@ const Spells = () => {
                     </Menu>
                 </Wrap>
             </SimpleGrid>
-            <Card.Group>{spellCards}</Card.Group>
+            <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(290px, 1fr))'>
+                {spellCards}
+            </SimpleGrid>
             <Pagination
                 defaultActivePage={1}
                 siblingRange={3}
