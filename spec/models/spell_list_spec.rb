@@ -21,6 +21,12 @@ RSpec.describe SpellList, type: :model do
       expect(spell_list.spells.first).to eq(valid_spell)
     end
 
+    it 'should not add the spell if it is already in the list' do
+      spell_list.add_spell(valid_spell)
+      spell_list.add_spell(valid_spell)
+      expect(spell_list.spells.count).to eq 1
+    end
+
     it 'should raise an error if the spell is not available to an archetype' do
       expect { spell_list.add_spell(invalid_spell) }.to raise_error(ActiveRecord::RecordInvalid)
     end

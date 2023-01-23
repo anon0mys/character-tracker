@@ -96,6 +96,8 @@ const AddSpellForm = ({ spell, open, close }: AddSpellProps) => {
         </Select>
     )
 
+    const missingData = !character.id || !spellList.id
+
     return (
         <Modal isOpen={open} onClose={close}>
             <ModalOverlay />
@@ -108,7 +110,7 @@ const AddSpellForm = ({ spell, open, close }: AddSpellProps) => {
                 <ModalFooter>
                     <Button
                         leftIcon={<CheckIcon />}
-                        isDisabled={!!character.id && !!spellList.id}
+                        isDisabled={missingData}
                         colorScheme='teal'
                         variant='solid'
                         onClick={submit}

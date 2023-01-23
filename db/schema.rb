@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_26_162519) do
+ActiveRecord::Schema.define(version: 2023_01_21_224228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,16 @@ ActiveRecord::Schema.define(version: 2022_11_26_162519) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "character_items", force: :cascade do |t|
+    t.bigint "character_id"
+    t.bigint "item_id"
+    t.integer "quantity"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_id"], name: "index_character_items_on_character_id"
+    t.index ["item_id"], name: "index_character_items_on_item_id"
   end
 
   create_table "characters", force: :cascade do |t|
@@ -72,6 +82,23 @@ ActiveRecord::Schema.define(version: 2022_11_26_162519) do
   create_table "factions", force: :cascade do |t|
     t.string "name"
     t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "item_type"
+    t.string "status"
+    t.string "quality"
+    t.integer "potential_damage"
+    t.integer "total_charges"
+    t.integer "value"
+    t.integer "quantity", default: 1
+    t.boolean "requires_attunement", default: false
+    t.integer "ac"
+    t.json "stat_bonuses"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -138,6 +165,8 @@ ActiveRecord::Schema.define(version: 2022_11_26_162519) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "character_items", "characters"
+  add_foreign_key "character_items", "items"
   add_foreign_key "faction_locations", "factions"
   add_foreign_key "faction_locations", "locations"
   add_foreign_key "faction_npcs", "factions"

@@ -3,6 +3,8 @@ class Character < ApplicationRecord
 
   enum archetype: combine_to_hash(Archetypes.names)
   belongs_to :user
-  has_many :spell_lists
   validates_presence_of :name, :archetype
+  has_many :spell_lists
+  has_many :character_items
+  has_many :items, through: :character_items
 end
