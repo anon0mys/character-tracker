@@ -8,6 +8,22 @@ interface ICharacterType {
     user_id: number | null
 }
 
+interface IItemType {
+    id?: number;
+    name: string;
+    description?: string;
+    item_type: string;
+    status: string;
+    quality: string;
+    potential_damage?: number;
+    total_charges?: number;
+    value?: number;
+    quantity?: number;
+    requires_attunement: boolean;
+    ac?: number;
+    stat_bonuses?: Object;
+}
+
 interface ISpellType {
     id: number | null
     name: string
@@ -35,4 +51,4 @@ interface IPaginationType {
     prev: number | null
 }
 
-export {ICharacterType, ISpellType, ISpellListType, IPaginationType}
+export {ICharacterType, IItemType, ISpellType, ISpellListType, IPaginationType}

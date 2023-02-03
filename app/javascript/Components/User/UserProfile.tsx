@@ -28,6 +28,9 @@ const UserProfile = () => {
                 <MenuItem as={Link} to='/spells'>
                     Spells
                 </MenuItem>
+                <MenuItem as={Link} to='/items'>
+                    Items
+                </MenuItem>
                 <MenuItem as={Link} to='/characters'>
                     Characters
                 </MenuItem>

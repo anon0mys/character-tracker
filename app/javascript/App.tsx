@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react'
 import { AuthProvider, PrivateRoute } from './Auth'
 import Layout from './Components/Layout';
-import { Characters, CharacterDisplay, Dashboard, Home, Login, SignUp, Spells } from './Pages'
+import { Characters, CharacterDisplay, Dashboard, Home, Items, Login, SignUp, Spells } from './Pages'
 import { ErrorProvider } from './Errors'
 
 const App = () => {
@@ -23,6 +23,7 @@ const App = () => {
                                     {/* <Route path="characters/:characterId/spell-lists/:id" element={<SpellList />} /> */}
                                     <Route path="characters/:id" element={<CharacterDisplay />} />
                                     <Route path="characters" element={<Characters />} />
+                                    <Route path="items" element={<Items />} />
                                 </Route>
                             </Routes>
                         </Layout>

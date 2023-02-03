@@ -1,10 +1,11 @@
 class Item < ApplicationRecord
   extend Combinable
+  include Filterable
 
   STATUSES = %w[sold stored equipped].freeze
   ITEM_TYPES = %w[
-    Ammo Arcane Armor Gear Gem Holy Jewelry Poison Potion Rod
-    Scroll Staff Tool Wand Weapon Wondrous
+    ammo arcane armor gear gem holy jewelry poison potion rod
+    scroll staff tool wand weapon wondrous
   ].freeze
   QUALITIES = %w[common uncommon rare very_rare legendary artifact]
 
@@ -14,4 +15,9 @@ class Item < ApplicationRecord
   validates_presence_of :name
   has_many :character_items
   has_many :characters, through: :character_items
+
+  scope :name_eq, -> (name) { where 'name ILIKE ?', "%#{name.downcase}%" }
+  scope :status_eq, -> (status) { where status: status }
+  scope :item_type_eq, -> (item_type) { where item_type: item_type }
+  scope :quality_eq, -> (quality) { where quality: quality }
 end

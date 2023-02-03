@@ -10,7 +10,7 @@ module.exports = () => {
   const env = dotenv.config({path: env_path})
 
   return {
-    mode: "development",
+    mode: "none",
     devtool: "source-map",
     entry: {
       application: "./app/javascript/main.tsx"
@@ -62,7 +62,7 @@ module.exports = () => {
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(env.parsed),
       }),
-      new webpack.EnvironmentPlugin(['NODE_ENV'])
+      new webpack.EnvironmentPlugin({NODE_ENV: 'development'})
     ]
   }
 }

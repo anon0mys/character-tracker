@@ -46,6 +46,15 @@ const Client = () => {
         return makeRequest(path, options)
     }
 
+    const patch = async ({ path, payload, token }: Request) => {
+        const options = {
+            method: 'PATCH',
+            headers: headers(token),
+            body: JSON.stringify(payload)
+        }
+        return makeRequest(path, options)
+    }
+
     const destroy = async ({ path, token }: Request) => {
         const options = {
             method: 'DELETE',
@@ -57,6 +66,7 @@ const Client = () => {
     return {
         get,
         post,
+        patch,
         destroy
     }
 }

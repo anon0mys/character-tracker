@@ -9,7 +9,7 @@ describe 'GET /api/v1/spells' do
     before { sign_in(user) }
 
     context 'with no filter' do
-      it 'should return a paginated list of spells', :flaky do
+      it 'should return a paginated list of spells' do
         get api_v1_spells_path, headers: @auth_headers
         result = JSON.parse(response.body)
         spells = Spell.limit(20)
@@ -50,10 +50,10 @@ describe 'GET /api/v1/spells' do
         expect(result['data'].count).to eq Spell.where('archetypes && ?', '{artificer}').count
       end
 
-      it 'should filter by multiple archetypes', :flaky do
+      it 'should filter by multiple archetypes' do
         get api_v1_spells_path + '?archetype=artificer,cleric', headers: @auth_headers
         result = JSON.parse(response.body)
-        expect(result['data'].count).to eq Spell.where('archetypes && ?', '{artificer,cleric}').count
+        expect(result['data'].count).to eq Spell.where('archetypes && ?', '{artificer,cleric}').limit(20).count
       end
 
       it 'should filter by level' do
