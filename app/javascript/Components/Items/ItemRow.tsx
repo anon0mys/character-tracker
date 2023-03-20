@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Tr, Td, useDisclosure} from '@chakra-ui/react'
+import { CloseIcon } from '@chakra-ui/icons'
 import { IItemType } from '../../Api'
 import ItemForm from './ItemForm'
 
@@ -14,7 +15,7 @@ const ItemRow = ({item}: {item: IItemType}) => {
             <Td>{item.quality}</Td>
             <Td isNumeric>{item.quantity}</Td>
             <Td>{item.requires_attunement ? 'true' : 'false'}</Td>
-            // Todo: Add actions here (delete, maybe edit?)
+            <Td><CloseIcon /></Td>
             <ItemForm item={item} open={isOpen} close={onClose} />
         </Tr>
     )
