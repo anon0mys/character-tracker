@@ -14,7 +14,7 @@ class Spell < ApplicationRecord
   validates_presence_of :name, :casting_time, :range, :duration
 
   scope :name_eq, -> (name) { where 'name ILIKE ?', "%#{name.downcase}%" }
-  scope :archetype_eq, -> (archetype) { where "archetypes && ?", "{#{archetype}}" }
+  scope :archetype_eq, -> (archetype) { where "archetypes && ?", "{#{archetype.join(',')}}" }
   scope :level_eq, -> (level) { where level: level }
   scope :school_eq, -> (school) { where school: school }
 

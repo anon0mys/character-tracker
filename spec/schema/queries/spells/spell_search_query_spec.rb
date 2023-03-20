@@ -2,43 +2,101 @@ require 'rails_helper'
 
 describe 'Schema::Query#spell_search' do
   before { create_list(:spell, 50) }
-
-  it 'should return a list of spells' do
-    create(:spell, name: 'Thunderwave')
-    create(:spell, name: 'Thunderclap')
-    create(:spell, name: 'Lightning and thunder')
-
-    user_query = "
-    query SpellSearch($search: SpellSearchInput!) {
-      spellSearch(search: $search) {
-        name
-        description
-        archetypes
-        level
-        school
-        castingTime
-        range
-        duration
-        components
-      }
-    }
-    "
-    post graphql_path, params: {
-      query: user_query,
-      variables: {
-        search: {
-          name: 'thunder'
+  let (:spell_query) do
+    <<~GRAPHQL
+      query SpellSearch($search: SpellSearchInput!) {
+        spellSearch(search: $search) {
+          name
         }
       }
-    }
-    result = JSON.parse(response.body)
-    spells = result['data']['spellSearch']
-
-    expect(spells.length).to eq 3
+    GRAPHQL
   end
 
-  it 'should filter by name' do
-    
+  context 'by name' do
+    let (:variables) {{
+      search: {
+        name: 'thunder'
+      }
+    }}
+
+    it 'should return a list of spells that fuzzy match the search word' do
+      create(:spell, name: 'Thunderwave')
+      create(:spell, name: 'Thunderclap')
+      create(:spell, name: 'Lightning and thunder')
+  
+      post graphql_path, params: {
+        query: spell_query,
+        variables: variables
+      }
+      result = JSON.parse(response.body)
+      spells = result['data']['spellSearch']
+  
+      expect(spells.length).to eq 3
+    end
+  end
+
+  context 'by archetype' do
+    it 'should return a list of spells that match a single archetype' do  
+      post graphql_path, params: {
+        query: spell_query,
+        variables: {
+          search: {
+            archetype: ['wizard']
+          }
+        }
+      }
+      result = JSON.parse(response.body)
+      spells = result['data']['spellSearch']
+  
+      expect(spells.length).to eq Spell.where("archetypes && '{wizard}'").count
+    end
+
+    it 'should return a list of spells that match multiple archetypes' do  
+      post graphql_path, params: {
+        query: spell_query,
+        variables: {
+          search: {
+            archetype: ['bard', 'wizard']
+          }
+        }
+      }
+      result = JSON.parse(response.body)
+      spells = result['data']['spellSearch']
+  
+      expect(spells.length).to eq Spell.where("archetypes && '{bard,wizard}'").count
+    end
+  end
+
+  context 'by level' do
+    it 'should return a list of spells that match a single level' do  
+      post graphql_path, params: {
+        query: spell_query,
+        variables: {
+          search: {
+            level: ['cantrip']
+          }
+        }
+      }
+      result = JSON.parse(response.body)
+      spells = result['data']['spellSearch']
+  
+      expect(spells.length).to eq Spell.where(level: ['cantrip']).count
+    end
+
+    it 'should return a list of spells that match multiple levels' do  
+      post graphql_path, params: {
+        query: spell_query,
+        variables: {
+          search: {
+            level: ['cantrip', '1']
+          }
+        }
+      }
+      result = JSON.parse(response.body)
+      spells = result['data']['spellSearch']
+  
+      expect(spells.length).to eq Spell.where(level: ['cantrip', '1']).count
+    end
   end
 end
 

@@ -5,7 +5,7 @@ describe 'Schema::Query#characters' do
   let(:other_user) { create(:user) }
   let(:other_characters) { create_list(:character, 2, user: other_user) }
   let(:character_query) {
-      "
+    <<~GRAPHQL
       query Characters {
         characters {
           name
@@ -13,7 +13,7 @@ describe 'Schema::Query#characters' do
           level
         }
       }
-      "
+    GRAPHQL
   }
 
   context 'as an authenticated user' do
