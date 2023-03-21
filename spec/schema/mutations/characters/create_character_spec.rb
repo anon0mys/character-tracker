@@ -1,15 +1,18 @@
 require 'rails_helper'
 
 describe 'Schema::Mutation#create_character' do
+  let(:game) { create(:game) }
   let(:user) { create(:user) }
-  let(:valid_attrs) {{
+  before { create(:user_game, user: user, game: game) }
+  let(:character_attrs) {{
     character: {
       name: 'Test Char',
-      archetype: 'ARTIFICER'
+      archetype: 'ARTIFICER',
+      gameId: game.id
     }
   }}
   let(:character_query) {
-      "
+      <<~GRAPHQL
       mutation CreateCharacter($input: CreateCharacterMutationInput!) {
         createCharacter(input: $input) {
           character {
@@ -19,14 +22,15 @@ describe 'Schema::Mutation#create_character' do
           }
         }
       }
-      "
+      GRAPHQL
   }
 
   context 'as an authenticated user' do
+    let(:someone_elses_game) { create(:game) }
     before { sign_in(user) }
-    before { post graphql_path, headers: @auth_headers, params: {query: character_query, variables: {input: valid_attrs}} }
 
-    it 'should create a character for the current user' do
+    it 'should create a character for the current user and selected game' do
+      post graphql_path, headers: @auth_headers, params: {query: character_query, variables: {input: character_attrs}}
       result = JSON.parse(response.body)
       character = result['data']['createCharacter']['character']
 
@@ -34,10 +38,17 @@ describe 'Schema::Mutation#create_character' do
       expect(character['archetype']).to eq 'artificer'
       expect(character['level']).to eq '1'
     end
+
+    it 'should fail to create a character for the current user if they have not joined the selected game' do
+      character_attrs[:character][:gameId] = someone_elses_game.id
+      post graphql_path, headers: @auth_headers, params: {query: character_query, variables: {input: character_attrs}}
+      result = JSON.parse(response.body)
+      expect(result).to eq 1
+    end
   end
 
   context 'as a visitor' do
-    before { post graphql_path, params: {query: character_query, variables: {input: valid_attrs}} }
+    before { post graphql_path, params: {query: character_query, variables: {input: character_attrs}} }
 
     it 'should return an authentication error' do
       result = JSON.parse(response.body)

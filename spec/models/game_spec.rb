@@ -8,4 +8,9 @@ RSpec.describe Game, type: :model do
         .backed_by_column_of_type(:string)
     end
   end
+
+  context 'relationships' do
+    it { should have_many(:users).through(:user_games) }
+    it { should have_many :characters }
+  end
 end

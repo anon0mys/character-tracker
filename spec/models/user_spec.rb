@@ -7,5 +7,6 @@ RSpec.describe User, type: :model do
 
   context 'relationships' do
     it { should have_many :characters }
+    it { should have_many(:games).through(:user_games)}
   end
 end

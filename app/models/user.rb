@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   
   has_many :characters
+  has_many :user_games
+  has_many :games, through: :user_games
 
   def generate_jwt
     JWT.encode(
