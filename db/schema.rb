@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_21_224228) do
+ActiveRecord::Schema.define(version: 2023_03_20_043638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,8 @@ ActiveRecord::Schema.define(version: 2023_01_21_224228) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "game_id"
+    t.index ["game_id"], name: "index_characters_on_game_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
   end
 
@@ -82,6 +84,15 @@ ActiveRecord::Schema.define(version: 2023_01_21_224228) do
   create_table "factions", force: :cascade do |t|
     t.string "name"
     t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "status", default: "active", null: false
+    t.datetime "start_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -153,6 +164,18 @@ ActiveRecord::Schema.define(version: 2023_01_21_224228) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "user_games", force: :cascade do |t|
+    t.string "role", default: "player", null: false
+    t.string "status", default: "active", null: false
+    t.bigint "user_id"
+    t.bigint "game_id"
+    t.datetime "joined"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_user_games_on_game_id"
+    t.index ["user_id"], name: "index_user_games_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -167,6 +190,7 @@ ActiveRecord::Schema.define(version: 2023_01_21_224228) do
 
   add_foreign_key "character_items", "characters"
   add_foreign_key "character_items", "items"
+  add_foreign_key "characters", "games"
   add_foreign_key "faction_locations", "factions"
   add_foreign_key "faction_locations", "locations"
   add_foreign_key "faction_npcs", "factions"

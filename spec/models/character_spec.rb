@@ -12,6 +12,7 @@ RSpec.describe Character, type: :model do
 
   context 'relationships' do
     it { should belong_to :user }
+    it { should belong_to :game }
     it { should have_many :spell_lists }
     it { should have_many(:items).through(:character_items) }
   end
