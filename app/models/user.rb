@@ -14,4 +14,8 @@ class User < ApplicationRecord
       Rails.application.credentials.secret_key_base
     )
   end
+
+  def in_game?(game_id)
+    user_games.where(game_id: game_id).exists?
+  end
 end

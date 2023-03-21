@@ -43,7 +43,15 @@ describe 'Schema::Mutation#create_character' do
       character_attrs[:character][:gameId] = someone_elses_game.id
       post graphql_path, headers: @auth_headers, params: {query: character_query, variables: {input: character_attrs}}
       result = JSON.parse(response.body)
-      expect(result).to eq 1
+      expect(result['data']['createCharacter']).to be nil
+      expect(result['errors'][0]['message']).to eq 'not allowed to join_game? this Character'
+    end
+
+    it 'should fail to create a character for the current user with invalid attributes' do
+      character_attrs[:character][:archetype] = 'NOT AN ACTUAL CLASS'
+      post graphql_path, headers: @auth_headers, params: {query: character_query, variables: {input: character_attrs}}
+      result = JSON.parse(response.body)
+      expect(result['errors'][0]['message']).to include 'Expected "NOT AN ACTUAL CLASS" to be one of:'
     end
   end
 

@@ -37,7 +37,10 @@ gem 'activeadmin'
 gem 'devise'
 gem 'jwt'
 
-# Web requesets and parsing
+# Use Pundit for authorization
+gem 'pundit'
+
+# Web requests and parsing
 gem 'faraday'
 gem 'nokogiri'
 

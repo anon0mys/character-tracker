@@ -6,8 +6,8 @@ class Mutations::CreateCharacterMutation < Mutations::BaseMutation
   field :errors, [String], null: false
 
   def resolve(character:)
-    # TODO: Add permissions gem and raise auth error if the user is not in the selected game
     character = current_user.characters.build(character.to_h)
+    Pundit.authorize current_user, character, :join_game?
     if character.save
       {
         character: character,

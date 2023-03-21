@@ -48,4 +48,12 @@ class CharacterTrackerSchema < GraphQL::Schema
     full_global_id = "gid://#{GlobalID.app}/#{id}"
     GlobalID::Locator.locate(full_global_id)
   end
+
+  rescue_from(ActiveRecord::RecordNotFound) do |err, obj, args, ctx, field|
+    raise GraphQL::ExecutionError, "#{field.type.unwrap.graphql_name} not found"
+  end
+
+  rescue_from(Pundit::NotAuthorizedError) do |err, obj, args, ctx, field|
+    raise GraphQL::ExecutionError, "#{err}"
+  end
 end
