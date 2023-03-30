@@ -2,11 +2,13 @@ require 'rails_helper'
 
 describe 'POST /api/v1/characters' do
   let(:user) { create(:user) }
+  let(:game) { create(:game) }
   let(:other_user) { create(:user) }
   let(:valid_attrs) {{
     character: {
       name: 'Test Char',
-      archetype: :artificer
+      archetype: :artificer,
+      game_id: game.id,
     }
   }}
 

@@ -9,6 +9,10 @@ class Api::V1::SpellsController < ApiController
   private
 
   def filtering_params
-    params.slice(:archetype, :level, :school, :name)
+    filters = params.slice(:archetype, :level, :school, :name)
+    if filters[:archetype]
+      filters[:archetype] = filters[:archetype].split(',')
+    end
+    filters
   end
 end

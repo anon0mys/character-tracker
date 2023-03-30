@@ -33,6 +33,6 @@ class Api::V1::CharactersController < ApiController
   private
 
   def character_params
-    params.require(:character).permit(:name, :archetype)
+    params.require(:character).permit(:name, :archetype, :game_id)
   end
 end
