@@ -1,4 +1,4 @@
-class Mutations::CreateCharacterMutation < Mutations::BaseMutation
+class Mutations::CreateCharacterMutation < Mutations::AuthenticatedMutation
   null true
   argument :character, Types::Characters::CharacterInput
 
