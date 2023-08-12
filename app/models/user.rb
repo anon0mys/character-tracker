@@ -16,6 +16,12 @@ class User < ApplicationRecord
   end
 
   def in_game?(game_id)
-    user_games.where(game_id: game_id).exists?
+    user_games.where(game_id: game_id, status: :active).exists?
+  end
+
+  def is_game_admin?(game_id)
+    game = user_games.find_by(game_id: game_id, status: :active)
+    return false if not game
+    game.admin? || game.dm?
   end
 end

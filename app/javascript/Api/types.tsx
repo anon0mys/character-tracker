@@ -8,6 +8,15 @@ interface ICharacterType {
     user_id: number | null
 }
 
+interface IGameType {
+    id?: number;
+    name: string;
+    description: string;
+    start_date?: string;
+    created_at: string;
+    updated_at: string
+}
+
 interface IItemType {
     id?: number;
     name: string;
@@ -51,4 +60,7 @@ interface IPaginationType {
     prev: number | null
 }
 
-export {ICharacterType, IItemType, ISpellType, ISpellListType, IPaginationType}
+export {
+    ICharacterType, IGameType, IItemType, ISpellType,
+    ISpellListType, IPaginationType
+}

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       end
       resources :spells, only: [:index]
       resources :items, only: [:index, :create, :update]
+      resources :games, only: [:index, :show, :create, :update, :destroy]
     end
   end
 

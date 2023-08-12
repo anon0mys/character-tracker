@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Dropdown, Grid, Input, Modal } from 'semantic-ui-react'
 import { Client } from '../../Api'
 import { useAuth } from '../../Auth'
@@ -14,6 +14,7 @@ interface CharacterFormProps {
 const CharacterForm = ({ open, setOpen, onSubmit }: CharacterFormProps) => {
     const [name, setName] = useState('')
     const [archetype, setArchetype] = useState('')
+    const [games, setGames] = useState([])
     const auth = useAuth()
     const client = Client()
     const errors = useError()
@@ -24,6 +25,20 @@ const CharacterForm = ({ open, setOpen, onSubmit }: CharacterFormProps) => {
             value: archetype,
         }
     })
+
+    useEffect(() => {
+        client.get({path: '/games', token: auth.getToken()})
+        .then(response => {
+            const gameOptions = response.data.map(game => {
+                return {
+                    key: game,
+                    text: game,
+                    value: game,
+                }
+            })
+            setGames(gameOptions)
+        })
+    }, [games])
 
     const submit = (event) => {
         event.preventDefault()
@@ -55,6 +70,15 @@ const CharacterForm = ({ open, setOpen, onSubmit }: CharacterFormProps) => {
                             search
                             selection
                             options={archetypeOptions}
+                            onChange={(e) => setArchetype(e.target.textContent)}
+                        />
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Dropdown
+                            placeholder='Select Game'
+                            search
+                            selection
+                            options={games}
                             onChange={(e) => setArchetype(e.target.textContent)}
                         />
                     </Grid.Row>
