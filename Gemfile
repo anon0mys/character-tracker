@@ -24,6 +24,9 @@ gem 'jbuilder', '~> 2.7'
 gem 'graphql'
 gem 'graphiql-rails'
 
+# json serialization
+gem 'blueprinter'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

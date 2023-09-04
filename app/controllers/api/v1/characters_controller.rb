@@ -8,7 +8,7 @@ class Api::V1::CharactersController < ApiController
 
   def show
     @character = current_user.characters.find(params[:id])
-    render json: {data: @character}
+    render json: CharacterSerializer.render(@character, root: :data)
   end
 
   def create

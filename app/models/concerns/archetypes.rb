@@ -16,7 +16,7 @@ module Archetypes
   }
 
   def self.build(name)
-    ALL[name].new
+    ALL[name.to_sym].new
   end
 
   def self.names

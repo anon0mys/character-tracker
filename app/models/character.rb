@@ -8,4 +8,6 @@ class Character < ApplicationRecord
   has_many :spell_lists
   has_many :character_items
   has_many :items, through: :character_items
+
+  attribute :character_sheet, CharacterSheet.new
 end

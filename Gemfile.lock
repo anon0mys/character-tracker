@@ -74,6 +74,7 @@ GEM
       ruby2_keywords (>= 0.0.2, < 1.0)
     bcrypt (3.1.18)
     bindex (0.8.1)
+    blueprinter (0.25.3)
     bootsnap (1.15.0)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -296,6 +297,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin
+  blueprinter
   bootsnap (>= 1.4.4)
   byebug
   database_cleaner
