@@ -5,8 +5,8 @@ import { AuthProvider, PrivateRoute } from './Auth'
 import { GameProvider } from './Contexts';
 import Layout from './Components/Layout';
 import {
-    Characters, CharacterDisplay, Dashboard, Home,
-    Items, Login, SignUp, Spells
+    Characters, CharacterDisplay, CharacterCreationFlow, Dashboard,
+    Home, Items, Login, SignUp, Spells
 } from './Pages'
 import { ErrorProvider } from './Errors'
 import { ApolloProvider } from '@apollo/client';
@@ -30,6 +30,7 @@ const App = () => {
                                             <Route path="/dashboard" element={<Dashboard />} />
                                             <Route path="spells" element={<Spells />} />
                                             {/* <Route path="characters/:characterId/spell-lists/:id" element={<SpellList />} /> */}
+                                            <Route path="characters/create" element={<CharacterCreationFlow />} />
                                             <Route path="characters/:id" element={<CharacterDisplay />} />
                                             <Route path="characters" element={<Characters />} />
                                             <Route path="items" element={<Items />} />

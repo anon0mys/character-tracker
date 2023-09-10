@@ -15,8 +15,8 @@ module Archetypes
     wizard: Wizard,
   }
 
-  def self.build(name)
-    ALL[name.to_sym].new
+  def self.new(name=nil)
+    ALL.dig(name&.to_sym)&.new
   end
 
   def self.names

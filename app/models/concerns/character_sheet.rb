@@ -17,13 +17,14 @@ class CharacterSheet < ActiveRecord::Type::Value
   def initialize(attributes={})
     super
     if !attributes.empty?
-      @archetype = Archetypes.build(@archetype)
+      @archetype = Archetypes.new(@archetype)
+      @level = @level.to_i
+      @age = @age.to_i
+      @speed = @speed.to_i
+      @initiative_bonus = @initiative_bonus.to_i
+      @ac_bonus = @ac_bonus.to_i
       @proficiencies = @proficiencies.map(&:to_sym)
-      @ability_scores = AbilityScores.new(
-        @ability_scores,
-        proficiency_bonus,
-        @proficiencies,
-      )
+      @ability_scores = AbilityScores.new(@ability_scores)
     end
   end
 
@@ -56,24 +57,26 @@ class CharacterSheet < ActiveRecord::Type::Value
   end
 
   def initiative
-    @initiative_bonus + @ability_scores.modifier(:dexterity)
+    @initiative_bonus + modifier(:dexterity)
   end
 
   def perception
-    10 + @ability_scores.modifier(:wisdom)
+    10 + modifier(:wisdom)
   end
 
   def ac
-    10 + @ac_bonus + @ability_scores.modifier(:dexterity)
+    10 + @ac_bonus + modifier(:dexterity)
   end
 
   def concentration
-    @ability_scores.save(:constitution)
+    save(:constitution)
   end
 
   def proficiency_bonus
     case @level
-    when 1...4
+    when nil
+      0
+    when 0...4
       2
     when 5...8
       3
@@ -87,11 +90,37 @@ class CharacterSheet < ActiveRecord::Type::Value
   end
 
   def spell_attack_mod
-    proficiency_bonus + @ability_scores.modifier(@archetype.spellcasting_ability)
+    proficiency_bonus + modifier(@archetype.spellcasting_ability)
   end
 
   def spell_save_dc
     8 + spell_attack_mod
+  end
+
+  def ability_data(ability)
+    {
+      value: value(ability),
+      modifier: modifier(ability),
+      save: save(ability),
+    }
+  end
+
+  def cast(sheet)
+    return sheet if sheet.is_a?(CharacterSheet)
+    CharacterSheet.new(sheet)
+  end
+
+  def serialize(sheet)
+    if sheet
+      sheet.to_json
+    end
+  end
+
+  def deserialize(db_value)
+    if db_value
+      sheet = JSON.parse(db_value, symbolize_names: true)
+      CharacterSheet.new(sheet)
+    end
   end
 
   def to_json
@@ -107,7 +136,27 @@ class CharacterSheet < ActiveRecord::Type::Value
       initiative_bonus: @initiative_bonus,
       ac_bonus: @ac_bonus,
       proficiencies: @proficiencies,
-      ability_scores: @ability_scores.all_scores
+      ability_scores: @ability_scores.attributes
     }.to_json
+  end
+
+  def value(ability)
+    @ability_scores.send(ability)
+  end
+
+  def modifier(ability)
+    (value(ability) - 10) / 2
+  end
+
+  def save(ability)
+    modifier(ability) + proficiency_bonus_for(ability)
+  end
+
+  def proficiency_bonus_for(ability)
+    if @proficiencies.include?(ability)
+      proficiency_bonus
+    else
+      0
+    end
   end
 end

@@ -4,6 +4,7 @@ import { useAuth } from '../Auth'
 import { useError } from '../Errors'
 import { Client, ICharacterType } from '../Api'
 import { CharacterCard, CharacterForm } from '../Components/Characters'
+import { Link } from 'react-router-dom'
 
 const Characters = () => {
     const [open, setOpen] = useState(false)
@@ -38,10 +39,9 @@ const Characters = () => {
         <>
             <Grid>
                 <Grid.Column width={15}><Header size='large'>Characters</Header></Grid.Column>
-                <Grid.Column width={1}><Button onClick={() => setOpen(true)}>New Character</Button></Grid.Column>
+                <Grid.Column width={1}><Button as={Link} to='/characters/create'>Create Character</Button></Grid.Column>
             </Grid>
             <Card.Group>{characterCards}</Card.Group>
-            <CharacterForm open={open} setOpen={setOpen} onSubmit={addCharacter} />
         </>
     )
 }

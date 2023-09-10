@@ -13,13 +13,13 @@ class Api::V1::CharactersController < ApiController
 
   def create
     @character = current_user.characters.create!(character_params)
-    render json: {data: @character}
+    render json: CharacterSerializer.render(@character, root: :data)
   end
 
   def update
     @character = current_user.characters.find(params[:id])
     if @character.update(character_params)
-      render json: {data: @character}
+      render json: CharacterSerializer.render(@character, root: :data)
     else
       render json: {errors: 'Invalid attributes'}, status: :unprocessable_entity
     end
@@ -33,6 +33,11 @@ class Api::V1::CharactersController < ApiController
   private
 
   def character_params
-    params.require(:character).permit(:name, :archetype, :game_id)
+    params.require(:character).permit(
+      :name,
+      :archetype,
+      :game_id,
+      character_sheet: {}
+    )
   end
 end

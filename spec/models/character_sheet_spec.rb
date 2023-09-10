@@ -24,6 +24,12 @@ RSpec.describe CharacterSheet do
   }}
 
   context 'attributes' do
+    it 'initializes an empty character sheet' do
+      sheet = CharacterSheet.new
+
+      expect(sheet).to be_an_instance_of CharacterSheet
+    end
+
     it 'contains character information' do
       sheet = CharacterSheet.new(valid_sheet)
 
@@ -66,15 +72,13 @@ RSpec.describe CharacterSheet do
   end
 
   context 'ability scorese' do
-    it 'sets up ability scores' do
-      sheet = CharacterSheet.new(valid_sheet)
+    let (:sheet) { CharacterSheet.new(valid_sheet) }
 
+    it 'sets up ability scores' do
       expect(sheet.ability_scores).to be_an_instance_of CharacterSheet::AbilityScores
     end
 
     it 'can adjust ability scores' do
-      sheet = CharacterSheet.new(valid_sheet)
-
       expect(sheet.ability_scores.intelligence).to eq 16
 
       sheet.adjust_ability(:intelligence, 2)
@@ -84,6 +88,20 @@ RSpec.describe CharacterSheet do
       sheet.adjust_ability(:intelligence, -1)
 
       expect(sheet.ability_scores.intelligence).to eq 17
+    end
+
+    it 'should calculate an ability modifier' do
+      expect(sheet.modifier(:wisdom)).to eq 0
+      expect(sheet.modifier(:strength)).to eq 1
+      expect(sheet.modifier(:constitution)).to eq 2
+      expect(sheet.modifier(:intelligence)).to eq 3
+    end
+
+    it 'should calculate an ability save with proficiencies' do
+      expect(sheet.save(:wisdom)).to eq 0
+      expect(sheet.save(:strength)).to eq 1
+      expect(sheet.save(:constitution)).to eq 5
+      expect(sheet.save(:intelligence)).to eq 6
     end
   end
 

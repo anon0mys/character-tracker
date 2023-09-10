@@ -1,69 +1,19 @@
-class CharacterSheet::AbilityScores
-  def initialize(ability_scores, proficiency_bonus, proficiencies)
-    @ability_scores = ability_scores
-    @proficiencies = proficiencies
-    @proficiency_bonus = proficiency_bonus
-  end
+class CharacterSheet::AbilityScores < ActiveRecord::Type::Value
+  include ActiveModel::Model
+  include ActiveModel::Attributes
 
-  def value(ability)
-    @ability_scores[ability]
-  end
-
-  def modifier(ability)
-    (@ability_scores[ability] - 10) / 2
-  end
-
-  def save(ability)
-    modifier(ability) + proficiency_bonus_for(ability)
-  end
+  attribute :strength, :integer, default: 10
+  attribute :dexterity, :integer, default: 10
+  attribute :constitution, :integer, default: 10
+  attribute :intelligence, :integer, default: 10
+  attribute :wisdom, :integer, default: 10
+  attribute :charisma, :integer, default: 10
 
   def adjust_ability(ability, amount)
-    @ability_scores[ability] += amount
+    send("#{ability}=", send(ability) + amount)
   end
 
-  def strength
-    @ability_scores[:strength]
-  end
-
-  def dexterity
-    @ability_scores[:dexterity]
-  end
-
-  def constitution
-    @ability_scores[:constitution]
-  end
-
-  def intelligence
-    @ability_scores[:intelligence]
-  end
-
-  def wisdom
-    @ability_scores[:wisdom]
-  end
-
-  def charisma
-    @ability_scores[:charisma]
-  end
-
-  def all_scores
-    @ability_scores
-  end
-
-  def get_ability_data(ability)
-    {
-      value: value(ability),
-      modifier: modifier(ability),
-      save: save(ability),
-    }
-  end
-
-  private
-
-  def proficiency_bonus_for(ability)
-    if @proficiencies.include?(ability)
-      @proficiency_bonus
-    else
-      0
-    end
+  def type
+    :jsonb
   end
 end

@@ -1,11 +1,15 @@
+import AbilityScoresForm from "./AbilityScoresForm";
 import AddSpellForm from "./AddSpellForm";
 import CharacterCard from "./CharacterCard";
+import CharacterBioForm from "./CharacterBioForm";
 import CharacterForm from "./CharacterForm";
+import CharacterStatsForm from "./CharacterStatsForm";
 import SpellListCard from "./SpellListCard";
 import SpellListForm from "./SpellListForm";
 import SpellListModal from "./SpellListModal";
 
+export * from './types'
 export {
-    AddSpellForm, CharacterCard, CharacterForm,
-    SpellListCard, SpellListForm, SpellListModal
+    AbilityScoresForm, AddSpellForm, CharacterCard, CharacterBioForm,
+    CharacterForm, CharacterStatsForm, SpellListCard, SpellListForm, SpellListModal
 }

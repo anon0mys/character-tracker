@@ -8,5 +8,11 @@ class CharacterSheetSerializer < Blueprinter::Base
     sheet.archetype.name.to_s.capitalize
   end
 
-  association :ability_scores, blueprint: AbilityScoresSerializer
+  field :ability_scores do |sheet, options|
+    abilities = sheet.ability_scores.attributes.keys.map(&:to_sym)
+    abilities.reduce({}) do |acc, ability|
+      acc[ability] = sheet.ability_data(ability)
+      acc
+    end
+  end
 end
