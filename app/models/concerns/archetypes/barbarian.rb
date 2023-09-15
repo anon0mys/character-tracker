@@ -1,4 +1,4 @@
-class Archetypes::Barbarian
+class Archetypes::Barbarian < Archetypes::Archetype
   attr_reader :name
 
   def initialize

@@ -1,4 +1,4 @@
-class Archetypes::Druid
+class Archetypes::Druid < Archetypes::Archetype
   attr_reader :name, :spellcasting_ability
 
   def initialize

@@ -1,4 +1,4 @@
-class Archetypes::Warlock
+class Archetypes::Warlock < Archetypes::Archetype
   attr_reader :name, :spellcasting_ability
 
   def initialize

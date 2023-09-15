@@ -3,6 +3,7 @@ import { Card, Grid, Icon } from "semantic-ui-react"
 import { useGame } from "../../Contexts"
 import { IGameType } from "../../Api"
 import { ConfirmModal } from "../Shared"
+import { useNavigate } from "react-router-dom"
 
 interface GameCardProps {
     game: IGameType
@@ -11,6 +12,7 @@ interface GameCardProps {
 
 const GameCard = ({ game, deleteGame }: GameCardProps) => {
     const [open, setOpen] = useState(false)
+    const navigate = useNavigate();
     const { setCurrentGame } = useGame()
 
     const openDeleteModal = (event) => {
@@ -21,6 +23,7 @@ const GameCard = ({ game, deleteGame }: GameCardProps) => {
     const setGame = (event) => {
         event.preventDefault()
         setCurrentGame(game)
+        navigate('/characters')
     }
 
     const submit = (event) => {

@@ -1,6 +1,7 @@
 import Characters from './Characters'
 import CharacterDisplay from './CharacterDisplay'
 import CharacterCreationFlow from './CharacterCreationFlow'
+import CharacterCreationForm from './CharacterCreationForm'
 import Dashboard from './Dashboard'
 import Home from './Home'
 import Items from './Items'
@@ -9,6 +10,6 @@ import SignUp from './SignUp'
 import Spells from './Spells'
 
 export {
-    Characters, CharacterDisplay, CharacterCreationFlow, Dashboard,
-    Home, Items, Login, SignUp, Spells
+    Characters, CharacterDisplay, CharacterCreationFlow, CharacterCreationForm,
+    Dashboard, Home, Items, Login, SignUp, Spells
 }

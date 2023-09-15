@@ -1,4 +1,4 @@
-class Archetypes::Monk
+class Archetypes::Monk < Archetypes::Archetype
   attr_reader :name
 
   def initialize

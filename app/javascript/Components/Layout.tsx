@@ -2,8 +2,11 @@ import React from 'react'
 import { Grid, GridItem, Heading } from '@chakra-ui/react'
 import { TopNav } from './Navbar'
 import { ErrorBanner } from '../Errors'
+import { useGame } from '../Contexts'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+    const { game } = useGame();
+
     return (
         <>
             <Grid
@@ -12,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 py='20px'
             >
                 <GridItem />
-                <Heading>Dungeon Notes</Heading>
+                <Heading>{game ? game.name : 'Dungeon Notes'}</Heading>
                 <TopNav />
             </Grid>
             <ErrorBanner />

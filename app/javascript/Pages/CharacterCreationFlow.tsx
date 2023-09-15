@@ -9,6 +9,7 @@ import { useAuth } from '../Auth'
 import { Client } from '../Api'
 import { redirect } from 'react-router-dom'
 
+// Deprecated in favor of the full page form, but still fun
 const CharacterCreationFlow = () => {
     const auth = useAuth()
     const client = Client()
@@ -46,7 +47,11 @@ const CharacterCreationFlow = () => {
             game_id: game && game.id,
             character_sheet: {
                 ...characterBio,
-                ...characterStats,
+                level: characterStats.level,
+                speed: characterStats.speed,
+                initiative_bonus: characterStats.initiativeBonus,
+                ac_bonus: characterStats.acBonus,
+                proficiencies: characterStats.proficiencies,
                 ability_scores: abilityScores,
             }
         }

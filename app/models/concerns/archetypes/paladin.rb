@@ -1,4 +1,4 @@
-class Archetypes::Paladin
+class Archetypes::Paladin < Archetypes::Archetype
   attr_reader :name, :spellcasting_ability
 
   def initialize

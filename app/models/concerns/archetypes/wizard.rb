@@ -1,4 +1,4 @@
-class Archetypes::Wizard
+class Archetypes::Wizard < Archetypes::Archetype
   attr_reader :name, :spellcasting_ability
 
   def initialize
