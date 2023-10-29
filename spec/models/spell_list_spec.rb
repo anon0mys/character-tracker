@@ -13,7 +13,7 @@ RSpec.describe SpellList, type: :model do
   context '#add_spell' do
     let(:character) { create(:character, archetype: 'wizard') }
     let(:spell_list) { create(:spell_list, character: character) }
-    let(:valid_spell) { create(:spell, archetypes: [character.archetype]) }
+    let(:valid_spell) { create(:spell, archetypes: [character.archetype.name.to_s]) }
     let(:invalid_spell) { create(:spell, archetypes: ['artificer']) }
 
     it 'should add a spell that includes the character archetype' do
