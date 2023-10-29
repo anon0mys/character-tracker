@@ -37,7 +37,21 @@ class Api::V1::CharactersController < ApiController
       :name,
       :archetype,
       :game_id,
-      character_sheet: {}
+      :race,
+      :level,
+      :background,
+      :alignment,
+      :age,
+      :speed,
+      :initiative_bonus,
+      :ac_bonus,
+      :strength,
+      :dexterity,
+      :constitution,
+      :intelligence,
+      :wisdom,
+      :charisma,
+      proficiencies: [],
     )
   end
 end

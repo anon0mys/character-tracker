@@ -7,7 +7,7 @@ describe 'GET /api/v1/characters/:character_id/spell_lists/:spell_list_id' do
   context 'as an authenticated user' do
     let(:character) { create(:character, user: user, name: 'Test Char') }
     let(:spell_list) { create(:spell_list, character: character) }
-    let(:spell) { create(:spell, archetypes: [character.archetype]) }
+    let(:spell) { create(:spell, archetypes: [character.archetype.name.to_s]) }
     before { spell_list.add_spell(spell) }
     before { sign_in(user) }
     before { get api_v1_character_spell_list_path(character.id, spell_list.id), headers: @auth_headers }

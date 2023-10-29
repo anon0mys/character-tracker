@@ -10,12 +10,12 @@ describe 'POST /api/v1/characters/:character_id/spell_lists/:spell_list_id/add_s
     let(:spell_list) { create(:spell_list, character: character) }
 
     context 'with valid attrs' do
-      let(:spell) { create(:spell, archetypes: [character.archetype]) }
+      let(:spell) { create(:spell, archetypes: [character.archetype.name]) }
       let(:valid_attrs) {{ spell: { id: spell.id } }}
 
       before { post api_v1_character_spell_list_add_spell_path(character.id, spell_list.id),
                 headers: @auth_headers,
-                params: valid_attrs 
+                params: valid_attrs
       }
 
       it 'adds a spell to the spell list' do
@@ -30,7 +30,7 @@ describe 'POST /api/v1/characters/:character_id/spell_lists/:spell_list_id/add_s
 
       before { post api_v1_character_spell_list_add_spell_path(character.id, spell_list.id),
                 headers: @auth_headers,
-                params: invalid_attrs 
+                params: invalid_attrs
       }
 
       it 'responds with a descriptive error message' do

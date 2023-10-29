@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_12_221027) do
+ActiveRecord::Schema.define(version: 2023_10_14_213902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,7 +59,20 @@ ActiveRecord::Schema.define(version: 2023_08_12_221027) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "game_id"
-    t.json "character_sheet"
+    t.string "race"
+    t.string "background"
+    t.string "alignment"
+    t.integer "age"
+    t.integer "speed", default: 30
+    t.integer "initiative_bonus", default: 0
+    t.integer "ac_bonus", default: 0
+    t.string "proficiencies", default: [], array: true
+    t.integer "strength", default: 10
+    t.integer "dexterity", default: 10
+    t.integer "constitution", default: 10
+    t.integer "intelligence", default: 10
+    t.integer "wisdom", default: 10
+    t.integer "charisma", default: 10
     t.index ["game_id"], name: "index_characters_on_game_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
   end

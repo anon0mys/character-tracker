@@ -6,7 +6,7 @@ class SpellListItem < ApplicationRecord
   private
 
   def character_can_learn_spell
-    if !spell.archetypes.include?(spell_list.character.archetype)
+    if !spell.archetypes.include?(spell_list.character.archetype.name.to_s)
       errors.add(:code, "spell is not availble to this character archetype")
     end
   end
