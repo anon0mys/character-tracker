@@ -1,25 +1,21 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Character Tracker
+The purpose of this app is to be a dnd 5e campaign tracking utility.
 
-Things you may want to cover:
+### Resources
+Resources here
 
-* Ruby version
+## Contributing
 
-* System dependencies
+### Setup
+#### Docker
 
-* Configuration
+#### Local
 
-* Database creation
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-Deployments happen automatically on merge to main.
-
-* ...
+### Running Tests
+Test framework is rspec.
+```console
+rspec
+```
