@@ -62,6 +62,11 @@ group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
+  gem 'simplecov', require: false
+  gem 'rubocop', '~> 1.57', require: false
+  gem 'rubocop-rails', '~> 2.22', '>= 2.22.1', require:false
+  gem 'rubocop-rspec', '~> 2.25', require:false
+  gem 'rubocop-factory_bot', '~> 2.24', require: false
 end
 
 group :development do
