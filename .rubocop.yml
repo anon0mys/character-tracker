@@ -1,0 +1,29 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-factory_bot
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'vendor/**/*'
+    - 'test/fixtures/**/*'
+    - 'db/**/*'
+    - 'bin/**/*'
+    - 'log/**/*'
+    - 'tmp/**/*'
+    - 'app/views/**/*'
+    - 'config/environments/*'
+    - 'node_modules/**/*'
+
+Layout/LineLength:
+  Max: 99
+
+Style/FrozenStringLiteralComment:
+  Description: >-
+    Add the frozen_string_literal comment to the top of files
+    to help transition from Ruby 2.3.0 to Ruby 3.0.
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false

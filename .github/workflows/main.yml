@@ -26,7 +26,15 @@ jobs:
           bundler-cache: true
       - run: bundle install
       - run: bundle exec rails db:{create,migrate}
-      - run: bundle exec rspec
+      - run: COVERAGE=true bundle exec rspec
         env:
-          COVERAGE: true
           RAILS_MASTER_KEY: ${{secrets.RAILS_MASTER_KEY}}
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
+        with:
+          bundler-cache: true
+      - run: bundle install
+      - run: bundle exec rubocop
