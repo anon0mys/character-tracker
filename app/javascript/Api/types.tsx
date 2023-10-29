@@ -1,11 +1,25 @@
 interface ICharacterType {
-    id?: number;
+    id?: string;
     name: string;
+    race: string;
     archetype: string;
-    level: number | null
-    created_at: string;
-    updated_at: string
-    user_id: number | null
+    background: string;
+    alignment: string;
+    age: number;
+    level: number;
+    speed: number;
+    initiativeBonus: number;
+    acBonus: number;
+    proficiencies: string[];
+    strength: number;
+    dexterity: number;
+    constitution: number;
+    intelligence: number;
+    wisdom: number;
+    charisma: number;
+    created_at?: string;
+    updated_at?: string;
+    user_id?: number;
 }
 
 interface IGameType {
@@ -54,10 +68,10 @@ interface ISpellListType {
 
 interface IPaginationType {
     data: any[]
-    pages: number | null
-    page: number | null
-    next: number | null
-    prev: number | null
+    pages: number
+    page?: number
+    next?: number
+    prev?: number
 }
 
 export {

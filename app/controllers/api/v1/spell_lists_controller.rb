@@ -1,6 +1,7 @@
 class Api::V1::SpellListsController < ApiController
   before_action :set_character
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_record
+  rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
 
   def index
     @spell_lists = @character.spell_lists.all

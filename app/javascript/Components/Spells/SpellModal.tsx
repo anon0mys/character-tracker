@@ -1,52 +1,42 @@
-import React, { useState } from 'react'
-import {
-    Button, Divider, Modal, ModalBody, ModalCloseButton, ModalContent,
-    ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure
-} from '@chakra-ui/react'
-import { CheckIcon } from '@chakra-ui/icons'
+import React from 'react'
 import { ISpellType } from '../../Api'
 import { AddSpellForm } from '../Characters'
+import { Button, Modal, Group, Text, Title, CheckIcon } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 
 interface SpellModalProps {
-    spell: ISpellType
-    open: boolean
-    close: VoidFunction
+    spell?: ISpellType
+    opened: boolean
+    onClose: VoidFunction
 }
 
-const SpellModal = ({spell, open, close}: SpellModalProps) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+const SpellModal = ({ spell, opened, onClose }: SpellModalProps) => {
+    const [spellListModalOpen, {open, close}] = useDisclosure(false);
+
+    const onSubmit = () => {
+        onClose()
+    }
 
     return (
-        <Modal isOpen={open} onClose={close}>
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>{spell.name}</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                    <Stack mb='10px'>
-                        <p>School: {spell.school}</p>
-                        <p>Level: {spell.level}</p>
-                        <p>Archetypes: {spell.archetypes.join(', ')}</p>
-                        <p>Casting Time: {spell.casting_time}</p>
-                        <p>Duration: {spell.duration}</p>
-                        <p>Components: {spell.components}</p>
-                        <p>Range: {spell.range}</p>
-                    </Stack>
-                    <Divider />
-                    <Text mt='10px'>{spell.description}</Text>
-                </ModalBody>
-                <ModalFooter>
-                    <Button
-                        leftIcon={<CheckIcon />}
-                        colorScheme='teal'
-                        variant='solid'
-                        onClick={onOpen}
-                    >
-                        Add to spell list
-                    </Button>
-                </ModalFooter>
-            </ModalContent>
-            <AddSpellForm spell={spell} open={isOpen} close={onClose} />
+        <Modal opened={opened} onClose={onClose} title="Spell" centered>
+            <Title order={2}>{spell.name}</Title>
+            <Group mb='10px'>
+                <p>School: {spell.school}</p>
+                <p>Level: {spell.level}</p>
+                <p>Archetypes: {spell.archetypes.join(', ')}</p>
+                <p>Casting Time: {spell.casting_time}</p>
+                <p>Duration: {spell.duration}</p>
+                <p>Components: {spell.components}</p>
+                <p>Range: {spell.range}</p>
+            </Group>
+            <Text>{spell.description}</Text>
+            <Button
+                leftSection={<CheckIcon />}
+                onClick={open}
+            >
+                Add to spell list
+            </Button>
+            <AddSpellForm spell={spell} opened={spellListModalOpen} onClose={close} onSubmit={onSubmit} />
         </Modal>
     )
 }

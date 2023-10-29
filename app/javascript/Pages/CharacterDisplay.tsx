@@ -11,13 +11,11 @@ const CharacterDisplay = () => {
     const [open, setOpen] = useState(false)
     const [spellLists, setSpellLists] = useState<ISpellListType[]>([])
     const [character, setCharacter] = useState<ICharacterType>({
-        id: null,
         name: '',
         archetype: '',
-        level: null,
+        level: 1,
         created_at: '',
         updated_at: '',
-        user_id: null
     })
     const auth = useAuth()
     const client = Client()

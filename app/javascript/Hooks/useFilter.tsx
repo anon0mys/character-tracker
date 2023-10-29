@@ -1,6 +1,5 @@
 import React, { useReducer } from 'react';
-import { MenuItem } from '@chakra-ui/react';
-import { ButtonToggle } from '../Components/Shared';
+import { Menu } from '@mantine/core';
 
 const filterReducer = (state, filterItem) => {
     if (state.includes(filterItem)) {
@@ -18,16 +17,15 @@ const useFilter = (filterLabels) => {
 
     const menuItems = filterLabels.map(label => {
         const isActive = filters.includes(label)
-        console.log(label, isActive)
+
         return (
-            <MenuItem
-                as={ButtonToggle}
+            <Menu.Item
                 key={label}
-                isActive={isActive}
+                bg={isActive ? 'blue' : ''}
                 onClick={() => setFilters(label)}
             >
                 { label }
-            </MenuItem >
+            </Menu.Item >
         )
     })
 

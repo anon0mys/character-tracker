@@ -17,7 +17,9 @@ const Client = () => {
 
     const parseResponse = (response) => {
         if (!response.ok) {
-            throw response.statusText
+            return response.json().then(response => {
+                throw response.errors
+            })
         }
         if (response.status == 204) {
             return null
