@@ -19,6 +19,7 @@ import '@mantine/dropzone/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/nprogress/styles.css';
 import '@mantine/notifications/styles.css';
+import GameSubRoute from './Contexts/GameSubRoute';
 
 const theme = createTheme({
     /** Put your mantine theme override here */
@@ -43,11 +44,13 @@ const App = () => {
                                             <Route element={<PrivateRoute />}>
                                                 <Route path="/dashboard" element={<Dashboard />} />
                                                 <Route path="spells" element={<Spells />} />
+                                                <Route element={<GameSubRoute />}>
                                                 {/* <Route path="characters/:characterId/spell-lists/:id" element={<SpellList />} /> */}
-                                                <Route path="characters/create" element={<CharacterForm />} />
-                                                <Route path="characters/:id" element={<CharacterDisplay />} />
-                                                <Route path="characters" element={<Characters />} />
-                                                <Route path="items" element={<Items />} />
+                                                    <Route path="characters/create" element={<CharacterForm />} />
+                                                    <Route path="characters/:id" element={<CharacterDisplay />} />
+                                                    <Route path="characters" element={<Characters />} />
+                                                    <Route path="items" element={<Items />} />
+                                                </Route>
                                             </Route>
                                         </Routes>
                                     </Layout>

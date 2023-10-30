@@ -1,104 +1,43 @@
 import React from "react"
-import { AbilityTypes, ICharacterStats } from "./types"
+import { UseFormReturnType } from "@mantine/form"
+import { abilities, ICharacterType } from "../../Api"
+import { Checkbox, Flex, NumberInput } from "@mantine/core"
 
 interface CharacterStatsProps {
-    formData: ICharacterStats,
-    setFormData: Function,
+    form: UseFormReturnType<ICharacterType>
 }
 
-const abilities: AbilityTypes[] = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
-
-const CharacterStatsForm = ({ formData, setFormData }: CharacterStatsProps) => {
-
-    const setProficiencies = (ability) => {
-        const proficiencies = formData.proficiencies
-        if (proficiencies.includes(ability)) {
-            const index = proficiencies.indexOf(ability)
-            proficiencies.splice(index, 1)
-            return proficiencies
-        }
-        return [...proficiencies, ability]
-    }
-
+const CharacterStatsForm = ({form}: CharacterStatsProps) => {
     const abilityCheckboxes = abilities.map(ability => {
-        return (
-            <label key={ability}>
-                <input
-                    type="checkbox"
-                    value={ability}
-                    checked={formData.proficiencies.includes(ability)}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            proficiencies: setProficiencies(e.target.value)
-                        })
-                    }}
-                />
-                {ability}
-            </label>
-        )
+        return <Checkbox key={ability} value={ability} label={ability} />
     })
 
     return (
-        <div>
-            <h2>What are your stats?</h2>
-            <label>
-                Level:
-                <input
-                    name="level"
-                    value={formData.level}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            level: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-            <label>
-                Speed:
-                <input
-                    name="speed"
-                    value={formData.speed}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            speed: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-            <label>
-                Initiative Bonus:
-                <input
-                    name="initiativeBonus"
-                    value={formData.initiativeBonus}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            initiativeBonus: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-            <label>
-                AC Bonus:
-                <input
-                    name="acBonus"
-                    value={formData.acBonus}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            acBonus: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-            <div>
-                Proficiencies:
+        <Flex direction="row" gap="md" justify="center">
+            <NumberInput
+                label="Level"
+                placeholder="1"
+                {...form.getInputProps('level')}
+            />
+            <NumberInput
+                label="Speed"
+                placeholder="30"
+                {...form.getInputProps('speed')}
+            />
+            <NumberInput
+                label="Initiative Bonus"
+                placeholder="0"
+                {...form.getInputProps('initiativeBonus')}
+            />
+            <NumberInput
+                label="AC Bonus"
+                placeholder="0"
+                {...form.getInputProps('acBonus')}
+            />
+            <Checkbox.Group {...form.getInputProps('proficiencies')}>
                 {abilityCheckboxes}
-            </div>
-        </div>
+            </Checkbox.Group>
+        </Flex>
     )
 }
 

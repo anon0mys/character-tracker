@@ -12,10 +12,22 @@ const CharacterDisplay = () => {
     const [spellLists, setSpellLists] = useState<ISpellListType[]>([])
     const [character, setCharacter] = useState<ICharacterType>({
         name: '',
+        race: '',
         archetype: '',
+        background: '',
+        alignment: '',
+        age: 20,
         level: 1,
-        created_at: '',
-        updated_at: '',
+        speed: 30,
+        initiativeBonus: 0,
+        acBonus: 0,
+        proficiencies: [],
+        strength: 10,
+        dexterity: 10,
+        constitution: 10,
+        intelligence: 10,
+        wisdom: 10,
+        charisma: 10,
     })
     const auth = useAuth()
     const client = Client()

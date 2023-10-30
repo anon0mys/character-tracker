@@ -1,94 +1,46 @@
+import { Flex, NumberInput } from "@mantine/core"
+import { UseFormReturnType } from "@mantine/form"
 import React from "react"
-import { IAbilityScores } from "./types"
+import { ICharacterType } from "../../Api"
 
 interface AbilityProps {
-    formData: IAbilityScores,
-    setFormData: Function,
+    form: UseFormReturnType<ICharacterType>,
 }
 
-const AbilityScoresForm = ({ formData, setFormData }: AbilityProps) => {
+const AbilityScoresForm = ({form}: AbilityProps) => {
     return (
-        <div>
-            <h2>What are your abilities?</h2>
-            <label>
-                Strength:
-                <input
-                    name="strength"
-                    value={formData.strength}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            strength: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-            <label>
-                Dexterity:
-                <input
-                    name="dexterity"
-                    value={formData.dexterity}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            dexterity: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-            <label>
-                Constitution:
-                <input
-                    name="constitution"
-                    value={formData.constitution}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            constitution: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-            <label>
-                Intelligence:
-                <input
-                    name="intelligence"
-                    value={formData.intelligence}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            intelligence: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-            <label>
-                Wisdom:
-                <input
-                    name="wisdom"
-                    value={formData.wisdom}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            wisdom: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-            <label>
-                Charisma:
-                <input
-                    name="charisma"
-                    value={formData.charisma}
-                    onChange={e => {
-                        setFormData({
-                            ...formData,
-                            charisma: e.target.value,
-                        })
-                    }}
-                />
-            </label>
-        </div>
+        <Flex>
+            <NumberInput
+                label="Strength"
+                placeholder="10"
+                {...form.getInputProps('strength')}
+            />
+            <NumberInput
+                label="Dexterity"
+                placeholder="10"
+                {...form.getInputProps('dexterity')}
+            />
+            <NumberInput
+                label="Constitution"
+                placeholder="10"
+                {...form.getInputProps('constitution')}
+            />
+            <NumberInput
+                label="Intelligence"
+                placeholder="10"
+                {...form.getInputProps('intelligence')}
+            />
+            <NumberInput
+                label="Wisdom"
+                placeholder="10"
+                {...form.getInputProps('wisdom')}
+            />
+            <NumberInput
+                label="Charisma"
+                placeholder="10"
+                {...form.getInputProps('charisma')}
+            />
+        </Flex>
     )
 }
 

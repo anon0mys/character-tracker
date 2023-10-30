@@ -17,6 +17,7 @@ describe 'GET /api/v1/characters' do
 
     it 'returns a list of characters' do
       result = JSON.parse(response.body)
+      require 'pry'; binding.pry
       response_ids = result['data'].map {|character| character['id']}
       expect(response_ids).to eq(user.characters.pluck(:id))
     end

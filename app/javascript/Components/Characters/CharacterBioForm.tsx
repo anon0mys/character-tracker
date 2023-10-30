@@ -2,13 +2,23 @@ import React from "react"
 import { Flex, NativeSelect, NumberInput, TextInput } from "@mantine/core"
 import { UseFormReturnType } from "@mantine/form"
 import { archetypes, ICharacterType } from "../../Api"
-import { AlignmentTypes } from "./types"
 
 interface CharacterBioProps {
     form: UseFormReturnType<ICharacterType>
 }
 
-const alignmentTypes: AlignmentTypes[] = ['Lawful Good', 'Neutral Good', 'Chaotic Good', 'Lawful Neutral', 'Neutral', 'Chaotic Neutral', 'Lawful Evil', 'Neutral Evil', 'Chaotic Evil']
+const alignmentOptions = [
+    {label: 'Lawful Good', value: 'LG'},
+    {label: 'Neutral Good', value: 'NG'},
+    {label: 'Chaotic Good', value: 'CG'},
+    {label: 'Lawful Neutral', value: 'LN'},
+    {label: 'Neutral', value: 'TN'},
+    {label: 'Chaotic Neutral', value: 'CN'},
+    {label: 'Lawful Evil', value: 'LE'},
+    {label: 'Neutral Evil', value: 'NE'},
+    {label: 'Chaotic Evil', value: 'CE'},
+    {label: 'Unaligned', value: 'UN'},
+]
 
 const CharacterBioForm = ({form}: CharacterBioProps) => {
     return (
@@ -25,7 +35,7 @@ const CharacterBioForm = ({form}: CharacterBioProps) => {
             />
             <NativeSelect
                 label="Class"
-                data={archetypes}
+                data={['Select Class', ...archetypes]}
                 {...form.getInputProps('archetype')}
             />
             <TextInput
@@ -35,7 +45,7 @@ const CharacterBioForm = ({form}: CharacterBioProps) => {
             />
             <NativeSelect
                 label="Alignment"
-                data={alignmentTypes}
+                data={['Select Alignment', ...alignmentOptions]}
                 {...form.getInputProps('alignment')}
             />
             <NumberInput

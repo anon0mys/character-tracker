@@ -20,7 +20,7 @@ describe 'GET /api/v1/characters/:id' do
         "id" => Character.first.id,
         "ac" => 10,
         "age" => 38,
-        "alignment" => "CG",
+        "alignment" => "Chaotic Good",
         "background" => "Guild Artisan",
         "class" => "Artificer",
         "concentration" => 2,

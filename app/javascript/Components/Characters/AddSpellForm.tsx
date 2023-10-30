@@ -54,11 +54,11 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
 
     const submit = () => {
         const path = `/characters/${form.values.character?.id}/spell_lists/${form.values.spellList?.id}/add_spell`
-        client.post({ path: path, token: auth.getToken(), payload: {spell: {id: spell.id}}})
+        client.post({ path: path, token: auth.getToken(), payload: {spell: {id: spell && spell.id}}})
             .then(response => {
                 notifications.show({
                     title: 'Success!',
-                    message: `Added ${spell.name} to Spell List: ${form.values.spellList?.name}`,
+                    message: `Added ${spell ? spell.name : 'no spell'} to Spell List: ${form.values.spellList?.name}`,
                 })
             })
             .catch(error => notifications.show({

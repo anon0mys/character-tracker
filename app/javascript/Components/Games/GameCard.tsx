@@ -22,6 +22,7 @@ const GameCard = ({ game, deleteGame }: GameCardProps) => {
 
     const setGame = (event) => {
         event.preventDefault()
+        console.log('setting game', game)
         setCurrentGame(game)
         navigate('/characters')
     }

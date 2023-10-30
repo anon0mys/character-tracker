@@ -3,7 +3,7 @@ class Api::V1::CharactersController < ApiController
 
   def index
     @characters = current_user.characters.all
-    render json: {data: @characters}
+    render json: CharacterSerializer.render(@characters, root: :data)
   end
 
   def show

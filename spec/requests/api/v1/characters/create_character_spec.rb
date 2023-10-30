@@ -48,7 +48,7 @@ describe 'POST /api/v1/characters' do
         "id" => Character.first.id,
         "ac" => 16,
         "age" => 38,
-        "alignment" => "CG",
+        "alignment" => "Chaotic Good",
         "background" => "Guild Artisan",
         "class" => "Artificer",
         "concentration" => 5,
