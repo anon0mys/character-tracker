@@ -3,11 +3,10 @@ import { Button, Card, Grid, Header } from 'semantic-ui-react'
 import { useAuth } from '../Auth'
 import { useError } from '../Errors'
 import { Client, ICharacterType } from '../Api'
-import { CharacterCard, CharacterForm } from '../Components/Characters'
+import { CharacterCard } from '../Components/Characters'
 import { Link } from 'react-router-dom'
 
 const Characters = () => {
-    const [open, setOpen] = useState(false)
     const [characters, setCharacters] = useState<ICharacterType[]>([])
     const auth = useAuth()
     const client = Client()
@@ -22,10 +21,6 @@ const Characters = () => {
     useEffect(() => {
         fetchCharacters()
     }, [])
-
-    const addCharacter = (character: ICharacterType) => {
-        setCharacters([...characters, character])
-    }
 
     const deleteCharacter = () => {
         fetchCharacters()

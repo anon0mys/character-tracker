@@ -2,10 +2,10 @@ class CharacterSerializer < Blueprinter::Base
   identifier :id
 
   fields :id, :name, :race, :level, :background, :alignment, :age, :ac,
-        :initiative, :speed, :perception, :proficiency_bonus,
+        :initiative, :speed, :perception, :proficiency_bonus, :proficiencies,
         :concentration, :spell_attack_mod, :spell_save_dc
 
-  field :archetype, name: :class do |character, options|
+  field :archetype do |character, options|
     character.archetype.name.to_s.capitalize
   end
 

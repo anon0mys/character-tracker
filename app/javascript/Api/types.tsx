@@ -1,3 +1,9 @@
+interface IAbilityType {
+    value: number
+    modifier: number
+    save: number
+}
+
 interface ICharacterType {
     id?: string;
     name: string;
@@ -8,15 +14,20 @@ interface ICharacterType {
     age: number;
     level: number;
     speed: number;
-    initiativeBonus: number;
-    acBonus: number;
+    ac: number;
+    initiative: number;
+    perception: number;
+    proficiency_bonus: number;
     proficiencies: string[];
-    strength: number;
-    dexterity: number;
-    constitution: number;
-    intelligence: number;
-    wisdom: number;
-    charisma: number;
+    spell_attack_mod: number;
+    spell_save_dc: number;
+    concentration: number;
+    strength: IAbilityType;
+    dexterity: IAbilityType;
+    constitution: IAbilityType;
+    intelligence: IAbilityType;
+    wisdom: IAbilityType;
+    charisma: IAbilityType;
     created_at?: string;
     updated_at?: string;
     user_id?: number;
