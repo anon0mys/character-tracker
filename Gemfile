@@ -32,6 +32,7 @@ gem 'blueprinter'
 
 # Use js bundling for javascript assets
 gem 'jsbundling-rails'
+gem "cssbundling-rails", "~> 1.3"
 
 # Use Active Admin for admin site
 gem 'activeadmin'
