@@ -68,5 +68,8 @@
       "@babel/preset-react",
       "@babel/preset-typescript"
     ]
+  },
+  "devDependencies": {
+    "postcss-preset-mantine": "^1.9.0"
   }
 }
