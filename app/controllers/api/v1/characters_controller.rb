@@ -3,11 +3,11 @@ class Api::V1::CharactersController < ApiController
 
   def index
     @characters = current_user.characters.all
-    render json: {data: @characters}
+    render json: CharacterSerializer.render(@characters, root: :data)
   end
 
   def show
-    @character = current_user.characters.find(params[:id])
+    @character = current_user.characters.includes(:current_spell_list).find(params[:id])
     render json: CharacterSerializer.render(@character, root: :data)
   end
 

@@ -1,3 +1,4 @@
+const abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
 const archetypes = [
     'artificer',
     'barbarian',
@@ -23,5 +24,5 @@ const item_types = [
 const qualities = ['common', 'uncommon', 'rare', 'very_rare', 'legendary', 'artifact']
 
 export {
-    archetypes, spellLevels, schools, statuses, item_types, qualities
+    abilities, archetypes, spellLevels, schools, statuses, item_types, qualities
 }

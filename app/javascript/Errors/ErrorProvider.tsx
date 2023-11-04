@@ -22,7 +22,7 @@ const ErrorProvider = ({ children }: { children: React.ReactNode }) => {
     const setError = (error: string) => {
         setMessage(error)
         setDisplayed(true)
-        const timer = setTimeout(clearError, 3000);
+        const timer = setTimeout(clearError, 5000);
         return () => clearTimeout(timer);
     }
 

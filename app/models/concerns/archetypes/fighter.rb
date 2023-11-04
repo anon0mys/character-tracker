@@ -3,5 +3,6 @@ class Archetypes::Fighter < Archetypes::Archetype
 
   def initialize
     @name = :fighter
+    @hit_die = 'd10'
   end
 end

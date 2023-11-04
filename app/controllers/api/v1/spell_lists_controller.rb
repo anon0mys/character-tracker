@@ -1,26 +1,27 @@
 class Api::V1::SpellListsController < ApiController
   before_action :set_character
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_record
+  rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
 
   def index
-    @spell_lists = @character.spell_lists.all
-    render json: {data: @spell_lists}
+    @spell_lists = @character.spell_lists.includes(:spells).all
+    render json:  SpellListSerializer.render(@spell_lists, root: :data)
   end
 
   def show
-    @spell_list = @character.spell_lists.find(params[:id])
-    render json: {data: render_spell_list(@spell_list)}
+    @spell_list = @character.spell_lists.includes(:spells).find(params[:id])
+    render json:  SpellListSerializer.render(@spell_list, root: :data)
   end
 
   def create
     @spell_list = @character.spell_lists.create!(spell_list_params)
-    render json: {data: render_spell_list(@spell_list)}, status: :created
+    render json: SpellListSerializer.render(@spell_list, root: :data), status: :created
   end
 
   def update
     @spell_list = @character.spell_lists.find(params[:id])
     if @spell_list.update(spell_list_params)
-      render json: {data: render_spell_list(@spell_list)}
+      render json: SpellListSerializer.render(@spell_list, root: :data)
     else
       render json: {errors: 'Invalid attributes'}, status: :unprocessable_entity
     end
@@ -34,17 +35,10 @@ class Api::V1::SpellListsController < ApiController
   def add_spell
     @spell_list = @character.spell_lists.find(params[:spell_list_id])
     @spell_list.add_spell(validated_spell)
-    render json: {data: render_spell_list(@spell_list)}
+    render json: SpellListSerializer.render(@spell_list, root: :data)
   end
 
   private
-
-  def render_spell_list(spell_list)
-    {
-      name: spell_list.name,
-      spells: spell_list.spells
-    }
-  end
 
   def spell_list_params
     params.require(:spell_list).permit(:name)

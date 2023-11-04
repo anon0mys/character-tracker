@@ -25,6 +25,7 @@ class Character < ApplicationRecord
 
   belongs_to :user
   belongs_to :game
+  belongs_to :current_spell_list, class_name: :SpellList, foreign_key: :current_spell_list_id, optional: true
   has_many :spell_lists
   has_many :character_items
   has_many :items, through: :character_items
@@ -47,6 +48,14 @@ class Character < ApplicationRecord
 
   def perception
     10 + modifier_for(:wisdom)
+  end
+
+  def total_hitpoints
+    (archetype.hit_die.split('d').last.to_i + modifier_for(:constitution)) * level
+  end
+
+  def current_hitpoints
+     self[:current_hitpoints] || total_hitpoints
   end
 
   def ac

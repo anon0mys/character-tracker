@@ -5,7 +5,7 @@ import { useAuth } from '../../Auth'
 import { useError } from '../../Errors'
 
 interface SpellListFormProps {
-    characterId: number | null
+    characterId?: string
     open: boolean
     setOpen: Function
     onSubmit: Function

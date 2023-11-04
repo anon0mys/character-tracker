@@ -13,11 +13,30 @@ class Spell < ApplicationRecord
   validates :components, array: { presence: true, inclusion: { in: COMPONENTS } }
   validates_presence_of :name, :casting_time, :range, :duration
 
-  default_scope { order(id: :desc) }
+  default_scope { by_level }
+  scope :by_level, -> { order(order_by_level) }
   scope :name_eq, -> (name) { where 'name ILIKE ?', "%#{name.downcase}%" }
   scope :archetype_eq, -> (archetype) { where "archetypes && ?", "{#{archetype.join(',')}}" }
   scope :level_eq, -> (level) { where level: level }
   scope :school_eq, -> (school) { where school: school }
+
+  def self.order_by_level
+    Arel.sql(
+      %q(
+        case level
+        when 'cantrip' then 0
+        when '1' then 1
+        when '2' then 2
+        when '3' then 3
+        when '4' then 4
+        when '5' then 5
+        when '6' then 6
+        when '7' then 7
+        when '8' then 8
+        else 9 end
+      )
+    )
+  end
 
   def self.ransackable_scopes(_auth_object = nil)
     %i(archetype_eq)

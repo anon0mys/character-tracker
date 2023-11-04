@@ -1,11 +1,43 @@
+type InjuryCondition = 'Healthy' | 'Bloodied' | 'Mangled'
+
+interface IAbilityType {
+    value: number
+    modifier: number
+    save: number
+}
+
 interface ICharacterType {
-    id?: number;
+    id?: string;
     name: string;
+    race: string;
     archetype: string;
-    level: number | null
-    created_at: string;
-    updated_at: string
-    user_id: number | null
+    background: string;
+    alignment: string;
+    age: number;
+    level: number;
+    speed: number;
+    ac: number;
+    initiative: number;
+    perception: number;
+    proficiency_bonus: number;
+    proficiencies: string[];
+    spell_attack_mod: number;
+    spell_save_dc: number;
+    concentration: number;
+    total_hitpoints: number;
+    current_hitpoints: number;
+    injury_condition: InjuryCondition;
+    current_spell_list?: ISpellListType;
+    hit_die: string;
+    strength: IAbilityType;
+    dexterity: IAbilityType;
+    constitution: IAbilityType;
+    intelligence: IAbilityType;
+    wisdom: IAbilityType;
+    charisma: IAbilityType;
+    created_at?: string;
+    updated_at?: string;
+    user_id?: number;
 }
 
 interface IGameType {
@@ -50,14 +82,15 @@ interface ISpellListType {
     id?: number
     name: string
     character_id: number | null
+    spells: ISpellType[]
 }
 
 interface IPaginationType {
     data: any[]
-    pages: number | null
-    page: number | null
-    next: number | null
-    prev: number | null
+    pages: number
+    page?: number
+    next?: number
+    prev?: number
 }
 
 export {
