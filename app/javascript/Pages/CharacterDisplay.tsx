@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
-import { Button, Flex, Grid, Group, Space, Stack, Text, Title } from '@mantine/core';
+import { Button, Grid, Group, NativeSelect, Space, Text, Title } from '@mantine/core';
 import { Client, ICharacterType, ISpellListType } from '../Api';
 import { useAuth } from '../Auth';
-import { SpellListCard, SpellListForm } from '../Components/Characters';
+import { SpellListForm } from '../Components/Characters';
 import { useError } from '../Errors';
+import SpellTable from '../Components/Spells/SpellTable';
 
 const CharacterDisplay = () => {
     const { id } = useParams()
     const [open, setOpen] = useState(false)
     const [spellLists, setSpellLists] = useState<ISpellListType[]>([])
+    const [currentSpellList, setCurrentSpellList] = useState<ISpellListType>()
     const [character, setCharacter] = useState<ICharacterType>({
         name: '',
         race: '',
@@ -27,6 +29,10 @@ const CharacterDisplay = () => {
         spell_attack_mod: 0,
         spell_save_dc: 0,
         concentration: 0,
+        total_hit_points: 0,
+        current_hit_points: 0,
+        injury_condition: 'Healthy',
+        hit_die: '',
         strength: {value: 10, modifier: 0, save: 0},
         dexterity: {value: 10, modifier: 0, save: 0},
         constitution: {value: 10, modifier: 0, save: 0},
@@ -54,8 +60,13 @@ const CharacterDisplay = () => {
         setSpellLists([...spellLists, spellList])
     }
 
-    const spellListCards = spellLists.map(spellList => {
-        return <SpellListCard key={spellList.id} spellList={spellList} />
+    const selectSpellList = (event) => {
+        let spellList = spellLists.find(spellList => spellList.id == event.target.value)
+        setCurrentSpellList(spellList)
+    }
+
+    const spellListOptions = spellLists.map(spellList => {
+        return { label: spellList.name, value: spellList.id ? spellList.id.toString() : '' }
     })
 
     return (
@@ -180,12 +191,53 @@ const CharacterDisplay = () => {
                     </Group>
                 </Grid.Col>
             </Grid>
+            <Space h="lg" />
+            <Group>
+                <Title order={3}>Attacks</Title>
+                <Button>Add Attack</Button>
+            </Group>
+            <Text>Attacks Per Turn: {2}</Text>
             <Grid>
-                <Grid.Col span={4}><Title order={3}>Spell Lists</Title></Grid.Col>
-                <Grid.Col span={2} offset={6}><Button onClick={() => setOpen(true)}>Add Spell List</Button></Grid.Col>
+                <Grid.Col span={3}>
+                    <Text td="underline">Attack</Text>
+                </Grid.Col>
+                <Grid.Col span={2}>
+                    <Text td="underline">Bonus</Text>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                    <Text td="underline">Damage & Notes (simple weapons)</Text>
+                </Grid.Col>
             </Grid>
             <Space h="lg" />
-            <Flex>{spellListCards}</Flex>
+            <Group>
+                <Title order={3}>HP and Abilities</Title>
+            </Group>
+            <Grid>
+                <Grid.Col span={3}>
+                    <Text>Hit Points: {character.total_hitpoints}</Text>
+                    <Text>Current Hit Points: {character.current_hitpoints} [{character.injury_condition}]</Text>
+                </Grid.Col>
+                <Grid.Col span={3}>
+                    <Text>Temporary Hit Points: 0</Text>
+                </Grid.Col>
+                <Grid.Col span={4}>
+                    <Text>Rest Recovery ({character.hit_die} + {character.constitution.modifier}): 5</Text>
+                    <Space h="lg" />
+                    <Text>Abilities go here (some need counters)</Text>
+                </Grid.Col>
+            </Grid>
+            <Space h="lg" />
+            <Group>
+                <Title order={3}>Current Spells: </Title>
+                <NativeSelect
+                    variant="unstyled"
+                    data={['Set Current List', ...spellListOptions]}
+                    onChange={selectSpellList}
+                />
+                <Button onClick={() => setOpen(true)}>Add Spell List</Button>
+            </Group>
+            <Space h="lg" />
+            {currentSpellList && <SpellTable spells={currentSpellList.spells} />}
             <SpellListForm characterId={character.id} open={open} setOpen={setOpen} onSubmit={addSpellList} />
         </>
     )

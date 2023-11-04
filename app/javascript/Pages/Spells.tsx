@@ -7,16 +7,13 @@ import { archetypes, spellLevels, schools } from '../Api'
 import useFilter from '../Hooks/useFilter'
 import {
     Autocomplete, Box, Button, Flex,
-    Loader, Pagination, rem, Table, Menu
+    Loader, Pagination, rem, Menu
 } from '@mantine/core'
-import SpellRow from '../Components/Spells/SpellRow'
 import { IconSearch, IconX } from '@tabler/icons-react'
-import { useDisclosure } from '@mantine/hooks'
-import SpellModal from '../Components/Spells/SpellModal'
+import SpellTable from '../Components/Spells/SpellTable'
 
 const Spells = () => {
     const [spells, setSpells] = useState<[ISpellType] | []>([])
-    const [currentSpell, setCurrentSpell] = useState<ISpellType>()
     const [loading, setLoading] = useState(true)
     const [pagination, setPagination] = useState<IPaginationType>({
         data: [],
@@ -26,7 +23,6 @@ const Spells = () => {
     const [archetypeFilters, archetypeMenuItems] = useFilter(archetypes)
     const [levelFilters, levelMenuItems] = useFilter(spellLevels)
     const [schoolFilters, schoolMenuItems] = useFilter(schools)
-    const [opened, handlers] = useDisclosure(false)
     const auth = useAuth()
     const client = Client()
     const errors = useError()
@@ -74,18 +70,6 @@ const Spells = () => {
         fetchSpells()
     }
 
-    const openModal = (spell) => {
-        setCurrentSpell(spell)
-        handlers.open()
-    }
-
-    const closeModal = () => {
-        setCurrentSpell(undefined)
-        handlers.close()
-    }
-
-    const rows = spells.map((spell: ISpellType) => <SpellRow key={spell.id} spell={spell} openModal={openModal} />);
-
     return (
         <>
             <Header size='large'>Spells</Header>
@@ -119,22 +103,9 @@ const Spells = () => {
                     <Menu.Dropdown>{schoolMenuItems}</Menu.Dropdown>
                 </Menu>
             </Flex>
-            {currentSpell && <SpellModal spell={currentSpell} opened={opened} onClose={closeModal} /> }
             {loading ? <Box maw={125} m='auto'><Loader color="blue" /></Box> :
                 <>
-                    <Table highlightOnHover mb={20}>
-                        <Table.Thead>
-                            <Table.Tr>
-                                <Table.Th>Name</Table.Th>
-                                <Table.Th>Level</Table.Th>
-                                <Table.Th>School</Table.Th>
-                                <Table.Th>Casting Time</Table.Th>
-                                <Table.Th>Range</Table.Th>
-                                <Table.Th>Archetypes</Table.Th>
-                            </Table.Tr>
-                        </Table.Thead>
-                        <Table.Tbody>{rows}</Table.Tbody>
-                    </Table>
+                    <SpellTable spells={spells} />
                     <Flex direction="row" justify="center">
                         <Pagination
                             siblings={3}

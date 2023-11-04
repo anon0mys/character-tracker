@@ -3,7 +3,24 @@ class CharacterSerializer < Blueprinter::Base
 
   fields :id, :name, :race, :level, :background, :alignment, :age, :ac,
         :initiative, :speed, :perception, :proficiency_bonus, :proficiencies,
-        :concentration, :spell_attack_mod, :spell_save_dc
+        :concentration, :spell_attack_mod, :spell_save_dc, :total_hitpoints,
+        :current_hitpoints
+
+  association :current_spell_list, blueprint: SpellListSerializer
+
+  field :hit_die do |character, options|
+    character.archetype.hit_die
+  end
+
+  field :injury_condition do |character, options|
+    if character.current_hitpoints < (character.total_hitpoints * 0.25).floor
+      'Mangled'
+    elsif character.current_hitpoints < (character.total_hitpoints * 0.5).floor
+      'Bloodied'
+    else
+      'Healthy'
+    end
+  end
 
   field :archetype do |character, options|
     character.archetype.name.to_s.capitalize

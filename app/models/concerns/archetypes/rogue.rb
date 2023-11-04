@@ -3,5 +3,6 @@ class Archetypes::Rogue < Archetypes::Archetype
 
   def initialize
     @name = :rogue
+    @hit_die = 'd8'
   end
 end

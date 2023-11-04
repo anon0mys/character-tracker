@@ -7,7 +7,7 @@ class Api::V1::CharactersController < ApiController
   end
 
   def show
-    @character = current_user.characters.find(params[:id])
+    @character = current_user.characters.includes(:current_spell_list).find(params[:id])
     render json: CharacterSerializer.render(@character, root: :data)
   end
 

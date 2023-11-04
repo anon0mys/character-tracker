@@ -1,3 +1,5 @@
+type InjuryCondition = 'Healthy' | 'Bloodied' | 'Mangled'
+
 interface IAbilityType {
     value: number
     modifier: number
@@ -22,6 +24,11 @@ interface ICharacterType {
     spell_attack_mod: number;
     spell_save_dc: number;
     concentration: number;
+    total_hitpoints: number;
+    current_hitpoints: number;
+    injury_condition: InjuryCondition;
+    current_spell_list?: ISpellListType;
+    hit_die: string;
     strength: IAbilityType;
     dexterity: IAbilityType;
     constitution: IAbilityType;
@@ -75,6 +82,7 @@ interface ISpellListType {
     id?: number
     name: string
     character_id: number | null
+    spells: ISpellType[]
 }
 
 interface IPaginationType {
