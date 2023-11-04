@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
-import { Button, Grid, Group, NativeSelect, Space, Text, Title } from '@mantine/core';
+import { Button, Grid, Group, NativeSelect, Select, Space, Text, Title } from '@mantine/core';
 import { Client, ICharacterType, ISpellListType } from '../Api';
 import { useAuth } from '../Auth';
 import { SpellListForm } from '../Components/Characters';
@@ -29,8 +29,8 @@ const CharacterDisplay = () => {
         spell_attack_mod: 0,
         spell_save_dc: 0,
         concentration: 0,
-        total_hit_points: 0,
-        current_hit_points: 0,
+        total_hitpoints: 0,
+        current_hitpoints: 0,
         injury_condition: 'Healthy',
         hit_die: '',
         strength: {value: 10, modifier: 0, save: 0},
@@ -46,7 +46,10 @@ const CharacterDisplay = () => {
 
     useEffect(() => {
         client.get({ path: `/characters/${id}`, token: auth.getToken() })
-        .then(response => setCharacter(response.data))
+        .then(response => {
+            setCharacter(response.data)
+            setCurrentSpellList(response.data.current_spell_list)
+        })
         .catch(error => errors.setError(error))
     }, [id])
 
@@ -62,7 +65,9 @@ const CharacterDisplay = () => {
 
     const selectSpellList = (event) => {
         let spellList = spellLists.find(spellList => spellList.id == event.target.value)
-        setCurrentSpellList(spellList)
+        const data = {character: {current_spell_list_id: spellList && spellList.id}}
+        client.patch({ path: `/characters/${id}`, payload: data, token: auth.getToken() })
+        .then(response => setCurrentSpellList(spellList))
     }
 
     const spellListOptions = spellLists.map(spellList => {
@@ -92,7 +97,7 @@ const CharacterDisplay = () => {
                 <Grid.Col span={4}>
                     <Grid>
                         <Grid.Col span={3}>
-                            <Space h="md" />
+                            <Space h="lg" />
                             <Text>Strength</Text>
                             <Text>Dexterity</Text>
                             <Text>Constitution</Text>
@@ -228,10 +233,11 @@ const CharacterDisplay = () => {
             </Grid>
             <Space h="lg" />
             <Group>
-                <Title order={3}>Current Spells: </Title>
+                <Title order={3}>Current Spells: {currentSpellList && currentSpellList.name}</Title>
                 <NativeSelect
                     variant="unstyled"
-                    data={['Set Current List', ...spellListOptions]}
+                    data={['Set Current list', ...spellListOptions]}
+                    value={currentSpellList && currentSpellList.id}
                     onChange={selectSpellList}
                 />
                 <Button onClick={() => setOpen(true)}>Add Spell List</Button>

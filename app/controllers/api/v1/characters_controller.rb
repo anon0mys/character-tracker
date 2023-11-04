@@ -51,6 +51,7 @@ class Api::V1::CharactersController < ApiController
       :intelligence,
       :wisdom,
       :charisma,
+      :current_spell_list_id,
       proficiencies: [],
     )
   end
