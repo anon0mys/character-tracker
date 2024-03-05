@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: 'home#index'
-  
+
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :characters, only: [:index, :show, :create, :update, :destroy] do
+        resources :attacks, only: [:index, :create, :update, :destroy]
         resources :spell_lists, only: [:index, :create, :show, :update, :destroy] do
           post '/add_spell', to: 'spell_lists#add_spell'
         end

@@ -27,6 +27,7 @@ class Character < ApplicationRecord
   belongs_to :game
   belongs_to :current_spell_list, class_name: :SpellList, foreign_key: :current_spell_list_id, optional: true
   has_many :spell_lists
+  has_many :attacks
   has_many :character_items
   has_many :items, through: :character_items
 

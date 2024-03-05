@@ -6,6 +6,14 @@ interface IAbilityType {
     save: number
 }
 
+interface IAttackType {
+    id?: string
+    name: string
+    description: string
+    bonus: string
+    character_id: string
+}
+
 interface ICharacterType {
     id?: string;
     name: string;
@@ -21,6 +29,7 @@ interface ICharacterType {
     perception: number;
     proficiency_bonus: number;
     proficiencies: string[];
+    attacks: IAttackType[]
     spell_attack_mod: number;
     spell_save_dc: number;
     concentration: number;
@@ -94,6 +103,6 @@ interface IPaginationType {
 }
 
 export {
-    ICharacterType, IGameType, IItemType, ISpellType,
+    IAttackType, ICharacterType, IGameType, IItemType, ISpellType,
     ISpellListType, IPaginationType
 }

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
 import { Button, Grid, Group, NativeSelect, Select, Space, Text, Title } from '@mantine/core';
-import { Client, ICharacterType, ISpellListType } from '../Api';
+import { Client, IAttackType, ICharacterType, ISpellListType } from '../Api';
 import { useAuth } from '../Auth';
 import { SpellListForm } from '../Components/Characters';
 import { useError } from '../Errors';
 import SpellTable from '../Components/Spells/SpellTable';
+import { useDisclosure } from '@mantine/hooks';
+import AttackForm from '../Components/Characters/AttackForm';
 
 const CharacterDisplay = () => {
     const { id } = useParams()
-    const [open, setOpen] = useState(false)
+    const [spellListFormOpen, setSpellListFormOpen] = useState(false)
     const [spellLists, setSpellLists] = useState<ISpellListType[]>([])
     const [currentSpellList, setCurrentSpellList] = useState<ISpellListType>()
     const [character, setCharacter] = useState<ICharacterType>({
@@ -26,6 +28,7 @@ const CharacterDisplay = () => {
         perception: 0,
         proficiency_bonus: 0,
         proficiencies: [],
+        attacks: [],
         spell_attack_mod: 0,
         spell_save_dc: 0,
         concentration: 0,
@@ -40,9 +43,11 @@ const CharacterDisplay = () => {
         wisdom: {value: 10, modifier: 0, save: 0},
         charisma: {value: 10, modifier: 0, save: 0},
     })
+    const [attacks, setAttacks] = useState<IAttackType[]>(character?.attacks)
     const auth = useAuth()
     const client = Client()
     const errors = useError()
+    const [attackModalOpen, { open, close }] = useDisclosure(false);
 
     useEffect(() => {
         client.get({ path: `/characters/${id}`, token: auth.getToken() })
@@ -70,8 +75,23 @@ const CharacterDisplay = () => {
         .then(response => setCurrentSpellList(spellList))
     }
 
+    const closeAttackForm = (attack) => {
+        setAttacks([attacks, attack])
+        close()
+    }
+
     const spellListOptions = spellLists.map(spellList => {
         return { label: spellList.name, value: spellList.id ? spellList.id.toString() : '' }
+    })
+
+    const attackRows = character.attacks.map(attack => {
+        return (
+            <Group>
+                <Text>{attack.name}</Text>
+                <Text>{attack.bonus}</Text>
+                <Text>{attack.description}</Text>
+            </Group>
+        )
     })
 
     return (
@@ -213,6 +233,8 @@ const CharacterDisplay = () => {
                     <Text td="underline">Damage & Notes (simple weapons)</Text>
                 </Grid.Col>
             </Grid>
+            {attackRows}
+            <AttackForm opened={attackModalOpen} onClose={closeAttackForm} />
             <Space h="lg" />
             <Group>
                 <Title order={3}>HP and Abilities</Title>
@@ -240,11 +262,11 @@ const CharacterDisplay = () => {
                     value={currentSpellList && currentSpellList.id}
                     onChange={selectSpellList}
                 />
-                <Button onClick={() => setOpen(true)}>Add Spell List</Button>
+                <Button onClick={() => setSpellListFormOpen(true)}>Add Spell List</Button>
             </Group>
             <Space h="lg" />
             {currentSpellList && <SpellTable spells={currentSpellList.spells} />}
-            <SpellListForm characterId={character.id} open={open} setOpen={setOpen} onSubmit={addSpellList} />
+            <SpellListForm characterId={character.id} open={spellListFormOpen} setOpen={setSpellListFormOpen} onSubmit={addSpellList} />
         </>
     )
 }

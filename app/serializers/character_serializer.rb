@@ -7,6 +7,7 @@ class CharacterSerializer < Blueprinter::Base
         :current_hitpoints
 
   association :current_spell_list, blueprint: SpellListSerializer
+  association :attacks, blueprint: AttackSerializer
 
   field :hit_die do |character, options|
     character.archetype.hit_die
