@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Grid, Header } from 'semantic-ui-react'
+import { Button } from '../Components/ui'
 import { useAuth } from '../Auth'
 import { useError } from '../Errors'
 import { Client, ICharacterType } from '../Api'
@@ -32,11 +32,15 @@ const Characters = () => {
 
     return (
         <>
-            <Grid>
-                <Grid.Column width={15}><Header size='large'>Characters</Header></Grid.Column>
-                <Grid.Column width={1}><Button as={Link} to='/characters/create'>Create Character</Button></Grid.Column>
-            </Grid>
-            <Card.Group>{characterCards}</Card.Group>
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold">Characters</h1>
+                <Button asChild>
+                    <Link to='/characters/create'>Create Character</Link>
+                </Button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {characterCards}
+            </div>
         </>
     )
 }

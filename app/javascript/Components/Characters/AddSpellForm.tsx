@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Button, CheckIcon, Group, Modal, Title } from '@mantine/core'
-import { useForm } from '@mantine/form'
-import { notifications } from '@mantine/notifications';
+import { Button } from '../ui'
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+} from '../ui/dialog'
+import { Label } from '../ui'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
+import { Check } from 'lucide-react'
 import { Client, ICharacterType, ISpellListType, ISpellType } from '../../Api'
 import { useAuth } from '../../Auth'
 import { useError } from '../../Errors'
-import Select from '../Shared/Select'
 
 interface AddSpellProps {
     spell?: ISpellType
@@ -14,20 +21,11 @@ interface AddSpellProps {
     onSubmit: VoidFunction
 }
 
-interface AddSpellFormType {
-    character?: ICharacterType
-    spellList?: ISpellListType
-}
-
 const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
-    const form = useForm<AddSpellFormType>({
-        initialValues: {
-            character: undefined,
-            spellList: undefined
-        }
-    });
     const [characters, setCharacters] = useState<ICharacterType[]>([])
     const [spellLists, setSpellLists] = useState<ISpellListType[]>([])
+    const [selectedCharacterId, setSelectedCharacterId] = useState<string>('')
+    const [selectedSpellListId, setSelectedSpellListId] = useState<string>('')
     const auth = useAuth()
     const client = Client()
     const errors = useError()
@@ -35,91 +33,99 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
     useEffect(() => {
         client.get({ path: `/characters`, token: auth.getToken() })
             .then(response => setCharacters(response.data))
-            .catch(error => notifications.show({
-                title: 'Something went wrong',
-                message: error,
-                color: 'red',
-            }))
+            .catch(error => errors.setError(error))
     }, [])
 
-    const fetchSpellLists = (characterId) => {
+    const fetchSpellLists = (characterId: string) => {
         client.get({ path: `/characters/${characterId}/spell_lists`, token: auth.getToken() })
             .then(response => setSpellLists(response.data))
-            .catch(error => notifications.show({
-                title: 'Something went wrong',
-                message: error,
-                color: 'red',
-            }))
+            .catch(error => errors.setError(error))
     }
 
-    const submit = () => {
-        const path = `/characters/${form.values.character?.id}/spell_lists/${form.values.spellList?.id}/add_spell`
-        client.post({ path: path, token: auth.getToken(), payload: {spell: {id: spell && spell.id}}})
-            .then(response => {
-                notifications.show({
-                    title: 'Success!',
-                    message: `Added ${spell ? spell.name : 'no spell'} to Spell List: ${form.values.spellList?.name}`,
-                })
-            })
-            .catch(error => notifications.show({
-                title: 'Something went wrong',
-                message: error,
-                color: 'red',
-            }))
-        onClose()
-        onSubmit()
-    }
-
-    const pickCharacter = (e) => {
-        let char = characters.find(ch => ch.id == e.target.value)
+    const pickCharacter = (value: string) => {
+        const char = characters.find(ch => ch.id === value)
         if (char) {
-            form.setValues({character: char})
+            setSelectedCharacterId(value)
+            setSelectedSpellListId('')
             fetchSpellLists(char.id)
         }
     }
 
-    const pickSpellList = (e) => {
-        let spellList = spellLists.find(sp => sp.id == e.target.value)
+    const pickSpellList = (value: string) => {
+        const spellList = spellLists.find(sp => sp.id === value)
         if (spellList) {
-            form.setValues({spellList: spellList})
+            setSelectedSpellListId(value)
         }
     }
 
-    const missingData = !form.values.character?.id || !form.values.spellList?.id
+    const submit = () => {
+        if (!selectedCharacterId || !selectedSpellListId) return
+        
+        const path = `/characters/${selectedCharacterId}/spell_lists/${selectedSpellListId}/add_spell`
+        client.post({ path: path, token: auth.getToken(), payload: {spell: {id: spell && spell.id}}})
+            .then(response => {
+                // Success toast is automatically shown by Client.tsx
+                onClose()
+                onSubmit()
+            })
+            .catch(error => {
+                // Error toast is automatically shown by Client.tsx
+            })
+    }
+
+    const missingData = !selectedCharacterId || !selectedSpellListId
 
     return (
-        <Modal opened={opened} onClose={onClose} title="Add Spell to List" centered>
-            <Title order={2}>Add to Spell List</Title>
-            <Group>
-                <Select
-                    label="Character"
-                    data={characters.map(ch => {
-                        return { label: ch.name, value: ch.id }
-                    })}
-                    {...form.getInputProps('character')}
-                    value={form.values.character && form.values.character.id}
-                    onChange={pickCharacter}
-                />
-                {
-                    form.values.character?.id && <Select
-                        label="Spell List"
-                        data={spellLists.map(sp => {
-                            return { label: sp.name, value: sp.id }
-                        })}
-                        {...form.getInputProps('spellList')}
-                        value={form.values.spellList && form.values.spellList.id}
-                        onChange={pickSpellList}
-                    />
-                }
-            </Group>
-            <Button
-                leftSection={<CheckIcon />}
-                disabled={missingData}
-                onClick={submit}
-            >
-                Add to List
-            </Button>
-        </Modal>
+        <Dialog open={opened} onOpenChange={onClose}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Add Spell to List</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="character">Character</Label>
+                        <Select value={selectedCharacterId} onValueChange={pickCharacter}>
+                            <SelectTrigger id="character">
+                                <SelectValue placeholder="Select a character" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {characters.map(ch => (
+                                    <SelectItem key={ch.id} value={ch.id}>
+                                        {ch.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    {selectedCharacterId && (
+                        <div className="space-y-2">
+                            <Label htmlFor="spellList">Spell List</Label>
+                            <Select value={selectedSpellListId} onValueChange={pickSpellList}>
+                                <SelectTrigger id="spellList">
+                                    <SelectValue placeholder="Select a spell list" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {spellLists.map(sp => (
+                                        <SelectItem key={sp.id} value={sp.id}>
+                                            {sp.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
+                </div>
+                <DialogFooter>
+                    <Button
+                        disabled={missingData}
+                        onClick={submit}
+                    >
+                        <Check className="mr-2 h-4 w-4" />
+                        Add to List
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Grid, GridItem, Heading } from '@chakra-ui/react'
 import { TopNav } from './Navbar'
 import { ErrorBanner } from '../Errors'
 import { useGame } from '../Contexts'
@@ -9,15 +8,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <>
-            <Grid
-                gridTemplateColumns='1fr 4fr 1fr'
-                justifyItems='center'
-                py='20px'
-            >
-                <GridItem />
-                <Heading>{game ? game.name : 'Dungeon Notes'}</Heading>
+            <div className="grid grid-cols-[1fr_4fr_1fr] justify-items-center py-5">
+                <div />
+                <h1 className="text-2xl font-bold">{game ? game.name : 'Dungeon Notes'}</h1>
                 <TopNav />
-            </Grid>
+            </div>
             <ErrorBanner />
             <div className='content'>
                 {children}

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Card } from "semantic-ui-react"
+import { Card, CardContent } from "../ui"
 import { Client, ISpellListType } from "../../Api"
 import { useAuth } from "../../Auth"
 import { useError } from "../../Errors"
@@ -16,12 +16,14 @@ const SpellListCard = ({ spellList }: SpellListCardProps ) => {
     const errors = useError()
 
     return (
-        <Card key={spellList.id} onClick={() => setOpen(true)}>
-            <Card.Content>
-                {spellList.name}
-            </Card.Content>
+        <>
+            <Card key={spellList.id} onClick={() => setOpen(true)} className="cursor-pointer hover:bg-accent transition-colors">
+                <CardContent className="p-4">
+                    {spellList.name}
+                </CardContent>
+            </Card>
             <SpellListModal spellList={spellList} open={open} setOpen={setOpen} />
-        </Card>
+        </>
     )
 }
 

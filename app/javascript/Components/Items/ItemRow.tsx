@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { Tr, Td, useDisclosure} from '@chakra-ui/react'
-import { CloseIcon } from '@chakra-ui/icons'
+import React, { useState } from 'react'
+import { TableRow, TableCell } from '../ui'
+import { X } from 'lucide-react'
 import { IItemType } from '../../Api'
 import ItemForm from './ItemForm'
 
 const ItemRow = ({item}: {item: IItemType}) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <Tr key={item.id} onClick={onOpen}>
-            <Td>{item.name}</Td>
-            <Td>{item.item_type}</Td>
-            <Td>{item.status}</Td>
-            <Td>{item.quality}</Td>
-            <Td isNumeric>{item.quantity}</Td>
-            <Td>{item.requires_attunement ? 'true' : 'false'}</Td>
-            <Td><CloseIcon /></Td>
-            <ItemForm item={item} open={isOpen} close={onClose} />
-        </Tr>
+        <>
+            <TableRow key={item.id} onClick={() => setIsOpen(true)} className="cursor-pointer">
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.item_type}</TableCell>
+                <TableCell>{item.status}</TableCell>
+                <TableCell>{item.quality}</TableCell>
+                <TableCell className="text-right">{item.quantity}</TableCell>
+                <TableCell>{item.requires_attunement ? 'true' : 'false'}</TableCell>
+                <TableCell><X className="h-4 w-4" /></TableCell>
+            </TableRow>
+            <ItemForm item={item} open={isOpen} close={() => setIsOpen(false)} />
+        </>
     )
 }
 

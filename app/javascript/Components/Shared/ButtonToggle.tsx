@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
-import { Button } from '@chakra-ui/react'
+import { Button } from '../ui'
 
-const ButtonToggle = (props) => {
+interface ButtonToggleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    children: React.ReactNode
+}
+
+const ButtonToggle = (props: ButtonToggleProps) => {
     const {onClick, children, ...forwardProps} = props
     const [active, setActive] = useState(false)
 
-    const clickHandler = (event) => {
+    const clickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         setActive(!active)
         if (onClick) {
             onClick(event)
@@ -13,7 +17,11 @@ const ButtonToggle = (props) => {
     }
 
     return (
-        <Button onClick={clickHandler} colorScheme={active ? 'teal' : 'grey'} {...forwardProps}>
+        <Button 
+            onClick={clickHandler} 
+            variant={active ? 'default' : 'outline'} 
+            {...forwardProps}
+        >
             {children}
         </Button>
     )

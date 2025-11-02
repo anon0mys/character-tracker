@@ -1,39 +1,52 @@
 import React from 'react'
-import { Button, Modal } from 'semantic-ui-react'
+import { Button } from '../ui'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '../ui/dialog'
 
-const ConfirmModal = ({copy, open, setOpen, onSubmit, children}) => {
-    const submit = (event) => {
+interface ConfirmModalProps {
+    copy: string
+    open: boolean
+    setOpen: (open: boolean) => void
+    onSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void
+    children: React.ReactNode
+}
+
+const ConfirmModal = ({copy, open, setOpen, onSubmit, children}: ConfirmModalProps) => {
+    const submit = (event: React.MouseEvent<HTMLButtonElement>) => {
         onSubmit(event)
         setOpen(false)
     }
     return (
-        <Modal
-            closeIcon
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            open={open}
-        >
-            <Modal.Header>{copy}</Modal.Header>
-            <Modal.Content>
-                <Modal.Description>
-                    {children}
-                </Modal.Description>
-            </Modal.Content>
-            <Modal.Actions>
-                <Button
-                    content='Cancel'
-                    color='grey'
-                    onClick={() => setOpen(false)}
-                />
-                <Button
-                    content='Confirm'
-                    color='red'
-                    labelPosition='right'
-                    icon='checkmark'
-                    onClick={submit}
-                />
-            </Modal.Actions>
-        </Modal>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{copy}</DialogTitle>
+                    <DialogDescription>
+                        {children}
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                    <Button
+                        variant="outline"
+                        onClick={() => setOpen(false)}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        onClick={submit}
+                    >
+                        Confirm
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 }
 

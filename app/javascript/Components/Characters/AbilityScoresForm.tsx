@@ -1,46 +1,37 @@
-import { Flex, NumberInput } from "@mantine/core"
-import { UseFormReturnType } from "@mantine/form"
 import React from "react"
-import { ICharacterType } from "../../Api"
+import { useFormContext } from "react-hook-form"
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui"
+import { Input } from "../ui"
 
-interface AbilityProps {
-    form: UseFormReturnType<ICharacterType>,
-}
+const AbilityScoresForm = () => {
+    const form = useFormContext()
+    const abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
 
-const AbilityScoresForm = ({form}: AbilityProps) => {
     return (
-        <Flex>
-            <NumberInput
-                label="Strength"
-                placeholder="10"
-                {...form.getInputProps('strength')}
-            />
-            <NumberInput
-                label="Dexterity"
-                placeholder="10"
-                {...form.getInputProps('dexterity')}
-            />
-            <NumberInput
-                label="Constitution"
-                placeholder="10"
-                {...form.getInputProps('constitution')}
-            />
-            <NumberInput
-                label="Intelligence"
-                placeholder="10"
-                {...form.getInputProps('intelligence')}
-            />
-            <NumberInput
-                label="Wisdom"
-                placeholder="10"
-                {...form.getInputProps('wisdom')}
-            />
-            <NumberInput
-                label="Charisma"
-                placeholder="10"
-                {...form.getInputProps('charisma')}
-            />
-        </Flex>
+        <div className="flex flex-wrap gap-4">
+            {abilities.map((ability) => (
+                <FormField
+                    key={ability}
+                    control={form.control}
+                    name={ability as any}
+                    render={({ field }) => (
+                        <FormItem className="flex-1 min-w-[150px]">
+                            <FormLabel>{ability.charAt(0).toUpperCase() + ability.slice(1)}</FormLabel>
+                            <FormControl>
+                                <Input
+                                    type="number"
+                                    placeholder="10"
+                                    {...field}
+                                    value={field.value || ''}
+                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            ))}
+        </div>
     )
 }
 

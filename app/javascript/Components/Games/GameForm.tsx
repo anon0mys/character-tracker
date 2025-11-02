@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Grid, Input, Modal } from 'semantic-ui-react'
-import { Client } from '../../Api'
-import { useAuth } from '../../Auth'
-import { useError } from '../../Errors'
+import React, { useState } from 'react'
+import { Button, Input, Label } from '../ui'
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '../ui/dialog'
 
 interface GameFormProps {
     open: boolean
-    setOpen: Function
-    onSubmit: Function
+    setOpen: (open: boolean) => void
+    onSubmit: (attrs: {name: string, description: string, start_date?: string}) => Promise<any>
 }
 
 const GameForm = ({ open, setOpen, onSubmit }: GameFormProps) => {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [startDate, setStartDate] = useState<string | undefined>()
-    const auth = useAuth()
-    const client = Client()
-    const errors = useError()
 
-    const submit = (event) => {
+    const submit = (event: React.FormEvent) => {
         event.preventDefault()
-        const attrs = {
+        const attrs: {name: string, description: string, start_date?: string} = {
             name: name,
             description: description
         }
@@ -28,34 +29,57 @@ const GameForm = ({ open, setOpen, onSubmit }: GameFormProps) => {
             attrs['start_date'] = startDate
         }
         onSubmit(attrs)
-        .then(response => setOpen(false))
+        .then(response => {
+            setOpen(false)
+            setName('')
+            setDescription('')
+            setStartDate(undefined)
+        })
     }
 
     return (
-        <Modal
-            closeIcon
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            open={open}
-        >
-            <Modal.Header>Create a Character</Modal.Header>
-            <Modal.Content image>
-                <Grid>
-                    <Grid.Row><Input placeholder='name' onChange={(e) => setName(e.target.value)}/></Grid.Row>
-                    <Grid.Row><Input placeholder='description' onChange={(e) => setDescription(e.target.value)}/></Grid.Row>
-                    <Grid.Row><Input type='date' placeholder='Start Date' onChange={(e) => setStartDate(e.target.value)}/></Grid.Row>
-                </Grid>
-            </Modal.Content>
-            <Modal.Actions>
-                <Button
-                    content="Create Game"
-                    labelPosition='right'
-                    icon='checkmark'
-                    onClick={submit}
-                    positive
-                />
-            </Modal.Actions>
-        </Modal>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Create a Game</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={submit}>
+                    <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="name">Name</Label>
+                            <Input 
+                                id="name"
+                                placeholder='name' 
+                                value={name}
+                                onChange={(e) => setName(e.target.value)} 
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="description">Description</Label>
+                            <Input 
+                                id="description"
+                                placeholder='description' 
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)} 
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="startDate">Start Date</Label>
+                            <Input 
+                                id="startDate"
+                                type='date' 
+                                placeholder='Start Date' 
+                                value={startDate || ''}
+                                onChange={(e) => setStartDate(e.target.value)} 
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button type="submit">Create Game</Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
     )
 }
 

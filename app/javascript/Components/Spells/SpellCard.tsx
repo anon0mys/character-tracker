@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
-// import { Card } from 'semantic-ui-react'
-import {
-    Card, CardHeader, CardBody, CardFooter,
-    Divider, Heading, Stack, Text, useDisclosure
-} from '@chakra-ui/react'
+import { Card, CardHeader, CardContent, CardFooter, CardDescription } from '../ui'
+import { Separator } from '../ui'
 import { ISpellType } from '../../Api'
 import SpellModal from './SpellModal'
 
@@ -12,25 +9,27 @@ interface SpellCardProps {
 }
 
 const SpellCard = ({ spell }: SpellCardProps) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <Card key={spell.id} variant='elevated' onClick={onOpen}>
-            <CardHeader>
-                <Heading>{spell.name}</Heading>
-            </CardHeader>
-            <CardBody>
-                <Stack>
-                    <Text as='i'>Level {spell.level}</Text>
-                    <Text as='i'>{spell.school}</Text>
-                </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-                <Text as='i'>{spell.archetypes.join(', ')}</Text>
-            </CardFooter>
-            <SpellModal spell={spell} open={isOpen} close={onClose} />
-        </Card>
+        <>
+            <Card key={spell.id} onClick={() => setIsOpen(true)} className="cursor-pointer hover:bg-accent transition-colors">
+                <CardHeader>
+                    <h3 className="text-lg font-semibold">{spell.name}</h3>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-1 text-sm italic">
+                        <p>Level {spell.level}</p>
+                        <p>{spell.school}</p>
+                    </div>
+                </CardContent>
+                <Separator />
+                <CardFooter>
+                    <p className="text-sm italic">{spell.archetypes.join(', ')}</p>
+                </CardFooter>
+            </Card>
+            <SpellModal spell={spell} opened={isOpen} onClose={() => setIsOpen(false)} />
+        </>
     )
 }
 

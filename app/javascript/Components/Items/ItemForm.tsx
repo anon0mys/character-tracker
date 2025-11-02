@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import {
-    Button, Checkbox, FormControl, FormLabel, Input, Modal, ModalContent, ModalFooter,
-    ModalHeader, ModalOverlay, Select, Stack,
-    NumberInput, NumberInputField, NumberInputStepper,
-    NumberIncrementStepper, NumberDecrementStepper, ModalBody
-} from '@chakra-ui/react'
-import { CheckIcon } from '@chakra-ui/icons'
+    Button, Checkbox, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+} from '../ui'
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '../ui/dialog'
+import { Check } from 'lucide-react'
 import { Client, IItemType, item_types, qualities, statuses } from '../../Api'
 import { useAuth } from '../../Auth'
 import { useError } from '../../Errors'
@@ -14,18 +18,6 @@ interface ItemFormProps {
     item?: IItemType
     open: boolean
     close: VoidFunction
-}
-
-const NumberField = (props) => {
-    return (
-        <NumberInput min={0} max={99999} {...props}>
-            <NumberInputField />
-            <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-            </NumberInputStepper>
-        </NumberInput>
-    )
 }
 
 const ItemForm = ({ item, open, close }: ItemFormProps) => {
@@ -70,132 +62,163 @@ const ItemForm = ({ item, open, close }: ItemFormProps) => {
         .catch(error => errors.setError(error))
     }
 
-    const itemTypeOptions = item_types.map(item_type => {
-        return <option key={item_type} value={item_type}>{item_type}</option>
-    })
-
-    const statusOptions = statuses.map(status => {
-        return <option key={status} value={status}>{status}</option>
-    })
-
-    const qualityOptions = qualities.map(quality => {
-        return <option key={quality} value={quality}>{quality}</option>
-    })
-
     return (
-        <Modal isOpen={open} onClose={close}>
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>Add to Spell List</ModalHeader>
-                <ModalBody>
-                    <Stack>
-                        <FormControl>
-                            <FormLabel>Name</FormLabel>
+        <Dialog open={open} onOpenChange={close}>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                    <DialogTitle>{item ? 'Edit Item' : 'Add Item'}</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={(e) => { e.preventDefault(); submit(); }}>
+                    <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="name">Name</Label>
                             <Input
+                                id="name"
                                 value={itemData.name}
                                 placeholder='Item name'
                                 onChange={e => setItemData({ ...itemData, name: e.target.value })}
                             />
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Description</FormLabel>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="description">Description</Label>
                             <Input
+                                id="description"
                                 value={itemData.description}
                                 placeholder='Item description'
                                 onChange={e => setItemData({ ...itemData, description: e.target.value })}
                             />
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Item Type</FormLabel>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="itemType">Item Type</Label>
                             <Select
                                 value={itemData.item_type}
-                                placeholder='Select item type'
-                                onChange={e => setItemData({ ...itemData, item_type: e.target.value })}
+                                onValueChange={(value) => setItemData({ ...itemData, item_type: value })}
                             >
-                                {itemTypeOptions}
+                                <SelectTrigger>
+                                    <SelectValue placeholder='Select item type' />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {item_types.map(item_type => (
+                                        <SelectItem key={item_type} value={item_type}>
+                                            {item_type}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
                             </Select>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Status</FormLabel>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="status">Status</Label>
                             <Select
                                 value={itemData.status}
-                                placeholder='Select item status'
-                                onChange={e => setItemData({ ...itemData, status: e.target.value })}
+                                onValueChange={(value) => setItemData({ ...itemData, status: value })}
                             >
-                                {statusOptions}
+                                <SelectTrigger>
+                                    <SelectValue placeholder='Select item status' />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {statuses.map(status => (
+                                        <SelectItem key={status} value={status}>
+                                            {status}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
                             </Select>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Quality</FormLabel>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="quality">Quality</Label>
                             <Select
                                 value={itemData.quality}
-                                placeholder='Select item quality'
-                                onChange={e => setItemData({ ...itemData, quality: e.target.value })}
+                                onValueChange={(value) => setItemData({ ...itemData, quality: value })}
                             >
-                                {qualityOptions}
+                                <SelectTrigger>
+                                    <SelectValue placeholder='Select item quality' />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {qualities.map(quality => (
+                                        <SelectItem key={quality} value={quality}>
+                                            {quality}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
                             </Select>
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Potential Damage</FormLabel>
-                            <NumberField
-                                defaultValue={0}
-                                value={itemData.potential_damage || 0}
-                                onChange={e => setItemData({ ...itemData, potential_damage: e })}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Total Charges</FormLabel>
-                            <NumberField
-                                defaultValue={0}
-                                value={itemData.total_charges || 0}
-                                onChange={e => setItemData({ ...itemData, total_charges: e })}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Value</FormLabel>
-                            <NumberField
-                                defaultValue={0}
-                                value={itemData.value || 0}
-                                onChange={e => setItemData({ ...itemData, value: e })}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Quantity Owned</FormLabel>
-                            <NumberField
-                                defaultValue={0}
-                                value={itemData.quantity || 0}
-                                onChange={e => setItemData({ ...itemData, quantity: e })}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Requires Attunement</FormLabel>
-                            <Checkbox
-                                isChecked={itemData.requires_attunement}
-                                onChange={e => setItemData({ ...itemData, requires_attunement: !itemData.requires_attunement })}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormLabel>Item AC Bonus</FormLabel>
-                            <NumberField
-                                defaultValue={0}
-                                value={itemData.ac || 0}
-                                onChange={e => setItemData({ ...itemData, ac: e })}
-                            />
-                        </FormControl>
-                    </Stack>
-                </ModalBody>
-                <ModalFooter>
-                    <Button
-                        leftIcon={<CheckIcon />}
-                        colorScheme='teal'
-                        variant='solid'
-                        onClick={submit}
-                    >
-                        Submit
-                    </Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="potentialDamage">Potential Damage</Label>
+                                <Input
+                                    id="potentialDamage"
+                                    type="number"
+                                    min={0}
+                                    max={99999}
+                                    value={itemData.potential_damage || 0}
+                                    onChange={e => setItemData({ ...itemData, potential_damage: parseInt(e.target.value) || 0 })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="totalCharges">Total Charges</Label>
+                                <Input
+                                    id="totalCharges"
+                                    type="number"
+                                    min={0}
+                                    max={99999}
+                                    value={itemData.total_charges || 0}
+                                    onChange={e => setItemData({ ...itemData, total_charges: parseInt(e.target.value) || 0 })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="value">Value</Label>
+                                <Input
+                                    id="value"
+                                    type="number"
+                                    min={0}
+                                    max={99999}
+                                    value={itemData.value || 0}
+                                    onChange={e => setItemData({ ...itemData, value: parseInt(e.target.value) || 0 })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="quantity">Quantity Owned</Label>
+                                <Input
+                                    id="quantity"
+                                    type="number"
+                                    min={0}
+                                    max={99999}
+                                    value={itemData.quantity || 0}
+                                    onChange={e => setItemData({ ...itemData, quantity: parseInt(e.target.value) || 0 })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="ac">Item AC Bonus</Label>
+                                <Input
+                                    id="ac"
+                                    type="number"
+                                    min={0}
+                                    max={99999}
+                                    value={itemData.ac || 0}
+                                    onChange={e => setItemData({ ...itemData, ac: parseInt(e.target.value) || 0 })}
+                                />
+                            </div>
+                            <div className="space-y-2 flex items-end">
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox
+                                        id="requiresAttunement"
+                                        checked={itemData.requires_attunement}
+                                        onCheckedChange={(checked) => setItemData({ ...itemData, requires_attunement: !!checked })}
+                                    />
+                                    <Label htmlFor="requiresAttunement" className="cursor-pointer">Requires Attunement</Label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button type="submit">
+                            <Check className="mr-2 h-4 w-4" />
+                            Submit
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
     )
 }
 

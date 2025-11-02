@@ -1,11 +1,9 @@
 import React from "react"
-import { Flex, NativeSelect, NumberInput, TextInput } from "@mantine/core"
-import { UseFormReturnType } from "@mantine/form"
-import { archetypes, ICharacterType } from "../../Api"
-
-interface CharacterBioProps {
-    form: UseFormReturnType<ICharacterType>
-}
+import { useFormContext } from "react-hook-form"
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui"
+import { Input } from "../ui"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui"
+import { archetypes } from "../../Api"
 
 const alignmentOptions = [
     {label: 'Lawful Good', value: 'LG'},
@@ -20,40 +18,118 @@ const alignmentOptions = [
     {label: 'Unaligned', value: 'UN'},
 ]
 
-const CharacterBioForm = ({form}: CharacterBioProps) => {
+const CharacterBioForm = () => {
+    const form = useFormContext()
+    
     return (
-        <Flex direction="row" gap="md" justify="center">
-            <TextInput
-                label="Name"
-                placeholder="Your Character Name"
-                {...form.getInputProps('name')}
+        <div className="flex flex-wrap gap-4">
+            <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                            <Input placeholder="Your Character Name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-            <TextInput
-                label="Race"
-                placeholder="Your Race"
-                {...form.getInputProps('race')}
+            <FormField
+                control={form.control}
+                name="race"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>Race</FormLabel>
+                        <FormControl>
+                            <Input placeholder="Your Race" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-            <NativeSelect
-                label="Class"
-                data={['Select Class', ...archetypes]}
-                {...form.getInputProps('archetype')}
+            <FormField
+                control={form.control}
+                name="archetype"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>Class</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Class" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                {archetypes.map(archetype => (
+                                    <SelectItem key={archetype} value={archetype}>
+                                        {archetype}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-            <TextInput
-                label="Background"
-                placeholder="Your Background"
-                {...form.getInputProps('background')}
+            <FormField
+                control={form.control}
+                name="background"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>Background</FormLabel>
+                        <FormControl>
+                            <Input placeholder="Your Background" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-            <NativeSelect
-                label="Alignment"
-                data={['Select Alignment', ...alignmentOptions]}
-                {...form.getInputProps('alignment')}
+            <FormField
+                control={form.control}
+                name="alignment"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>Alignment</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Alignment" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                {alignmentOptions.map(alignment => (
+                                    <SelectItem key={alignment.value} value={alignment.value}>
+                                        {alignment.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-            <NumberInput
-                label="Age"
-                placeholder="20"
-                {...form.getInputProps('age')}
+            <FormField
+                control={form.control}
+                name="age"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>Age</FormLabel>
+                        <FormControl>
+                            <Input
+                                type="number"
+                                placeholder="20"
+                                {...field}
+                                value={field.value || ''}
+                                onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-        </Flex>
+        </div>
     )
 }
 

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Modal } from 'semantic-ui-react'
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '../ui/dialog'
 import { Client, ISpellListType, ISpellType } from '../../Api'
 import { useAuth } from '../../Auth'
 import { useError } from '../../Errors'
@@ -7,7 +12,7 @@ import { useError } from '../../Errors'
 interface Props {
     spellList: ISpellListType
     open: boolean
-    setOpen: Function
+    setOpen: (open: boolean) => void
 }
 
 const SpellListModal = ({spellList, open, setOpen}: Props) => {
@@ -17,30 +22,31 @@ const SpellListModal = ({spellList, open, setOpen}: Props) => {
     const errors = useError()
 
     useEffect(() => {
-        const path = `/characters/${spellList.character_id}/spell_lists/${spellList.id}`
-        client.get({ path: path, token: auth.getToken() })
-            .then(response => setSpells(response.data.spells))
-            .catch(error => errors.setError(error))
-    }, [])
+        if (open) {
+            const path = `/characters/${spellList.character_id}/spell_lists/${spellList.id}`
+            client.get({ path: path, token: auth.getToken() })
+                .then(response => setSpells(response.data.spells))
+                .catch(error => errors.setError(error))
+        }
+    }, [open])
 
-    const spellsDisplay = spells.map(spell => {
-        return <li>{spell.name}</li>
+    const spellsDisplay = spells.map((spell, index) => {
+        return <li key={spell.id || index}>{spell.name}</li>
     })
 
     return (
-        <Modal
-            closeIcon
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            open={open}
-        >
-            <Modal.Header>{spellList.name}</Modal.Header>
-            <Modal.Content>
-                <ul>
-                    {spellsDisplay}
-                </ul>
-            </Modal.Content>
-        </Modal>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{spellList.name}</DialogTitle>
+                </DialogHeader>
+                <div className="py-4">
+                    <ul className="list-disc list-inside space-y-1">
+                        {spellsDisplay.length > 0 ? spellsDisplay : <li className="text-muted-foreground">No spells in this list</li>}
+                    </ul>
+                </div>
+            </DialogContent>
+        </Dialog>
     )
 }
 

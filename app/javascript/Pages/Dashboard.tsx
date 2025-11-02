@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Grid, Header } from 'semantic-ui-react'
+import { Button } from '../Components/ui'
 import { useAuth } from '../Auth'
 import { useError } from '../Errors'
 import { Client, IGameType } from '../Api'
@@ -47,11 +47,17 @@ const Dashboard = () => {
 
     return (
         <>
-            <Grid>
-                <Grid.Column width={15}><Header size='large'>Games</Header></Grid.Column>
-                <Grid.Column width={1}><Button onClick={() => setOpen(true)}>Create Game</Button></Grid.Column>
-            </Grid>
-            {gameCards ? <Card.Group>{gameCards}</Card.Group> : <p>You are not in any games</p>}
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold">Games</h1>
+                <Button onClick={() => setOpen(true)}>Create Game</Button>
+            </div>
+            {gameCards.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {gameCards}
+                </div>
+            ) : (
+                <p className="text-muted-foreground">You are not in any games</p>
+            )}
             <GameForm open={open} setOpen={setOpen} onSubmit={addGame} />
         </>
     )

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
-import { Button, Grid, Group, NativeSelect, Select, Space, Text, Title } from '@mantine/core';
+import { Button } from '../Components/ui';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../Components/ui';
 import { Client, IAttackType, ICharacterType, ISpellListType } from '../Api';
 import { useAuth } from '../Auth';
 import { SpellListForm } from '../Components/Characters';
 import { useError } from '../Errors';
 import SpellTable from '../Components/Spells/SpellTable';
-import { useDisclosure } from '@mantine/hooks';
 import AttackForm from '../Components/Characters/AttackForm';
 
 const CharacterDisplay = () => {
@@ -14,6 +14,7 @@ const CharacterDisplay = () => {
     const [spellListFormOpen, setSpellListFormOpen] = useState(false)
     const [spellLists, setSpellLists] = useState<ISpellListType[]>([])
     const [currentSpellList, setCurrentSpellList] = useState<ISpellListType>()
+    const [attackModalOpen, setAttackModalOpen] = useState(false)
     const [character, setCharacter] = useState<ICharacterType>({
         name: '',
         race: '',
@@ -47,13 +48,13 @@ const CharacterDisplay = () => {
     const auth = useAuth()
     const client = Client()
     const errors = useError()
-    const [attackModalOpen, { open, close }] = useDisclosure(false);
 
     useEffect(() => {
         client.get({ path: `/characters/${id}`, token: auth.getToken() })
         .then(response => {
             setCharacter(response.data)
             setCurrentSpellList(response.data.current_spell_list)
+            setAttacks(response.data.attacks || [])
         })
         .catch(error => errors.setError(error))
     }, [id])
@@ -68,203 +69,221 @@ const CharacterDisplay = () => {
         setSpellLists([...spellLists, spellList])
     }
 
-    const selectSpellList = (event) => {
-        let spellList = spellLists.find(spellList => spellList.id == event.target.value)
+    const selectSpellList = (value: string) => {
+        if (value === 'Set Current list') return
+        let spellList = spellLists.find(spellList => spellList.id === value)
         const data = {character: {current_spell_list_id: spellList && spellList.id}}
         client.patch({ path: `/characters/${id}`, payload: data, token: auth.getToken() })
         .then(response => setCurrentSpellList(spellList))
+        .catch(error => errors.setError(error))
     }
 
-    const closeAttackForm = (attack) => {
-        setAttacks([attacks, attack])
-        close()
+    const closeAttackForm = (attack: IAttackType | undefined) => {
+        if (attack) {
+            setAttacks([...attacks, attack])
+        }
+        setAttackModalOpen(false)
     }
 
     const spellListOptions = spellLists.map(spellList => {
         return { label: spellList.name, value: spellList.id ? spellList.id.toString() : '' }
     })
 
-    const attackRows = character.attacks.map(attack => {
+    const attackRows = character.attacks.map((attack, index) => {
         return (
-            <Group>
-                <Text>{attack.name}</Text>
-                <Text>{attack.bonus}</Text>
-                <Text>{attack.description}</Text>
-            </Group>
+            <div key={attack.id || index} className="grid grid-cols-12 gap-4 py-2 border-b">
+                <div className="col-span-3">
+                    <span>{attack.name}</span>
+                </div>
+                <div className="col-span-2">
+                    <span>{attack.bonus}</span>
+                </div>
+                <div className="col-span-4">
+                    <span>{attack.description}</span>
+                </div>
+            </div>
         )
     })
 
     return (
         <>
-            <Title order={3}>Character Info</Title>
-            <Space h='lg' />
-            <Grid>
-                <Grid.Col span={4}>
-                    <Text>Name: {character.name}</Text>
-                    <Text>Race: {character.race}</Text>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                    <Text>Class: {character.archetype} {character.level}</Text>
-                    <Text>Background: {character.background}</Text>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                    <Text>Alignment: {character.alignment}</Text>
-                    <Text>Age: {character.age}</Text>
-                </Grid.Col>
-            </Grid>
-            <Space h="xl" />
-            <Grid>
-                <Grid.Col span={4}>
-                    <Grid>
-                        <Grid.Col span={3}>
-                            <Space h="lg" />
-                            <Text>Strength</Text>
-                            <Text>Dexterity</Text>
-                            <Text>Constitution</Text>
-                            <Text>Intelligence</Text>
-                            <Text>Wisdom</Text>
-                            <Text>Charisma</Text>
-                        </Grid.Col>
-                        <Grid.Col span={2}>
-                            <Text td="underline">Level</Text>
-                            <Group>
-                                <Text>{character.strength.value}</Text>
-                                <Text size='xs'>+{character.strength.modifier}</Text>
-                            </Group>
-                            <Group>
-                                <Text>{character.dexterity.value}</Text>
-                                <Text size='xs'>+{character.dexterity.modifier}</Text>
-                            </Group>
-                            <Group>
-                                <Text>{character.constitution.value}</Text>
-                                <Text size='xs'>+{character.constitution.modifier}</Text>
-                            </Group>
-                            <Group>
-                                <Text>{character.intelligence.value}</Text>
-                                <Text size='xs'>+{character.intelligence.modifier}</Text>
-                            </Group>
-                            <Group>
-                                <Text>{character.wisdom.value}</Text>
-                                <Text size='xs'>+{character.wisdom.modifier}</Text>
-                            </Group>
-                            <Group>
-                                <Text>{character.charisma.value}</Text>
-                                <Text size='xs'>+{character.charisma.modifier}</Text>
-                            </Group>
-                        </Grid.Col>
-                        <Grid.Col span={3}>
-                            <Text td="underline">Saves</Text>
-                            <Group>
-                                <Text>+{character.strength.save}</Text>
-                                {character.proficiencies.includes('strength') && <Text size='xs'>(Proficient)</Text>}
-                            </Group>
-                            <Group>
-                                <Text>+{character.dexterity.save}</Text>
-                                {character.proficiencies.includes('dexterity') && <Text size='xs'>(Proficient)</Text>}
-                            </Group>
-                            <Group>
-                                <Text>+{character.constitution.save}</Text>
-                                {character.proficiencies.includes('constitution') && <Text size='xs'>(Proficient)</Text>}
-                            </Group>
-                            <Group>
-                                <Text>+{character.intelligence.save}</Text>
-                                {character.proficiencies.includes('intelligence') && <Text size='xs'>(Proficient)</Text>}
-                            </Group>
-                            <Group>
-                                <Text>+{character.wisdom.save}</Text>
-                                {character.proficiencies.includes('wisdom') && <Text size='xs'>(Proficient)</Text>}
-                            </Group>
-                            <Group>
-                                <Text>+{character.charisma.save}</Text>
-                                {character.proficiencies.includes('charisma') && <Text size='xs'>(Proficient)</Text>}
-                            </Group>
-                        </Grid.Col>
-                    </Grid>
-                </Grid.Col>
-                <Grid.Col span={3}>
-                    <Group>
-                        <Text>Armor Class:</Text>
-                        <Text>{character.ac}</Text>
-                    </Group>
-                    <Group>
-                        <Text>Initiative:</Text>
-                        <Text>+{character.initiative}</Text>
-                    </Group>
-                    <Group>
-                        <Text>Speed:</Text>
-                        <Text>{character.speed}</Text>
-                    </Group>
-                    <Group>
-                        <Text>Perception:</Text>
-                        <Text>{character.perception}</Text>
-                    </Group>
-                    <Group>
-                        <Text>Proficiency Bonus:</Text>
-                        <Text>+{character.proficiency_bonus}</Text>
-                    </Group>
-                    <Group>
-                        <Text>Spell Attack Mod:</Text>
-                        <Text>+{character.spell_attack_mod}</Text>
-                    </Group>
-                    <Group>
-                        <Text>Spell Save DC:</Text>
-                        <Text>{character.spell_save_dc}</Text>
-                    </Group>
-                    <Group>
-                        <Text>Concentration Check:</Text>
-                        <Text>+{character.concentration}</Text>
-                    </Group>
-                </Grid.Col>
-            </Grid>
-            <Space h="lg" />
-            <Group>
-                <Title order={3}>Attacks</Title>
-                <Button>Add Attack</Button>
-            </Group>
-            <Text>Attacks Per Turn: {2}</Text>
-            <Grid>
-                <Grid.Col span={3}>
-                    <Text td="underline">Attack</Text>
-                </Grid.Col>
-                <Grid.Col span={2}>
-                    <Text td="underline">Bonus</Text>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                    <Text td="underline">Damage & Notes (simple weapons)</Text>
-                </Grid.Col>
-            </Grid>
+            <h3 className="text-xl font-semibold mb-4">Character Info</h3>
+            <div className="grid grid-cols-12 gap-4 mb-6">
+                <div className="col-span-4">
+                    <p>Name: {character.name}</p>
+                    <p>Race: {character.race}</p>
+                </div>
+                <div className="col-span-4">
+                    <p>Class: {character.archetype} {character.level}</p>
+                    <p>Background: {character.background}</p>
+                </div>
+                <div className="col-span-4">
+                    <p>Alignment: {character.alignment}</p>
+                    <p>Age: {character.age}</p>
+                </div>
+            </div>
+            <div className="grid grid-cols-12 gap-4 mb-6">
+                <div className="col-span-4">
+                    <div className="grid grid-cols-5 gap-2">
+                        <div className="col-span-3">
+                            <div className="pt-6 space-y-2">
+                                <p>Strength</p>
+                                <p>Dexterity</p>
+                                <p>Constitution</p>
+                                <p>Intelligence</p>
+                                <p>Wisdom</p>
+                                <p>Charisma</p>
+                            </div>
+                        </div>
+                        <div className="col-span-2">
+                            <p className="underline">Level</p>
+                            <div className="flex items-center gap-2">
+                                <span>{character.strength.value}</span>
+                                <span className="text-xs">+{character.strength.modifier}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>{character.dexterity.value}</span>
+                                <span className="text-xs">+{character.dexterity.modifier}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>{character.constitution.value}</span>
+                                <span className="text-xs">+{character.constitution.modifier}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>{character.intelligence.value}</span>
+                                <span className="text-xs">+{character.intelligence.modifier}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>{character.wisdom.value}</span>
+                                <span className="text-xs">+{character.wisdom.modifier}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>{character.charisma.value}</span>
+                                <span className="text-xs">+{character.charisma.modifier}</span>
+                            </div>
+                        </div>
+                        <div className="col-span-3">
+                            <p className="underline">Saves</p>
+                            <div className="flex items-center gap-2">
+                                <span>+{character.strength.save}</span>
+                                {character.proficiencies.includes('strength') && <span className="text-xs">(Proficient)</span>}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>+{character.dexterity.save}</span>
+                                {character.proficiencies.includes('dexterity') && <span className="text-xs">(Proficient)</span>}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>+{character.constitution.save}</span>
+                                {character.proficiencies.includes('constitution') && <span className="text-xs">(Proficient)</span>}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>+{character.intelligence.save}</span>
+                                {character.proficiencies.includes('intelligence') && <span className="text-xs">(Proficient)</span>}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>+{character.wisdom.save}</span>
+                                {character.proficiencies.includes('wisdom') && <span className="text-xs">(Proficient)</span>}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>+{character.charisma.save}</span>
+                                {character.proficiencies.includes('charisma') && <span className="text-xs">(Proficient)</span>}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-span-3">
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                            <span>Armor Class:</span>
+                            <span>{character.ac}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span>Initiative:</span>
+                            <span>+{character.initiative}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span>Speed:</span>
+                            <span>{character.speed}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span>Perception:</span>
+                            <span>{character.perception}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span>Proficiency Bonus:</span>
+                            <span>+{character.proficiency_bonus}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span>Spell Attack Mod:</span>
+                            <span>+{character.spell_attack_mod}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span>Spell Save DC:</span>
+                            <span>{character.spell_save_dc}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span>Concentration Check:</span>
+                            <span>+{character.concentration}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="flex items-center gap-4 mb-4">
+                <h3 className="text-xl font-semibold">Attacks</h3>
+                <Button onClick={() => setAttackModalOpen(true)}>Add Attack</Button>
+            </div>
+            <p className="mb-4">Attacks Per Turn: 2</p>
+            <div className="grid grid-cols-12 gap-4 mb-2 pb-2 border-b">
+                <div className="col-span-3">
+                    <span className="underline">Attack</span>
+                </div>
+                <div className="col-span-2">
+                    <span className="underline">Bonus</span>
+                </div>
+                <div className="col-span-4">
+                    <span className="underline">Damage & Notes (simple weapons)</span>
+                </div>
+            </div>
             {attackRows}
-            <AttackForm opened={attackModalOpen} onClose={closeAttackForm} />
-            <Space h="lg" />
-            <Group>
-                <Title order={3}>HP and Abilities</Title>
-            </Group>
-            <Grid>
-                <Grid.Col span={3}>
-                    <Text>Hit Points: {character.total_hitpoints}</Text>
-                    <Text>Current Hit Points: {character.current_hitpoints} [{character.injury_condition}]</Text>
-                </Grid.Col>
-                <Grid.Col span={3}>
-                    <Text>Temporary Hit Points: 0</Text>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                    <Text>Rest Recovery ({character.hit_die} + {character.constitution.modifier}): 5</Text>
-                    <Space h="lg" />
-                    <Text>Abilities go here (some need counters)</Text>
-                </Grid.Col>
-            </Grid>
-            <Space h="lg" />
-            <Group>
-                <Title order={3}>Current Spells: {currentSpellList && currentSpellList.name}</Title>
-                <NativeSelect
-                    variant="unstyled"
-                    data={['Set Current list', ...spellListOptions]}
-                    value={currentSpellList && currentSpellList.id}
-                    onChange={selectSpellList}
-                />
+            <AttackForm opened={attackModalOpen} onClose={closeAttackForm} attack={undefined} />
+            <div className="flex items-center gap-4 mb-4 mt-6">
+                <h3 className="text-xl font-semibold">HP and Abilities</h3>
+            </div>
+            <div className="grid grid-cols-12 gap-4 mb-6">
+                <div className="col-span-3">
+                    <p>Hit Points: {character.total_hitpoints}</p>
+                    <p>Current Hit Points: {character.current_hitpoints} [{character.injury_condition}]</p>
+                </div>
+                <div className="col-span-3">
+                    <p>Temporary Hit Points: 0</p>
+                </div>
+                <div className="col-span-4">
+                    <p>Rest Recovery ({character.hit_die} + {character.constitution.modifier}): 5</p>
+                    <div className="mt-4">
+                        <p>Abilities go here (some need counters)</p>
+                    </div>
+                </div>
+            </div>
+            <div className="flex items-center gap-4 mb-4">
+                <h3 className="text-xl font-semibold">Current Spells: {currentSpellList && currentSpellList.name}</h3>
+                <Select
+                    value={currentSpellList?.id?.toString() || 'Set Current list'}
+                    onValueChange={selectSpellList}
+                >
+                    <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="Set Current list" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="Set Current list">Set Current list</SelectItem>
+                        {spellListOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
                 <Button onClick={() => setSpellListFormOpen(true)}>Add Spell List</Button>
-            </Group>
-            <Space h="lg" />
+            </div>
             {currentSpellList && <SpellTable spells={currentSpellList.spells} />}
             <SpellListForm characterId={character.id} open={spellListFormOpen} setOpen={setSpellListFormOpen} onSubmit={addSpellList} />
         </>
