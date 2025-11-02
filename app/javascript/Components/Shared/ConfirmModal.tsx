@@ -24,23 +24,25 @@ const ConfirmModal = ({copy, open, setOpen, onSubmit, children}: ConfirmModalPro
     }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
+            <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle>{copy}</DialogTitle>
+                    <DialogTitle className="text-neon-cyan">{copy}</DialogTitle>
                     <DialogDescription>
                         {children}
                     </DialogDescription>
                 </DialogHeader>
-                <DialogFooter>
+                <DialogFooter className="gap-2 border-t border-primary/20 pt-4">
                     <Button
                         variant="outline"
                         onClick={() => setOpen(false)}
+                        className="border-primary/30"
                     >
                         Cancel
                     </Button>
                     <Button
                         variant="destructive"
                         onClick={submit}
+                        className="neon-glow-purple"
                     >
                         Confirm
                     </Button>

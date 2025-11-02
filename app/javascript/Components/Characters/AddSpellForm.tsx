@@ -77,9 +77,9 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
 
     return (
         <Dialog open={opened} onOpenChange={onClose}>
-            <DialogContent>
+            <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle>Add Spell to List</DialogTitle>
+                    <DialogTitle className="text-neon-cyan">Add Spell to List</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                     <div className="space-y-2">
@@ -115,10 +115,11 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
                         </div>
                     )}
                 </div>
-                <DialogFooter>
+                <DialogFooter className="border-t border-primary/20 pt-4">
                     <Button
                         disabled={missingData}
                         onClick={submit}
+                        className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow disabled:opacity-50 disabled:neon-glow-none"
                     >
                         <Check className="mr-2 h-4 w-4" />
                         Add to List

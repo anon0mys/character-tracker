@@ -77,9 +77,9 @@ const AttackForm = ({ attack, opened, onClose }: AttackFormProps) => {
 
     return (
         <Dialog open={opened} onOpenChange={handleClose}>
-            <DialogContent>
+            <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle>Attack</DialogTitle>
+                    <DialogTitle className="text-neon-cyan">Attack</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
@@ -122,8 +122,9 @@ const AttackForm = ({ attack, opened, onClose }: AttackFormProps) => {
                                 </FormItem>
                             )}
                         />
-                        <DialogFooter>
-                            <Button type="submit">Save</Button>
+                        <DialogFooter className="gap-2 border-t border-primary/20 pt-4">
+                            <Button type="button" variant="outline" onClick={handleClose} className="border-primary/30">Cancel</Button>
+                            <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Save</Button>
                         </DialogFooter>
                     </form>
                 </Form>

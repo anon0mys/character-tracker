@@ -26,19 +26,21 @@ const SpellTable = ({spells}: SpellTableProps) => {
 
     return (
         <>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Level</TableHead>
-                        <TableHead>School</TableHead>
-                        <TableHead>Casting Time</TableHead>
-                        <TableHead>Range</TableHead>
-                        <TableHead>Archetypes</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>{rows}</TableBody>
-            </Table>
+            <div className="bg-card/80 backdrop-blur-sm rounded-lg border border-primary/30 shadow-lg overflow-hidden">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Level</TableHead>
+                            <TableHead>School</TableHead>
+                            <TableHead>Casting Time</TableHead>
+                            <TableHead>Range</TableHead>
+                            <TableHead>Archetypes</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>{rows}</TableBody>
+                </Table>
+            </div>
             {currentSpell && <SpellModal spell={currentSpell} opened={opened} onClose={closeModal} />}
         </>
     )

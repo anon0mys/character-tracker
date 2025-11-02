@@ -47,16 +47,32 @@ const Dashboard = () => {
 
     return (
         <>
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Games</h1>
-                <Button onClick={() => setOpen(true)}>Create Game</Button>
+            <div className="flex justify-between items-center mb-8">
+                <div>
+                    <h1 className="text-4xl font-bold tracking-tight mb-2 text-neon-cyan">Games</h1>
+                    <p className="text-muted-foreground">Manage your D&D campaigns and adventures</p>
+                </div>
+                <Button onClick={() => setOpen(true)} size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Create Game</Button>
             </div>
             {gameCards.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {gameCards}
                 </div>
             ) : (
-                <p className="text-muted-foreground">You are not in any games</p>
+                <div className="flex flex-col items-center justify-center py-16 px-4">
+                    <div className="text-center space-y-4">
+                        <div className="mx-auto h-24 w-24 rounded-full bg-muted flex items-center justify-center">
+                            <svg className="h-12 w-12 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold mb-1">No games yet</h3>
+                            <p className="text-muted-foreground mb-4">Get started by creating your first game</p>
+                            <Button onClick={() => setOpen(true)}>Create Your First Game</Button>
+                        </div>
+                    </div>
+                </div>
             )}
             <GameForm open={open} setOpen={setOpen} onSubmit={addGame} />
         </>

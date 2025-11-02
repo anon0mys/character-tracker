@@ -79,15 +79,28 @@ const CharacterForm = () => {
     }
 
     return (
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-5xl space-y-8">
+            <div>
+                <h1 className="text-4xl font-bold tracking-tight mb-2 text-neon-cyan">Create Character</h1>
+                <p className="text-muted-foreground">Fill out your character's information below</p>
+            </div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-                    <CharacterBioForm />
-                    <CharacterStatsForm />
-                    <AbilityScoresForm />
+                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+                    <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6">
+                        <h2 className="text-xl font-bold mb-6 pb-2 border-b border-primary/20 text-neon-cyan">Character Bio</h2>
+                        <CharacterBioForm />
+                    </div>
+                    <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6">
+                        <h2 className="text-xl font-bold mb-6 pb-2 border-b border-primary/20 text-neon-cyan">Stats & Proficiencies</h2>
+                        <CharacterStatsForm />
+                    </div>
+                    <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6">
+                        <h2 className="text-xl font-bold mb-6 pb-2 border-b border-primary/20 text-neon-cyan">Ability Scores</h2>
+                        <AbilityScoresForm />
+                    </div>
 
-                    <div className="flex justify-end">
-                        <Button type="submit">Submit</Button>
+                    <div className="flex justify-end gap-4 pt-4 border-t border-primary/20">
+                        <Button type="submit" size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Create Character</Button>
                     </div>
                 </form>
             </Form>

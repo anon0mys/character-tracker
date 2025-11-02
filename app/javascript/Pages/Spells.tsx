@@ -144,38 +144,41 @@ const Spells = () => {
 
     return (
         <>
-            <h1 className="text-3xl font-bold mb-6">Spells</h1>
-            <div className="flex flex-wrap gap-2 py-5">
-                <div className="relative flex-1 min-w-[200px]">
+            <div className="mb-8">
+                <h1 className="text-4xl font-bold tracking-tight mb-2 text-neon-cyan">Spells</h1>
+                <p className="text-muted-foreground">Browse and search D&D spells</p>
+            </div>
+            <div className="flex flex-wrap gap-3 mb-6">
+                <div className="relative flex-1 min-w-[250px]">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder="Search"
+                        placeholder="Search spells..."
                         value={search}
                         onChange={handleSearchChange}
-                        className="pl-9 pr-9"
+                        className="pl-9 pr-9 h-11"
                     />
                     {search && (
                         <X 
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground cursor-pointer" 
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors" 
                             onClick={() => setSearch('')} 
                         />
                     )}
                 </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline">Archetype</Button>
+                        <Button variant="outline" className="shadow-sm">Archetype</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>{archetypeMenuItems}</DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline">Level</Button>
+                        <Button variant="outline" className="shadow-sm">Level</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>{levelMenuItems}</DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline">School</Button>
+                        <Button variant="outline" className="shadow-sm">School</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>{schoolMenuItems}</DropdownMenuContent>
                 </DropdownMenu>

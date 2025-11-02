@@ -36,21 +36,32 @@ const CharacterCard = ({character, deleteCharacter}: CharacterCardProps) => {
 
     return (
         <Link to={`/characters/${character.id}`}>
-            <Card key={character.id} className="cursor-pointer hover:bg-accent transition-colors">
-                <CardHeader>
-                    <div className="flex justify-between items-center">
-                        <h3 className="text-lg font-semibold">{character.name}</h3>
+            <Card key={character.id} className="cursor-pointer hover:border-primary/50 transition-all duration-300 border-2 border-primary/20 bg-card/80 backdrop-blur-sm hover:neon-glow group overflow-hidden h-full">
+                <CardHeader className="pb-3">
+                    <div className="flex justify-between items-start">
+                        <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-neon-cyan">{character.name}</h3>
                         <button 
                             onClick={openDeleteModal}
-                            className="text-muted-foreground hover:text-destructive"
+                            className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10 transition-colors z-10"
                         >
                             <Trash2 className="h-5 w-5" />
                         </button>
                     </div>
                 </CardHeader>
-                <CardContent>
-                    <CardDescription>{character.archetype}</CardDescription>
-                    <CardDescription className="mt-1">Level {character.level}</CardDescription>
+                <CardContent className="space-y-2">
+                    <div className="flex items-center gap-2">
+                        <span className="px-2 py-1 bg-primary/20 text-primary rounded-md text-sm font-semibold neon-glow">
+                            {character.archetype}
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                        <span className="font-medium text-muted-foreground">Level</span>
+                        <span className="font-semibold text-primary">{character.level}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                        <span className="font-medium text-muted-foreground">Race</span>
+                        <span>{character.race}</span>
+                    </div>
                 </CardContent>
             </Card>
             <ConfirmModal

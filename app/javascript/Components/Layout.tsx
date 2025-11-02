@@ -8,15 +8,20 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <>
-            <div className="grid grid-cols-[1fr_4fr_1fr] justify-items-center py-5">
-                <div />
-                <h1 className="text-2xl font-bold">{game ? game.name : 'Dungeon Notes'}</h1>
-                <TopNav />
-            </div>
+            <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-card/80 backdrop-blur-xl supports-[backdrop-filter]:bg-card/60">
+                <div className="container mx-auto px-4">
+                    <div className="flex h-16 items-center justify-between">
+                        <h1 className="text-2xl font-bold text-neon-cyan tracking-tight">
+                            {game ? game.name : 'Dungeon Tracker'}
+                        </h1>
+                        <TopNav />
+                    </div>
+                </div>
+            </header>
             <ErrorBanner />
-            <div className='content'>
+            <main className="container mx-auto px-4 py-8 max-w-7xl">
                 {children}
-            </div>
+            </main>
         </>
     )
 }

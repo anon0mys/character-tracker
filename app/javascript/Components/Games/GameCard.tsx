@@ -35,21 +35,28 @@ const GameCard = ({ game, deleteGame }: GameCardProps) => {
     }
 
     return (
-        <Card key={game.id} onClick={setGame} className="cursor-pointer hover:bg-accent transition-colors">
-            <CardHeader>
-                <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold">{game.name}</h3>
+        <Card key={game.id} onClick={setGame} className="cursor-pointer hover:border-primary/50 transition-all duration-300 border-2 border-primary/20 bg-card/80 backdrop-blur-sm hover:neon-glow group overflow-hidden">
+            <CardHeader className="pb-3">
+                <div className="flex justify-between items-start">
+                    <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-neon-cyan">{game.name}</h3>
                     <button 
                         onClick={openDeleteModal}
-                        className="text-muted-foreground hover:text-destructive"
+                        className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10 transition-colors z-10"
                     >
                         <Trash2 className="h-5 w-5" />
                     </button>
                 </div>
             </CardHeader>
-            <CardContent>
-                <CardDescription>Start Date: {game.start_date || 'N/A'}</CardDescription>
-                <CardDescription className="mt-2">{game.description}</CardDescription>
+            <CardContent className="space-y-2">
+                {game.start_date && (
+                    <div className="flex items-center gap-2 text-sm">
+                        <span className="font-medium text-muted-foreground">Start Date:</span>
+                        <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium">{game.start_date}</span>
+                    </div>
+                )}
+                {game.description && (
+                    <p className="text-sm text-muted-foreground line-clamp-2">{game.description}</p>
+                )}
             </CardContent>
             <ConfirmModal
                 copy={`Delete ${game.name}`}

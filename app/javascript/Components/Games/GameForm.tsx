@@ -39,28 +39,31 @@ const GameForm = ({ open, setOpen, onSubmit }: GameFormProps) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
+            <DialogContent className="sm:max-w-[500px] border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle>Create a Game</DialogTitle>
+                    <DialogTitle className="text-2xl text-neon-cyan">Create a Game</DialogTitle>
+                    <p className="text-sm text-muted-foreground mt-1">Start a new D&D campaign or adventure</p>
                 </DialogHeader>
                 <form onSubmit={submit}>
-                    <div className="space-y-4 py-4">
+                    <div className="space-y-5 py-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="name">Game Name</Label>
                             <Input 
                                 id="name"
-                                placeholder='name' 
+                                placeholder='Enter game name' 
                                 value={name}
-                                onChange={(e) => setName(e.target.value)} 
+                                onChange={(e) => setName(e.target.value)}
+                                className="h-11"
                             />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="description">Description</Label>
                             <Input 
                                 id="description"
-                                placeholder='description' 
+                                placeholder='Enter game description' 
                                 value={description}
-                                onChange={(e) => setDescription(e.target.value)} 
+                                onChange={(e) => setDescription(e.target.value)}
+                                className="h-11"
                             />
                         </div>
                         <div className="space-y-2">
@@ -70,12 +73,14 @@ const GameForm = ({ open, setOpen, onSubmit }: GameFormProps) => {
                                 type='date' 
                                 placeholder='Start Date' 
                                 value={startDate || ''}
-                                onChange={(e) => setStartDate(e.target.value)} 
+                                onChange={(e) => setStartDate(e.target.value)}
+                                className="h-11"
                             />
                         </div>
                     </div>
-                    <DialogFooter>
-                        <Button type="submit">Create Game</Button>
+                    <DialogFooter className="gap-2">
+                        <Button type="button" variant="outline" onClick={() => setOpen(false)} className="border-primary/30">Cancel</Button>
+                        <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Create Game</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

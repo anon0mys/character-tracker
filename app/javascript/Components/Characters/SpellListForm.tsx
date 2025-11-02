@@ -41,9 +41,9 @@ const SpellListForm = ({ characterId, open, setOpen, onSubmit }: SpellListFormPr
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
+            <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle>Create a Spell List</DialogTitle>
+                    <DialogTitle className="text-neon-cyan">Create a Spell List</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={submit}>
                     <div className="space-y-4 py-4">
@@ -51,14 +51,16 @@ const SpellListForm = ({ characterId, open, setOpen, onSubmit }: SpellListFormPr
                             <Label htmlFor="name">Name</Label>
                             <Input 
                                 id="name"
-                                placeholder='name' 
+                                placeholder='Enter spell list name' 
                                 value={name}
-                                onChange={(e) => setName(e.target.value)} 
+                                onChange={(e) => setName(e.target.value)}
+                                className="h-11"
                             />
                         </div>
                     </div>
-                    <DialogFooter>
-                        <Button type="submit">Create Spell List</Button>
+                    <DialogFooter className="gap-2 border-t border-primary/20 pt-4">
+                        <Button type="button" variant="outline" onClick={() => setOpen(false)} className="border-primary/30">Cancel</Button>
+                        <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Create Spell List</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

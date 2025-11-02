@@ -64,9 +64,9 @@ const ItemForm = ({ item, open, close }: ItemFormProps) => {
 
     return (
         <Dialog open={open} onOpenChange={close}>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle>{item ? 'Edit Item' : 'Add Item'}</DialogTitle>
+                    <DialogTitle className="text-neon-cyan">{item ? 'Edit Item' : 'Add Item'}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={(e) => { e.preventDefault(); submit(); }}>
                     <div className="space-y-4 py-4">
@@ -210,8 +210,9 @@ const ItemForm = ({ item, open, close }: ItemFormProps) => {
                             </div>
                         </div>
                     </div>
-                    <DialogFooter>
-                        <Button type="submit">
+                    <DialogFooter className="gap-2 border-t border-primary/20 pt-4">
+                        <Button type="button" variant="outline" onClick={close} className="border-primary/30">Cancel</Button>
+                        <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">
                             <Check className="mr-2 h-4 w-4" />
                             Submit
                         </Button>

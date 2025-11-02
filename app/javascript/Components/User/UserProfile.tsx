@@ -25,30 +25,34 @@ const UserProfile = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <button className="focus:outline-none">
-                    <Avatar>
-                        <AvatarFallback>{userInitials}</AvatarFallback>
+                <button className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full transition-all hover:ring-2 hover:ring-primary/50">
+                    <Avatar className="border-2 border-primary/20 hover:border-primary/40 transition-colors cursor-pointer">
+                        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold">{userInitials}</AvatarFallback>
                     </Avatar>
                 </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-56">
+                <div className="px-2 py-1.5 text-sm text-muted-foreground border-b mb-1">
+                    {auth.user?.email}
+                </div>
                 <DropdownMenuItem asChild>
-                    <Link to='/dashboard'>Dashboard</Link>
+                    <Link to='/dashboard' className="cursor-pointer">Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link to='/spells'>Spells</Link>
+                    <Link to='/spells' className="cursor-pointer">Spells</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link to='/items'>Items</Link>
+                    <Link to='/items' className="cursor-pointer">Items</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link to='/characters'>Characters</Link>
+                    <Link to='/characters' className="cursor-pointer">Characters</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                    <Link to='/profile'>Profile</Link>
+                    <Link to='/profile' className="cursor-pointer">Profile</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={signout}>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={signout} className="text-destructive focus:text-destructive cursor-pointer">
                     Log Out
                 </DropdownMenuItem>
             </DropdownMenuContent>

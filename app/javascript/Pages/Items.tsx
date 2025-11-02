@@ -62,23 +62,26 @@ const Items = () => {
 
     return (
         <>
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Items</h1>
-                <Button onClick={() => setIsOpen(true)}>Add Item</Button>
+            <div className="flex justify-between items-center mb-8">
+                <div>
+                    <h1 className="text-4xl font-bold tracking-tight mb-2 text-neon-cyan">Items</h1>
+                    <p className="text-muted-foreground">Manage your character's inventory and equipment</p>
+                </div>
+                <Button onClick={() => setIsOpen(true)} size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Add Item</Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 py-5">
-                <div className="relative">
+            <div className="mb-6">
+                <div className="relative max-w-md">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder='Search...'
+                        placeholder='Search items...'
                         value={search}
                         onChange={handleSearchChange}
-                        className="pl-9"
+                        className="pl-9 h-11"
                         disabled={loading}
                     />
                 </div>
             </div>
-            <div className="my-5">
+            <div className="bg-card/80 backdrop-blur-sm rounded-lg border border-primary/30 shadow-lg overflow-hidden">
                 <Table>
                     <TableHeader>
                         <TableRow>

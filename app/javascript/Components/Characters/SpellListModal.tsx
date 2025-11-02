@@ -36,13 +36,13 @@ const SpellListModal = ({spellList, open, setOpen}: Props) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
+            <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle>{spellList.name}</DialogTitle>
+                    <DialogTitle className="text-neon-cyan">{spellList.name}</DialogTitle>
                 </DialogHeader>
-                <div className="py-4">
-                    <ul className="list-disc list-inside space-y-1">
-                        {spellsDisplay.length > 0 ? spellsDisplay : <li className="text-muted-foreground">No spells in this list</li>}
+                <div className="py-4 border-t border-primary/20">
+                    <ul className="space-y-2">
+                        {spellsDisplay.length > 0 ? spellsDisplay : <li className="text-muted-foreground text-center py-4">No spells in this list</li>}
                     </ul>
                 </div>
             </DialogContent>
