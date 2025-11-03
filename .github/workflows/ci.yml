@@ -72,17 +72,13 @@ jobs:
         run: |
           docker pull ${{ env.IMAGE_TAG }}
 
-      - name: Build assets
-        run: |
-          docker run --rm \
-            ${{ env.IMAGE_TAG }} \
-            sh -c "yarn build && yarn build:css"
-
       - name: Set up database and verify build
         run: |
           docker run --rm \
             --network host \
             -e RAILS_ENV=test \
             -e DATABASE_URL=postgresql://postgres:postgres@localhost:5432/character_tracker_test \
+            -e BUNDLE_PATH=/usr/local/bundle \
+            -e BUNDLE_WITHOUT="" \
             ${{ env.IMAGE_TAG }} \
             sh -c "bin/rails db:create db:schema:load && bin/rails assets:precompile"
