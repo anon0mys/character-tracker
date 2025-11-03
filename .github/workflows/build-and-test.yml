@@ -60,15 +60,27 @@ jobs:
       - name: Set image tag output
         id: image-tag
         run: |
-          # For PRs, use pr-{number} tag format (matches metadata action)
-          # For pushes, use {branch}-{sha} format
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            TAG="ghcr.io/${{ github.repository }}:pr-${{ github.event.pull_request.number }}"
-          else
-            TAG="ghcr.io/${{ github.repository }}:${{ github.ref_name }}-${{ github.sha }}"
+          # Extract the first tag from metadata action output (newline-separated)
+          # Use the SHA-prefixed tag which is the first one
+          TAGS="${{ steps.meta.outputs.tags }}"
+          FIRST_TAG=$(echo "$TAGS" | head -n1 | tr -d ' ')
+          
+          # Fallback: construct tag if extraction failed
+          if [ -z "$FIRST_TAG" ] || [ "$FIRST_TAG" = "" ]; then
+            if [ "${{ github.event_name }}" == "pull_request" ]; then
+              FIRST_TAG="ghcr.io/${{ github.repository }}:pr-${{ github.event.pull_request.number }}"
+            else
+              # Extract branch from ref, default to 'main'
+              BRANCH=$(echo "${{ github.ref }}" | sed 's|refs/heads/||')
+              if [ -z "$BRANCH" ]; then
+                BRANCH="main"
+              fi
+              FIRST_TAG="ghcr.io/${{ github.repository }}:${BRANCH}-${{ github.sha }}"
+            fi
           fi
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          echo "IMAGE_TAG=$TAG" >> $GITHUB_OUTPUT
+          
+          echo "tag=$FIRST_TAG" >> $GITHUB_OUTPUT
+          echo "IMAGE_TAG=$FIRST_TAG" >> $GITHUB_OUTPUT
 
   test:
     name: Test Suite
