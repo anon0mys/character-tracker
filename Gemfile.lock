@@ -183,7 +183,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.8)
+    nio4r (2.7.5)
     nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -338,6 +338,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  arm64-darwin-24
   x86_64-darwin-21
   x86_64-darwin-22
   x86_64-linux
@@ -362,6 +363,7 @@ DEPENDENCIES
   listen (~> 3.3)
   mail (>= 2.8.0)
   net-smtp
+  nio4r (~> 2.7)
   nokogiri
   pagy (~> 5.10)
   pg (~> 1.1)

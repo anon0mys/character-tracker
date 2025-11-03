@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { Card, Grid, Icon } from "semantic-ui-react"
+import { Card, CardContent, CardHeader, CardDescription } from "../ui"
+import { Trash2 } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Client, ICharacterType } from "../../Api"
 import { ConfirmModal } from "../Shared"
@@ -17,12 +18,13 @@ const CharacterCard = ({character, deleteCharacter}: CharacterCardProps) => {
     const client = Client()
     const errors = useError()
 
-    const openDeleteModal = (event) => {
+    const openDeleteModal = (event: React.MouseEvent) => {
         event.preventDefault()
+        event.stopPropagation()
         setOpen(true)
     }
 
-    const submit = (event) => {
+    const submit = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
         client.destroy({ path: `/characters/${character.id}`, token: auth.getToken() })
             .then(response => {
@@ -33,21 +35,35 @@ const CharacterCard = ({character, deleteCharacter}: CharacterCardProps) => {
     }
 
     return (
-        <Card key={character.id} as={Link} to={`/characters/${character.id}`}>
-            <Card.Content>
-                <Grid>
-                    <Grid.Column width={13}>
-                        <Card.Header>{character.name}</Card.Header>
-                    </Grid.Column>
-                    <Grid.Column onClick={openDeleteModal}>
-                        <Icon name='trash alternate' color='grey'/>
-                    </Grid.Column>
-                </Grid>
-            </Card.Content>
-            <Card.Content>
-                <Card.Meta>{character.archetype}</Card.Meta>
-                <Card.Meta>Level {character.level}</Card.Meta>
-            </Card.Content>
+        <Link to={`/characters/${character.id}`}>
+            <Card key={character.id} className="cursor-pointer hover:border-primary/50 transition-all duration-300 border-2 border-primary/20 bg-card/80 backdrop-blur-sm hover:neon-glow group overflow-hidden h-full">
+                <CardHeader className="pb-3">
+                    <div className="flex justify-between items-start">
+                        <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-neon-cyan">{character.name}</h3>
+                        <button 
+                            onClick={openDeleteModal}
+                            className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10 transition-colors z-10"
+                        >
+                            <Trash2 className="h-5 w-5" />
+                        </button>
+                    </div>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                    <div className="flex items-center gap-2">
+                        <span className="px-2 py-1 bg-primary/20 text-primary rounded-md text-sm font-semibold neon-glow">
+                            {character.archetype}
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                        <span className="font-medium text-muted-foreground">Level</span>
+                        <span className="font-semibold text-primary">{character.level}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                        <span className="font-medium text-muted-foreground">Race</span>
+                        <span>{character.race}</span>
+                    </div>
+                </CardContent>
+            </Card>
             <ConfirmModal
                 copy={`Delete ${character.name}`}
                 open={open}
@@ -56,7 +72,7 @@ const CharacterCard = ({character, deleteCharacter}: CharacterCardProps) => {
             >
                 <p>Are you sure you want to delete {character.name}</p>
             </ConfirmModal>
-        </Card>
+        </Link>
     )
 }
 

@@ -1,39 +1,54 @@
 import React from 'react'
-import { Button, Modal } from 'semantic-ui-react'
+import { Button } from '../ui'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '../ui/dialog'
 
-const ConfirmModal = ({copy, open, setOpen, onSubmit, children}) => {
-    const submit = (event) => {
+interface ConfirmModalProps {
+    copy: string
+    open: boolean
+    setOpen: (open: boolean) => void
+    onSubmit: (event: React.MouseEvent<HTMLButtonElement>) => void
+    children: React.ReactNode
+}
+
+const ConfirmModal = ({copy, open, setOpen, onSubmit, children}: ConfirmModalProps) => {
+    const submit = (event: React.MouseEvent<HTMLButtonElement>) => {
         onSubmit(event)
         setOpen(false)
     }
     return (
-        <Modal
-            closeIcon
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            open={open}
-        >
-            <Modal.Header>{copy}</Modal.Header>
-            <Modal.Content>
-                <Modal.Description>
-                    {children}
-                </Modal.Description>
-            </Modal.Content>
-            <Modal.Actions>
-                <Button
-                    content='Cancel'
-                    color='grey'
-                    onClick={() => setOpen(false)}
-                />
-                <Button
-                    content='Confirm'
-                    color='red'
-                    labelPosition='right'
-                    icon='checkmark'
-                    onClick={submit}
-                />
-            </Modal.Actions>
-        </Modal>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
+                <DialogHeader>
+                    <DialogTitle className="text-neon-cyan">{copy}</DialogTitle>
+                    <DialogDescription>
+                        {children}
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="gap-2 border-t border-primary/20 pt-4">
+                    <Button
+                        variant="outline"
+                        onClick={() => setOpen(false)}
+                        className="border-primary/30"
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        onClick={submit}
+                        className="neon-glow-purple"
+                    >
+                        Confirm
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 }
 

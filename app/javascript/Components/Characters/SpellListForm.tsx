@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { Button, Grid, Input, Modal } from 'semantic-ui-react'
+import { Button, Input, Label } from '../ui'
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '../ui/dialog'
 import { Client } from '../../Api'
 import { useAuth } from '../../Auth'
 import { useError } from '../../Errors'
@@ -7,8 +14,8 @@ import { useError } from '../../Errors'
 interface SpellListFormProps {
     characterId?: string
     open: boolean
-    setOpen: Function
-    onSubmit: Function
+    setOpen: (open: boolean) => void
+    onSubmit: (data: any) => void
 }
 
 const SpellListForm = ({ characterId, open, setOpen, onSubmit }: SpellListFormProps) => {
@@ -17,7 +24,7 @@ const SpellListForm = ({ characterId, open, setOpen, onSubmit }: SpellListFormPr
     const client = Client()
     const errors = useError()
 
-    const submit = (event) => {
+    const submit = (event: React.FormEvent) => {
         event.preventDefault()
         client.post({
             path: `/characters/${characterId}/spell_lists`, payload: {
@@ -27,35 +34,37 @@ const SpellListForm = ({ characterId, open, setOpen, onSubmit }: SpellListFormPr
             .then(response => {
                 onSubmit(response.data)
                 setOpen(false)
+                setName('')
             })
             .catch(error => errors.setError(error))
     }
 
     return (
-        <Modal
-            closeIcon
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            open={open}
-        >
-            <Modal.Header>Create a SpellList</Modal.Header>
-            <Modal.Content image>
-                <Grid>
-                    <Grid.Row>
-                        <Input placeholder='name' onChange={(e) => setName(e.target.value)} />
-                    </Grid.Row>
-                </Grid>
-            </Modal.Content>
-            <Modal.Actions>
-                <Button
-                    content="Create Spell List"
-                    labelPosition='right'
-                    icon='checkmark'
-                    onClick={submit}
-                    positive
-                />
-            </Modal.Actions>
-        </Modal>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
+                <DialogHeader>
+                    <DialogTitle className="text-neon-cyan">Create a Spell List</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={submit}>
+                    <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="name">Name</Label>
+                            <Input 
+                                id="name"
+                                placeholder='Enter spell list name' 
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="h-11"
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter className="gap-2 border-t border-primary/20 pt-4">
+                        <Button type="button" variant="outline" onClick={() => setOpen(false)} className="border-primary/30">Cancel</Button>
+                        <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Create Spell List</Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
     )
 }
 

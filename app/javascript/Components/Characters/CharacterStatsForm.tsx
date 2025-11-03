@@ -1,43 +1,136 @@
 import React from "react"
-import { UseFormReturnType } from "@mantine/form"
-import { abilities, ICharacterType } from "../../Api"
-import { Checkbox, Flex, NumberInput } from "@mantine/core"
+import { useFormContext } from "react-hook-form"
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui"
+import { Input, Checkbox } from "../ui"
+import { abilities } from "../../Api"
 
-interface CharacterStatsProps {
-    form: UseFormReturnType<ICharacterType>
-}
-
-const CharacterStatsForm = ({form}: CharacterStatsProps) => {
-    const abilityCheckboxes = abilities.map(ability => {
-        return <Checkbox key={ability} value={ability} label={ability} />
-    })
+const CharacterStatsForm = () => {
+    const form = useFormContext()
 
     return (
-        <Flex direction="row" gap="md" justify="center">
-            <NumberInput
-                label="Level"
-                placeholder="1"
-                {...form.getInputProps('level')}
+        <div className="flex flex-wrap gap-4 items-end">
+            <FormField
+                control={form.control}
+                name="level"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>Level</FormLabel>
+                        <FormControl>
+                            <Input
+                                type="number"
+                                placeholder="1"
+                                {...field}
+                                value={field.value || ''}
+                                onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-            <NumberInput
-                label="Speed"
-                placeholder="30"
-                {...form.getInputProps('speed')}
+            <FormField
+                control={form.control}
+                name="speed"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>Speed</FormLabel>
+                        <FormControl>
+                            <Input
+                                type="number"
+                                placeholder="30"
+                                {...field}
+                                value={field.value || ''}
+                                onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-            <NumberInput
-                label="Initiative Bonus"
-                placeholder="0"
-                {...form.getInputProps('initiativeBonus')}
+            <FormField
+                control={form.control}
+                name="initiativeBonus"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>Initiative Bonus</FormLabel>
+                        <FormControl>
+                            <Input
+                                type="number"
+                                placeholder="0"
+                                {...field}
+                                value={field.value || ''}
+                                onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-            <NumberInput
-                label="AC Bonus"
-                placeholder="0"
-                {...form.getInputProps('acBonus')}
+            <FormField
+                control={form.control}
+                name="acBonus"
+                render={({ field }) => (
+                    <FormItem className="flex-1 min-w-[150px]">
+                        <FormLabel>AC Bonus</FormLabel>
+                        <FormControl>
+                            <Input
+                                type="number"
+                                placeholder="0"
+                                {...field}
+                                value={field.value || ''}
+                                onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
-            <Checkbox.Group {...form.getInputProps('proficiencies')}>
-                {abilityCheckboxes}
-            </Checkbox.Group>
-        </Flex>
+            <FormField
+                control={form.control}
+                name="proficiencies"
+                render={() => (
+                    <FormItem className="flex-1 min-w-[200px]">
+                        <FormLabel>Proficiencies</FormLabel>
+                        <div className="flex flex-wrap gap-4">
+                            {abilities.map((ability) => (
+                                <FormField
+                                    key={ability}
+                                    control={form.control}
+                                    name="proficiencies"
+                                    render={({ field }) => {
+                                        return (
+                                            <FormItem
+                                                key={ability}
+                                                className="flex flex-row items-start space-x-3 space-y-0"
+                                            >
+                                                <FormControl>
+                                                    <Checkbox
+                                                        checked={field.value?.includes(ability)}
+                                                        onCheckedChange={(checked) => {
+                                                            return checked
+                                                                ? field.onChange([...field.value, ability])
+                                                                : field.onChange(
+                                                                      field.value?.filter(
+                                                                          (value) => value !== ability
+                                                                      )
+                                                                  )
+                                                        }}
+                                                    />
+                                                </FormControl>
+                                                <FormLabel className="font-normal">
+                                                    {ability}
+                                                </FormLabel>
+                                            </FormItem>
+                                        )
+                                    }}
+                                />
+                            ))}
+                        </div>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+        </div>
     )
 }
 

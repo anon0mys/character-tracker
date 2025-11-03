@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
-import { Menu } from '@mantine/core';
+import { DropdownMenuCheckboxItem } from '../Components/ui';
 
-const filterReducer = (state, filterItem) => {
+const filterReducer = (state: string[], filterItem: string): string[] => {
     if (state.includes(filterItem)) {
         let tempFilters = [...state]
         let index = tempFilters.indexOf(filterItem)
@@ -12,24 +12,25 @@ const filterReducer = (state, filterItem) => {
     }
 }
 
-const useFilter = (filterLabels) => {
+const useFilter = (filterLabels: string[]) => {
     const [filters, setFilters] = useReducer(filterReducer, [])
 
     const menuItems = filterLabels.map(label => {
         const isActive = filters.includes(label)
 
         return (
-            <Menu.Item
+            <DropdownMenuCheckboxItem
                 key={label}
-                bg={isActive ? 'blue' : ''}
-                onClick={() => setFilters(label)}
+                checked={isActive}
+                onCheckedChange={() => setFilters(label)}
+                className={isActive ? 'bg-accent' : ''}
             >
                 { label }
-            </Menu.Item >
+            </DropdownMenuCheckboxItem >
         )
     })
 
-    return [ filters, menuItems ]
+    return [ filters, menuItems ] as [string[], React.ReactNode[]]
 }
 
 export default useFilter
