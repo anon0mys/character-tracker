@@ -27,6 +27,6 @@ interface IAbilityScores {
     charisma: number
 }
 
-export {
+export type {
     AbilityTypes, AlignmentTypes, ICharacterBio, ICharacterStats, IAbilityScores
 }

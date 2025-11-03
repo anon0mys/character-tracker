@@ -1,8 +1,8 @@
 ActiveAdmin.register Item do
-  config.sort_order = 'name_asc'
+  config.sort_order = "name_asc"
   permit_params :name, :description, :item_type, :status, :quality,
-                :potential_damage, :total_charges, :value, :quantity,
-                :requires_attunement, :ac, :stat_bonuses, character_ids: []
+    :potential_damage, :total_charges, :value, :quantity,
+    :requires_attunement, :ac, :stat_bonuses, character_ids: []
 
   index do
     selectable_column
@@ -19,7 +19,7 @@ ActiveAdmin.register Item do
     column :ac
     column :stat_bonuses
     column :characters do |item|
-      item.characters.map(&:name).join(', ')
+      item.characters.map(&:name).join(", ")
     end
   end
 
@@ -38,7 +38,7 @@ ActiveAdmin.register Item do
       row :ac
       row :stat_bonuses
       row :characters do |item|
-        item.characters.map(&:name).join(', ')
+        item.characters.map(&:name).join(", ")
       end
     end
   end
@@ -67,12 +67,11 @@ ActiveAdmin.register Item do
       f.input :total_charges
       f.input :value
       f.input :quantity
-      f.input :requires_attunement, label: 'Requires Attunement?'
+      f.input :requires_attunement, label: "Requires Attunement?"
       f.input :ac
       f.input :stat_bonuses
       f.input :characters, as: :check_boxes, collection: Character.all.map { |c| [c.name, c.id] }
     end
     f.actions
   end
-  
 end

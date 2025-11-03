@@ -76,7 +76,7 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
                     
                     // Check if the current spell is already in this list
                     if (spell && spell.id && fullSpellList.spells) {
-                        const spellExists = fullSpellList.spells.some(s => s.id === spell.id)
+                        const spellExists = fullSpellList.spells.some((s: { id: number | null }) => s.id === spell.id)
                         if (spellExists) {
                             setValidationError('This spell is already in the list')
                         }

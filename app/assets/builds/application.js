@@ -39532,7 +39532,7 @@ var DialogContent = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(f
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DialogPortal, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DialogOverlay, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_radix_ui_react_dialog__WEBPACK_IMPORTED_MODULE_2__.Content, _extends({
     ref: ref,
-    className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg", className)
+    className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] sm:max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-4 sm:p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg max-h-[90vh] overflow-y-auto", className)
   }, props), children, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_radix_ui_react_dialog__WEBPACK_IMPORTED_MODULE_2__.Close, {
     className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -77222,7 +77222,7 @@ var characterSchema = zod__WEBPACK_IMPORTED_MODULE_8__.object({
   speed: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(25).max(50, 'Speed must be between 25 and 50'),
   initiativeBonus: zod__WEBPACK_IMPORTED_MODULE_8__.number().max(20, 'Initiative bonus cannot be greater than 20'),
   acBonus: zod__WEBPACK_IMPORTED_MODULE_8__.number().max(20, 'AC bonus cannot be greater than 20'),
-  proficiencies: zod__WEBPACK_IMPORTED_MODULE_8__.array(zod__WEBPACK_IMPORTED_MODULE_8__.string())["default"]([]),
+  proficiencies: zod__WEBPACK_IMPORTED_MODULE_8__.array(zod__WEBPACK_IMPORTED_MODULE_8__.string()),
   strength: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Strength must be between 10 and 20'),
   dexterity: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Dexterity must be between 10 and 20'),
   constitution: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Constitution must be between 10 and 20'),
@@ -91339,6 +91339,11 @@ __webpack_require__.r(__webpack_exports__);
 
 document.addEventListener('DOMContentLoaded', function () {
   var container = document.getElementById('app');
+
+  if (!container) {
+    throw new Error('Root element not found');
+  }
+
   var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(container);
   root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_App__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
 });

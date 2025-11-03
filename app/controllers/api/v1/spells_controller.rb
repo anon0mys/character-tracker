@@ -1,24 +1,22 @@
-class Api::V1::SpellsController < ApiController
-  before_action :authenticate_user!
+module Api
+  module V1
+    class SpellsController < ApiController
+      before_action :authenticate_user!
 
-  def index
-    response = paginate(Spell.filter(filtering_params))
-    render json: response
-  end
+      def index
+        response = paginate(Spell.filter(filtering_params))
+        render json: response
+      end
 
-  private
+      private
 
-  def filtering_params
-    filters = params.slice(:archetype, :level, :school, :name)
-    if filters[:archetype]
-      filters[:archetype] = filters[:archetype].split(',')
+      def filtering_params
+        filters = params.slice(:archetype, :level, :school, :name)
+        filters[:archetype] = filters[:archetype].split(",") if filters[:archetype]
+        filters[:level] = filters[:level].split(",") if filters[:level]
+        filters[:school] = filters[:school].split(",") if filters[:school]
+        filters
+      end
     end
-    if filters[:level]
-      filters[:level] = filters[:level].split(',')
-    end
-    if filters[:school]
-      filters[:school] = filters[:school].split(',')
-    end
-    filters
   end
 end

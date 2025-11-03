@@ -7,5 +7,5 @@ class Npc < ApplicationRecord
   has_many :faction_npcs
   has_many :factions, through: :faction_npcs
 
-  validates_presence_of :name, :race
+  validates :name, :race, presence: true
 end

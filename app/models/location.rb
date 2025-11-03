@@ -8,6 +8,6 @@ class Location < ApplicationRecord
   has_many :faction_locations
   has_many :factions, through: :faction_locations
   has_many :npcs
-  
-  validates_presence_of :name
+
+  validates :name, presence: true
 end

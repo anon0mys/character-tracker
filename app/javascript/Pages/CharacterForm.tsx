@@ -24,7 +24,7 @@ const characterSchema = z.object({
     speed: z.number().min(25).max(50, 'Speed must be between 25 and 50'),
     initiativeBonus: z.number().max(20, 'Initiative bonus cannot be greater than 20'),
     acBonus: z.number().max(20, 'AC bonus cannot be greater than 20'),
-    proficiencies: z.array(z.string()).default([]),
+    proficiencies: z.array(z.string()),
     strength: z.number().min(10).max(20, 'Strength must be between 10 and 20'),
     dexterity: z.number().min(10).max(20, 'Dexterity must be between 10 and 20'),
     constitution: z.number().min(10).max(20, 'Constitution must be between 10 and 20'),
@@ -165,7 +165,7 @@ const CharacterForm = () => {
                 </p>
             </div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 sm:space-y-6 md:space-y-8">
+                <form onSubmit={form.handleSubmit(handleSubmit as any)} className="space-y-4 sm:space-y-6 md:space-y-8">
                     <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6">
                         <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-neon-cyan">Character Bio</h2>
                         <CharacterBioForm />

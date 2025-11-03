@@ -11,7 +11,7 @@ class RegistrationsController < Devise::RegistrationsController
 
     render json: {
       user: resource,
-      token: resource.generate_jwt
+      token: resource.generate_jwt,
     }
   end
 

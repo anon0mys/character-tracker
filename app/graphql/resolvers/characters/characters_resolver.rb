@@ -1,7 +1,11 @@
-class Resolvers::Characters::CharactersResolver < Resolvers::AuthenticatedResolver
-  type [Types::Characters::CharacterType], null: false
+module Resolvers
+  module Characters
+    class CharactersResolver < Resolvers::AuthenticatedResolver
+      type [Types::Characters::CharacterType], null: false
 
-  def resolve
-    current_user.characters.all
+      def resolve
+        current_user.characters.all
+      end
+    end
   end
 end

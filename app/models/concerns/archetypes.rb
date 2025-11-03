@@ -13,10 +13,10 @@ module Archetypes
     sorcerer: Sorcerer,
     warlock: Warlock,
     wizard: Wizard,
-  }
+  }.freeze
 
-  def self.new(name=nil)
-    ALL.dig(name&.to_sym)&.new
+  def self.new(name = nil)
+    ALL[name&.to_sym]&.new
   end
 
   def self.names

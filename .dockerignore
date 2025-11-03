@@ -1,0 +1,77 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+
+# CI/CD
+.github
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Development and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Test and coverage
+/spec
+/coverage
+.rspec
+/spec/examples.txt
+
+# Logs and temp files
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+!/tmp/pids/.keep
+
+# Storage and uploads
+/storage/*
+!/storage/.keep
+
+# Build artifacts (will be built in container)
+/app/assets/builds/*
+!/app/assets/builds/.keep
+/public/assets
+/public/packs
+/public/packs-test
+
+# Node modules (will be installed in container)
+/node_modules
+
+# Bundle config
+.bundle
+/vendor/bundle
+
+# Environment files
+.env*
+!.env.example
+
+# Credentials
+/config/master.key
+/config/credentials/*.key
+
+# Database
+*.sqlite3
+*.sqlite3-journal
+/db/*.sqlite3
+
+# Cache directories
+/tmp/cache
+/.sass-cache
+
+# Backup files
+*.bak
+*.backup
+

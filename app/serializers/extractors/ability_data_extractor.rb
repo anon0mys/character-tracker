@@ -1,9 +1,11 @@
-class Extractors::AbilityDataExtractor < Blueprinter::Extractor
-  def extract(_field_name, _object, _local_options, _options={})
-    {
-      value: _object.value_of(_field_name),
-      modifier: _object.modifier_for(_field_name),
-      save: _object.save_for(_field_name),
-    }
+module Extractors
+  class AbilityDataExtractor < Blueprinter::Extractor
+    def extract(field_name, object, _local_options, _options = {})
+      {
+        value: object.value_of(field_name),
+        modifier: object.modifier_for(field_name),
+        save: object.save_for(field_name),
+      }
+    end
   end
 end

@@ -2,43 +2,43 @@ class CharacterSerializer < Blueprinter::Base
   identifier :id
 
   fields :id, :name, :race, :level, :background, :alignment, :age, :ac,
-        :initiative, :speed, :perception, :proficiency_bonus, :proficiencies,
-        :concentration, :spell_attack_mod, :spell_save_dc, :total_hitpoints,
-        :current_hitpoints
+    :initiative, :speed, :perception, :proficiency_bonus, :proficiencies,
+    :concentration, :spell_attack_mod, :spell_save_dc, :total_hitpoints,
+    :current_hitpoints
 
   association :current_spell_list, blueprint: SpellListSerializer
   association :attacks, blueprint: AttackSerializer
 
-  field :hit_die do |character, options|
+  field :hit_die do |character, _options|
     character.archetype.hit_die
   end
 
-  field :injury_condition do |character, options|
+  field :injury_condition do |character, _options|
     if character.current_hitpoints < (character.total_hitpoints * 0.25).floor
-      'Mangled'
+      "Mangled"
     elsif character.current_hitpoints < (character.total_hitpoints * 0.5).floor
-      'Bloodied'
+      "Bloodied"
     else
-      'Healthy'
+      "Healthy"
     end
   end
 
-  field :archetype do |character, options|
+  field :archetype do |character, _options|
     character.archetype.name.to_s.capitalize
   end
 
-  field :alignment do |character, options|
+  field :alignment do |character, _options|
     alignment_map = {
-      'LG' => 'Lawful Good',
-      'NG' => 'Neutral Good',
-      'CG' => 'Chaotic Good',
-      'LN' => 'Lawful Neutral',
-      'TN' => 'Neutral',
-      'CN' => 'Chaotic Neutral',
-      'LE' => 'Lawful Evil',
-      'NE' => 'Neutral Evil',
-      'CE' => 'Chaotic Evil',
-      'UN' => 'Unaligned',
+      "LG" => "Lawful Good",
+      "NG" => "Neutral Good",
+      "CG" => "Chaotic Good",
+      "LN" => "Lawful Neutral",
+      "TN" => "Neutral",
+      "CN" => "Chaotic Neutral",
+      "LE" => "Lawful Evil",
+      "NE" => "Neutral Evil",
+      "CE" => "Chaotic Evil",
+      "UN" => "Unaligned",
     }
     alignment_map[character.alignment]
   end

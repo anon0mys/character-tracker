@@ -1,39 +1,43 @@
-require 'rails_helper'
+require "rails_helper"
 
-describe 'POST /api/v1/users' do
-  let(:valid_attrs) {{
-    user: {
-      email: 'test@email.com',
-      password: 'testpass123',
-      password_confirmation: 'testpass123'
+describe "POST /api/v1/users" do
+  let(:valid_attrs) do
+    {
+      user: {
+        email: "test@email.com",
+        password: "testpass123",
+        password_confirmation: "testpass123",
+      },
     }
-  }}
-  let(:invalid_attrs) {{
-    user: {
-      email: 'test@email.com',
-      password: 'testpass123',
-      password_confirmation: 'nomatch'
+  end
+  let(:invalid_attrs) do
+    {
+      user: {
+        email: "test@email.com",
+        password: "testpass123",
+        password_confirmation: "nomatch",
+      },
     }
-  }}
+  end
 
-  context 'with valid credentials' do
+  context "with valid credentials" do
     before { post user_registration_path, params: valid_attrs }
 
-    it 'should return a JWT token' do
-      data = JSON.parse(response.body)
-      jwt_payload = JWT.decode(data['token'], Rails.application.credentials.secret_key_base).first
-      expect(jwt_payload.keys).to eq ['id', 'exp']
+    it "returns a JWT token" do
+      data = response.parsed_body
+      jwt_payload = JWT.decode(data["token"], Rails.application.credentials.secret_key_base).first
+      expect(jwt_payload.keys).to eq %w[id exp]
     end
 
-    it 'should return a User' do
-      data = JSON.parse(response.body)
+    it "returns a User" do
+      expect(response.parsed_body["data"]).to be_present
     end
   end
 
-  context 'with invalid credentials' do
+  context "with invalid credentials" do
     before { post user_registration_path, params: invalid_attrs }
 
-    it 'should return a 422 status' do
+    it "returns a 422 status" do
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end

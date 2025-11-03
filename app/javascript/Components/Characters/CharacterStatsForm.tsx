@@ -111,7 +111,7 @@ const CharacterStatsForm = () => {
                                                                 ? field.onChange([...field.value, ability])
                                                                 : field.onChange(
                                                                       field.value?.filter(
-                                                                          (value) => value !== ability
+                                                                          (value: string) => value !== ability
                                                                       )
                                                                   )
                                                         }}

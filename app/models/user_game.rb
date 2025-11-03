@@ -9,5 +9,5 @@ class UserGame < ApplicationRecord
   belongs_to :user
   belongs_to :game
 
-  validates_uniqueness_of :user_id, scope: %i[game_id]
+  validates :user_id, uniqueness: { scope: %i[game_id] }
 end
