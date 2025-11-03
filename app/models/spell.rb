@@ -17,8 +17,14 @@ class Spell < ApplicationRecord
   scope :by_level, -> { order(order_by_level) }
   scope :name_eq, -> (name) { where 'name ILIKE ?', "%#{name.downcase}%" }
   scope :archetype_eq, -> (archetype) { where "archetypes && ?", "{#{archetype.join(',')}}" }
-  scope :level_eq, -> (level) { where level: level }
-  scope :school_eq, -> (school) { where school: school }
+  scope :level_eq, -> (levels) { 
+    levels = Array(levels)
+    where(level: levels)
+  }
+  scope :school_eq, -> (schools) { 
+    schools = Array(schools)
+    where(school: schools)
+  }
 
   def self.order_by_level
     Arel.sql(

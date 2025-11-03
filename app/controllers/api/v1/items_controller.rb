@@ -19,7 +19,7 @@ class Api::V1::ItemsController < ApiController
     if @item.update(item_params)
       render json: {data: @item}
     else
-      render json: {errors: 'Invalid attributes'}, status: :unprocessable_entity
+      render json: {errors: @item.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

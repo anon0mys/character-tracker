@@ -1,7 +1,5 @@
 class Api::V1::SpellListsController < ApiController
   before_action :set_character
-  rescue_from ActiveRecord::RecordNotFound, with: :invalid_record
-  rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
 
   def index
     @spell_lists = @character.spell_lists.includes(:spells).all
@@ -23,7 +21,7 @@ class Api::V1::SpellListsController < ApiController
     if @spell_list.update(spell_list_params)
       render json: SpellListSerializer.render(@spell_list, root: :data)
     else
-      render json: {errors: 'Invalid attributes'}, status: :unprocessable_entity
+      render json: {errors: @spell_list.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -54,9 +52,5 @@ class Api::V1::SpellListsController < ApiController
 
   def set_character
     @character = current_user.characters.find(params[:character_id])
-  end
-
-  def invalid_record(exception)
-    render json: { errors: exception.message }, status: :unprocessable_entity
   end
 end

@@ -31,6 +31,16 @@ class Character < ApplicationRecord
   has_many :character_items
   has_many :items, through: :character_items
 
+  validate :current_spell_list_belongs_to_character, if: -> { current_spell_list_id.present? }
+
+  def current_spell_list_belongs_to_character
+    return unless persisted? # Skip validation for new records
+    
+    if current_spell_list && current_spell_list.character_id != id
+      errors.add(:current_spell_list_id, "must belong to this character")
+    end
+  end
+
   def archetype
     Archetypes.new(self[:archetype])
   end
@@ -111,6 +121,35 @@ class Character < ApplicationRecord
       proficiency_bonus
     else
       0
+    end
+  end
+
+  def max_spells_prepared
+    return nil unless archetype.caster?
+    
+    # For prepared casters (Cleric, Druid, Wizard, Paladin, Ranger)
+    if archetype.spells_prepared_formula.present?
+      formula = archetype.spells_prepared_formula
+      # Parse formulas like "Wisdom modifier + Cleric level (minimum of 1)"
+      # or "Intelligence modifier + Wizard level (minimum of 1)"
+      ability_name = archetype.spellcasting_ability.to_s.capitalize
+      ability_modifier = modifier_for(archetype.spellcasting_ability)
+      
+      # Extract the formula pattern - typically "Ability modifier + Class level"
+      if formula =~ /(\w+)\s+modifier\s*\+\s*(\w+)\s+level/i
+        result = ability_modifier + level
+        # Ensure minimum of 1
+        [result, 1].max
+      else
+        # Fallback: try to calculate based on common pattern
+        ability_modifier + level
+      end
+    # For known casters (Sorcerer, Warlock, Bard, Ranger, Artificer)
+    elsif archetype.spells_known_at_level(level).present?
+      archetype.spells_known_at_level(level)
+    # For Warlocks with Pact Magic or other special cases
+    else
+      nil # No limit
     end
   end
 end

@@ -1,8 +1,7 @@
 class Archetypes::Rogue < Archetypes::Archetype
-  attr_reader :name
-
   def initialize
     @name = :rogue
+    @spellcasting_ability = nil
     @hit_die = 'd8'
   end
 end

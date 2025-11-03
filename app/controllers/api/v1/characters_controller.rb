@@ -12,16 +12,48 @@ class Api::V1::CharactersController < ApiController
   end
 
   def create
-    @character = current_user.characters.create!(character_params)
-    render json: CharacterSerializer.render(@character, root: :data)
+    @character = current_user.characters.build(character_params)
+    service = CharacterService.new(@character, character_params)
+    
+    if service.validate_and_update
+      @character.assign_attributes(service.updated_params.except(:id, :created_at, :updated_at))
+      if @character.save
+        render json: CharacterSerializer.render(@character, root: :data)
+      else
+        render json: {errors: @character.errors.full_messages}, status: :unprocessable_entity
+      end
+    else
+      render json: {errors: service.errors}, status: :unprocessable_entity
+    end
   end
 
   def update
     @character = current_user.characters.find(params[:id])
-    if @character.update(character_params)
-      render json: CharacterSerializer.render(@character, root: :data)
+    
+    # Handle both nested character params and flat params
+    # Use fetch to avoid ParameterMissing error when character key is missing
+    update_params = begin
+      if params[:character].present?
+        character_params
+      else
+        # Allow direct parameter access for simpler updates (like just current_spell_list_id)
+        params.permit(:current_spell_list_id)
+      end
+    rescue ActionController::ParameterMissing
+      # If character param is required but missing, try to get current_spell_list_id directly
+      params.permit(:current_spell_list_id)
+    end
+    
+    service = CharacterService.new(@character, update_params)
+    
+    if service.validate_and_update
+      if @character.update(service.updated_params.except(:id, :created_at, :updated_at))
+        render json: CharacterSerializer.render(@character, root: :data)
+      else
+        render json: {errors: @character.errors.full_messages}, status: :unprocessable_entity
+      end
     else
-      render json: {errors: 'Invalid attributes'}, status: :unprocessable_entity
+      render json: {errors: service.errors}, status: :unprocessable_entity
     end
   end
 
