@@ -81,4 +81,4 @@ jobs:
             -e BUNDLE_PATH=/usr/local/bundle \
             -e BUNDLE_WITHOUT="" \
             ${{ env.IMAGE_TAG }} \
-            sh -c "bin/rails db:create db:schema:load && bin/rails assets:precompile"
+            sh -c "ls -la app/assets/builds/ && bin/rails db:create db:schema:load && bin/rails assets:precompile"
