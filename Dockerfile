@@ -6,10 +6,12 @@ RUN apt-get update -qq && \
     nodejs \
     postgresql-client \
     build-essential \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Yarn
-RUN npm install -g yarn
+# Install Yarn using the official installation script
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+ENV PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 WORKDIR /app
 
