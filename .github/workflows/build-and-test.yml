@@ -43,7 +43,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=sha,format=long
+            type=raw,value=${{ github.sha }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -62,7 +62,7 @@ jobs:
       - name: Set image tag output
         id: image-tag
         run: |
-          # Use SHA tag for all images
+          # Use the SHA tag (same format as what metadata action creates)
           TAG="ghcr.io/${{ github.repository }}:${{ github.sha }}"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "IMAGE_TAG=$TAG" >> $GITHUB_OUTPUT
