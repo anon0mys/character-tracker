@@ -3,12 +3,14 @@ FROM ruby:3.2.1
 # Install system dependencies
 RUN apt-get update -qq && \
     apt-get install -y \
-    nodejs \
-    npm \
     postgresql-client \
     build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js 18.x from NodeSource
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
 
 # Install Yarn globally using npm
 RUN npm install -g yarn
