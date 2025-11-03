@@ -1,16 +1,18 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe Game, type: :model do
-  context 'enums' do
+RSpec.describe Game do
+  subject(:game) { build(:game) }
+
+  context "enums" do
     it do
-      should define_enum_for(:status)
+      expect(game).to define_enum_for(:status)
         .with_values(combine_to_hash(Game::STATUSES))
         .backed_by_column_of_type(:string)
     end
   end
 
-  context 'relationships' do
-    it { should have_many(:users).through(:user_games) }
-    it { should have_many :characters }
+  context "relationships" do
+    it { is_expected.to have_many(:users).through(:user_games) }
+    it { is_expected.to have_many :characters }
   end
 end

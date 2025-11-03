@@ -1,8 +1,9 @@
-require 'rails_helper'
+require "rails_helper"
 
-describe 'Schema::Query#spell_search' do
+describe "Schema::Query#spell_search" do
   before { create_list(:spell, 50) }
-  let (:spell_query) do
+
+  let(:spell_query) do
     <<~GRAPHQL
       query SpellSearch($search: SpellSearchInput!) {
         spellSearch(search: $search) {
@@ -12,91 +13,92 @@ describe 'Schema::Query#spell_search' do
     GRAPHQL
   end
 
-  context 'by name' do
-    let (:variables) {{
-      search: {
-        name: 'thunder'
+  context "by name" do
+    let(:variables) do
+      {
+        search: {
+          name: "thunder",
+        },
       }
-    }}
+    end
 
-    it 'should return a list of spells that fuzzy match the search word' do
-      create(:spell, name: 'Thunderwave')
-      create(:spell, name: 'Thunderclap')
-      create(:spell, name: 'Lightning and thunder')
-  
+    it "returns a list of spells that fuzzy match the search word" do
+      create(:spell, name: "Thunderwave")
+      create(:spell, name: "Thunderclap")
+      create(:spell, name: "Lightning and thunder")
+
       post graphql_path, params: {
         query: spell_query,
-        variables: variables
+        variables:,
       }
       result = JSON.parse(response.body)
-      spells = result['data']['spellSearch']
-  
+      spells = result["data"]["spellSearch"]
+
       expect(spells.length).to eq 3
     end
   end
 
-  context 'by archetype' do
-    it 'should return a list of spells that match a single archetype' do  
+  context "by archetype" do
+    it "returns a list of spells that match a single archetype" do
       post graphql_path, params: {
         query: spell_query,
         variables: {
           search: {
-            archetype: ['wizard']
-          }
-        }
+            archetype: ["wizard"],
+          },
+        },
       }
       result = JSON.parse(response.body)
-      spells = result['data']['spellSearch']
-  
+      spells = result["data"]["spellSearch"]
+
       expect(spells.length).to eq Spell.where("archetypes && '{wizard}'").count
     end
 
-    it 'should return a list of spells that match multiple archetypes' do  
+    it "returns a list of spells that match multiple archetypes" do
       post graphql_path, params: {
         query: spell_query,
         variables: {
           search: {
-            archetype: ['bard', 'wizard']
-          }
-        }
+            archetype: %w[bard wizard],
+          },
+        },
       }
       result = JSON.parse(response.body)
-      spells = result['data']['spellSearch']
-  
+      spells = result["data"]["spellSearch"]
+
       expect(spells.length).to eq Spell.where("archetypes && '{bard,wizard}'").count
     end
   end
 
-  context 'by level' do
-    it 'should return a list of spells that match a single level' do  
+  context "by level" do
+    it "returns a list of spells that match a single level" do
       post graphql_path, params: {
         query: spell_query,
         variables: {
           search: {
-            level: ['cantrip']
-          }
-        }
+            level: ["cantrip"],
+          },
+        },
       }
       result = JSON.parse(response.body)
-      spells = result['data']['spellSearch']
-  
-      expect(spells.length).to eq Spell.where(level: ['cantrip']).count
+      spells = result["data"]["spellSearch"]
+
+      expect(spells.length).to eq Spell.where(level: ["cantrip"]).count
     end
 
-    it 'should return a list of spells that match multiple levels' do  
+    it "returns a list of spells that match multiple levels" do
       post graphql_path, params: {
         query: spell_query,
         variables: {
           search: {
-            level: ['cantrip', '1']
-          }
-        }
+            level: %w[cantrip 1],
+          },
+        },
       }
       result = JSON.parse(response.body)
-      spells = result['data']['spellSearch']
-  
-      expect(spells.length).to eq Spell.where(level: ['cantrip', '1']).count
+      spells = result["data"]["spellSearch"]
+
+      expect(spells.length).to eq Spell.where(level: %w[cantrip 1]).count
     end
   end
 end
-

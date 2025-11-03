@@ -1,44 +1,47 @@
-require 'rails_helper'
+require "rails_helper"
 
-describe 'POST /api/v1/characters/:character_id/spell_lists/:spell_list_id/add_spell' do
+describe "POST /api/v1/characters/:character_id/spell_lists/:spell_list_id/add_spell" do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
 
-  context 'as an authenticated user' do
+  context "as an authenticated user" do
     before { sign_in(user) }
-    let(:character) { create(:character, user: user, archetype: 'wizard') }
-    let(:spell_list) { create(:spell_list, character: character) }
 
-    context 'with valid attrs' do
+    let(:character) { create(:character, user:, archetype: "wizard") }
+    let(:spell_list) { create(:spell_list, character:) }
+
+    context "with valid attrs" do
       let(:spell) { create(:spell, archetypes: [character.archetype.name]) }
-      let(:valid_attrs) {{ spell: { id: spell.id } }}
+      let(:valid_attrs) { { spell: { id: spell.id } } }
 
-      before { post api_v1_character_spell_list_add_spell_path(character.id, spell_list.id),
-                headers: @auth_headers,
-                params: valid_attrs
-      }
+      before do
+        post api_v1_character_spell_list_add_spell_path(character.id, spell_list.id),
+          headers: @auth_headers,
+          params: valid_attrs
+      end
 
-      it 'adds a spell to the spell list' do
-        result = JSON.parse(response.body)
-        expect(result['data']['spells'].length).to eq 1
+      it "adds a spell to the spell list" do
+        result = response.parsed_body
+        expect(result["data"]["spells"].length).to eq 1
       end
     end
 
-    context 'with a spell that is not available to the character' do
-      let(:spell) { create(:spell, archetypes: ['artificer']) }
-      let(:invalid_attrs) {{ spell: { id: spell.id } }}
+    context "with a spell that is not available to the character" do
+      let(:spell) { create(:spell, archetypes: ["artificer"]) }
+      let(:invalid_attrs) { { spell: { id: spell.id } } }
 
-      before { post api_v1_character_spell_list_add_spell_path(character.id, spell_list.id),
-                headers: @auth_headers,
-                params: invalid_attrs
-      }
-
-      it 'responds with a descriptive error message' do
-        result = JSON.parse(response.body)
-        expect(result['errors']).to eq 'Validation failed: Code spell is not availble to this character archetype'
+      before do
+        post api_v1_character_spell_list_add_spell_path(character.id, spell_list.id),
+          headers: @auth_headers,
+          params: invalid_attrs
       end
 
-      it 'responds with a status 422' do
+      it "responds with a descriptive error message" do
+        result = response.parsed_body
+        expect(result["errors"]).to eq "Validation failed: Code spell is not availble to this character archetype"
+      end
+
+      it "responds with a status 422" do
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end

@@ -10,5 +10,4 @@ ActiveAdmin.register Character do
     end
     f.actions
   end
-  
 end

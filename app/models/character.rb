@@ -5,16 +5,16 @@ class Character < ApplicationRecord
 
   enum archetype: combine_to_hash(Archetypes.names)
   enum alignment: combine_to_hash(ALIGNMENTS)
-  validates_presence_of :name,
-                        :archetype,
-                        :race,
-                        :level,
-                        :background,
-                        :alignment,
-                        :age,
-                        :speed,
-                        :initiative_bonus,
-                        :ac_bonus
+  validates :name,
+    :archetype,
+    :race,
+    :level,
+    :background,
+    :alignment,
+    :age,
+    :speed,
+    :initiative_bonus,
+    :ac_bonus, presence: true
 
   validates :strength, numericality: { in: 10..20 }
   validates :dexterity, numericality: { in: 10..20 }
@@ -25,20 +25,20 @@ class Character < ApplicationRecord
 
   belongs_to :user
   belongs_to :game
-  belongs_to :current_spell_list, class_name: :SpellList, foreign_key: :current_spell_list_id, optional: true
-  has_many :spell_lists
-  has_many :attacks
-  has_many :character_items
+  belongs_to :current_spell_list, class_name: :SpellList, optional: true
+  has_many :spell_lists, dependent: :destroy
+  has_many :attacks, dependent: :destroy
+  has_many :character_items, dependent: :destroy
   has_many :items, through: :character_items
 
   validate :current_spell_list_belongs_to_character, if: -> { current_spell_list_id.present? }
 
   def current_spell_list_belongs_to_character
     return unless persisted? # Skip validation for new records
-    
-    if current_spell_list && current_spell_list.character_id != id
-      errors.add(:current_spell_list_id, "must belong to this character")
-    end
+
+    return unless current_spell_list && current_spell_list.character_id != id
+
+    errors.add(:current_spell_list_id, "must belong to this character")
   end
 
   def archetype
@@ -62,11 +62,11 @@ class Character < ApplicationRecord
   end
 
   def total_hitpoints
-    (archetype.hit_die.split('d').last.to_i + modifier_for(:constitution)) * level
+    (archetype.hit_die.split("d").last.to_i + modifier_for(:constitution)) * level
   end
 
   def current_hitpoints
-     self[:current_hitpoints] || total_hitpoints
+    self[:current_hitpoints] || total_hitpoints
   end
 
   def ac
@@ -78,12 +78,14 @@ class Character < ApplicationRecord
   end
 
   def spell_attack_mod
-    return if !archetype.caster?
+    return unless archetype.caster?
+
     proficiency_bonus + modifier_for(archetype.spellcasting_ability)
   end
 
   def spell_save_dc
-    return if !archetype.caster?
+    return unless archetype.caster?
+
     8 + spell_attack_mod
   end
 
@@ -105,7 +107,7 @@ class Character < ApplicationRecord
   end
 
   def value_of(ability)
-    self.send(ability)
+    send(ability)
   end
 
   def modifier_for(ability)
@@ -126,15 +128,15 @@ class Character < ApplicationRecord
 
   def max_spells_prepared
     return nil unless archetype.caster?
-    
+
     # For prepared casters (Cleric, Druid, Wizard, Paladin, Ranger)
     if archetype.spells_prepared_formula.present?
       formula = archetype.spells_prepared_formula
       # Parse formulas like "Wisdom modifier + Cleric level (minimum of 1)"
       # or "Intelligence modifier + Wizard level (minimum of 1)"
-      ability_name = archetype.spellcasting_ability.to_s.capitalize
+      archetype.spellcasting_ability.to_s.capitalize
       ability_modifier = modifier_for(archetype.spellcasting_ability)
-      
+
       # Extract the formula pattern - typically "Ability modifier + Class level"
       if formula =~ /(\w+)\s+modifier\s*\+\s*(\w+)\s+level/i
         result = ability_modifier + level
@@ -147,9 +149,7 @@ class Character < ApplicationRecord
     # For known casters (Sorcerer, Warlock, Bard, Ranger, Artificer)
     elsif archetype.spells_known_at_level(level).present?
       archetype.spells_known_at_level(level)
-    # For Warlocks with Pact Magic or other special cases
-    else
-      nil # No limit
+      # For Warlocks with Pact Magic or other special cases
     end
   end
 end

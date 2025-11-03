@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe AdminUser, type: :model do
-  context 'validations' do
-    it { should validate_presence_of :email }
+RSpec.describe AdminUser do
+  context "validations" do
+    it { is_expected.to validate_presence_of :email }
   end
 end

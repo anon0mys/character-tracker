@@ -1,41 +1,44 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe Character, type: :model do
-  context 'validations' do
-    it { should validate_presence_of :name }
-    it { should validate_presence_of :age }
-    it { should validate_presence_of :race }
-    it { should validate_presence_of :background }
+RSpec.describe Character do
+  context "validations" do
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :age }
+    it { is_expected.to validate_presence_of :race }
+    it { is_expected.to validate_presence_of :background }
   end
 
-  context 'enums' do
+  context "enums" do
+    subject(:character) { build(:character) }
+
     it do
-      should define_enum_for(:alignment)
+      expect(character).to define_enum_for(:alignment)
         .with_values(combine_to_hash(Character::ALIGNMENTS))
         .backed_by_column_of_type(:string)
     end
+
     it do
-      should define_enum_for(:archetype)
+      expect(character).to define_enum_for(:archetype)
         .with_values(combine_to_hash(Archetypes.names))
         .backed_by_column_of_type(:string)
     end
   end
 
-  context 'relationships' do
-    it { should belong_to :user }
-    it { should belong_to :game }
-    it { should have_many :spell_lists }
-    it { should have_many(:items).through(:character_items) }
+  context "relationships" do
+    it { is_expected.to belong_to :user }
+    it { is_expected.to belong_to :game }
+    it { is_expected.to have_many :spell_lists }
+    it { is_expected.to have_many(:items).through(:character_items) }
   end
 
-  context 'level and proficiency' do
-    let (:character) { create(:character) }
+  context "level and proficiency" do
+    let(:character) { create(:character) }
 
-    it 'should start at level 1' do
+    it "starts at level 1" do
       expect(character.level).to eq 1
     end
 
-    it 'should base proficiency bonus on level' do
+    it "bases proficiency bonus on level" do
       expect(character.proficiency_bonus).to eq 2
 
       character.level = 4
@@ -64,10 +67,10 @@ RSpec.describe Character, type: :model do
     end
   end
 
-  context 'abilities, modifiers, and saves' do
+  context "abilities, modifiers, and saves" do
     let(:character) { create(:character) }
 
-    it 'should default to ability scores of 10' do
+    it "defaults to ability scores of 10" do
       expect(character.strength).to eq 10
       expect(character.dexterity).to eq 10
       expect(character.constitution).to eq 10
@@ -76,11 +79,11 @@ RSpec.describe Character, type: :model do
       expect(character.charisma).to eq 10
     end
 
-    it 'should find values from ability skill symbols' do
+    it "finds values from ability skill symbols" do
       expect(character.value_of(:strength)).to eq 10
     end
 
-    it 'should calculate modifiers from ability skill symbols' do
+    it "calculates modifiers from ability skill symbols" do
       expect(character.modifier_for(:strength)).to eq 0
 
       character.strength = 12
@@ -90,7 +93,7 @@ RSpec.describe Character, type: :model do
       expect(character.modifier_for(:strength)).to eq 2
     end
 
-    it 'should calculate proficiency bonus for ability skill symbols' do
+    it "calculates proficiency bonus for ability skill symbols" do
       expect(character.proficiency_bonus_for(:strength)).to eq 0
 
       character.add_proficiency(:strength)
@@ -100,7 +103,7 @@ RSpec.describe Character, type: :model do
       expect(character.proficiency_bonus_for(:strength)).to eq 3
     end
 
-    it 'should calculate save fo ability skill symbol' do
+    it "calculates save fo ability skill symbol" do
       expect(character.save_for(:strength)).to eq 0
 
       character.add_proficiency(:strength)
@@ -111,10 +114,10 @@ RSpec.describe Character, type: :model do
     end
   end
 
-  context 'calculated attributes' do
+  context "calculated attributes" do
     let(:character) { create(:character) }
 
-    it 'should calculate initiative' do
+    it "calculates initiative" do
       expect(character.initiative).to eq 0
 
       character.initiative_bonus = 3
@@ -124,14 +127,14 @@ RSpec.describe Character, type: :model do
       expect(character.initiative).to eq 5
     end
 
-    it 'should calculate perception' do
+    it "calculates perception" do
       expect(character.perception).to eq 10
 
       character.wisdom = 14
       expect(character.perception).to eq 12
     end
 
-    it 'should calculate ac' do
+    it "calculates ac" do
       expect(character.ac).to eq 10
 
       character.ac_bonus = 6
@@ -141,7 +144,7 @@ RSpec.describe Character, type: :model do
       expect(character.ac).to eq 18
     end
 
-    it 'should calculate concentration' do
+    it "calculates concentration" do
       character.proficiencies = []
       expect(character.concentration).to eq 0
 
@@ -156,12 +159,11 @@ RSpec.describe Character, type: :model do
     end
   end
 
-  context 'spell casting attributes' do
-
-    context 'for spell casting archetypes' do
+  context "spell casting attributes" do
+    context "for spell casting archetypes" do
       let(:character) { create(:character, archetype: :artificer) }
 
-      it 'should calculate spell attack mod' do
+      it "calculates spell attack mod" do
         expect(character.spell_attack_mod).to eq 2
 
         character.intelligence = 16
@@ -171,7 +173,7 @@ RSpec.describe Character, type: :model do
         expect(character.spell_attack_mod).to eq 6
       end
 
-      it 'should calculate spell attack mod for classes with different casting ability' do
+      it "calculates spell attack mod for classes with different casting ability" do
         character.archetype = :cleric
         expect(character.spell_attack_mod).to eq 2
 
@@ -185,7 +187,7 @@ RSpec.describe Character, type: :model do
         expect(character.spell_attack_mod).to eq 6
       end
 
-      it 'should calculate spell save dc' do
+      it "calculates spell save dc" do
         expect(character.spell_save_dc).to eq 10
 
         character.intelligence = 16
@@ -193,49 +195,49 @@ RSpec.describe Character, type: :model do
       end
     end
 
-    context 'for no spell casting archetypes' do
+    context "for no spell casting archetypes" do
       let(:character) { create(:character, archetype: :barbarian) }
 
-      it 'should return nil for spell attack mod' do
-        expect(character.spell_attack_mod).to eq nil
+      it "returns nil for spell attack mod" do
+        expect(character.spell_attack_mod).to be_nil
       end
 
-      it 'should return nil for spell save dc' do
-        expect(character.spell_save_dc).to eq nil
+      it "returns nil for spell save dc" do
+        expect(character.spell_save_dc).to be_nil
       end
     end
   end
 
-  context '#max_spells_prepared' do
-    context 'for prepared casters' do
-      let(:cleric) { create(:character, archetype: :cleric, wisdom: 18, level: 5, proficiencies: ['wisdom', 'charisma']) }
+  describe "#max_spells_prepared" do
+    context "for prepared casters" do
+      let(:cleric) { create(:character, archetype: :cleric, wisdom: 18, level: 5, proficiencies: %w[wisdom charisma]) }
 
-      it 'should calculate based on ability modifier and level' do
+      it "calculates based on ability modifier and level" do
         # Wisdom 18 = +4 modifier, Level 5 = +5, Total = 9
         expect(cleric.max_spells_prepared).to eq(9)
       end
 
-      it 'should have minimum of 1' do
+      it "has minimum of 1" do
         cleric.wisdom = 8 # -1 modifier
         cleric.level = 1
         expect(cleric.max_spells_prepared).to eq(1)
       end
     end
 
-    context 'for known casters' do
+    context "for known casters" do
       let(:sorcerer) { create(:character, archetype: :sorcerer, level: 5) }
 
-      it 'should return spells known at level' do
+      it "returns spells known at level" do
         max = sorcerer.max_spells_prepared
         expect(max).to be_present
         expect(max).to eq(sorcerer.archetype.spells_known_at_level(5))
       end
     end
 
-    context 'for non-casters' do
+    context "for non-casters" do
       let(:barbarian) { create(:character, archetype: :barbarian) }
 
-      it 'should return nil' do
+      it "returns nil" do
         expect(barbarian.max_spells_prepared).to be_nil
       end
     end

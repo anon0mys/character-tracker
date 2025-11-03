@@ -3,15 +3,15 @@ class SpellList < ApplicationRecord
   has_many :spell_list_items
   has_many :spells, through: :spell_list_items
 
-  validates_presence_of :name
+  validates :name, presence: true
 
   def add_spell(spell)
-    if spell_list_items.exists?(spell: spell)
-      item = spell_list_items.find_by(spell: spell)
+    if spell_list_items.exists?(spell:)
+      item = spell_list_items.find_by(spell:)
       item.errors.add(:base, "This spell is already in the list")
-      raise ActiveRecord::RecordInvalid.new(item)
+      raise ActiveRecord::RecordInvalid, item
     end
-    item = spell_list_items.build(spell: spell)
+    item = spell_list_items.build(spell:)
     item.save!
     item
   end

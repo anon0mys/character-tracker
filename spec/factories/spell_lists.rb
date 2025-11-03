@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :spell_list do
-    name { 'Spellz' }
+    name { "Spellz" }
   end
 end
