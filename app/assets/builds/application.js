@@ -77222,7 +77222,7 @@ var characterSchema = zod__WEBPACK_IMPORTED_MODULE_8__.object({
   speed: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(25).max(50, 'Speed must be between 25 and 50'),
   initiativeBonus: zod__WEBPACK_IMPORTED_MODULE_8__.number().max(20, 'Initiative bonus cannot be greater than 20'),
   acBonus: zod__WEBPACK_IMPORTED_MODULE_8__.number().max(20, 'AC bonus cannot be greater than 20'),
-  proficiencies: zod__WEBPACK_IMPORTED_MODULE_8__.array(zod__WEBPACK_IMPORTED_MODULE_8__.string())["default"]([]),
+  proficiencies: zod__WEBPACK_IMPORTED_MODULE_8__.array(zod__WEBPACK_IMPORTED_MODULE_8__.string()),
   strength: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Strength must be between 10 and 20'),
   dexterity: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Dexterity must be between 10 and 20'),
   constitution: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Constitution must be between 10 and 20'),
@@ -91339,6 +91339,11 @@ __webpack_require__.r(__webpack_exports__);
 
 document.addEventListener('DOMContentLoaded', function () {
   var container = document.getElementById('app');
+
+  if (!container) {
+    throw new Error('Root element not found');
+  }
+
   var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(container);
   root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_App__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
 });

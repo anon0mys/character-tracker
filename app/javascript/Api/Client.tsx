@@ -12,8 +12,8 @@ interface Request {
 const Client = () => {
     const baseUrl = process.env.API_BASE_URL
 
-    const headers = (token?: string | null) => {
-        let headers = {'Content-Type': 'application/json'}
+    const headers = (token?: string | null): Record<string, string> => {
+        let headers: Record<string, string> = {'Content-Type': 'application/json'}
         if (token) {
             headers['Authorization'] = `Bearer ${token}`
             if (process.env.NODE_ENV === 'development') {

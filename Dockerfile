@@ -4,14 +4,14 @@ FROM ruby:3.2.1
 RUN apt-get update -qq && \
     apt-get install -y \
     nodejs \
+    npm \
     postgresql-client \
     build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Yarn using the official installation script
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
-ENV PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# Install Yarn globally using npm
+RUN npm install -g yarn
 
 WORKDIR /app
 

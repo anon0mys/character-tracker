@@ -30,4 +30,5 @@ const AuthStore = (): AuthStore => {
     }
 }
 
-export {AuthStore, UserType}
+export {AuthStore}
+export type {UserType}

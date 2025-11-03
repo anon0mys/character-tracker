@@ -102,7 +102,7 @@ interface IPaginationType {
     prev?: number
 }
 
-export {
+export type {
     IAttackType, ICharacterType, IGameType, IItemType, ISpellType,
     ISpellListType, IPaginationType
 }

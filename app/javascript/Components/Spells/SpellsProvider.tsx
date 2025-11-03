@@ -21,9 +21,9 @@ const SpellsProvider = ({ children }: { children: React.ReactNode }) => {
     const [pagination, setPagination] = useState<IPaginationType>({
         data: [],
         pages: 0,
-        page: null,
-        next: null,
-        prev: null
+        page: undefined,
+        next: undefined,
+        prev: undefined
     })
     const [searchTerm, setSearchTerm] = useState<string | null>(null)
     const [archetypeFilters, setArchetypeFilters] = useState<string[]>([])
@@ -33,7 +33,7 @@ const SpellsProvider = ({ children }: { children: React.ReactNode }) => {
     const client = Client()
     const errors = useError()
 
-    const fetchSpells = (callback, page = 1) => {
+    const fetchSpells = (callback: VoidFunction, page = 1) => {
         let path = `/spells?page=${page}`
         path = addFilters(path)
         client.get({ path: path, token: auth.getToken() })
