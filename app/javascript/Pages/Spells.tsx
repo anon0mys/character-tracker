@@ -120,12 +120,13 @@ const Spells = () => {
         }
         
         return (
-            <div className="flex justify-center items-center gap-2 mt-6">
+            <div className="flex flex-wrap justify-center items-center gap-2 mt-4 sm:mt-6 overflow-x-auto pb-2">
                 <Button
                     variant="outline"
                     size="sm"
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
+                    className="min-h-[40px] shrink-0"
                 >
                     Previous
                 </Button>
@@ -135,6 +136,7 @@ const Spells = () => {
                     size="sm"
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
+                    className="min-h-[40px] shrink-0"
                 >
                     Next
                 </Button>
@@ -144,18 +146,18 @@ const Spells = () => {
 
     return (
         <>
-            <div className="mb-8">
-                <h1 className="text-4xl font-bold tracking-tight mb-2 text-neon-cyan">Spells</h1>
-                <p className="text-muted-foreground">Browse and search D&D spells</p>
+            <div className="mb-6 sm:mb-8">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan">Spells</h1>
+                <p className="text-sm sm:text-base text-muted-foreground">Browse and search D&D spells</p>
             </div>
-            <div className="flex flex-wrap gap-3 mb-6">
-                <div className="relative flex-1 min-w-[250px]">
+            <div className="flex flex-col sm:flex-row gap-3 mb-4 sm:mb-6">
+                <div className="relative flex-1 min-w-0">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                         placeholder="Search spells..."
                         value={search}
                         onChange={handleSearchChange}
-                        className="pl-9 pr-9 h-11"
+                        className="pl-9 pr-9 h-10 sm:h-11 min-h-[44px]"
                     />
                     {search && (
                         <X 
@@ -164,24 +166,26 @@ const Spells = () => {
                         />
                     )}
                 </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="shadow-sm">Archetype</Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>{archetypeMenuItems}</DropdownMenuContent>
-                </DropdownMenu>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="shadow-sm">Level</Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>{levelMenuItems}</DropdownMenuContent>
-                </DropdownMenu>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="shadow-sm">School</Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>{schoolMenuItems}</DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex gap-2 sm:gap-3">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="shadow-sm min-h-[44px] flex-1 sm:flex-initial">Archetype</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>{archetypeMenuItems}</DropdownMenuContent>
+                    </DropdownMenu>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="shadow-sm min-h-[44px] flex-1 sm:flex-initial">Level</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>{levelMenuItems}</DropdownMenuContent>
+                    </DropdownMenu>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="shadow-sm min-h-[44px] flex-1 sm:flex-initial">School</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>{schoolMenuItems}</DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </div>
             {loading ? (
                 <div className="flex justify-center items-center py-12">

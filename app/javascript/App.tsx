@@ -32,6 +32,7 @@ const App = () => {
                                         <Route element={<GameSubRoute />}>
                                         {/* <Route path="characters/:characterId/spell-lists/:id" element={<SpellList />} /> */}
                                             <Route path="characters/create" element={<CharacterForm />} />
+                                            <Route path="characters/:id/edit" element={<CharacterForm />} />
                                             <Route path="characters/:id" element={<CharacterDisplay />} />
                                             <Route path="characters" element={<Characters />} />
                                             <Route path="items" element={<Items />} />

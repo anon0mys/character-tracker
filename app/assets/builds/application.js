@@ -33874,6 +33874,9 @@ var App = function App() {
     path: "characters/create",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Pages__WEBPACK_IMPORTED_MODULE_4__.CharacterForm, null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Route, {
+    path: "characters/:id/edit",
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Pages__WEBPACK_IMPORTED_MODULE_4__.CharacterForm, null)
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Route, {
     path: "characters/:id",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Pages__WEBPACK_IMPORTED_MODULE_4__.CharacterDisplay, null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Route, {
@@ -59308,13 +59311,13 @@ var Layout = function Layout(_ref) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", {
     className: "sticky top-0 z-50 w-full border-b border-primary/20 bg-card/80 backdrop-blur-xl supports-[backdrop-filter]:bg-card/60"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "container mx-auto px-4"
+    className: "container mx-auto px-3 sm:px-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex h-16 items-center justify-between"
+    className: "flex h-14 sm:h-16 items-center justify-between gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-    className: "text-2xl font-bold text-neon-cyan tracking-tight"
+    className: "text-lg sm:text-xl md:text-2xl font-bold text-neon-cyan tracking-tight truncate"
   }, game ? game.name : 'Dungeon Tracker'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Navbar__WEBPACK_IMPORTED_MODULE_1__.TopNav, null)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Errors__WEBPACK_IMPORTED_MODULE_2__.ErrorBanner, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("main", {
-    className: "container mx-auto px-4 py-8 max-w-7xl"
+    className: "container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 max-w-7xl"
   }, children));
 };
 
@@ -59353,7 +59356,7 @@ __webpack_require__.r(__webpack_exports__);
 var TopNav = function TopNav() {
   var auth = (0,_Auth_AuthProvider__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-end mr-2.5"
+    className: "flex justify-end shrink-0"
   }, auth.user ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_User__WEBPACK_IMPORTED_MODULE_1__.UserProfile, null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_User_VisiitorNav__WEBPACK_IMPORTED_MODULE_3__["default"], null));
 };
 
@@ -60407,14 +60410,18 @@ __webpack_require__.r(__webpack_exports__);
 
 var VisitorNav = function VisitorNav() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex gap-2"
+    className: "flex gap-1.5 sm:gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
     asChild: true,
-    variant: "outline"
+    variant: "outline",
+    size: "sm",
+    className: "text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2 min-h-[36px] sm:min-h-[40px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
     to: "/login"
   }, "Log In")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    asChild: true
+    asChild: true,
+    size: "sm",
+    className: "text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2 min-h-[36px] sm:min-h-[40px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
     to: "/sign-up"
   }, "Sign Up")));
@@ -60531,15 +60538,15 @@ var Characters = function Characters() {
     });
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-between items-center mb-8"
+    className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-    className: "text-4xl font-bold tracking-tight mb-2 text-neon-cyan"
+    className: "text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan"
   }, "Characters"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-muted-foreground"
+    className: "text-sm sm:text-base text-muted-foreground"
   }, "Create and manage your D&D characters")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
     asChild: true,
     size: "lg",
-    className: "bg-primary text-primary-foreground hover:bg-primary/90 neon-glow"
+    className: "w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, {
     to: "/characters/create"
   }, "Create Character"))), characterCards.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -60669,10 +60676,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
 /* harmony import */ var _ui_dialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(36);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(99);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(346);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(75);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(99);
 /* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(22);
 /* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(19);
 /* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(125);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -60721,6 +60738,16 @@ var AddSpellForm = function AddSpellForm(_ref) {
       selectedSpellListId = _useState8[0],
       setSelectedSpellListId = _useState8[1];
 
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState10 = _slicedToArray(_useState9, 2),
+      showCreateList = _useState10[0],
+      setShowCreateList = _useState10[1];
+
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState12 = _slicedToArray(_useState11, 2),
+      newListName = _useState12[0],
+      setNewListName = _useState12[1];
+
   var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_4__.useAuth)();
   var client = (0,_Api__WEBPACK_IMPORTED_MODULE_3__.Client)();
   var errors = (0,_Errors__WEBPACK_IMPORTED_MODULE_5__.useError)();
@@ -60747,25 +60774,50 @@ var AddSpellForm = function AddSpellForm(_ref) {
   };
 
   var pickCharacter = function pickCharacter(value) {
+    // value is a string from Select, but ch.id might be a number, so we need to compare as strings
     var _char = characters.find(function (ch) {
-      return ch.id === value;
+      return String(ch.id) === value;
     });
 
     if (_char) {
       setSelectedCharacterId(value);
       setSelectedSpellListId('');
-      fetchSpellLists(_char.id);
+      setShowCreateList(false);
+      setNewListName('');
+      fetchSpellLists(String(_char.id));
     }
   };
 
   var pickSpellList = function pickSpellList(value) {
+    // value is a string from Select, but sp.id is a number, so we need to compare as strings
     var spellList = spellLists.find(function (sp) {
-      return sp.id === value;
+      return String(sp.id) === value;
     });
 
     if (spellList) {
       setSelectedSpellListId(value);
     }
+  };
+
+  var createNewList = function createNewList(e) {
+    e.preventDefault();
+    if (!selectedCharacterId || !newListName.trim()) return;
+    client.post({
+      path: "/characters/".concat(selectedCharacterId, "/spell_lists"),
+      payload: {
+        name: newListName.trim()
+      },
+      token: auth.getToken()
+    }).then(function (response) {
+      var _newList$id;
+
+      var newList = response.data;
+      setSpellLists([].concat(_toConsumableArray(spellLists), [newList]));
+      setSelectedSpellListId(((_newList$id = newList.id) === null || _newList$id === void 0 ? void 0 : _newList$id.toString()) || '');
+      setShowCreateList(false);
+      setNewListName('');
+    })["catch"](function (error) {// Error toast is automatically shown by Client.tsx
+    });
   };
 
   var submit = function submit() {
@@ -60811,31 +60863,92 @@ var AddSpellForm = function AddSpellForm(_ref) {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, characters.map(function (ch) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectItem, {
       key: ch.id,
-      value: ch.id
+      value: String(ch.id || '')
     }, ch.name);
   })))), selectedCharacterId && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "space-y-2"
+    className: "space-y-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center justify-between"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Label, {
     htmlFor: "spellList"
-  }, "Spell List"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Select, {
+  }, "Spell List"), !showCreateList && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    type: "button",
+    variant: "ghost",
+    size: "sm",
+    onClick: function onClick() {
+      return setShowCreateList(true);
+    },
+    className: "text-primary hover:text-primary/80 h-auto py-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    className: "h-3 w-3 mr-1"
+  }), "Create New List")), showCreateList ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "space-y-3 p-4 border border-primary/30 rounded-lg bg-card/50"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Label, {
+    htmlFor: "newListName"
+  }, "New Spell List Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    type: "button",
+    variant: "ghost",
+    size: "sm",
+    onClick: function onClick() {
+      setShowCreateList(false);
+      setNewListName('');
+    },
+    className: "h-6 w-6 p-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    className: "h-4 w-4"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: createNewList,
+    className: "space-y-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
+    id: "newListName",
+    placeholder: "Enter spell list name",
+    value: newListName,
+    onChange: function onChange(e) {
+      return setNewListName(e.target.value);
+    },
+    className: "h-9",
+    autoFocus: true
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex gap-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    type: "submit",
+    size: "sm",
+    className: "bg-primary text-primary-foreground hover:bg-primary/90 neon-glow",
+    disabled: !newListName.trim()
+  }, "Create"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    type: "button",
+    variant: "outline",
+    size: "sm",
+    onClick: function onClick() {
+      setShowCreateList(false);
+      setNewListName('');
+    },
+    className: "border-primary/30"
+  }, "Cancel")))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Select, {
     value: selectedSpellListId,
     onValueChange: pickSpellList
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectTrigger, {
     id: "spellList"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectValue, {
     placeholder: "Select a spell list"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, spellLists.map(function (sp) {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, spellLists.length > 0 ? spellLists.map(function (sp) {
+    var _sp$id;
+
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectItem, {
       key: sp.id,
-      value: sp.id
+      value: ((_sp$id = sp.id) === null || _sp$id === void 0 ? void 0 : _sp$id.toString()) || ''
     }, sp.name);
-  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogFooter, {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "px-2 py-4 text-sm text-muted-foreground text-center"
+  }, "No spell lists found"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogFooter, {
     className: "border-t border-primary/20 pt-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
     disabled: missingData,
     onClick: submit,
     className: "bg-primary text-primary-foreground hover:bg-primary/90 neon-glow disabled:opacity-50 disabled:neon-glow-none"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "mr-2 h-4 w-4"
   }), "Add to List"))));
 };
@@ -61675,7 +61788,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(129);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(129);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(139);
 /* harmony import */ var _Components_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
 /* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(22);
 /* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19);
@@ -61683,6 +61797,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(125);
 /* harmony import */ var _Components_Spells_SpellTable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(158);
 /* harmony import */ var _Components_Characters_AttackForm__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(161);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(345);
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -61714,10 +61829,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var CharacterDisplay = function CharacterDisplay() {
   var _currentSpellList$id;
 
-  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_8__.useParams)(),
+  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useParams)(),
       id = _useParams.id;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
@@ -61870,35 +61986,50 @@ var CharacterDisplay = function CharacterDisplay() {
   var attackRows = character.attacks.map(function (attack, index) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: attack.id || index,
-      className: "grid grid-cols-12 gap-4 py-3 px-2 rounded hover:bg-accent/50 transition-colors group"
+      className: "grid grid-cols-12 gap-2 sm:gap-4 py-3 px-2 rounded hover:bg-accent/50 transition-colors group"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "col-span-3 font-medium group-hover:text-primary transition-colors"
+      className: "col-span-4 sm:col-span-3 font-medium group-hover:text-primary transition-colors text-sm sm:text-base"
     }, attack.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "col-span-2"
+      className: "col-span-3 sm:col-span-2"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "px-2 py-1 bg-primary/10 text-primary rounded text-xs font-semibold"
     }, attack.bonus)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "col-span-4 text-sm text-muted-foreground"
+      className: "col-span-5 sm:col-span-4 text-xs sm:text-sm text-muted-foreground"
     }, attack.description));
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "mb-8"
+    className: "mb-6 sm:mb-8"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col sm:flex-row justify-between items-start gap-4 mb-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex-1 min-w-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-    className: "text-4xl font-bold tracking-tight mb-2 text-neon-cyan"
+    className: "text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-2 text-neon-cyan break-words"
   }, character.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex items-center gap-4 text-muted-foreground"
+    className: "flex flex-wrap items-center gap-2 sm:gap-4 text-sm sm:text-base text-muted-foreground"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "flex items-center gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "font-medium"
   }, "Level ", character.level), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: "px-2 py-1 bg-primary/20 text-primary rounded-md text-sm font-semibold neon-glow"
-  }, character.archetype)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u2022"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, character.race))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6 mb-6"
+    className: "px-2 py-1 bg-primary/20 text-primary rounded-md text-xs sm:text-sm font-semibold neon-glow whitespace-nowrap"
+  }, character.archetype)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "hidden sm:inline"
+  }, "\u2022"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, character.race))), character.id && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    asChild: true,
+    size: "lg",
+    className: "w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px] shrink-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Link, {
+    to: "/characters/".concat(character.id, "/edit"),
+    className: "flex items-center justify-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    className: "mr-2 h-4 w-4"
+  }), "Edit Character")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-xl font-bold mb-4 pb-2 border-b border-primary/20 text-neon-cyan"
+    className: "text-lg sm:text-xl font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-neon-cyan"
   }, "Character Information"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "grid grid-cols-1 md:grid-cols-3 gap-6"
+    className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -61930,19 +62061,19 @@ var CharacterDisplay = function CharacterDisplay() {
   }, "Age"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "font-semibold"
   }, character.age)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6"
+    className: "grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "lg:col-span-2 bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6"
+    className: "lg:col-span-2 bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-lg font-bold mb-4 pb-2 border-b border-primary/20 text-neon-cyan"
+    className: "text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-neon-cyan"
   }, "Ability Scores"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "grid grid-cols-6 gap-4"
+    className: "grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4 overflow-x-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "col-span-2 space-y-1"
+    className: "col-span-1 sm:col-span-2 space-y-1"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-xs font-medium text-muted-foreground uppercase"
   }, "Ability"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "space-y-3 pt-1"
+    className: "space-y-2 sm:space-y-3 pt-1"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "font-medium"
   }, "Strength"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -61956,11 +62087,11 @@ var CharacterDisplay = function CharacterDisplay() {
   }, "Wisdom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "font-medium"
   }, "Charisma"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "col-span-2 space-y-1"
+    className: "col-span-1 sm:col-span-2 space-y-1"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-xs font-medium text-muted-foreground uppercase"
   }, "Score"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "space-y-3 pt-1"
+    className: "space-y-2 sm:space-y-3 pt-1"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex items-baseline gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
@@ -61998,11 +62129,11 @@ var CharacterDisplay = function CharacterDisplay() {
   }, character.charisma.value), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "text-sm text-primary font-semibold"
   }, "+", character.charisma.modifier)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "col-span-2 space-y-1"
+    className: "col-span-1 sm:col-span-2 space-y-1"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-xs font-medium text-muted-foreground uppercase"
   }, "Saves"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "space-y-3 pt-1"
+    className: "space-y-2 sm:space-y-3 pt-1"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex items-center gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
@@ -62040,11 +62171,11 @@ var CharacterDisplay = function CharacterDisplay() {
   }, "+", character.charisma.save), character.proficiencies.includes('charisma') && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "px-1.5 py-0.5 bg-primary/10 text-primary rounded text-xs font-medium"
   }, "\u2713")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6"
+    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-lg font-bold mb-4 pb-2 border-b border-primary/20 text-neon-cyan"
+    className: "text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-neon-cyan"
   }, "Combat Stats"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "space-y-4"
+    className: "space-y-3 sm:space-y-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex justify-between items-center pb-2 border-b"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
@@ -62094,43 +62225,45 @@ var CharacterDisplay = function CharacterDisplay() {
   }, "Concentration"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "text-xl font-bold"
   }, "+", character.concentration))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6 mb-6"
+    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-between items-center mb-4"
+    className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-lg font-bold text-neon-cyan"
+    className: "text-base sm:text-lg font-bold text-neon-cyan"
   }, "Attacks"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: function onClick() {
       return setAttackModalOpen(true);
     },
     size: "sm",
-    className: "bg-primary text-primary-foreground hover:bg-primary/90 neon-glow"
+    className: "w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[40px]"
   }, "Add Attack")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-sm text-muted-foreground mb-4"
+    className: "text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4"
   }, "Attacks Per Turn: 2"), attackRows.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "space-y-2"
+    className: "overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "grid grid-cols-12 gap-4 pb-2 border-b font-medium text-sm text-muted-foreground"
+    className: "min-w-[500px] sm:min-w-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "col-span-3"
+    className: "grid grid-cols-12 gap-2 sm:gap-4 pb-2 border-b font-medium text-xs sm:text-sm text-muted-foreground"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "col-span-4 sm:col-span-3"
   }, "Attack"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "col-span-2"
+    className: "col-span-3 sm:col-span-2"
   }, "Bonus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "col-span-4"
+    className: "col-span-5 sm:col-span-4"
   }, "Damage & Notes")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-1"
-  }, attackRows)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-sm text-muted-foreground text-center py-4"
+  }, attackRows))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "text-xs sm:text-sm text-muted-foreground text-center py-4"
   }, "No attacks added yet")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Characters_AttackForm__WEBPACK_IMPORTED_MODULE_7__["default"], {
     opened: attackModalOpen,
     onClose: closeAttackForm,
     attack: undefined
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6 mb-6"
+    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-lg font-bold mb-4 pb-2 border-b border-primary/20 text-neon-cyan"
+    className: "text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-neon-cyan"
   }, "Hit Points & Abilities"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "grid grid-cols-1 md:grid-cols-3 gap-6"
+    className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -62158,24 +62291,24 @@ var CharacterDisplay = function CharacterDisplay() {
   }, "Rest Recovery"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-lg font-semibold"
   }, character.hit_die, " + ", character.constitution.modifier, " = 5"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6 mb-6"
+    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex flex-wrap items-center gap-4 mb-4"
+    className: "flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-4 mb-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex-1 min-w-[200px]"
+    className: "flex-1 min-w-0 w-full sm:w-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-lg font-bold mb-2 text-neon-cyan"
+    className: "text-base sm:text-lg font-bold mb-2 text-neon-cyan"
   }, "Current Spells"), currentSpellList ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-sm text-muted-foreground"
+    className: "text-xs sm:text-sm text-muted-foreground truncate"
   }, currentSpellList.name) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-sm text-muted-foreground"
+    className: "text-xs sm:text-sm text-muted-foreground"
   }, "No spell list selected")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex gap-2"
+    className: "flex flex-col sm:flex-row gap-2 w-full sm:w-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Select, {
     value: (currentSpellList === null || currentSpellList === void 0 ? void 0 : (_currentSpellList$id = currentSpellList.id) === null || _currentSpellList$id === void 0 ? void 0 : _currentSpellList$id.toString()) || 'Set Current list',
     onValueChange: selectSpellList
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.SelectTrigger, {
-    className: "w-[200px]"
+    className: "w-full sm:w-[200px] min-h-[40px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.SelectValue, {
     placeholder: "Set Current list"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.SelectItem, {
@@ -62189,7 +62322,8 @@ var CharacterDisplay = function CharacterDisplay() {
     onClick: function onClick() {
       return setSpellListFormOpen(true);
     },
-    size: "sm"
+    size: "sm",
+    className: "w-full sm:w-auto min-h-[40px]"
   }, "Add Spell List")))), currentSpellList && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Spells_SpellTable__WEBPACK_IMPORTED_MODULE_6__["default"], {
     spells: currentSpellList.spells
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Characters__WEBPACK_IMPORTED_MODULE_4__.SpellListForm, {
@@ -62264,7 +62398,23 @@ var SpellTable = function SpellTable(_ref) {
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "bg-card/80 backdrop-blur-sm rounded-lg border border-primary/30 shadow-lg overflow-hidden"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Table, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHeader, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Level"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "School"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Casting Time"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Range"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Archetypes"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableBody, null, rows))), currentSpell && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SpellModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "min-w-[600px] sm:min-w-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Table, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHeader, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm"
+  }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm"
+  }, "Level"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm hidden sm:table-cell"
+  }, "School"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm hidden md:table-cell"
+  }, "Casting Time"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm hidden lg:table-cell"
+  }, "Range"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm hidden lg:table-cell"
+  }, "Archetypes"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableBody, null, rows))))), currentSpell && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SpellModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
     spell: currentSpell,
     opened: opened,
     onClose: closeModal
@@ -62297,17 +62447,17 @@ var SpellRow = function SpellRow(_ref) {
     },
     className: "cursor-pointer hover:bg-accent/50 transition-colors group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
-    className: "font-medium group-hover:text-primary transition-colors"
+    className: "font-medium group-hover:text-primary transition-colors text-sm sm:text-base"
   }, spell.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "px-2 py-1 bg-primary/10 text-primary rounded text-xs font-semibold"
   }, spell.level)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
-    className: "text-sm text-muted-foreground"
+    className: "text-xs sm:text-sm text-muted-foreground hidden sm:table-cell"
   }, spell.school), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
-    className: "text-sm"
+    className: "text-xs sm:text-sm hidden md:table-cell"
   }, spell.casting_time), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
-    className: "text-sm"
+    className: "text-xs sm:text-sm hidden lg:table-cell"
   }, spell.range), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
-    className: "text-sm text-muted-foreground line-clamp-1"
+    className: "text-xs sm:text-sm text-muted-foreground line-clamp-1 hidden lg:table-cell"
   }, spell.archetypes.join(', ')));
 };
 
@@ -76897,20 +77047,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(129);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(118);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(129);
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(118);
 /* harmony import */ var _hookform_resolvers_zod__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(162);
-/* harmony import */ var zod__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(226);
+/* harmony import */ var zod__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(226);
 /* harmony import */ var _Components_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24);
 /* harmony import */ var _Contexts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(131);
 /* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(19);
 /* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(22);
 /* harmony import */ var _Components_Characters__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(143);
+/* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(125);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -76924,39 +77088,51 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var alignments = ['LG', 'NG', 'CG', 'LN', 'TN', 'CN', 'LE', 'NE', 'CE', 'UN'];
-var characterSchema = zod__WEBPACK_IMPORTED_MODULE_7__.object({
-  name: zod__WEBPACK_IMPORTED_MODULE_7__.string().min(2, 'Name must have at least 2 letters'),
-  race: zod__WEBPACK_IMPORTED_MODULE_7__.string().min(2, 'Race must have at least 2 letters'),
-  archetype: zod__WEBPACK_IMPORTED_MODULE_7__.string().refine(function (val) {
+var characterSchema = zod__WEBPACK_IMPORTED_MODULE_8__.object({
+  name: zod__WEBPACK_IMPORTED_MODULE_8__.string().min(2, 'Name must have at least 2 letters'),
+  race: zod__WEBPACK_IMPORTED_MODULE_8__.string().min(2, 'Race must have at least 2 letters'),
+  archetype: zod__WEBPACK_IMPORTED_MODULE_8__.string().refine(function (val) {
     return _Api__WEBPACK_IMPORTED_MODULE_5__.archetypes.includes(val);
   }, 'Invalid archetype'),
-  background: zod__WEBPACK_IMPORTED_MODULE_7__.string().min(2, 'Background must have at least 2 letters'),
-  alignment: zod__WEBPACK_IMPORTED_MODULE_7__.string().refine(function (val) {
+  background: zod__WEBPACK_IMPORTED_MODULE_8__.string().min(2, 'Background must have at least 2 letters'),
+  alignment: zod__WEBPACK_IMPORTED_MODULE_8__.string().refine(function (val) {
     return alignments.includes(val);
   }, 'Invalid alignment'),
-  age: zod__WEBPACK_IMPORTED_MODULE_7__.number().min(1, 'Age must be greater than 0'),
-  level: zod__WEBPACK_IMPORTED_MODULE_7__.number().min(1, 'Level must be greater than 0'),
-  speed: zod__WEBPACK_IMPORTED_MODULE_7__.number().min(25).max(50, 'Speed must be between 25 and 50'),
-  initiativeBonus: zod__WEBPACK_IMPORTED_MODULE_7__.number().max(20, 'Initiative bonus cannot be greater than 20'),
-  acBonus: zod__WEBPACK_IMPORTED_MODULE_7__.number().max(20, 'AC bonus cannot be greater than 20'),
-  proficiencies: zod__WEBPACK_IMPORTED_MODULE_7__.array(zod__WEBPACK_IMPORTED_MODULE_7__.string())["default"]([]),
-  strength: zod__WEBPACK_IMPORTED_MODULE_7__.number().min(10).max(20, 'Strength must be between 10 and 20'),
-  dexterity: zod__WEBPACK_IMPORTED_MODULE_7__.number().min(10).max(20, 'Dexterity must be between 10 and 20'),
-  constitution: zod__WEBPACK_IMPORTED_MODULE_7__.number().min(10).max(20, 'Constitution must be between 10 and 20'),
-  intelligence: zod__WEBPACK_IMPORTED_MODULE_7__.number().min(10).max(20, 'Intelligence must be between 10 and 20'),
-  wisdom: zod__WEBPACK_IMPORTED_MODULE_7__.number().min(10).max(20, 'Wisdom must be between 10 and 20'),
-  charisma: zod__WEBPACK_IMPORTED_MODULE_7__.number().min(10).max(20, 'Charisma must be between 10 and 20')
+  age: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(1, 'Age must be greater than 0'),
+  level: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(1, 'Level must be greater than 0'),
+  speed: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(25).max(50, 'Speed must be between 25 and 50'),
+  initiativeBonus: zod__WEBPACK_IMPORTED_MODULE_8__.number().max(20, 'Initiative bonus cannot be greater than 20'),
+  acBonus: zod__WEBPACK_IMPORTED_MODULE_8__.number().max(20, 'AC bonus cannot be greater than 20'),
+  proficiencies: zod__WEBPACK_IMPORTED_MODULE_8__.array(zod__WEBPACK_IMPORTED_MODULE_8__.string())["default"]([]),
+  strength: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Strength must be between 10 and 20'),
+  dexterity: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Dexterity must be between 10 and 20'),
+  constitution: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Constitution must be between 10 and 20'),
+  intelligence: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Intelligence must be between 10 and 20'),
+  wisdom: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Wisdom must be between 10 and 20'),
+  charisma: zod__WEBPACK_IMPORTED_MODULE_8__.number().min(10).max(20, 'Charisma must be between 10 and 20')
 });
 
 var CharacterForm = function CharacterForm() {
-  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useNavigate)();
+  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_9__.useNavigate)();
+
+  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_9__.useParams)(),
+      id = _useParams.id;
+
   var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_4__.useAuth)();
   var client = (0,_Api__WEBPACK_IMPORTED_MODULE_5__.Client)();
 
   var _useGame = (0,_Contexts__WEBPACK_IMPORTED_MODULE_3__.useGame)(),
       game = _useGame.game;
 
-  var form = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useForm)({
+  var errors = (0,_Errors__WEBPACK_IMPORTED_MODULE_7__.useError)();
+  var isEditMode = !!id;
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default().useState(isEditMode),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      isLoading = _React$useState2[0],
+      setIsLoading = _React$useState2[1];
+
+  var form = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useForm)({
     resolver: (0,_hookform_resolvers_zod__WEBPACK_IMPORTED_MODULE_1__.zodResolver)(characterSchema),
     defaultValues: {
       name: '',
@@ -76977,53 +77153,132 @@ var CharacterForm = function CharacterForm() {
       wisdom: 10,
       charisma: 10
     }
-  });
+  }); // Load character data for editing
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (isEditMode && id) {
+      setIsLoading(true);
+      var token = auth.getToken();
+      client.get({
+        path: "/characters/".concat(id),
+        token: token
+      }).then(function (response) {
+        var _character$strength, _character$dexterity, _character$constituti, _character$intelligen, _character$wisdom, _character$charisma;
+
+        var character = response.data; // Transform API format to form format
+
+        form.reset({
+          name: character.name || '',
+          race: character.race || '',
+          archetype: character.archetype || '',
+          background: character.background || '',
+          alignment: character.alignment || '',
+          age: character.age || 20,
+          level: character.level || 1,
+          speed: character.speed || 30,
+          initiativeBonus: character.initiative || 0,
+          acBonus: character.ac || 0,
+          proficiencies: character.proficiencies || [],
+          strength: ((_character$strength = character.strength) === null || _character$strength === void 0 ? void 0 : _character$strength.value) || 10,
+          dexterity: ((_character$dexterity = character.dexterity) === null || _character$dexterity === void 0 ? void 0 : _character$dexterity.value) || 10,
+          constitution: ((_character$constituti = character.constitution) === null || _character$constituti === void 0 ? void 0 : _character$constituti.value) || 10,
+          intelligence: ((_character$intelligen = character.intelligence) === null || _character$intelligen === void 0 ? void 0 : _character$intelligen.value) || 10,
+          wisdom: ((_character$wisdom = character.wisdom) === null || _character$wisdom === void 0 ? void 0 : _character$wisdom.value) || 10,
+          charisma: ((_character$charisma = character.charisma) === null || _character$charisma === void 0 ? void 0 : _character$charisma.value) || 10
+        });
+        setIsLoading(false);
+      })["catch"](function (error) {
+        errors.setError(error);
+        setIsLoading(false);
+      });
+    } else {
+      setIsLoading(false);
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  }, [id, isEditMode]);
 
   var handleSubmit = function handleSubmit(values) {
     var data = _objectSpread({
       game_id: game && game.id
     }, values);
 
-    client.post({
-      path: '/characters',
-      payload: data,
-      token: auth.getToken()
-    }).then(function (data) {
-      navigate('/characters');
-    })["catch"](function (error) {
-      // Error toast is already shown by Client.tsx
-      console.error('Failed to create character:', error);
-    });
+    if (isEditMode && id) {
+      // Update existing character
+      client.patch({
+        path: "/characters/".concat(id),
+        payload: data,
+        token: auth.getToken()
+      }).then(function () {
+        navigate("/characters/".concat(id));
+      })["catch"](function (error) {
+        // Error toast is already shown by Client.tsx
+        console.error('Failed to update character:', error);
+      });
+    } else {
+      // Create new character
+      client.post({
+        path: '/characters',
+        payload: data,
+        token: auth.getToken()
+      }).then(function (data) {
+        navigate('/characters');
+      })["catch"](function (error) {
+        // Error toast is already shown by Client.tsx
+        console.error('Failed to create character:', error);
+      });
+    }
   };
 
+  if (isLoading) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "mx-auto max-w-5xl space-y-8"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "flex items-center justify-center py-16"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "text-center space-y-4"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+      className: "text-muted-foreground"
+    }, "Loading character..."))));
+  }
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "mx-auto max-w-5xl space-y-8"
+    className: "mx-auto max-w-5xl space-y-4 sm:space-y-6 md:space-y-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-    className: "text-4xl font-bold tracking-tight mb-2 text-neon-cyan"
-  }, "Create Character"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-muted-foreground"
-  }, "Fill out your character's information below")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Form, form, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    className: "text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan"
+  }, isEditMode ? 'Edit Character' : 'Create Character'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "text-sm sm:text-base text-muted-foreground"
+  }, isEditMode ? 'Update your character\'s information below' : 'Fill out your character\'s information below')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Form, form, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     onSubmit: form.handleSubmit(handleSubmit),
-    className: "space-y-8"
+    className: "space-y-4 sm:space-y-6 md:space-y-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6"
+    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    className: "text-xl font-bold mb-6 pb-2 border-b border-primary/20 text-neon-cyan"
+    className: "text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-neon-cyan"
   }, "Character Bio"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Characters__WEBPACK_IMPORTED_MODULE_6__.CharacterBioForm, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6"
+    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    className: "text-xl font-bold mb-6 pb-2 border-b border-primary/20 text-neon-cyan"
+    className: "text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-neon-cyan"
   }, "Stats & Proficiencies"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Characters__WEBPACK_IMPORTED_MODULE_6__.CharacterStatsForm, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-6"
+    className: "bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    className: "text-xl font-bold mb-6 pb-2 border-b border-primary/20 text-neon-cyan"
+    className: "text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-neon-cyan"
   }, "Ability Scores"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Characters__WEBPACK_IMPORTED_MODULE_6__.AbilityScoresForm, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-end gap-4 pt-4 border-t border-primary/20"
+    className: "flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 pt-4 border-t border-primary/20"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    type: "button",
+    variant: "outline",
+    size: "lg",
+    className: "w-full sm:w-auto border-primary/30 min-h-[44px]",
+    onClick: function onClick() {
+      return navigate(-1);
+    }
+  }, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Button, {
     type: "submit",
     size: "lg",
-    className: "bg-primary text-primary-foreground hover:bg-primary/90 neon-glow"
-  }, "Create Character")))));
+    className: "w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]"
+  }, isEditMode ? 'Update Character' : 'Create Character')))));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CharacterForm);
@@ -77131,17 +77386,17 @@ var Dashboard = function Dashboard() {
     });
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-between items-center mb-8"
+    className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-    className: "text-4xl font-bold tracking-tight mb-2 text-neon-cyan"
+    className: "text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan"
   }, "Games"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-muted-foreground"
+    className: "text-sm sm:text-base text-muted-foreground"
   }, "Manage your D&D campaigns and adventures")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: function onClick() {
       return setOpen(true);
     },
     size: "lg",
-    className: "bg-primary text-primary-foreground hover:bg-primary/90 neon-glow"
+    className: "w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]"
   }, "Create Game")), gameCards.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
   }, gameCards) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -77450,52 +77705,52 @@ __webpack_require__.r(__webpack_exports__);
 
 var Home = function Home() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex flex-col items-center justify-center min-h-[70vh] space-y-12"
+    className: "flex flex-col items-center justify-center min-h-[70vh] space-y-8 sm:space-y-12 px-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "text-center space-y-4"
+    className: "text-center space-y-3 sm:space-y-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-    className: "text-6xl font-bold tracking-tight text-neon-cyan"
+    className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-neon-cyan"
   }, "Welcome to Dungeon Tracker"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-xl text-muted-foreground max-w-2xl mx-auto"
+    className: "text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4"
   }, "Manage your D&D campaigns, characters, spells, and items all in one place")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex items-center justify-center gap-12 w-full max-w-2xl"
+    className: "flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-6 sm:gap-8 lg:gap-12 w-full max-w-2xl"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex flex-col items-center space-y-6 flex-1 p-8 rounded-2xl border border-primary/30 bg-card/50 backdrop-blur-sm hover:border-primary/50 hover:neon-glow transition-all duration-300"
+    className: "flex flex-col items-center space-y-4 sm:space-y-6 flex-1 p-6 sm:p-8 rounded-2xl border border-primary/30 bg-card/50 backdrop-blur-sm hover:border-primary/50 hover:neon-glow transition-all duration-300"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "p-4 rounded-full bg-primary/20 neon-glow"
+    className: "p-3 sm:p-4 rounded-full bg-primary/20 neon-glow"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    className: "h-12 w-12 text-primary"
+    className: "h-8 w-8 sm:h-12 sm:w-12 text-primary"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-center space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-lg font-semibold"
+    className: "text-base sm:text-lg font-semibold"
   }, "New to Dungeon Tracker?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-sm text-muted-foreground"
+    className: "text-xs sm:text-sm text-muted-foreground"
   }, "Create an account to get started")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
     asChild: true,
     size: "lg",
-    className: "w-full bg-primary text-primary-foreground hover:bg-primary/90 neon-glow"
+    className: "w-full bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
     to: "sign-up"
   }, "Sign Up"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "h-32 w-px bg-gradient-to-b from-transparent via-primary/30 to-transparent"
+    className: "hidden sm:block h-32 w-px bg-gradient-to-b from-transparent via-primary/30 to-transparent"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex flex-col items-center space-y-6 flex-1 p-8 rounded-2xl border border-accent/30 bg-card/50 backdrop-blur-sm hover:border-accent/50 hover:neon-glow-purple transition-all duration-300"
+    className: "flex flex-col items-center space-y-4 sm:space-y-6 flex-1 p-6 sm:p-8 rounded-2xl border border-accent/30 bg-card/50 backdrop-blur-sm hover:border-accent/50 hover:neon-glow-purple transition-all duration-300"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "p-4 rounded-full bg-accent/20 neon-glow-purple"
+    className: "p-3 sm:p-4 rounded-full bg-accent/20 neon-glow-purple"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    className: "h-12 w-12 text-accent"
+    className: "h-8 w-8 sm:h-12 sm:w-12 text-accent"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-center space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-lg font-semibold"
+    className: "text-base sm:text-lg font-semibold"
   }, "Returning User?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-sm text-muted-foreground"
+    className: "text-xs sm:text-sm text-muted-foreground"
   }, "Sign in to continue your adventures")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
     asChild: true,
     variant: "outline",
     size: "lg",
-    className: "w-full border-accent/50 text-accent hover:bg-accent/10 hover:neon-glow-purple"
+    className: "w-full border-accent/50 text-accent hover:bg-accent/10 hover:neon-glow-purple min-h-[44px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
     to: "login"
   }, "Log In")))));
@@ -77677,19 +77932,19 @@ var Items = function Items() {
     });
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-between items-center mb-8"
+    className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-    className: "text-4xl font-bold tracking-tight mb-2 text-neon-cyan"
+    className: "text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan"
   }, "Items"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-muted-foreground"
+    className: "text-sm sm:text-base text-muted-foreground"
   }, "Manage your character's inventory and equipment")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
     onClick: function onClick() {
       return setIsOpen(true);
     },
     size: "lg",
-    className: "bg-primary text-primary-foreground hover:bg-primary/90 neon-glow"
+    className: "w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]"
   }, "Add Item")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "mb-6"
+    className: "mb-4 sm:mb-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "relative max-w-md"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -77698,13 +77953,29 @@ var Items = function Items() {
     placeholder: "Search items...",
     value: search,
     onChange: handleSearchChange,
-    className: "pl-9 h-11",
+    className: "pl-9 h-10 sm:h-11 min-h-[44px]",
     disabled: loading
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "bg-card/80 backdrop-blur-sm rounded-lg border border-primary/30 shadow-lg overflow-hidden"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Table, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHeader, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Item Type"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Status"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Quality"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
-    className: "text-right"
-  }, "Quantity Owned"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Attunable"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, null, "Actions"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableBody, null, itemRows))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Items__WEBPACK_IMPORTED_MODULE_2__.ItemForm, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "min-w-[800px] sm:min-w-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Table, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHeader, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm"
+  }, "Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm hidden md:table-cell"
+  }, "Item Type"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm hidden lg:table-cell"
+  }, "Status"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm hidden lg:table-cell"
+  }, "Quality"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm text-right hidden md:table-cell"
+  }, "Quantity"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm hidden lg:table-cell"
+  }, "Attunable"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableHead, {
+    className: "text-xs sm:text-sm"
+  }, "Actions"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.TableBody, null, itemRows))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Items__WEBPACK_IMPORTED_MODULE_2__.ItemForm, {
     open: isOpen,
     close: function close() {
       return setIsOpen(false);
@@ -78077,25 +78348,30 @@ var ItemRow = function ItemRow(_ref) {
     },
     className: "cursor-pointer hover:bg-accent/50 transition-colors group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
-    className: "font-medium group-hover:text-primary transition-colors"
+    className: "font-medium group-hover:text-primary transition-colors text-sm sm:text-base"
   }, item.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
-    className: "text-sm"
-  }, item.item_type), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-xs sm:text-sm hidden md:table-cell"
+  }, item.item_type), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
+    className: "hidden lg:table-cell"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "px-2 py-1 bg-muted rounded text-xs"
   }, item.status)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
-    className: "text-sm"
+    className: "text-xs sm:text-sm hidden lg:table-cell"
   }, item.quality), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
-    className: "text-right font-semibold"
-  }, item.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, null, item.requires_attunement ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-right font-semibold text-xs sm:text-sm hidden md:table-cell"
+  }, item.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, {
+    className: "hidden lg:table-cell"
+  }, item.requires_attunement ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium"
   }, "Yes") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: "text-sm text-muted-foreground"
+    className: "text-xs sm:text-sm text-muted-foreground"
   }, "No")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.TableCell, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: function onClick(e) {
       e.stopPropagation();
       setIsOpen(true);
     },
-    className: "text-muted-foreground hover:text-foreground transition-colors"
+    className: "text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center",
+    "aria-label": "Edit item"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_3__["default"], {
     className: "h-4 w-4"
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ItemForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -78199,24 +78475,25 @@ var Login = function Login() {
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex items-center justify-center min-h-[60vh]"
+    className: "flex items-center justify-center min-h-[60vh] px-4 py-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "w-full max-w-md"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-2xl border border-primary/30 shadow-lg neon-glow p-8 space-y-6"
+    className: "bg-card/80 backdrop-blur-sm rounded-2xl border border-primary/30 shadow-lg neon-glow p-6 sm:p-8 space-y-5 sm:space-y-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-center space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    className: "text-3xl font-bold text-neon-cyan"
+    className: "text-2xl sm:text-3xl font-bold text-neon-cyan"
   }, "Welcome back"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-muted-foreground"
+    className: "text-sm sm:text-base text-muted-foreground"
   }, "Sign in to your account to continue")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     onSubmit: login,
-    className: "space-y-5"
+    className: "space-y-4 sm:space-y-5"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Label, {
-    htmlFor: "email"
+    htmlFor: "email",
+    className: "text-sm sm:text-base"
   }, "Email"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
     id: "email",
     type: "email",
@@ -78225,11 +78502,12 @@ var Login = function Login() {
     onChange: function onChange(e) {
       return setEmail(e.target.value);
     },
-    className: "h-11"
+    className: "h-10 sm:h-11 min-h-[44px]"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Label, {
-    htmlFor: "password"
+    htmlFor: "password",
+    className: "text-sm sm:text-base"
   }, "Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
     id: "password",
     type: "password",
@@ -78238,15 +78516,15 @@ var Login = function Login() {
     onChange: function onChange(e) {
       return setPassword(e.target.value);
     },
-    className: "h-11"
+    className: "h-10 sm:h-11 min-h-[44px]"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Button, {
     type: "submit",
-    className: "w-full h-11 bg-primary text-primary-foreground hover:bg-primary/90 neon-glow",
+    className: "w-full h-11 sm:h-12 bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]",
     size: "lg"
   }, "Log in"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "text-center text-sm"
+    className: "text-center text-xs sm:text-sm"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "text-muted-foreground"
   }, "Don't have an account? "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
@@ -78323,24 +78601,25 @@ var SignUp = function SignUp() {
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex items-center justify-center min-h-[60vh]"
+    className: "flex items-center justify-center min-h-[60vh] px-4 py-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "w-full max-w-md"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "bg-card/80 backdrop-blur-sm rounded-2xl border border-primary/30 shadow-lg neon-glow p-8 space-y-6"
+    className: "bg-card/80 backdrop-blur-sm rounded-2xl border border-primary/30 shadow-lg neon-glow p-6 sm:p-8 space-y-5 sm:space-y-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-center space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    className: "text-3xl font-bold text-neon-cyan"
+    className: "text-2xl sm:text-3xl font-bold text-neon-cyan"
   }, "Create an account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-muted-foreground"
+    className: "text-sm sm:text-base text-muted-foreground"
   }, "Get started with Dungeon Tracker")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     onSubmit: signup,
-    className: "space-y-5"
+    className: "space-y-4 sm:space-y-5"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Label, {
-    htmlFor: "email"
+    htmlFor: "email",
+    className: "text-sm sm:text-base"
   }, "Email"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
     id: "email",
     type: "email",
@@ -78349,11 +78628,12 @@ var SignUp = function SignUp() {
     onChange: function onChange(e) {
       return setEmail(e.target.value);
     },
-    className: "h-11"
+    className: "h-10 sm:h-11 min-h-[44px]"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Label, {
-    htmlFor: "password"
+    htmlFor: "password",
+    className: "text-sm sm:text-base"
   }, "Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
     id: "password",
     type: "password",
@@ -78362,11 +78642,12 @@ var SignUp = function SignUp() {
     onChange: function onChange(e) {
       return setPassword(e.target.value);
     },
-    className: "h-11"
+    className: "h-10 sm:h-11 min-h-[44px]"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Label, {
-    htmlFor: "passwordConfirmation"
+    htmlFor: "passwordConfirmation",
+    className: "text-sm sm:text-base"
   }, "Confirm Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Input, {
     id: "passwordConfirmation",
     type: "password",
@@ -78375,15 +78656,15 @@ var SignUp = function SignUp() {
     onChange: function onChange(e) {
       return setPasswordConfirmation(e.target.value);
     },
-    className: "h-11"
+    className: "h-10 sm:h-11 min-h-[44px]"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "space-y-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_2__.Button, {
     type: "submit",
-    className: "w-full h-11 bg-primary text-primary-foreground hover:bg-primary/90 neon-glow",
+    className: "w-full h-11 sm:h-12 bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]",
     size: "lg"
   }, "Sign Up"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "text-center text-sm"
+    className: "text-center text-xs sm:text-sm"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "text-muted-foreground"
   }, "Already have an account? "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
@@ -78601,62 +78882,66 @@ var Spells = function Spells() {
     }
 
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "flex justify-center items-center gap-2 mt-6"
+      className: "flex flex-wrap justify-center items-center gap-2 mt-4 sm:mt-6 overflow-x-auto pb-2"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Button, {
       variant: "outline",
       size: "sm",
       onClick: function onClick() {
         return handlePageChange(currentPage - 1);
       },
-      disabled: currentPage === 1
+      disabled: currentPage === 1,
+      className: "min-h-[40px] shrink-0"
     }, "Previous"), pages, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Button, {
       variant: "outline",
       size: "sm",
       onClick: function onClick() {
         return handlePageChange(currentPage + 1);
       },
-      disabled: currentPage === totalPages
+      disabled: currentPage === totalPages,
+      className: "min-h-[40px] shrink-0"
     }, "Next"));
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "mb-8"
+    className: "mb-6 sm:mb-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-    className: "text-4xl font-bold tracking-tight mb-2 text-neon-cyan"
+    className: "text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan"
   }, "Spells"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-muted-foreground"
+    className: "text-sm sm:text-base text-muted-foreground"
   }, "Browse and search D&D spells")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex flex-wrap gap-3 mb-6"
+    className: "flex flex-col sm:flex-row gap-3 mb-4 sm:mb-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "relative flex-1 min-w-[250px]"
+    className: "relative flex-1 min-w-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: "absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Input, {
     placeholder: "Search spells...",
     value: search,
     onChange: handleSearchChange,
-    className: "pl-9 pr-9 h-11"
+    className: "pl-9 pr-9 h-10 sm:h-11 min-h-[44px]"
   }), search && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors",
     onClick: function onClick() {
       return setSearch('');
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenu, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuTrigger, {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex gap-2 sm:gap-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenu, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuTrigger, {
     asChild: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Button, {
     variant: "outline",
-    className: "shadow-sm"
+    className: "shadow-sm min-h-[44px] flex-1 sm:flex-initial"
   }, "Archetype")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuContent, null, archetypeMenuItems)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenu, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuTrigger, {
     asChild: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Button, {
     variant: "outline",
-    className: "shadow-sm"
+    className: "shadow-sm min-h-[44px] flex-1 sm:flex-initial"
   }, "Level")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuContent, null, levelMenuItems)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenu, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuTrigger, {
     asChild: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Button, {
     variant: "outline",
-    className: "shadow-sm"
-  }, "School")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuContent, null, schoolMenuItems))), loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "shadow-sm min-h-[44px] flex-1 sm:flex-initial"
+  }, "School")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuContent, null, schoolMenuItems)))), loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex justify-center items-center py-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "h-8 w-8 animate-spin text-primary"
@@ -90602,6 +90887,70 @@ function getApolloContext() {
 }
 
 //# sourceMappingURL=ApolloContext.js.map
+
+/***/ }),
+/* 345 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "__iconNode": () => (/* binding */ __iconNode),
+/* harmony export */   "default": () => (/* binding */ SquarePen)
+/* harmony export */ });
+/* harmony import */ var _createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(76);
+/**
+ * @license lucide-react v0.552.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+const __iconNode = [
+  ["path", { d: "M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7", key: "1m0v6g" }],
+  [
+    "path",
+    {
+      d: "M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z",
+      key: "ohrbg2"
+    }
+  ]
+];
+const SquarePen = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])("square-pen", __iconNode);
+
+
+//# sourceMappingURL=square-pen.js.map
+
+
+/***/ }),
+/* 346 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "__iconNode": () => (/* binding */ __iconNode),
+/* harmony export */   "default": () => (/* binding */ Plus)
+/* harmony export */ });
+/* harmony import */ var _createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(76);
+/**
+ * @license lucide-react v0.552.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+const __iconNode = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
+];
+const Plus = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])("plus", __iconNode);
+
+
+//# sourceMappingURL=plus.js.map
+
 
 /***/ })
 /******/ 	]);

@@ -14,16 +14,16 @@ const SpellRow = ({ spell, openModal }: SpellRowProps) => {
             onClick={() => openModal(spell)} 
             className="cursor-pointer hover:bg-accent/50 transition-colors group"
         >
-            <TableCell className="font-medium group-hover:text-primary transition-colors">{spell.name}</TableCell>
+            <TableCell className="font-medium group-hover:text-primary transition-colors text-sm sm:text-base">{spell.name}</TableCell>
             <TableCell>
                 <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs font-semibold">
                     {spell.level}
                 </span>
             </TableCell>
-            <TableCell className="text-sm text-muted-foreground">{spell.school}</TableCell>
-            <TableCell className="text-sm">{spell.casting_time}</TableCell>
-            <TableCell className="text-sm">{spell.range}</TableCell>
-            <TableCell className="text-sm text-muted-foreground line-clamp-1">{spell.archetypes.join(', ')}</TableCell>
+            <TableCell className="text-xs sm:text-sm text-muted-foreground hidden sm:table-cell">{spell.school}</TableCell>
+            <TableCell className="text-xs sm:text-sm hidden md:table-cell">{spell.casting_time}</TableCell>
+            <TableCell className="text-xs sm:text-sm hidden lg:table-cell">{spell.range}</TableCell>
+            <TableCell className="text-xs sm:text-sm text-muted-foreground line-clamp-1 hidden lg:table-cell">{spell.archetypes.join(', ')}</TableCell>
         </TableRow>
     )
 }

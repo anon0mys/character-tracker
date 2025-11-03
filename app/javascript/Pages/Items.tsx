@@ -62,42 +62,46 @@ const Items = () => {
 
     return (
         <>
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
                 <div>
-                    <h1 className="text-4xl font-bold tracking-tight mb-2 text-neon-cyan">Items</h1>
-                    <p className="text-muted-foreground">Manage your character's inventory and equipment</p>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan">Items</h1>
+                    <p className="text-sm sm:text-base text-muted-foreground">Manage your character's inventory and equipment</p>
                 </div>
-                <Button onClick={() => setIsOpen(true)} size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Add Item</Button>
+                <Button onClick={() => setIsOpen(true)} size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]">Add Item</Button>
             </div>
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
                 <div className="relative max-w-md">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                         placeholder='Search items...'
                         value={search}
                         onChange={handleSearchChange}
-                        className="pl-9 h-11"
+                        className="pl-9 h-10 sm:h-11 min-h-[44px]"
                         disabled={loading}
                     />
                 </div>
             </div>
             <div className="bg-card/80 backdrop-blur-sm rounded-lg border border-primary/30 shadow-lg overflow-hidden">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Item Type</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Quality</TableHead>
-                            <TableHead className="text-right">Quantity Owned</TableHead>
-                            <TableHead>Attunable</TableHead>
-                            <TableHead>Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {itemRows}
-                    </TableBody>
-                </Table>
+                <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                    <div className="min-w-[800px] sm:min-w-0">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="text-xs sm:text-sm">Name</TableHead>
+                                    <TableHead className="text-xs sm:text-sm hidden md:table-cell">Item Type</TableHead>
+                                    <TableHead className="text-xs sm:text-sm hidden lg:table-cell">Status</TableHead>
+                                    <TableHead className="text-xs sm:text-sm hidden lg:table-cell">Quality</TableHead>
+                                    <TableHead className="text-xs sm:text-sm text-right hidden md:table-cell">Quantity</TableHead>
+                                    <TableHead className="text-xs sm:text-sm hidden lg:table-cell">Attunable</TableHead>
+                                    <TableHead className="text-xs sm:text-sm">Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {itemRows}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </div>
             </div>
             <ItemForm open={isOpen} close={() => setIsOpen(false)} />
         </>

@@ -47,12 +47,12 @@ const Dashboard = () => {
 
     return (
         <>
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
                 <div>
-                    <h1 className="text-4xl font-bold tracking-tight mb-2 text-neon-cyan">Games</h1>
-                    <p className="text-muted-foreground">Manage your D&D campaigns and adventures</p>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan">Games</h1>
+                    <p className="text-sm sm:text-base text-muted-foreground">Manage your D&D campaigns and adventures</p>
                 </div>
-                <Button onClick={() => setOpen(true)} size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Create Game</Button>
+                <Button onClick={() => setOpen(true)} size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]">Create Game</Button>
             </div>
             {gameCards.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

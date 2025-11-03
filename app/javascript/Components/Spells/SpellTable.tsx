@@ -27,19 +27,23 @@ const SpellTable = ({spells}: SpellTableProps) => {
     return (
         <>
             <div className="bg-card/80 backdrop-blur-sm rounded-lg border border-primary/30 shadow-lg overflow-hidden">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Level</TableHead>
-                            <TableHead>School</TableHead>
-                            <TableHead>Casting Time</TableHead>
-                            <TableHead>Range</TableHead>
-                            <TableHead>Archetypes</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>{rows}</TableBody>
-                </Table>
+                <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                    <div className="min-w-[600px] sm:min-w-0">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="text-xs sm:text-sm">Name</TableHead>
+                                    <TableHead className="text-xs sm:text-sm">Level</TableHead>
+                                    <TableHead className="text-xs sm:text-sm hidden sm:table-cell">School</TableHead>
+                                    <TableHead className="text-xs sm:text-sm hidden md:table-cell">Casting Time</TableHead>
+                                    <TableHead className="text-xs sm:text-sm hidden lg:table-cell">Range</TableHead>
+                                    <TableHead className="text-xs sm:text-sm hidden lg:table-cell">Archetypes</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>{rows}</TableBody>
+                        </Table>
+                    </div>
+                </div>
             </div>
             {currentSpell && <SpellModal spell={currentSpell} opened={opened} onClose={closeModal} />}
         </>
