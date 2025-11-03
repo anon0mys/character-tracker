@@ -5,6 +5,8 @@ Rails.application.config.assets.version = '1.0'
 
 # Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
+# Add builds directory to asset paths so application.js can be found
+Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'builds')
 
 # Prevent sass-rails from processing CSS files
 # Files compiled by PostCSS/Tailwind contain modern CSS syntax (like hsl(var(--border)))

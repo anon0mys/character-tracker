@@ -64,7 +64,7 @@ COPY . .
 
 # Build JavaScript and CSS assets before the application runs
 # This ensures compiled assets are available and prevents SassC from trying to process PostCSS syntax
-RUN yarn build && yarn build:css
+RUN yarn build && yarn build:css && ls -la app/assets/builds/ | head -10
 
 EXPOSE 3000
 
