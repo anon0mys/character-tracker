@@ -43,5 +43,6 @@ end
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
-# Note: application.css is already compiled by PostCSS, so we exclude it from Rails precompilation
-# Rails.application.config.assets.precompile += %w( admin.js admin.css )
+# Note: CSS files from builds/ are compiled by PostCSS via cssbundling-rails
+# They're served directly, not through the asset pipeline, so we exclude them
+Rails.application.config.assets.precompile += %w( admin.js admin.css )
