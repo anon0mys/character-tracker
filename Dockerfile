@@ -37,9 +37,9 @@ COPY Gemfile Gemfile.lock ./
 
 # Install Ruby dependencies
 # This layer will be cached unless Gemfile.lock changes
-# Cache bundler's download cache (not the install location)
-# Gems are installed to /usr/local/bundle in the image layers
-RUN --mount=type=cache,target=/root/.bundle/cache \
+# Cache bundler's download cache (speeds up install during build)
+# Gems are installed to /usr/local/bundle in the image layers (persisted via layer cache)
+RUN --mount=type=cache,target=/root/.bundle/cache,sharing=locked \
     bundle config set --global path /usr/local/bundle && \
     bundle config set --global without '' && \
     bundle install --jobs=4 --retry=3 && \
@@ -52,13 +52,19 @@ RUN --mount=type=cache,target=/root/.bundle/cache \
 COPY package.json yarn.lock ./
 
 # Install JavaScript dependencies with yarn cache
-# This layer will be cached unless JavaScript dependencies change
-RUN --mount=type=cache,target=/root/.yarn \
+# This layer will be cached unless yarn.lock changes
+# Cache yarn's cache directory (speeds up install during build)
+# node_modules are installed in the image layers (persisted via layer cache)
+RUN --mount=type=cache,target=/root/.yarn,sharing=locked \
     yarn install --frozen-lockfile
 
 # Copy application code last
 # This layer will be rebuilt on every code change, but all previous layers stay cached
 COPY . .
+
+# Build CSS assets (PostCSS/Tailwind) before the application runs
+# This ensures compiled CSS is available and prevents SassC from trying to process PostCSS syntax
+RUN yarn build:css
 
 EXPOSE 3000
 

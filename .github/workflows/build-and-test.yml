@@ -37,6 +37,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Calculate cache keys
+        id: cache-keys
+        run: |
+          GEMFILE_HASH=$(sha256sum Gemfile.lock | cut -d' ' -f1 | head -c 16)
+          YARN_HASH=$(sha256sum yarn.lock | cut -d' ' -f1 | head -c 16)
+          echo "gemfile-hash=$GEMFILE_HASH" >> $GITHUB_OUTPUT
+          echo "yarn-hash=$YARN_HASH" >> $GITHUB_OUTPUT
+
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -52,15 +60,13 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # Cache layers in GitHub Actions cache
-          # Docker automatically invalidates dependency layers when Gemfile.lock or yarn.lock change
-          # This is handled by Docker's layer caching - the COPY step creates a layer with a hash
-          # When lockfiles change, the hash changes, invalidating subsequent layers
           cache-from: |
-            type=gha
+            type=gha,scope=deps-${{ steps.cache-keys.outputs.gemfile-hash }}-${{ steps.cache-keys.outputs.yarn-hash }}
+            type=gha,scope=layers
             type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
           cache-to: |
-            type=gha,mode=max
+            type=gha,mode=max,scope=deps-${{ steps.cache-keys.outputs.gemfile-hash }}-${{ steps.cache-keys.outputs.yarn-hash }}
+            type=gha,mode=max,scope=layers
             type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
           
       - name: Set image tag output
