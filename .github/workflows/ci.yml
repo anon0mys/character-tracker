@@ -7,144 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    name: Build Docker Image
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=sha,prefix={{branch}}-
-            type=ref,event=branch
-            type=ref,event=pr
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  test:
-    name: Test Suite
-    runs-on: ubuntu-latest
-    needs: build
-    
-    services:
-      postgres:
-        image: postgres:12-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    env:
-      RAILS_ENV: test
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/character_tracker_test
-      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY || '' }}
-      IMAGE_TAG: ghcr.io/${{ github.repository }}:${{ github.event.pull_request.base.ref || github.ref_name }}-${{ github.sha }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull Docker image
-        run: |
-          docker pull ${{ env.IMAGE_TAG }}
-
-      - name: Set up database
-        run: |
-          docker run --rm \
-            --network host \
-            -e RAILS_ENV=test \
-            -e DATABASE_URL=postgresql://postgres:postgres@localhost:5432/character_tracker_test \
-            -e RAILS_MASTER_KEY="${{ secrets.RAILS_MASTER_KEY || '' }}" \
-            ${{ env.IMAGE_TAG }} \
-            bin/rails db:create db:schema:load
-
-      - name: Run RSpec tests
-        run: |
-          docker run --rm \
-            --network host \
-            -e RAILS_ENV=test \
-            -e DATABASE_URL=postgresql://postgres:postgres@localhost:5432/character_tracker_test \
-            -e RAILS_MASTER_KEY="${{ secrets.RAILS_MASTER_KEY || '' }}" \
-            -e COVERAGE=true \
-            -v "${{ github.workspace }}/coverage:/app/coverage" \
-            ${{ env.IMAGE_TAG }} \
-            bundle exec rspec
-
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
-        if: always()
-        with:
-          files: ./coverage/.resultset.json
-          fail_ci_if_error: false
-
-  lint:
-    name: Lint Ruby Code
-    runs-on: ubuntu-latest
-    needs: build
-
-    env:
-      IMAGE_TAG: ghcr.io/${{ github.repository }}:${{ github.event.pull_request.base.ref || github.ref_name }}-${{ github.sha }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull Docker image
-        run: |
-          docker pull ${{ env.IMAGE_TAG }}
-
-      - name: Run RuboCop
-        run: |
-          docker run --rm \
-            ${{ env.IMAGE_TAG }} \
-            bundle exec rubocop
+  build-and-test:
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      include_pr_tags: true
+    secrets: inherit
 
   typecheck:
     name: TypeScript Type Check
@@ -169,7 +36,7 @@ jobs:
   smoke-test:
     name: Smoke Test
     runs-on: ubuntu-latest
-    needs: [test, lint, typecheck]
+    needs: [build-and-test, typecheck]
 
     services:
       postgres:
@@ -188,7 +55,7 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/character_tracker_test
-      IMAGE_TAG: ghcr.io/${{ github.repository }}:${{ github.event.pull_request.base.ref || github.ref_name }}-${{ github.sha }}
+      IMAGE_TAG: ${{ needs.build-and-test.outputs.image-tag }}
 
     steps:
       - name: Checkout code
