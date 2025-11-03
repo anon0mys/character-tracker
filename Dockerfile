@@ -62,9 +62,9 @@ RUN --mount=type=cache,target=/root/.yarn,sharing=locked \
 # This layer will be rebuilt on every code change, but all previous layers stay cached
 COPY . .
 
-# Build CSS assets (PostCSS/Tailwind) before the application runs
-# This ensures compiled CSS is available and prevents SassC from trying to process PostCSS syntax
-RUN yarn build:css
+# Build JavaScript and CSS assets before the application runs
+# This ensures compiled assets are available and prevents SassC from trying to process PostCSS syntax
+RUN yarn build && yarn build:css
 
 EXPOSE 3000
 
