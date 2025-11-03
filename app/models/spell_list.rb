@@ -6,7 +6,13 @@ class SpellList < ApplicationRecord
   validates_presence_of :name
 
   def add_spell(spell)
-    return if spell_list_items.find_by(spell: spell)
-    spell_list_items.create!(spell: spell)
+    if spell_list_items.exists?(spell: spell)
+      item = spell_list_items.find_by(spell: spell)
+      item.errors.add(:base, "This spell is already in the list")
+      raise ActiveRecord::RecordInvalid.new(item)
+    end
+    item = spell_list_items.build(spell: spell)
+    item.save!
+    item
   end
 end

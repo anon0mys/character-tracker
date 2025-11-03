@@ -10,7 +10,7 @@ import {
     DropdownMenuTrigger, 
     DropdownMenuContent 
 } from '../Components/ui'
-import { Search, X, Loader2 } from 'lucide-react'
+import { Search, X, Loader2, Trash2 } from 'lucide-react'
 import SpellTable from '../Components/Spells/SpellTable'
 
 const Spells = () => {
@@ -21,9 +21,9 @@ const Spells = () => {
         pages: 0,
     })
     const [search, setSearch] = useState('')
-    const [archetypeFilters, archetypeMenuItems] = useFilter(archetypes)
-    const [levelFilters, levelMenuItems] = useFilter(spellLevels)
-    const [schoolFilters, schoolMenuItems] = useFilter(schools)
+    const [archetypeFilters, archetypeMenuItems, clearArchetypeFilters, removeArchetypeFilter] = useFilter(archetypes, 'spellFilters_archetype')
+    const [levelFilters, levelMenuItems, clearLevelFilters, removeLevelFilter] = useFilter(spellLevels, 'spellFilters_level')
+    const [schoolFilters, schoolMenuItems, clearSchoolFilters, removeSchoolFilter] = useFilter(schools, 'spellFilters_school')
     const auth = useAuth()
     const client = Client()
     const errors = useError()
@@ -187,6 +187,68 @@ const Spells = () => {
                     </DropdownMenu>
                 </div>
             </div>
+            {/* Active Filters Display */}
+            {(archetypeFilters.length > 0 || levelFilters.length > 0 || schoolFilters.length > 0) && (
+                <div className="mb-4 sm:mb-6 p-3 sm:p-4 border border-primary/30 rounded-lg bg-card/50">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-muted-foreground">Active Filters:</span>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                                clearArchetypeFilters()
+                                clearLevelFilters()
+                                clearSchoolFilters()
+                            }}
+                            className="h-7 text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
+                        >
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            Clear All
+                        </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        {archetypeFilters.map(filter => (
+                            <div
+                                key={`archetype-${filter}`}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/20 border border-primary/40 text-xs sm:text-sm"
+                            >
+                                <span className="text-primary/80 font-medium">Archetype:</span>
+                                <span className="text-foreground capitalize">{filter}</span>
+                                <X
+                                    className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground transition-colors ml-1"
+                                    onClick={() => removeArchetypeFilter(filter)}
+                                />
+                            </div>
+                        ))}
+                        {levelFilters.map(filter => (
+                            <div
+                                key={`level-${filter}`}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/20 border border-primary/40 text-xs sm:text-sm"
+                            >
+                                <span className="text-primary/80 font-medium">Level:</span>
+                                <span className="text-foreground capitalize">{filter}</span>
+                                <X
+                                    className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground transition-colors ml-1"
+                                    onClick={() => removeLevelFilter(filter)}
+                                />
+                            </div>
+                        ))}
+                        {schoolFilters.map(filter => (
+                            <div
+                                key={`school-${filter}`}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/20 border border-primary/40 text-xs sm:text-sm"
+                            >
+                                <span className="text-primary/80 font-medium">School:</span>
+                                <span className="text-foreground capitalize">{filter}</span>
+                                <X
+                                    className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground transition-colors ml-1"
+                                    onClick={() => removeSchoolFilter(filter)}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
             {loading ? (
                 <div className="flex justify-center items-center py-12">
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />

@@ -1,8 +1,6 @@
 class Api::V1::AttacksController < ApiController
   before_action :authenticate_user!
   before_action :set_character
-  rescue_from ActiveRecord::RecordNotFound, with: :invalid_record
-  rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
 
   def index
     @attacks = @character.attacks
@@ -17,9 +15,9 @@ class Api::V1::AttacksController < ApiController
   def update
     @attack = @character.attacks.find(params[:id])
     if @attack.update(attack_params)
-      render json: SpellListSerializer.render(@spell_list, root: :data)
+      render json: AttackSerializer.render(@attack, root: :data)
     else
-      render json: {errors: 'Invalid attributes'}, status: :unprocessable_entity
+      render json: {errors: @attack.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

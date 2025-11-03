@@ -60738,15 +60738,25 @@ var AddSpellForm = function AddSpellForm(_ref) {
       selectedSpellListId = _useState8[0],
       setSelectedSpellListId = _useState8[1];
 
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState10 = _slicedToArray(_useState9, 2),
-      showCreateList = _useState10[0],
-      setShowCreateList = _useState10[1];
+      selectedSpellList = _useState10[0],
+      setSelectedSpellList = _useState10[1];
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState12 = _slicedToArray(_useState11, 2),
-      newListName = _useState12[0],
-      setNewListName = _useState12[1];
+      showCreateList = _useState12[0],
+      setShowCreateList = _useState12[1];
+
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState14 = _slicedToArray(_useState13, 2),
+      newListName = _useState14[0],
+      setNewListName = _useState14[1];
+
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState16 = _slicedToArray(_useState15, 2),
+      validationError = _useState16[0],
+      setValidationError = _useState16[1];
 
   var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_4__.useAuth)();
   var client = (0,_Api__WEBPACK_IMPORTED_MODULE_3__.Client)();
@@ -60782,8 +60792,12 @@ var AddSpellForm = function AddSpellForm(_ref) {
     if (_char) {
       setSelectedCharacterId(value);
       setSelectedSpellListId('');
+      setSelectedSpellList(null); // Clear selected spell list when character changes
+
       setShowCreateList(false);
       setNewListName('');
+      setValidationError(''); // Clear validation error when character changes
+
       fetchSpellLists(String(_char.id));
     }
   };
@@ -60794,8 +60808,32 @@ var AddSpellForm = function AddSpellForm(_ref) {
       return String(sp.id) === value;
     });
 
-    if (spellList) {
+    if (spellList && selectedCharacterId) {
       setSelectedSpellListId(value);
+      setValidationError(''); // Clear validation error when spell list changes
+      // Fetch the full spell list to check for duplicates
+
+      var path = "/characters/".concat(selectedCharacterId, "/spell_lists/").concat(spellList.id);
+      client.get({
+        path: path,
+        token: auth.getToken()
+      }).then(function (response) {
+        var fullSpellList = response.data;
+        setSelectedSpellList(fullSpellList); // Check if the current spell is already in this list
+
+        if (spell && spell.id && fullSpellList.spells) {
+          var spellExists = fullSpellList.spells.some(function (s) {
+            return s.id === spell.id;
+          });
+
+          if (spellExists) {
+            setValidationError('This spell is already in the list');
+          }
+        }
+      })["catch"](function (error) {
+        // Don't show error toast for this fetch, just log it
+        console.error('Failed to fetch spell list details:', error);
+      });
     }
   };
 
@@ -60813,15 +60851,42 @@ var AddSpellForm = function AddSpellForm(_ref) {
 
       var newList = response.data;
       setSpellLists([].concat(_toConsumableArray(spellLists), [newList]));
-      setSelectedSpellListId(((_newList$id = newList.id) === null || _newList$id === void 0 ? void 0 : _newList$id.toString()) || '');
+      var newListId = ((_newList$id = newList.id) === null || _newList$id === void 0 ? void 0 : _newList$id.toString()) || '';
+      setSelectedSpellListId(newListId);
+      setSelectedSpellList(newList); // Set the newly created list
+
       setShowCreateList(false);
-      setNewListName('');
+      setNewListName(''); // Check if the current spell is already in this new list (unlikely, but possible)
+
+      if (spell && spell.id && newList.spells) {
+        var spellExists = newList.spells.some(function (s) {
+          return s.id === spell.id;
+        });
+
+        if (spellExists) {
+          setValidationError('This spell is already in the list');
+        }
+      }
     })["catch"](function (error) {// Error toast is automatically shown by Client.tsx
     });
   };
 
   var submit = function submit() {
-    if (!selectedCharacterId || !selectedSpellListId) return;
+    if (!selectedCharacterId || !selectedSpellListId) return; // Double-check if spell is already in the list before submitting
+
+    if (spell && spell.id && selectedSpellList !== null && selectedSpellList !== void 0 && selectedSpellList.spells) {
+      var spellExists = selectedSpellList.spells.some(function (s) {
+        return s.id === spell.id;
+      });
+
+      if (spellExists) {
+        setValidationError('This spell is already in the list');
+        return;
+      }
+    }
+
+    setValidationError(''); // Clear previous validation errors
+
     var path = "/characters/".concat(selectedCharacterId, "/spell_lists/").concat(selectedSpellListId, "/add_spell");
     client.post({
       path: path,
@@ -60833,13 +60898,40 @@ var AddSpellForm = function AddSpellForm(_ref) {
       }
     }).then(function (response) {
       // Success toast is automatically shown by Client.tsx
+      setValidationError(''); // Update the selected spell list with the new spell
+
+      if (response.data && spell) {
+        var updatedSpellList = response.data;
+        setSelectedSpellList(updatedSpellList);
+      }
+
       onClose();
       onSubmit();
-    })["catch"](function (error) {// Error toast is automatically shown by Client.tsx
+    })["catch"](function (error) {
+      // Check if it's a duplicate spell error
+      // Error can be an array of strings or an object with errors property
+      var errorMessages = Array.isArray(error) ? error : error !== null && error !== void 0 && error.errors && Array.isArray(error.errors) ? error.errors : error !== null && error !== void 0 && error.message ? [error.message] : [];
+      var duplicateError = errorMessages.find(function (e) {
+        return e.toLowerCase().includes('already in the list') || e.toLowerCase().includes('already exists') || e.toLowerCase().includes('duplicate');
+      });
+
+      if (duplicateError) {
+        setValidationError(duplicateError); // Don't show toast for duplicate errors since we're showing inline
+
+        return;
+      } // For other errors, let the Client.tsx handle the toast
+
     });
   };
 
   var missingData = !selectedCharacterId || !selectedSpellListId;
+  var hasValidationError = validationError.length > 0; // Clear validation error when dialog opens/closes
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (!opened) {
+      setValidationError('');
+    }
+  }, [opened]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.Dialog, {
     open: opened,
     onOpenChange: onClose
@@ -60942,10 +61034,12 @@ var AddSpellForm = function AddSpellForm(_ref) {
     }, sp.name);
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "px-2 py-4 text-sm text-muted-foreground text-center"
-  }, "No spell lists found"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogFooter, {
+  }, "No spell lists found"))), validationError && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "text-sm text-destructive mt-1 px-1"
+  }, validationError))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogFooter, {
     className: "border-t border-primary/20 pt-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    disabled: missingData,
+    disabled: missingData || hasValidationError,
     onClick: submit,
     className: "bg-primary text-primary-foreground hover:bg-primary/90 neon-glow disabled:opacity-50 disabled:neon-glow-none"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -61949,13 +62043,38 @@ var CharacterDisplay = function CharacterDisplay() {
   };
 
   var selectSpellList = function selectSpellList(value) {
-    if (value === 'Set Current list') return;
+    if (value === 'Set Current list') {
+      // Clear the current spell list
+      var _data = {
+        character: {
+          current_spell_list_id: null
+        }
+      };
+      client.patch({
+        path: "/characters/".concat(id),
+        payload: _data,
+        token: auth.getToken()
+      }).then(function (response) {
+        setCurrentSpellList(undefined);
+      })["catch"](function (error) {
+        return errors.setError(error);
+      });
+      return;
+    } // Convert value to number for comparison, or compare as strings
+
+
     var spellList = spellLists.find(function (spellList) {
-      return spellList.id === value;
+      return String(spellList.id) === value;
     });
+
+    if (!spellList) {
+      errors.setError('Spell list not found');
+      return;
+    }
+
     var data = {
       character: {
-        current_spell_list_id: spellList && spellList.id
+        current_spell_list_id: spellList.id
       }
     };
     client.patch({
@@ -61963,7 +62082,7 @@ var CharacterDisplay = function CharacterDisplay() {
       payload: data,
       token: auth.getToken()
     }).then(function (response) {
-      return setCurrentSpellList(spellList);
+      setCurrentSpellList(spellList);
     })["catch"](function (error) {
       return errors.setError(error);
     });
@@ -78692,7 +78811,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(24);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(246);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(75);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(251);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(150);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(251);
 /* harmony import */ var _Components_Spells_SpellTable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(158);
 var _excluded = ["data"];
 
@@ -78747,20 +78867,26 @@ var Spells = function Spells() {
       search = _useState8[0],
       setSearch = _useState8[1];
 
-  var _useFilter = (0,_Hooks_useFilter__WEBPACK_IMPORTED_MODULE_4__["default"])(_Api__WEBPACK_IMPORTED_MODULE_2__.archetypes),
-      _useFilter2 = _slicedToArray(_useFilter, 2),
+  var _useFilter = (0,_Hooks_useFilter__WEBPACK_IMPORTED_MODULE_4__["default"])(_Api__WEBPACK_IMPORTED_MODULE_2__.archetypes, 'spellFilters_archetype'),
+      _useFilter2 = _slicedToArray(_useFilter, 4),
       archetypeFilters = _useFilter2[0],
-      archetypeMenuItems = _useFilter2[1];
+      archetypeMenuItems = _useFilter2[1],
+      clearArchetypeFilters = _useFilter2[2],
+      removeArchetypeFilter = _useFilter2[3];
 
-  var _useFilter3 = (0,_Hooks_useFilter__WEBPACK_IMPORTED_MODULE_4__["default"])(_Api__WEBPACK_IMPORTED_MODULE_2__.spellLevels),
-      _useFilter4 = _slicedToArray(_useFilter3, 2),
+  var _useFilter3 = (0,_Hooks_useFilter__WEBPACK_IMPORTED_MODULE_4__["default"])(_Api__WEBPACK_IMPORTED_MODULE_2__.spellLevels, 'spellFilters_level'),
+      _useFilter4 = _slicedToArray(_useFilter3, 4),
       levelFilters = _useFilter4[0],
-      levelMenuItems = _useFilter4[1];
+      levelMenuItems = _useFilter4[1],
+      clearLevelFilters = _useFilter4[2],
+      removeLevelFilter = _useFilter4[3];
 
-  var _useFilter5 = (0,_Hooks_useFilter__WEBPACK_IMPORTED_MODULE_4__["default"])(_Api__WEBPACK_IMPORTED_MODULE_2__.schools),
-      _useFilter6 = _slicedToArray(_useFilter5, 2),
+  var _useFilter5 = (0,_Hooks_useFilter__WEBPACK_IMPORTED_MODULE_4__["default"])(_Api__WEBPACK_IMPORTED_MODULE_2__.schools, 'spellFilters_school'),
+      _useFilter6 = _slicedToArray(_useFilter5, 4),
       schoolFilters = _useFilter6[0],
-      schoolMenuItems = _useFilter6[1];
+      schoolMenuItems = _useFilter6[1],
+      clearSchoolFilters = _useFilter6[2],
+      removeSchoolFilter = _useFilter6[3];
 
   var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_1__.useAuth)();
   var client = (0,_Api__WEBPACK_IMPORTED_MODULE_2__.Client)();
@@ -78941,9 +79067,70 @@ var Spells = function Spells() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Button, {
     variant: "outline",
     className: "shadow-sm min-h-[44px] flex-1 sm:flex-initial"
-  }, "School")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuContent, null, schoolMenuItems)))), loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-center items-center py-12"
+  }, "School")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.DropdownMenuContent, null, schoolMenuItems)))), (archetypeFilters.length > 0 || levelFilters.length > 0 || schoolFilters.length > 0) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mb-4 sm:mb-6 p-3 sm:p-4 border border-primary/30 rounded-lg bg-card/50"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center justify-between mb-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-sm font-medium text-muted-foreground"
+  }, "Active Filters:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Button, {
+    variant: "ghost",
+    size: "sm",
+    onClick: function onClick() {
+      clearArchetypeFilters();
+      clearLevelFilters();
+      clearSchoolFilters();
+    },
+    className: "h-7 text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: "h-3 w-3 mr-1"
+  }), "Clear All")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-wrap gap-2"
+  }, archetypeFilters.map(function (filter) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: "archetype-".concat(filter),
+      className: "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/20 border border-primary/40 text-xs sm:text-sm"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "text-primary/80 font-medium"
+    }, "Archetype:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "text-foreground capitalize"
+    }, filter), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      className: "h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground transition-colors ml-1",
+      onClick: function onClick() {
+        return removeArchetypeFilter(filter);
+      }
+    }));
+  }), levelFilters.map(function (filter) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: "level-".concat(filter),
+      className: "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/20 border border-primary/40 text-xs sm:text-sm"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "text-primary/80 font-medium"
+    }, "Level:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "text-foreground capitalize"
+    }, filter), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      className: "h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground transition-colors ml-1",
+      onClick: function onClick() {
+        return removeLevelFilter(filter);
+      }
+    }));
+  }), schoolFilters.map(function (filter) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: "school-".concat(filter),
+      className: "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/20 border border-primary/40 text-xs sm:text-sm"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "text-primary/80 font-medium"
+    }, "School:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "text-foreground capitalize"
+    }, filter), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      className: "h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground transition-colors ml-1",
+      onClick: function onClick() {
+        return removeSchoolFilter(filter);
+      }
+    }));
+  }))), loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex justify-center items-center py-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], {
     className: "h-8 w-8 animate-spin text-primary"
   })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Spells_SpellTable__WEBPACK_IMPORTED_MODULE_6__["default"], {
     spells: spells
@@ -78986,23 +79173,77 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
-var filterReducer = function filterReducer(state, filterItem) {
-  if (state.includes(filterItem)) {
+var filterReducer = function filterReducer(state, action) {
+  if (action === '__CLEAR_ALL__') {
+    return [];
+  }
+
+  if (state.includes(action)) {
     var tempFilters = _toConsumableArray(state);
 
-    var index = tempFilters.indexOf(filterItem);
+    var index = tempFilters.indexOf(action);
     tempFilters.splice(index, 1);
     return tempFilters;
   } else {
-    return [].concat(_toConsumableArray(state), [filterItem]);
+    return [].concat(_toConsumableArray(state), [action]);
   }
 };
 
-var useFilter = function useFilter(filterLabels) {
-  var _useReducer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useReducer)(filterReducer, []),
+var useFilter = function useFilter(filterLabels, storageKey) {
+  // Initialize from localStorage
+  var getInitialFilters = function getInitialFilters() {
+    if (typeof window !== 'undefined') {
+      try {
+        var stored = localStorage.getItem(storageKey);
+
+        if (stored) {
+          var parsed = JSON.parse(stored); // Validate that stored filters are still valid options
+
+          return Array.isArray(parsed) ? parsed.filter(function (f) {
+            return filterLabels.includes(f);
+          }) : [];
+        }
+      } catch (e) {
+        console.error("Error loading filters from localStorage for ".concat(storageKey, ":"), e);
+      }
+    }
+
+    return [];
+  };
+
+  var _useReducer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useReducer)(filterReducer, getInitialFilters()),
       _useReducer2 = _slicedToArray(_useReducer, 2),
       filters = _useReducer2[0],
       setFilters = _useReducer2[1];
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      isInitialized = _useState2[0],
+      setIsInitialized = _useState2[1]; // Save to localStorage whenever filters change (after initial load)
+
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (isInitialized && typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(filters));
+      } catch (e) {
+        console.error("Error saving filters to localStorage for ".concat(storageKey, ":"), e);
+      }
+    } else {
+      setIsInitialized(true);
+    }
+  }, [filters, storageKey, isInitialized]);
+
+  var clearFilters = function clearFilters() {
+    setFilters('__CLEAR_ALL__');
+  };
+
+  var removeFilter = function removeFilter(filterToRemove) {
+    if (filters.includes(filterToRemove)) {
+      // Toggle it off by calling setFilters with the filter to remove
+      setFilters(filterToRemove);
+    }
+  };
 
   var menuItems = filterLabels.map(function (label) {
     var isActive = filters.includes(label);
@@ -79015,7 +79256,7 @@ var useFilter = function useFilter(filterLabels) {
       className: isActive ? 'bg-accent' : ''
     }, label);
   });
-  return [filters, menuItems];
+  return [filters, menuItems, clearFilters, removeFilter];
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useFilter);

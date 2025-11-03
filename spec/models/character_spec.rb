@@ -205,4 +205,39 @@ RSpec.describe Character, type: :model do
       end
     end
   end
+
+  context '#max_spells_prepared' do
+    context 'for prepared casters' do
+      let(:cleric) { create(:character, archetype: :cleric, wisdom: 18, level: 5, proficiencies: ['wisdom', 'charisma']) }
+
+      it 'should calculate based on ability modifier and level' do
+        # Wisdom 18 = +4 modifier, Level 5 = +5, Total = 9
+        expect(cleric.max_spells_prepared).to eq(9)
+      end
+
+      it 'should have minimum of 1' do
+        cleric.wisdom = 8 # -1 modifier
+        cleric.level = 1
+        expect(cleric.max_spells_prepared).to eq(1)
+      end
+    end
+
+    context 'for known casters' do
+      let(:sorcerer) { create(:character, archetype: :sorcerer, level: 5) }
+
+      it 'should return spells known at level' do
+        max = sorcerer.max_spells_prepared
+        expect(max).to be_present
+        expect(max).to eq(sorcerer.archetype.spells_known_at_level(5))
+      end
+    end
+
+    context 'for non-casters' do
+      let(:barbarian) { create(:character, archetype: :barbarian) }
+
+      it 'should return nil' do
+        expect(barbarian.max_spells_prepared).to be_nil
+      end
+    end
+  end
 end

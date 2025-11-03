@@ -71,12 +71,31 @@ const CharacterDisplay = () => {
     }
 
     const selectSpellList = (value: string) => {
-        if (value === 'Set Current list') return
-        let spellList = spellLists.find(spellList => spellList.id === value)
-        const data = {character: {current_spell_list_id: spellList && spellList.id}}
+        if (value === 'Set Current list') {
+            // Clear the current spell list
+            const data = {character: {current_spell_list_id: null}}
+            client.patch({ path: `/characters/${id}`, payload: data, token: auth.getToken() })
+                .then(response => {
+                    setCurrentSpellList(undefined)
+                })
+                .catch(error => errors.setError(error))
+            return
+        }
+        
+        // Convert value to number for comparison, or compare as strings
+        const spellList = spellLists.find(spellList => String(spellList.id) === value)
+        
+        if (!spellList) {
+            errors.setError('Spell list not found')
+            return
+        }
+        
+        const data = {character: {current_spell_list_id: spellList.id}}
         client.patch({ path: `/characters/${id}`, payload: data, token: auth.getToken() })
-        .then(response => setCurrentSpellList(spellList))
-        .catch(error => errors.setError(error))
+            .then(response => {
+                setCurrentSpellList(spellList)
+            })
+            .catch(error => errors.setError(error))
     }
 
     const closeAttackForm = (attack: IAttackType | undefined) => {

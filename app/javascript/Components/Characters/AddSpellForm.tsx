@@ -26,8 +26,10 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
     const [spellLists, setSpellLists] = useState<ISpellListType[]>([])
     const [selectedCharacterId, setSelectedCharacterId] = useState<string>('')
     const [selectedSpellListId, setSelectedSpellListId] = useState<string>('')
+    const [selectedSpellList, setSelectedSpellList] = useState<ISpellListType | null>(null)
     const [showCreateList, setShowCreateList] = useState(false)
     const [newListName, setNewListName] = useState('')
+    const [validationError, setValidationError] = useState<string>('')
     const auth = useAuth()
     const client = Client()
     const errors = useError()
@@ -50,8 +52,10 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
         if (char) {
             setSelectedCharacterId(value)
             setSelectedSpellListId('')
+            setSelectedSpellList(null) // Clear selected spell list when character changes
             setShowCreateList(false)
             setNewListName('')
+            setValidationError('') // Clear validation error when character changes
             fetchSpellLists(String(char.id))
         }
     }
@@ -59,8 +63,29 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
     const pickSpellList = (value: string) => {
         // value is a string from Select, but sp.id is a number, so we need to compare as strings
         const spellList = spellLists.find(sp => String(sp.id) === value)
-        if (spellList) {
+        if (spellList && selectedCharacterId) {
             setSelectedSpellListId(value)
+            setValidationError('') // Clear validation error when spell list changes
+            
+            // Fetch the full spell list to check for duplicates
+            const path = `/characters/${selectedCharacterId}/spell_lists/${spellList.id}`
+            client.get({ path: path, token: auth.getToken() })
+                .then(response => {
+                    const fullSpellList = response.data
+                    setSelectedSpellList(fullSpellList)
+                    
+                    // Check if the current spell is already in this list
+                    if (spell && spell.id && fullSpellList.spells) {
+                        const spellExists = fullSpellList.spells.some(s => s.id === spell.id)
+                        if (spellExists) {
+                            setValidationError('This spell is already in the list')
+                        }
+                    }
+                })
+                .catch(error => {
+                    // Don't show error toast for this fetch, just log it
+                    console.error('Failed to fetch spell list details:', error)
+                })
         }
     }
 
@@ -76,9 +101,19 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
             .then(response => {
                 const newList = response.data
                 setSpellLists([...spellLists, newList])
-                setSelectedSpellListId(newList.id?.toString() || '')
+                const newListId = newList.id?.toString() || ''
+                setSelectedSpellListId(newListId)
+                setSelectedSpellList(newList) // Set the newly created list
                 setShowCreateList(false)
                 setNewListName('')
+                
+                // Check if the current spell is already in this new list (unlikely, but possible)
+                if (spell && spell.id && newList.spells) {
+                    const spellExists = newList.spells.some((s: ISpellType) => s.id === spell.id)
+                    if (spellExists) {
+                        setValidationError('This spell is already in the list')
+                    }
+                }
             })
             .catch(error => {
                 // Error toast is automatically shown by Client.tsx
@@ -88,19 +123,63 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
     const submit = () => {
         if (!selectedCharacterId || !selectedSpellListId) return
         
+        // Double-check if spell is already in the list before submitting
+        if (spell && spell.id && selectedSpellList?.spells) {
+            const spellExists = selectedSpellList.spells.some(s => s.id === spell.id)
+            if (spellExists) {
+                setValidationError('This spell is already in the list')
+                return
+            }
+        }
+        
+        setValidationError('') // Clear previous validation errors
+        
         const path = `/characters/${selectedCharacterId}/spell_lists/${selectedSpellListId}/add_spell`
         client.post({ path: path, token: auth.getToken(), payload: {spell: {id: spell && spell.id}}})
             .then(response => {
                 // Success toast is automatically shown by Client.tsx
+                setValidationError('')
+                // Update the selected spell list with the new spell
+                if (response.data && spell) {
+                    const updatedSpellList = response.data
+                    setSelectedSpellList(updatedSpellList)
+                }
                 onClose()
                 onSubmit()
             })
             .catch(error => {
-                // Error toast is automatically shown by Client.tsx
+                // Check if it's a duplicate spell error
+                // Error can be an array of strings or an object with errors property
+                const errorMessages = Array.isArray(error) 
+                    ? error 
+                    : (error?.errors && Array.isArray(error.errors) 
+                        ? error.errors 
+                        : (error?.message ? [error.message] : []))
+                
+                const duplicateError = errorMessages.find((e: string) => 
+                    e.toLowerCase().includes('already in the list') || 
+                    e.toLowerCase().includes('already exists') ||
+                    e.toLowerCase().includes('duplicate')
+                )
+                
+                if (duplicateError) {
+                    setValidationError(duplicateError)
+                    // Don't show toast for duplicate errors since we're showing inline
+                    return
+                }
+                // For other errors, let the Client.tsx handle the toast
             })
     }
 
     const missingData = !selectedCharacterId || !selectedSpellListId
+    const hasValidationError = validationError.length > 0
+
+    // Clear validation error when dialog opens/closes
+    useEffect(() => {
+        if (!opened) {
+            setValidationError('')
+        }
+    }, [opened])
 
     return (
         <Dialog open={opened} onOpenChange={onClose}>
@@ -211,12 +290,17 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
                                     </SelectContent>
                                 </Select>
                             )}
+                            {validationError && (
+                                <p className="text-sm text-destructive mt-1 px-1">
+                                    {validationError}
+                                </p>
+                            )}
                         </div>
                     )}
                 </div>
                 <DialogFooter className="border-t border-primary/20 pt-4">
                     <Button
-                        disabled={missingData}
+                        disabled={missingData || hasValidationError}
                         onClick={submit}
                         className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow disabled:opacity-50 disabled:neon-glow-none"
                     >
