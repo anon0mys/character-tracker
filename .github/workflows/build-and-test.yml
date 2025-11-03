@@ -114,8 +114,9 @@ jobs:
             -e RAILS_ENV=test \
             -e DATABASE_URL=postgresql://postgres:postgres@localhost:5432/character_tracker_test \
             -e RAILS_MASTER_KEY="${{ secrets.RAILS_MASTER_KEY || '' }}" \
+            -e BUNDLE_PATH=/usr/local/bundle \
             ${{ env.IMAGE_TAG }} \
-            bin/rails db:create db:schema:load
+            bundle exec rails db:create db:schema:load
 
       - name: Run RSpec tests
         run: |
@@ -124,6 +125,8 @@ jobs:
             -e RAILS_ENV=test \
             -e DATABASE_URL=postgresql://postgres:postgres@localhost:5432/character_tracker_test \
             -e RAILS_MASTER_KEY="${{ secrets.RAILS_MASTER_KEY || '' }}" \
+            -e BUNDLE_PATH=/usr/local/bundle \
+            -e BUNDLE_WITHOUT="" \
             -e COVERAGE=true \
             -v "${{ github.workspace }}/coverage:/app/coverage" \
             ${{ env.IMAGE_TAG }} \
@@ -164,7 +167,6 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}:/app" \
             -w /app \
-            -e BUNDLE_PATH=/usr/local/bundle \
             ${{ env.IMAGE_TAG }} \
             bundle exec rubocop
 
