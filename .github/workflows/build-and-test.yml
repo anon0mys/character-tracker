@@ -162,6 +162,9 @@ jobs:
       - name: Run RuboCop
         run: |
           docker run --rm \
+            -v "${{ github.workspace }}:/app" \
+            -w /app \
+            -e BUNDLE_PATH=/usr/local/bundle \
             ${{ env.IMAGE_TAG }} \
             bundle exec rubocop
 

@@ -27,8 +27,11 @@ COPY Gemfile Gemfile.lock ./
 # Install Ruby dependencies with bundler cache (including all groups)
 # Set BUNDLE_WITHOUT to empty to ensure all groups are installed
 ENV BUNDLE_WITHOUT=""
+ENV BUNDLE_PATH="/usr/local/bundle"
 RUN --mount=type=cache,target=/usr/local/bundle \
-    bundle install --jobs=4 --retry=3
+    bundle config --global path /usr/local/bundle && \
+    bundle install --jobs=4 --retry=3 && \
+    bundle show rubocop
 
 # Copy package files
 COPY package.json yarn.lock ./
