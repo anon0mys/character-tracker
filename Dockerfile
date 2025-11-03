@@ -1,7 +1,9 @@
 FROM ruby:3.2.1
 
-# Install system dependencies
-RUN apt-get update -qq && \
+# Install system dependencies with apt cache
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update -qq && \
     apt-get install -y \
     postgresql-client \
     build-essential \
@@ -9,7 +11,9 @@ RUN apt-get update -qq && \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js 18.x from NodeSource
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
 
 # Install Yarn globally using npm
@@ -20,14 +24,16 @@ WORKDIR /app
 # Copy dependency files
 COPY Gemfile Gemfile.lock ./
 
-# Install Ruby dependencies
-RUN bundle install
+# Install Ruby dependencies with bundler cache
+RUN --mount=type=cache,target=/usr/local/bundle \
+    bundle install --jobs=4 --retry=3
 
 # Copy package files
 COPY package.json yarn.lock ./
 
-# Install JavaScript dependencies
-RUN yarn install --frozen-lockfile
+# Install JavaScript dependencies with yarn cache
+RUN --mount=type=cache,target=/root/.yarn \
+    yarn install --frozen-lockfile
 
 # Copy application code
 COPY . .

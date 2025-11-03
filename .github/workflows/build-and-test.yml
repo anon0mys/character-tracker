@@ -37,18 +37,42 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set image tag
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-,format=long
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: |
+            type=gha
+            type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
+          cache-to: |
+            type=gha,mode=max
+            type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
+          
+      - name: Set image tag output
         id: image-tag
         run: |
-          # Construct a valid tag based on event type
+          # Use the first tag that was actually created by metadata action
+          # For PRs: pr-{number}
+          # For branches: {branch}-{sha} (from sha tag) or just {branch}
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            # For PRs, use pr-{number}-{sha} format
-            TAG="ghcr.io/${{ github.repository }}:pr-${{ github.event.pull_request.number }}-${{ github.sha }}"
+            TAG="ghcr.io/${{ github.repository }}:pr-${{ github.event.pull_request.number }}"
           else
-            # For pushes, extract branch from ref and use branch-sha format
+            # For pushes, use branch-sha format
             BRANCH=$(echo "${{ github.ref }}" | sed 's|refs/heads/||')
             if [ -z "$BRANCH" ]; then
-              # Fallback: try github.ref_name, or default to 'main'
               BRANCH="${{ github.ref_name }}"
               if [ -z "$BRANCH" ]; then
                 BRANCH="main"
@@ -59,26 +83,6 @@ jobs:
           
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "IMAGE_TAG=$TAG" >> $GITHUB_OUTPUT
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=raw,value=${{ steps.image-tag.outputs.tag }}
-            type=ref,event=branch
-            type=ref,event=pr
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   test:
     name: Test Suite
