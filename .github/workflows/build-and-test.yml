@@ -43,9 +43,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha,prefix={{branch}}-,format=long
+            type=sha,format=long
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -64,23 +62,8 @@ jobs:
       - name: Set image tag output
         id: image-tag
         run: |
-          # Use the first tag that was actually created by metadata action
-          # For PRs: pr-{number}
-          # For branches: {branch}-{sha} (from sha tag) or just {branch}
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            TAG="ghcr.io/${{ github.repository }}:pr-${{ github.event.pull_request.number }}"
-          else
-            # For pushes, use branch-sha format
-            BRANCH=$(echo "${{ github.ref }}" | sed 's|refs/heads/||')
-            if [ -z "$BRANCH" ]; then
-              BRANCH="${{ github.ref_name }}"
-              if [ -z "$BRANCH" ]; then
-                BRANCH="main"
-              fi
-            fi
-            TAG="ghcr.io/${{ github.repository }}:${BRANCH}-${{ github.sha }}"
-          fi
-          
+          # Use SHA tag for all images
+          TAG="ghcr.io/${{ github.repository }}:${{ github.sha }}"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "IMAGE_TAG=$TAG" >> $GITHUB_OUTPUT
 
