@@ -52,6 +52,10 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          # Cache layers in GitHub Actions cache
+          # Docker automatically invalidates dependency layers when Gemfile.lock or yarn.lock change
+          # This is handled by Docker's layer caching - the COPY step creates a layer with a hash
+          # When lockfiles change, the hash changes, invalidating subsequent layers
           cache-from: |
             type=gha
             type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
@@ -167,6 +171,8 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}:/app" \
             -w /app \
+            -e BUNDLE_PATH=/usr/local/bundle \
+            -e BUNDLE_WITHOUT="" \
             ${{ env.IMAGE_TAG }} \
             bundle exec rubocop
 

@@ -35,10 +35,11 @@ WORKDIR /app
 # This layer will be cached unless Gemfile or Gemfile.lock changes
 COPY Gemfile Gemfile.lock ./
 
-# Install Ruby dependencies with bundler cache
-# This layer will be cached unless Ruby dependencies change
-# Note: cache mount speeds up install but gems are still in the image
-RUN --mount=type=cache,target=/usr/local/bundle \
+# Install Ruby dependencies
+# This layer will be cached unless Gemfile.lock changes
+# Cache bundler's download cache (not the install location)
+# Gems are installed to /usr/local/bundle in the image layers
+RUN --mount=type=cache,target=/root/.bundle/cache \
     bundle config set --global path /usr/local/bundle && \
     bundle config set --global without '' && \
     bundle install --jobs=4 --retry=3 && \
