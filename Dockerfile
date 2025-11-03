@@ -1,9 +1,31 @@
-FROM ruby:3.1.2
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
-WORKDIR /otp
+FROM ruby:3.2.1
+
+# Install system dependencies
+RUN apt-get update -qq && \
+    apt-get install -y \
+    nodejs \
+    postgresql-client \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Yarn
+RUN npm install -g yarn
+
+WORKDIR /app
+
+# Copy dependency files
 COPY Gemfile Gemfile.lock ./
+
+# Install Ruby dependencies
 RUN bundle install
 
+# Copy package files
+COPY package.json yarn.lock ./
+
+# Install JavaScript dependencies
+RUN yarn install --frozen-lockfile
+
+# Copy application code
 COPY . .
 
 EXPOSE 3000
