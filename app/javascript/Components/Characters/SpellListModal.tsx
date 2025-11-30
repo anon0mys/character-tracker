@@ -38,7 +38,7 @@ const SpellListModal = ({spellList, open, setOpen}: Props) => {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle className="text-neon-cyan">{spellList.name}</DialogTitle>
+                    <DialogTitle className="text-primary">{spellList.name}</DialogTitle>
                 </DialogHeader>
                 <div className="py-4 border-t border-primary/20">
                     <ul className="space-y-2">

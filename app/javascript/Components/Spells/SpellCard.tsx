@@ -13,13 +13,13 @@ const SpellCard = ({ spell }: SpellCardProps) => {
 
     return (
         <>
-            <Card key={spell.id} onClick={() => setIsOpen(true)} className="cursor-pointer hover:border-primary/50 transition-all duration-300 border-2 border-primary/20 bg-card/80 backdrop-blur-sm hover:neon-glow group overflow-hidden">
+            <Card key={spell.id} onClick={() => setIsOpen(true)} className="cursor-pointer hover:border-primary/70 transition-all duration-300 hover: group overflow-hidden">
                 <CardHeader className="pb-3">
-                    <h3 className="text-lg font-bold group-hover:text-primary transition-colors text-neon-cyan">{spell.name}</h3>
+                    <h3 className="text-lg font-bold group-hover:text-primary transition-colors text-primary">{spell.name}</h3>
                 </CardHeader>
                 <CardContent className="space-y-2">
                     <div className="flex items-center gap-2">
-                        <span className="px-2 py-1 bg-primary/20 text-primary rounded-md text-xs font-semibold neon-glow">
+                        <span className="px-2 py-1 bg-primary/20 text-primary rounded-md text-xs font-semibold ">
                             Level {spell.level}
                         </span>
                         <span className="px-2 py-1 bg-muted rounded-md text-xs font-medium">

@@ -36,10 +36,10 @@ const CharacterCard = ({character, deleteCharacter}: CharacterCardProps) => {
 
     return (
         <Link to={`/characters/${character.id}`}>
-            <Card key={character.id} className="cursor-pointer hover:border-primary/50 transition-all duration-300 border-2 border-primary/20 bg-card/80 backdrop-blur-sm hover:neon-glow group overflow-hidden h-full">
+            <Card key={character.id} className="cursor-pointer hover:border-primary/50 transition-colors group h-full">
                 <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
-                        <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-neon-cyan">{character.name}</h3>
+                        <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">{character.name}</h3>
                         <button 
                             onClick={openDeleteModal}
                             className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10 transition-colors z-10"
@@ -50,7 +50,7 @@ const CharacterCard = ({character, deleteCharacter}: CharacterCardProps) => {
                 </CardHeader>
                 <CardContent className="space-y-2">
                     <div className="flex items-center gap-2">
-                        <span className="px-2 py-1 bg-primary/20 text-primary rounded-md text-sm font-semibold neon-glow">
+                        <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-sm font-medium">
                             {character.archetype}
                         </span>
                     </div>

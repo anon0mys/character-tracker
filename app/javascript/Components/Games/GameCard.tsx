@@ -35,10 +35,10 @@ const GameCard = ({ game, deleteGame }: GameCardProps) => {
     }
 
     return (
-        <Card key={game.id} onClick={setGame} className="cursor-pointer hover:border-primary/50 transition-all duration-300 border-2 border-primary/20 bg-card/80 backdrop-blur-sm hover:neon-glow group overflow-hidden">
+        <Card key={game.id} onClick={setGame} className="cursor-pointer hover:border-primary/70 transition-all duration-300 hover: group overflow-hidden">
             <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-neon-cyan">{game.name}</h3>
+                    <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-primary">{game.name}</h3>
                     <button 
                         onClick={openDeleteModal}
                         className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10 transition-colors z-10"

@@ -21,9 +21,9 @@ const Login = () => {
     return (
         <div className="flex items-center justify-center min-h-[60vh] px-4 py-8">
             <div className="w-full max-w-md">
-                <div className="bg-card/80 backdrop-blur-sm rounded-2xl border border-primary/30 shadow-lg neon-glow p-6 sm:p-8 space-y-5 sm:space-y-6">
+                <div className="bg-card rounded-2xl p-6 sm:p-8 space-y-5 sm:space-y-6">
                     <div className="text-center space-y-2">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-neon-cyan">Welcome back</h2>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-primary">Welcome back</h2>
                         <p className="text-sm sm:text-base text-muted-foreground">Sign in to your account to continue</p>
                     </div>
                     <form onSubmit={login} className="space-y-4 sm:space-y-5">
@@ -39,7 +39,7 @@ const Login = () => {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password" className="text-sm sm:text-base">Password</Label>
+                            <Label htmlFor="password" className="text-sm sm:text-base">Pa word</Label>
                             <Input
                                 id="password"
                                 type='password'
@@ -50,7 +50,7 @@ const Login = () => {
                             />
                         </div>
                         <div className="space-y-4">
-                            <Button type="submit" className="w-full h-11 sm:h-12 bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]" size="lg">Log in</Button>
+                            <Button type="submit" className="w-full h-11 sm:h-12 bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px]" size="lg">Log in</Button>
                             <div className="text-center text-xs sm:text-sm">
                                 <span className="text-muted-foreground">Don't have an account? </span>
                                 <Link to='/sign-up' className="text-primary hover:text-primary/80 hover:underline font-medium">Sign Up</Link>
