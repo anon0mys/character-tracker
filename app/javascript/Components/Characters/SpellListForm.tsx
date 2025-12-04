@@ -43,7 +43,7 @@ const SpellListForm = ({ characterId, open, setOpen, onSubmit }: SpellListFormPr
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle className="text-neon-cyan">Create a Spell List</DialogTitle>
+                    <DialogTitle className="text-primary">Create a Spell List</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={submit}>
                     <div className="space-y-4 py-4">
@@ -60,7 +60,7 @@ const SpellListForm = ({ characterId, open, setOpen, onSubmit }: SpellListFormPr
                     </div>
                     <DialogFooter className="gap-2 border-t border-primary/20 pt-4">
                         <Button type="button" variant="outline" onClick={() => setOpen(false)} className="border-primary/30">Cancel</Button>
-                        <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">Create Spell List</Button>
+                        <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 ">Create Spell List</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

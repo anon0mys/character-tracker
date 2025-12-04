@@ -64,10 +64,10 @@ const Items = () => {
         <>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan">Items</h1>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-primary">Items</h1>
                     <p className="text-sm sm:text-base text-muted-foreground">Manage your character's inventory and equipment</p>
                 </div>
-                <Button onClick={() => setIsOpen(true)} size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]">Add Item</Button>
+                <Button onClick={() => setIsOpen(true)} size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px]">Add Item</Button>
             </div>
             <div className="mb-4 sm:mb-6">
                 <div className="relative max-w-md">

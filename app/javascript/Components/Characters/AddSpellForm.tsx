@@ -107,7 +107,7 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
                 setShowCreateList(false)
                 setNewListName('')
                 
-                // Check if the current spell is already in this new list (unlikely, but possible)
+                // Check if the current spell is already in this new list (unlikely, but po ible)
                 if (spell && spell.id && newList.spells) {
                     const spellExists = newList.spells.some((s: ISpellType) => s.id === spell.id)
                     if (spellExists) {
@@ -185,7 +185,7 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
         <Dialog open={opened} onOpenChange={onClose}>
             <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle className="text-neon-cyan">Add Spell to List</DialogTitle>
+                    <DialogTitle className="text-primary">Add Spell to List</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                     <div className="space-y-2">
@@ -250,7 +250,7 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
                                             <Button
                                                 type="submit"
                                                 size="sm"
-                                                className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow"
+                                                className="bg-primary text-primary-foreground hover:bg-primary/90 "
                                                 disabled={!newListName.trim()}
                                             >
                                                 Create
@@ -302,7 +302,7 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
                     <Button
                         disabled={missingData || hasValidationError}
                         onClick={submit}
-                        className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow disabled:opacity-50 disabled:neon-glow-none"
+                        className="bg-primary text-primary-foreground hover:bg-primary/90  disabled:opacity-50 disabled:-none"
                     >
                         <Check className="mr-2 h-4 w-4" />
                         Add to List

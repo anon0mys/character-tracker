@@ -31,7 +31,7 @@ const SpellModal = ({ spell, opened, onClose }: SpellModalProps) => {
             <Dialog open={opened} onOpenChange={onClose}>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto border-primary/30 bg-card/95 backdrop-blur-xl">
                     <DialogHeader>
-                        <DialogTitle className="text-2xl text-neon-cyan">{spell.name}</DialogTitle>
+                        <DialogTitle className="text-2xl text-primary">{spell.name}</DialogTitle>
                         <DialogDescription>
                             <div className="flex flex-wrap gap-3 mt-3">
                                 <span className="px-2 py-1 bg-primary/20 text-primary rounded text-xs font-semibold">Level {spell.level}</span>
@@ -51,7 +51,7 @@ const SpellModal = ({ spell, opened, onClose }: SpellModalProps) => {
                         <p className="text-sm leading-relaxed">{spell.description}</p>
                     </div>
                     <div className="flex justify-end border-t border-primary/20 pt-4">
-                        <Button onClick={() => setSpellListModalOpen(true)} className="bg-primary text-primary-foreground hover:bg-primary/90 neon-glow">
+                        <Button onClick={() => setSpellListModalOpen(true)} className="bg-primary text-primary-foreground hover:bg-primary/90 ">
                             <Check className="mr-2 h-4 w-4" />
                             Add to spell list
                         </Button>

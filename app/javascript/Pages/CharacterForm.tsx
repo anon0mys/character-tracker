@@ -157,7 +157,7 @@ const CharacterForm = () => {
     return (
         <div className="mx-auto max-w-5xl space-y-4 sm:space-y-6 md:space-y-8">
             <div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-primary">
                     {isEditMode ? 'Edit Character' : 'Create Character'}
                 </h1>
                 <p className="text-sm sm:text-base text-muted-foreground">
@@ -167,15 +167,15 @@ const CharacterForm = () => {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit as any)} className="space-y-4 sm:space-y-6 md:space-y-8">
                     <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6">
-                        <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-neon-cyan">Character Bio</h2>
+                        <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-primary">Character Bio</h2>
                         <CharacterBioForm />
                     </div>
                     <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6">
-                        <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-neon-cyan">Stats & Proficiencies</h2>
+                        <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-primary">Stats & Proficiencies</h2>
                         <CharacterStatsForm />
                     </div>
                     <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6">
-                        <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-neon-cyan">Ability Scores</h2>
+                        <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 pb-2 border-b border-primary/20 text-primary">Ability Scores</h2>
                         <AbilityScoresForm />
                     </div>
 
@@ -189,7 +189,7 @@ const CharacterForm = () => {
                         >
                             Cancel
                         </Button>
-                        <Button type="submit" size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]">
+                        <Button type="submit" size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px]">
                             {isEditMode ? 'Update Character' : 'Create Character'}
                         </Button>
                     </div>

@@ -54,11 +54,11 @@ const CharacterBioForm = () => {
                 name="archetype"
                 render={({ field }) => (
                     <FormItem className="flex-1 min-w-[150px]">
-                        <FormLabel>Class</FormLabel>
+                        <FormLabel>Cla </FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select Class" />
+                                    <SelectValue placeholder="Select Cla " />
                                 </SelectTrigger>
                             </FormControl>
                             <SelectContent>

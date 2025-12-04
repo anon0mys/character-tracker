@@ -132,11 +132,11 @@ const CharacterDisplay = () => {
             <div className="mb-6 sm:mb-8">
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                     <div className="flex-1 min-w-0">
-                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-2 text-neon-cyan break-words">{character.name}</h1>
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-2 text-primary break-words">{character.name}</h1>
                         <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm sm:text-base text-muted-foreground">
                             <span className="flex items-center gap-2">
                                 <span className="font-medium">Level {character.level}</span>
-                                <span className="px-2 py-1 bg-primary/20 text-primary rounded-md text-xs sm:text-sm font-semibold neon-glow whitespace-nowrap">
+                                <span className="px-2 py-1 bg-primary/20 text-primary rounded-md text-xs sm:text-sm font-semibold  whitespace-nowrap">
                                     {character.archetype}
                                 </span>
                             </span>
@@ -145,7 +145,7 @@ const CharacterDisplay = () => {
                         </div>
                     </div>
                     {character.id && (
-                        <Button asChild size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px] shrink-0">
+                        <Button asChild size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px] shrink-0">
                             <Link to={`/characters/${character.id}/edit`} className="flex items-center justify-center">
                                 <Edit className="mr-2 h-4 w-4" />
                                 Edit Character
@@ -155,7 +155,7 @@ const CharacterDisplay = () => {
                 </div>
             </div>
             <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6">
-                <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-neon-cyan">Character Information</h3>
+                <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-primary">Character Information</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                     <div className="space-y-2">
                         <div className="text-sm text-muted-foreground">Name</div>
@@ -164,7 +164,7 @@ const CharacterDisplay = () => {
                         <div className="font-semibold">{character.race}</div>
                     </div>
                     <div className="space-y-2">
-                        <div className="text-sm text-muted-foreground">Class & Level</div>
+                        <div className="text-sm text-muted-foreground">Cla  & Level</div>
                         <div className="font-semibold">{character.archetype} {character.level}</div>
                         <div className="text-sm text-muted-foreground mt-3">Background</div>
                         <div className="font-semibold">{character.background}</div>
@@ -179,7 +179,7 @@ const CharacterDisplay = () => {
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
                 <div className="lg:col-span-2 bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6">
-                    <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-neon-cyan">Ability Scores</h3>
+                    <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-primary">Ability Scores</h3>
                     <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4 overflow-x-auto">
                         <div className="col-span-1 sm:col-span-2 space-y-1">
                             <div className="text-xs font-medium text-muted-foreground uppercase">Ability</div>
@@ -265,10 +265,10 @@ const CharacterDisplay = () => {
                     </div>
                 </div>
                 <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6">
-                    <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-neon-cyan">Combat Stats</h3>
+                    <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-primary">Combat Stats</h3>
                     <div className="space-y-3 sm:space-y-4">
                         <div className="flex justify-between items-center pb-2 border-b">
-                            <span className="text-sm text-muted-foreground">Armor Class</span>
+                            <span className="text-sm text-muted-foreground">Armor Cla </span>
                             <span className="text-xl font-bold">{character.ac}</span>
                         </div>
                         <div className="flex justify-between items-center pb-2 border-b">
@@ -304,8 +304,8 @@ const CharacterDisplay = () => {
             </div>
             <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4">
-                    <h3 className="text-base sm:text-lg font-bold text-neon-cyan">Attacks</h3>
-                    <Button onClick={() => setAttackModalOpen(true)} size="sm" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[40px]">Add Attack</Button>
+                    <h3 className="text-base sm:text-lg font-bold text-primary">Attacks</h3>
+                    <Button onClick={() => setAttackModalOpen(true)} size="sm" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90  min-h-[40px]">Add Attack</Button>
                 </div>
                 <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">Attacks Per Turn: 2</p>
                 {attackRows.length > 0 ? (
@@ -325,7 +325,7 @@ const CharacterDisplay = () => {
             </div>
             <AttackForm opened={attackModalOpen} onClose={closeAttackForm} attack={undefined} />
             <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6">
-                <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-neon-cyan">Hit Points & Abilities</h3>
+                <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-primary">Hit Points & Abilities</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                     <div className="space-y-3">
                         <div>
@@ -357,7 +357,7 @@ const CharacterDisplay = () => {
             <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6">
                 <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-4 mb-4">
                     <div className="flex-1 min-w-0 w-full sm:w-auto">
-                        <h3 className="text-base sm:text-lg font-bold mb-2 text-neon-cyan">Current Spells</h3>
+                        <h3 className="text-base sm:text-lg font-bold mb-2 text-primary">Current Spells</h3>
                         {currentSpellList ? (
                             <p className="text-xs sm:text-sm text-muted-foreground truncate">{currentSpellList.name}</p>
                         ) : (

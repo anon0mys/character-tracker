@@ -34,10 +34,10 @@ const Characters = () => {
         <>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-neon-cyan">Characters</h1>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-primary">Characters</h1>
                     <p className="text-sm sm:text-base text-muted-foreground">Create and manage your D&D characters</p>
                 </div>
-                <Button asChild size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]">
+                <Button asChild size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px]">
                     <Link to='/characters/create'>Create Character</Link>
                 </Button>
             </div>

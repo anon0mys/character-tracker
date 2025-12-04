@@ -26,7 +26,7 @@ const ConfirmModal = ({copy, open, setOpen, onSubmit, children}: ConfirmModalPro
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
-                    <DialogTitle className="text-neon-cyan">{copy}</DialogTitle>
+                    <DialogTitle className="text-primary">{copy}</DialogTitle>
                     <DialogDescription>
                         {children}
                     </DialogDescription>
@@ -42,7 +42,7 @@ const ConfirmModal = ({copy, open, setOpen, onSubmit, children}: ConfirmModalPro
                     <Button
                         variant="destructive"
                         onClick={submit}
-                        className="neon-glow-purple"
+                        className="-purple"
                     >
                         Confirm
                     </Button>

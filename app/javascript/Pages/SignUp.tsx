@@ -22,9 +22,9 @@ const SignUp = () => {
     return (
         <div className="flex items-center justify-center min-h-[60vh] px-4 py-8">
             <div className="w-full max-w-md">
-                <div className="bg-card/80 backdrop-blur-sm rounded-2xl border border-primary/30 shadow-lg neon-glow p-6 sm:p-8 space-y-5 sm:space-y-6">
+                <div className="bg-card rounded-2xl p-6 sm:p-8 space-y-5 sm:space-y-6">
                     <div className="text-center space-y-2">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-neon-cyan">Create an account</h2>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-primary">Create an account</h2>
                         <p className="text-sm sm:text-base text-muted-foreground">Get started with Dungeon Tracker</p>
                     </div>
                     <form onSubmit={signup} className="space-y-4 sm:space-y-5">
@@ -40,7 +40,7 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password" className="text-sm sm:text-base">Password</Label>
+                            <Label htmlFor="password" className="text-sm sm:text-base">Pa word</Label>
                             <Input
                                 id="password"
                                 type='password'
@@ -51,7 +51,7 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="passwordConfirmation" className="text-sm sm:text-base">Confirm Password</Label>
+                            <Label htmlFor="passwordConfirmation" className="text-sm sm:text-base">Confirm Pa word</Label>
                             <Input
                                 id="passwordConfirmation"
                                 type='password'
@@ -62,7 +62,7 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="space-y-4">
-                            <Button type="submit" className="w-full h-11 sm:h-12 bg-primary text-primary-foreground hover:bg-primary/90 neon-glow min-h-[44px]" size="lg">Sign Up</Button>
+                            <Button type="submit" className="w-full h-11 sm:h-12 bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px]" size="lg">Sign Up</Button>
                             <div className="text-center text-xs sm:text-sm">
                                 <span className="text-muted-foreground">Already have an account? </span>
                                 <Link to='/login' className="text-primary hover:text-primary/80 hover:underline font-medium">Log In</Link>
