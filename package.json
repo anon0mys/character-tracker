@@ -1,6 +1,10 @@
 {
   "name": "app",
   "private": "true",
+  "engines": {
+    "node": "18.x",
+    "yarn": "1.22.22"
+  },
   "dependencies": {
     "@apollo/client": "^3.7.10",
     "@apollo/react-hooks": "^4.0.0",
