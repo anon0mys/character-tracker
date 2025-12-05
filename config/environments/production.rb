@@ -24,11 +24,11 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  # Compress CSS using a preprocessor.
-  # config.assets.css_compressor = :sass
+  # Disable CSS compressor to prevent sass-rails from processing CSS files
+  # CSS files from cssbundling-rails are already compiled and should not be processed by Sass
+  config.assets.css_compressor = nil
   
-  # Prevent Sass from processing CSS files
-  # CSS files from cssbundling-rails should not be processed by Sass
+  # Also prevent Sass from processing CSS files as a preprocessor
   config.assets.configure do |env|
     if defined?(Sprockets::ScssProcessor)
       begin

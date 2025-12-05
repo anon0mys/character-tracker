@@ -11,14 +11,13 @@ Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'build
 # Prevent sass-rails from processing CSS files
 # Files compiled by PostCSS/Tailwind contain modern CSS syntax (like hsl(var(--border)))
 # that SassC cannot parse. Since we use cssbundling-rails for CSS, we only want SCSS processing for .scss files.
+# The most reliable way is to unregister the SCSS processor multiple times at different points
 Rails.application.config.assets.configure do |env|
-  # Unregister SCSS processor for CSS files to prevent Sass from processing PostCSS-compiled CSS
-  # sass-rails automatically registers itself for text/css, but we only want it for .scss files
   if defined?(Sprockets::ScssProcessor)
     begin
       env.unregister_preprocessor('text/css', Sprockets::ScssProcessor)
     rescue => e
-      Rails.logger.warn("Could not unregister SCSS processor: #{e.message}")
+      # Ignore
     end
   end
 end

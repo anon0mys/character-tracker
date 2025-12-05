@@ -35,5 +35,17 @@ module CharacterTracker
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    
+    # Prevent sass-rails from processing CSS files
+    # This must be done early, before sass-rails registers itself
+    config.assets.configure do |env|
+      if defined?(Sprockets::ScssProcessor)
+        begin
+          env.unregister_preprocessor('text/css', Sprockets::ScssProcessor)
+        rescue => e
+          # Ignore if not registered yet
+        end
+      end
+    end
   end
 end
