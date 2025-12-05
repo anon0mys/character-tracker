@@ -37,6 +37,51 @@ Rails.application.config.after_initialize do
   end
 end
 
+# Completely prevent Sass from processing CSS files
+# We do this by removing the SCSS processor and ensuring CSS files are not processed
+Rails.application.config.assets.configure do |env|
+  # Remove all SCSS processors for CSS files
+  if defined?(Sprockets::ScssProcessor)
+    begin
+      # Unregister the processor
+      env.unregister_preprocessor('text/css', Sprockets::ScssProcessor)
+    rescue => e
+      # Ignore if already unregistered
+    end
+  end
+  
+  # Also remove any Sass processors
+  if defined?(Sass::Rails::ScssTemplate)
+    begin
+      env.unregister_preprocessor('text/css', Sass::Rails::ScssTemplate)
+    rescue => e
+      # Ignore if not registered
+    end
+  end
+end
+
+# Ensure this happens after all gems load
+Rails.application.config.after_initialize do
+  Rails.application.config.assets.configure do |env|
+    # Final attempt to remove SCSS processor
+    if defined?(Sprockets::ScssProcessor)
+      processors = env.preprocessors['text/css']
+      if processors
+        processors.each do |processor|
+          if processor.is_a?(Sprockets::ScssProcessor) || 
+             (processor.respond_to?(:name) && processor.name.to_s.include?('Scss'))
+            begin
+              env.unregister_preprocessor('text/css', processor)
+            rescue => e
+              # Ignore errors
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.

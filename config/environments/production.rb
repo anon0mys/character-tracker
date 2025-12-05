@@ -26,6 +26,18 @@ Rails.application.configure do
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
+  
+  # Prevent Sass from processing CSS files
+  # CSS files from cssbundling-rails should not be processed by Sass
+  config.assets.configure do |env|
+    if defined?(Sprockets::ScssProcessor)
+      begin
+        env.unregister_preprocessor('text/css', Sprockets::ScssProcessor)
+      rescue => e
+        Rails.logger.warn("Could not unregister SCSS processor in production: #{e.message}")
+      end
+    end
+  end
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
