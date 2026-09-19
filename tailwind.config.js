@@ -14,12 +14,40 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        display: "var(--font-display)",
+        body: "var(--font-body)",
+        mono: "var(--font-mono)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        rail: "hsl(var(--rail))",
+        "border-strong": "hsl(var(--border-strong))",
+        hairline: "hsl(var(--hairline))",
+        "foreground-2": "hsl(var(--foreground-2))",
+        harm: {
+          DEFAULT: "hsl(var(--harm))",
+          soft: "hsl(var(--harm-soft))",
+        },
+        proficiency: {
+          DEFAULT: "hsl(var(--proficiency))",
+          soft: "hsl(var(--proficiency-soft))",
+          ink: "hsl(var(--proficiency-ink))",
+        },
+        arcane: {
+          DEFAULT: "hsl(var(--arcane))",
+          soft: "hsl(var(--arcane-soft))",
+          ink: "hsl(var(--arcane-ink))",
+        },
+        vitality: {
+          DEFAULT: "hsl(var(--vitality))",
+          soft: "hsl(var(--vitality-soft))",
+          ink: "hsl(var(--vitality-ink))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -71,5 +99,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
-
+};
