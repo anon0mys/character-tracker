@@ -12,8 +12,8 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 |---|---|---|---|
 | 0 | Tokens + type | ✅ | d69be4d |
 | 1 | Shell: rail, tabs, routes, settings page | ✅ | d8e6942 |
-| 2 | Sheet restructure (existing data only) | ⏳ next | — |
-| 3 | Forms + known bugs | ⏳ | — |
+| 2 | Sheet restructure (existing data only) | ✅ | d7344f4 + 36d376c |
+| 3 | Forms + known bugs | ⏳ next | — |
 | 4a | Attacks: damage, action type, riders, Extra Attack | ⏳ | — |
 | 4b | Resources (pips + consumables) | ⏳ | — |
 | 4c | Temp HP, hit dice, death saves, conditions, spell slots | ⏳ | — |
@@ -326,7 +326,21 @@ Board: `CharacterSheet.dc.html` (desktop), `MobileSheet.dc.html`, `MobileAttacks
 - At 390px the HP strip stays visible while scrolling any tab.
 
 **Session notes**
-_(empty)_
+Backend d7344f4, frontend 36d376c. Sheet composed from `Components/Sheet/*`.
+Divergences / deferrals:
+- Backend was mostly already done (validations, params, join). Only added the
+  items endpoint + `hp_thresholds`.
+- Sheet page: `PinnedHp` mobile-sticky strip **not yet built** — Layout is the
+  global chrome; the sheet's own mobile HP pin (§5 PinnedHp) is deferred. HpBand
+  renders inline on mobile for now.
+- Death saves + hit dice are **display-only** (interactive in 4c). Temp HP shows
+  real value (already serialized) rather than hardcoded 0.
+- Rest button is live (uses existing `/rest`), ahead of the plan's 4c note.
+- Old `PlayPanel`/`TrackersSection`/`CurrencyFooter`/`CurrentCharacterButton`
+  now orphaned (still exported from `Components/Characters`); remove in a later
+  cleanup or when Consumables/Gear absorb them.
+- Mobile attack cards with the 82px numeric gutter (§ mobile) not built — Phase 4a.
+- Visual 1440/390 check not run (no browser).
 
 ### Phase 3 — Forms + known bugs (1 day)
 
