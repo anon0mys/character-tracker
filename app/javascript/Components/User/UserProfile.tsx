@@ -1,63 +1,64 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Avatar, AvatarFallback } from '../ui'
-import { 
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-} from '../ui'
-import { useAuth } from '../../Auth/AuthProvider'
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "../ui";
+import { useAuth } from "../../Auth/AuthProvider";
+import initials from "../Shell/initials";
 
-const UserProfile = () => {
-    const auth = useAuth();
-    const navigate = useNavigate();
-    const signout = (event: React.MouseEvent) => {
-        event.preventDefault()
-        auth.signout(() => {
-            navigate('/');
-        });
-    };
+const UserProfile = ({ collapsed = false }: { collapsed?: boolean }) => {
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const signout = (event: React.MouseEvent) => {
+    event.preventDefault();
+    auth.signout(() => {
+      navigate("/");
+    });
+  };
 
-    const userInitials = auth.user?.email ? auth.user.email.charAt(0).toUpperCase() : 'U'
+  const email = auth.user?.email ?? "";
+  const avatar = email ? initials(email.split("@")[0]) : "U";
 
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <button className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full transition-all hover:ring-2 hover:ring-primary/50">
-                    <Avatar className="border-2 border-primary/20 hover:border-primary/40 transition-colors cursor-pointer">
-                        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold">{userInitials}</AvatarFallback>
-                    </Avatar>
-                </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-                <div className="px-2 py-1.5 text-sm text-muted-foreground border-b mb-1">
-                    {auth.user?.email}
-                </div>
-                <DropdownMenuItem asChild>
-                    <Link to='/dashboard' className="cursor-pointer">Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link to='/spells' className="cursor-pointer">Spells</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link to='/items' className="cursor-pointer">Items</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link to='/characters' className="cursor-pointer">Characters</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                    <Link to='/profile' className="cursor-pointer">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signout} className="text-destructive focus:text-destructive cursor-pointer">
-                    Log Out
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    )
-}
+  const avatarBadge = (
+    <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-arcane font-mono text-[13px] text-primary-foreground">
+      {avatar}
+    </span>
+  );
 
-export default UserProfile
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className="flex flex-grow items-center gap-[10px] rounded-md text-left focus:outline-none focus:ring-2 focus:ring-ring"
+          aria-label="Account menu"
+        >
+          {avatarBadge}
+          {!collapsed && (
+            <span className="flex-grow truncate text-[13px] font-medium text-foreground">
+              {email}
+            </span>
+          )}
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="w-56">
+        <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
+          {email}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={signout}
+          className="cursor-pointer text-destructive focus:text-destructive"
+        >
+          Log Out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+export default UserProfile;

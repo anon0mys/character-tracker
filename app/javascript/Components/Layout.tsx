@@ -1,33 +1,38 @@
-import React from 'react'
-import { TopNav } from './Navbar'
-import { ErrorBanner } from '../Errors'
-import { useGame } from '../Contexts'
-import { ThemeToggle } from './ui/theme-toggle'
+import React from "react";
+import { ErrorBanner } from "../Errors";
+import { useGame } from "../Contexts";
+import { useAuth } from "../Auth";
+import { Rail, BottomTabs, MobileHeader } from "./Shell";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-    const { game } = useGame();
+  const { game } = useGame();
+  const auth = useAuth();
 
+  // Signed-out visitors (Home / Login / Sign-up) get no shell chrome.
+  if (!auth.user) {
     return (
-        <>
-            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-                <div className="container mx-auto px-4">
-                    <div className="flex h-14 items-center justify-between gap-4">
-                        <h1 className="text-lg font-semibold tracking-tight">
-                            {game ? game.name : 'Dungeon Tracker'}
-                        </h1>
-                        <div className="flex items-center gap-4">
-                            <TopNav />
-                            <ThemeToggle />
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <ErrorBanner />
-            <main className="container mx-auto px-4 py-6 max-w-7xl">
-                {children}
-            </main>
-        </>
-    )
-}
+      <>
+        <ErrorBanner />
+        <main className="mx-auto min-h-screen w-full max-w-7xl px-4 py-6">
+          {children}
+        </main>
+      </>
+    );
+  }
 
-export default Layout
+  const title = game?.name ?? "Dungeon Tracker";
+
+  return (
+    <div className="min-h-screen bg-background lg:flex">
+      <Rail />
+      <div className="flex min-h-screen flex-1 flex-col">
+        <MobileHeader title={title} />
+        <ErrorBanner />
+        <main className="flex-1 px-4 py-4 lg:px-8 lg:py-6">{children}</main>
+        <BottomTabs />
+      </div>
+    </div>
+  );
+};
+
+export default Layout;
