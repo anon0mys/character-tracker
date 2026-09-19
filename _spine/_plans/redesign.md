@@ -10,9 +10,9 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 
 | Phase | Title | Status | Commit |
 |---|---|---|---|
-| 0 | Tokens + type | ⏳ next | — |
-| 1 | Shell: rail, tabs, routes, settings page | ⏳ | — |
-| 2 | Sheet restructure (existing data only) | ⏳ | — |
+| 0 | Tokens + type | ✅ | d69be4d |
+| 1 | Shell: rail, tabs, routes, settings page | ✅ | d8e6942 |
+| 2 | Sheet restructure (existing data only) | ⏳ next | — |
 | 3 | Forms + known bugs | ⏳ | — |
 | 4a | Attacks: damage, action type, riders, Extra Attack | ⏳ | — |
 | 4b | Resources (pips + consumables) | ⏳ | — |
@@ -80,6 +80,7 @@ Sample character on every board is **Kai, Artificer 13 (Armorer)** — real data
 | Game status labels | Prepping = `pending`, Active = `active`, Wrapped = `finished`. "On hiatus" is not in the enum — drop from UI unless Evan adds a status. |
 | Gear location | Sheet page one (tab). Features is the only thing on page two. |
 | Git | No commits/branches/PRs without Evan's go. |
+| Current-character state | **Reuse `auth.currentCharacter` + `auth.setCurrentCharacter`** (server-backed via `PATCH /users/current_character`). No `CharacterProvider`/`CharacterStore` — diverges from §5, which predated noticing auth already tracks it. Sheet/Rail read `useAuth()`. Evan approved 2026-09-19. |
 
 ---
 
@@ -263,7 +264,7 @@ Run the app: `bin/rails s` in one terminal, `foreman start -f Procfile.dev` (web
 - Headings render in Fraunces (inspect computed `font-family`).
 
 **Session notes**
-_(empty)_
+Shipped d69be4d. CSP initializer is entirely commented (no enforced policy) → font-src change was a no-op. Duplicate `stylesheet_link_tag` removed. New accent tokens nested in tailwind (`harm.soft` → `bg-harm-soft`, etc.) — same utility names §3 intended. `build:css` verified `--harm`/`--font-display` in output. Visual check at 1440/390 not run here (no browser) — deferred to Evan / a `run` pass.
 
 ### Phase 1 — Shell (1–1½ days)
 
@@ -287,7 +288,13 @@ _(empty)_
 - `yarn tsc --noEmit` clean.
 
 **Session notes**
-_(empty)_
+Shipped d8e6942. tsc + webpack clean; built `application.js` committed (it is tracked/deployed; CSS is built at deploy, not committed). Divergences from the plan as written:
+- **No CharacterProvider/Store** — reuse `auth.currentCharacter`/`setCurrentCharacter` (server-backed). See Decisions locked.
+- **Compendium mounts the whole `Spells`/`Items` page components** (segmented control) rather than extracting their JSX into `SpellsTab`/`ItemsTab`. Consequence: each inner page keeps its own `<h1>`, so the Compendium header is doubled. `DetailPane`/`SpellModal`-on-lg not built — existing `SpellModal` Dialog still used. Follow-up: extract bodies + build DetailPane (Phase 2 touches the sheet's spell panel anyway).
+- **Character bottom-tabs** Attacks/Spells/Gear currently route to the sheet (`/characters/:id`); they split out in Phase 2/4. Sheet + Features are real routes (Features = placeholder until 4e).
+- **Home/Login/SignUp neon purge deferred** — signed-out pages render without shell chrome; tokens auto-reskin most, but literal `from-blue-500`/gradient classes remain. Fold into Phase 3 (forms reskin) or a polish pass.
+- Rail "byte-identical markup" acceptance is met in spirit (one `<Rail>` component, only active NavLink + collapsed width differ), not literally.
+Visual check at 1440/390 not run (no browser) — deferred to Evan / a `run` pass.
 
 ### Phase 2 — Sheet restructure, existing data only (2 days)
 
