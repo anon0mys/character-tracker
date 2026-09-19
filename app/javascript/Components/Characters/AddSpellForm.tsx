@@ -36,9 +36,23 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
 
     useEffect(() => {
         client.get({ path: `/characters`, token: auth.getToken() })
-            .then(response => setCharacters(response.data))
+            .then(response => {
+                const list: ICharacterType[] = response.data
+                const currentId = auth.currentCharacter?.id
+                const sorted = currentId
+                    ? [...list].sort((a, b) => {
+                        if (String(a.id) === String(currentId)) return -1
+                        if (String(b.id) === String(currentId)) return 1
+                        return 0
+                    })
+                    : list
+                setCharacters(sorted)
+                if (opened && currentId && !selectedCharacterId) {
+                    pickCharacter(String(currentId))
+                }
+            })
             .catch(error => errors.setError(error))
-    }, [])
+    }, [opened])
 
     const fetchSpellLists = (characterId: string) => {
         client.get({ path: `/characters/${characterId}/spell_lists`, token: auth.getToken() })
@@ -107,7 +121,7 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
                 setShowCreateList(false)
                 setNewListName('')
                 
-                // Check if the current spell is already in this new list (unlikely, but po ible)
+                // Check if the current spell is already in this new list (unlikely, but possible)
                 if (spell && spell.id && newList.spells) {
                     const spellExists = newList.spells.some((s: ISpellType) => s.id === spell.id)
                     if (spellExists) {
@@ -195,11 +209,14 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
                                 <SelectValue placeholder="Select a character" />
                             </SelectTrigger>
                             <SelectContent>
-                                {characters.map(ch => (
-                                    <SelectItem key={ch.id} value={String(ch.id || '')}>
-                                        {ch.name}
-                                    </SelectItem>
-                                ))}
+                                {characters.map(ch => {
+                                    const isCurrent = auth.currentCharacter?.id === Number(ch.id)
+                                    return (
+                                        <SelectItem key={ch.id} value={String(ch.id || '')}>
+                                            {isCurrent ? '★ ' : ''}{ch.name}
+                                        </SelectItem>
+                                    )
+                                })}
                             </SelectContent>
                         </Select>
                     </div>
@@ -302,7 +319,7 @@ const AddSpellForm = ({ spell, opened, onClose, onSubmit }: AddSpellProps) => {
                     <Button
                         disabled={missingData || hasValidationError}
                         onClick={submit}
-                        className="bg-primary text-primary-foreground hover:bg-primary/90  disabled:opacity-50 disabled:-none"
+                        className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:shadow-none"
                     >
                         <Check className="mr-2 h-4 w-4" />
                         Add to List

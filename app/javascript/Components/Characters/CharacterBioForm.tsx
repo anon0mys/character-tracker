@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui"
 import { Input } from "../ui"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui"
-import { archetypes } from "../../Api"
+import { archetypes, backgrounds } from "../../Api"
 
 const alignmentOptions = [
     {label: 'Lawful Good', value: 'LG'},
@@ -54,11 +54,11 @@ const CharacterBioForm = () => {
                 name="archetype"
                 render={({ field }) => (
                     <FormItem className="flex-1 min-w-[150px]">
-                        <FormLabel>Cla </FormLabel>
+                        <FormLabel>Class</FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select Cla " />
+                                    <SelectValue placeholder="Select Class" />
                                 </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -79,9 +79,20 @@ const CharacterBioForm = () => {
                 render={({ field }) => (
                     <FormItem className="flex-1 min-w-[150px]">
                         <FormLabel>Background</FormLabel>
-                        <FormControl>
-                            <Input placeholder="Your Background" {...field} />
-                        </FormControl>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Background" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                {backgrounds.map(background => (
+                                    <SelectItem key={background} value={background}>
+                                        {background}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                         <FormMessage />
                     </FormItem>
                 )}

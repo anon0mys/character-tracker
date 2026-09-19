@@ -22,7 +22,11 @@ const item_types = [
     'scroll', 'staff', 'tool', 'wand', 'weapon', 'wondrous',
   ]
 const qualities = ['common', 'uncommon', 'rare', 'very_rare', 'legendary', 'artifact']
+const backgrounds = [
+    'Acolyte', 'Charlatan', 'Criminal', 'Entertainer', 'Folk Hero', 'Guild Artisan',
+    'Hermit', 'Noble', 'Outlander', 'Sage', 'Sailor', 'Soldier', 'Urchin',
+]
 
 export {
-    abilities, archetypes, spellLevels, schools, statuses, item_types, qualities
+    abilities, archetypes, spellLevels, schools, statuses, item_types, qualities, backgrounds
 }

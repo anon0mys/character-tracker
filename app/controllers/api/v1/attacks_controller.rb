@@ -10,8 +10,12 @@ module Api
       end
 
       def create
-        @attack = @character.attacks.create!(attack_params)
-        render json: AttackSerializer.render(@attack, root: :data)
+        @attack = @character.attacks.build(attack_params)
+        if @attack.save
+          render json: AttackSerializer.render(@attack, root: :data)
+        else
+          render json: { errors: @attack.errors.full_messages }, status: :unprocessable_entity
+        end
       end
 
       def update
@@ -35,7 +39,7 @@ module Api
       end
 
       def attack_params
-        params.require(:attack).permit(:name, :description, :bonus)
+        params.require(:attack).permit(:name, :description, :bonus, :damage)
       end
     end
   end

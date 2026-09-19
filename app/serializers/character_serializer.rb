@@ -4,10 +4,15 @@ class CharacterSerializer < Blueprinter::Base
   fields :id, :name, :race, :level, :background, :alignment, :age, :ac,
     :initiative, :speed, :perception, :proficiency_bonus, :proficiencies,
     :concentration, :spell_attack_mod, :spell_save_dc, :total_hitpoints,
-    :current_hitpoints
+    :current_hitpoints, :max_hitpoints, :max_hitpoints_bonus, :temp_hitpoints,
+    :hit_dice_remaining, :hit_die_type, :inspiration, :death_save_successes,
+    :death_save_failures, :exhaustion, :spell_slots_used, :spell_slots_max,
+    :pact_slot_level, :concentration_spell,
+    :copper, :silver, :electrum, :gold, :platinum
 
   association :current_spell_list, blueprint: SpellListSerializer
   association :attacks, blueprint: AttackSerializer
+  association :character_trackers, blueprint: Character::TrackerSerializer
 
   field :hit_die do |character, _options|
     character.archetype.hit_die

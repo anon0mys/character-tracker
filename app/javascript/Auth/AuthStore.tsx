@@ -1,10 +1,20 @@
+interface CurrentCharacterSummary {
+    id: number
+    name: string
+    archetype: string
+    level: number
+}
+
 interface UserType {
+    id?: number;
     email: string;
     token: string;
+    current_character_id?: number | null;
+    current_character?: CurrentCharacterSummary | null;
 }
 
 interface AuthStore {
-    getUser(): UserType | null 
+    getUser(): UserType | null
     saveUser(user: UserType): void
     removeUser(): void
 }
@@ -31,4 +41,4 @@ const AuthStore = (): AuthStore => {
 }
 
 export {AuthStore}
-export type {UserType}
+export type {UserType, CurrentCharacterSummary}

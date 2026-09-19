@@ -8,6 +8,30 @@ RSpec.describe User do
   context "relationships" do
     it { is_expected.to have_many :characters }
     it { is_expected.to have_many(:games).through(:user_games) }
+    it { is_expected.to belong_to(:current_character).class_name("Character").optional }
+  end
+
+  context "current_character validation" do
+    let(:user) { create(:user) }
+
+    it "allows setting a character owned by the user" do
+      character = create(:character, user:)
+      user.current_character = character
+      expect(user).to be_valid
+    end
+
+    it "rejects a character owned by another user" do
+      other = create(:user)
+      character = create(:character, user: other)
+      user.current_character = character
+      expect(user).not_to be_valid
+      expect(user.errors[:current_character_id]).to include("must belong to this user")
+    end
+
+    it "allows nil (clearing)" do
+      user.current_character = nil
+      expect(user).to be_valid
+    end
   end
 
   context "game methods" do

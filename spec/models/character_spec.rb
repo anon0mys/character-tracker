@@ -28,7 +28,105 @@ RSpec.describe Character do
     it { is_expected.to belong_to :user }
     it { is_expected.to belong_to :game }
     it { is_expected.to have_many :spell_lists }
+    it { is_expected.to have_many :character_trackers }
     it { is_expected.to have_many(:items).through(:character_items) }
+  end
+
+  context "hit points" do
+    let(:character) { create(:character, level: 5, constitution: 14) }
+
+    it "computes max_hitpoints as total plus additive bonus" do
+      expect(character.max_hitpoints).to eq character.total_hitpoints
+      character.update!(max_hitpoints_bonus: 10)
+      expect(character.max_hitpoints).to eq character.total_hitpoints + 10
+    end
+
+    it "falls back current_hitpoints to max_hitpoints when unset" do
+      expect(character.current_hitpoints).to eq character.max_hitpoints
+    end
+  end
+
+  context "spell slots" do
+    it "returns archetype-derived max slots for a caster" do
+      character = create(:character, archetype: :artificer, level: 5)
+      expect(character.spell_slots_max).to eq [4, 2]
+    end
+
+    it "returns [] for non-casters" do
+      character = create(:character, archetype: :barbarian, level: 5)
+      expect(character.spell_slots_max).to eq []
+    end
+
+    it "reports pact_slot_level for warlock only" do
+      warlock = create(:character, archetype: :warlock, level: 13)
+      artificer = create(:character, archetype: :artificer, level: 13)
+      expect(warlock.pact_slot_level).to eq 5
+      expect(artificer.pact_slot_level).to be_nil
+    end
+  end
+
+  context "resting" do
+    let(:character) do
+      create(:character,
+        level: 8,
+        constitution: 14,
+        current_hitpoints: 10,
+        temp_hitpoints: 5,
+        max_hitpoints_bonus: 15,
+        hit_dice_remaining: 2,
+        spell_slots_used: { "1" => 2, "2" => 1 },
+        death_save_successes: 1,
+        death_save_failures: 2,
+        exhaustion: 2)
+    end
+
+    it "long rest fully restores hit points, clears bonus, slots and death saves" do
+      character.take_long_rest!
+      expect(character.reload.temp_hitpoints).to eq 0
+      expect(character.max_hitpoints_bonus).to eq 0
+      expect(character.current_hitpoints).to eq character.max_hitpoints
+      expect(character.spell_slots_used).to eq({})
+      expect(character.death_save_successes).to eq 0
+      expect(character.death_save_failures).to eq 0
+      expect(character.exhaustion).to eq 1
+    end
+
+    it "long rest recovers floor(level/2) hit dice, min 1, capped at level" do
+      character.take_long_rest!
+      expect(character.hit_dice_remaining).to eq 6 # 2 + 4
+      character.update!(level: 1, hit_dice_remaining: 0)
+      character.take_long_rest!
+      expect(character.hit_dice_remaining).to eq 1
+    end
+
+    it "long rest resets short/long/dawn trackers but not manual/never" do
+      short = create(:character_tracker, character:, reset_on: "short_rest", max_uses: 3, current_uses: 3)
+      long = create(:character_tracker, character:, reset_on: "long_rest", max_uses: 3, current_uses: 3)
+      dawn = create(:character_tracker, character:, reset_on: "dawn", max_uses: 3, current_uses: 3)
+      manual = create(:character_tracker, character:, reset_on: "manual", max_uses: 3, current_uses: 3)
+      never = create(:character_tracker, character:, reset_on: "never", max_uses: 3, current_uses: 3)
+      character.take_long_rest!
+      expect(short.reload.current_uses).to eq 0
+      expect(long.reload.current_uses).to eq 0
+      expect(dawn.reload.current_uses).to eq 0
+      expect(manual.reload.current_uses).to eq 3
+      expect(never.reload.current_uses).to eq 3
+    end
+
+    it "short rest only resets short_rest trackers" do
+      short = create(:character_tracker, character:, reset_on: "short_rest", max_uses: 3, current_uses: 3)
+      long = create(:character_tracker, character:, reset_on: "long_rest", max_uses: 3, current_uses: 3)
+      character.take_short_rest!
+      expect(short.reload.current_uses).to eq 0
+      expect(long.reload.current_uses).to eq 3
+    end
+
+    it "short rest restores warlock pact slots" do
+      warlock = create(:character,
+        archetype: :warlock, level: 5, spell_slots_used: { "pact" => 2 })
+      warlock.take_short_rest!
+      expect(warlock.reload.spell_slots_used["pact"]).to eq 0
+    end
   end
 
   context "level and proficiency" do

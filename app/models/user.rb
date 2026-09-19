@@ -7,6 +7,15 @@ class User < ApplicationRecord
   has_many :characters
   has_many :user_games
   has_many :games, through: :user_games
+  belongs_to :current_character, class_name: "Character", optional: true
+
+  validate :current_character_belongs_to_user, if: -> { current_character_id.present? }
+
+  def current_character_belongs_to_user
+    return unless current_character && current_character.user_id != id
+
+    errors.add(:current_character_id, "must belong to this user")
+  end
 
   def generate_jwt
     JWT.encode(

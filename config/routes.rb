@@ -21,13 +21,18 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :characters, only: %i[index show create update destroy] do
         resources :attacks, only: %i[index create update destroy]
+        resources :character_trackers, only: %i[index create update destroy], path: "trackers",
+          controller: "character/trackers"
         resources :spell_lists, only: %i[index create show update destroy] do
           post "/add_spell", to: "spell_lists#add_spell"
         end
+        post :rest, to: "characters#rest"
       end
       resources :spells, only: [:index]
       resources :items, only: %i[index create update]
       resources :games, only: %i[index show create update destroy]
+      get "users/me", to: "users#me"
+      patch "users/current_character", to: "users#set_current_character"
     end
   end
 

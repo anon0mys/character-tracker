@@ -9,7 +9,7 @@ class SessionsController < Devise::SessionsController
     if user&.valid_password?(sign_in_params[:password])
       @current_user = user
       render json: {
-        user:,
+        user: UserSerializer.render_as_hash(user),
         token: @current_user.generate_jwt,
       }
     else

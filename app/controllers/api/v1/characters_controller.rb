@@ -64,9 +64,22 @@ module Api
         render json: {}, status: :accepted
       end
 
+      def rest
+        @character = current_user.characters.find(params[:character_id])
+        case params[:type]
+        when "short"
+          @character.take_short_rest!
+        when "long"
+          @character.take_long_rest!
+        else
+          return render json: { errors: ["type must be 'short' or 'long'"] }, status: :unprocessable_entity
+        end
+        render json: CharacterSerializer.render(@character.reload, root: :data)
+      end
+
       private
 
-      def character_params
+      def character_params # rubocop:disable Metrics/MethodLength
         params.require(:character).permit(
           :name,
           :archetype,
@@ -86,7 +99,22 @@ module Api
           :wisdom,
           :charisma,
           :current_spell_list_id,
+          :current_hitpoints,
+          :temp_hitpoints,
+          :max_hitpoints_bonus,
+          :hit_dice_remaining,
+          :inspiration,
+          :death_save_successes,
+          :death_save_failures,
+          :exhaustion,
+          :concentration_spell,
+          :copper,
+          :silver,
+          :electrum,
+          :gold,
+          :platinum,
           proficiencies: [],
+          spell_slots_used: {},
         )
       end
     end

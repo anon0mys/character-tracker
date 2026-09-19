@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_11_03_022801) do
+ActiveRecord::Schema.define(version: 2026_09_19_184607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,7 +48,8 @@ ActiveRecord::Schema.define(version: 2025_11_03_022801) do
     t.bigint "character_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["character_id"], name: "index_attacks_on_character_id", unique: true
+    t.string "damage"
+    t.index ["character_id"], name: "index_attacks_on_character_id"
   end
 
   create_table "character_items", force: :cascade do |t|
@@ -59,6 +60,20 @@ ActiveRecord::Schema.define(version: 2025_11_03_022801) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["character_id"], name: "index_character_items_on_character_id"
     t.index ["item_id"], name: "index_character_items_on_item_id"
+  end
+
+  create_table "character_trackers", force: :cascade do |t|
+    t.bigint "character_id", null: false
+    t.string "name", null: false
+    t.integer "max_uses", null: false
+    t.integer "current_uses", default: 0, null: false
+    t.string "reset_on", null: false
+    t.string "category"
+    t.text "description"
+    t.integer "sort_order", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_id"], name: "index_character_trackers_on_character_id"
   end
 
   create_table "characters", force: :cascade do |t|
@@ -85,6 +100,20 @@ ActiveRecord::Schema.define(version: 2025_11_03_022801) do
     t.integer "charisma", default: 10
     t.integer "current_hitpoints"
     t.bigint "current_spell_list_id"
+    t.integer "temp_hitpoints", default: 0, null: false
+    t.integer "max_hitpoints_bonus", default: 0, null: false
+    t.integer "hit_dice_remaining"
+    t.integer "inspiration", default: 0, null: false
+    t.integer "death_save_successes", default: 0, null: false
+    t.integer "death_save_failures", default: 0, null: false
+    t.integer "exhaustion", default: 0, null: false
+    t.jsonb "spell_slots_used", default: {}, null: false
+    t.string "concentration_spell"
+    t.integer "copper", default: 0, null: false
+    t.integer "silver", default: 0, null: false
+    t.integer "electrum", default: 0, null: false
+    t.integer "gold", default: 0, null: false
+    t.integer "platinum", default: 0, null: false
     t.index ["current_spell_list_id"], name: "index_characters_on_current_spell_list_id"
     t.index ["game_id"], name: "index_characters_on_game_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
@@ -212,6 +241,8 @@ ActiveRecord::Schema.define(version: 2025_11_03_022801) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "current_character_id"
+    t.index ["current_character_id"], name: "index_users_on_current_character_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -219,10 +250,12 @@ ActiveRecord::Schema.define(version: 2025_11_03_022801) do
   add_foreign_key "attacks", "characters"
   add_foreign_key "character_items", "characters"
   add_foreign_key "character_items", "items"
+  add_foreign_key "character_trackers", "characters"
   add_foreign_key "characters", "games"
   add_foreign_key "faction_locations", "factions"
   add_foreign_key "faction_locations", "locations"
   add_foreign_key "faction_npcs", "factions"
   add_foreign_key "faction_npcs", "npcs"
   add_foreign_key "npcs", "locations"
+  add_foreign_key "users", "characters", column: "current_character_id"
 end

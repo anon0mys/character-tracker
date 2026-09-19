@@ -16,12 +16,12 @@ class Character < ApplicationRecord
     :initiative_bonus,
     :ac_bonus, presence: true
 
-  validates :strength, numericality: { in: 10..20 }
-  validates :dexterity, numericality: { in: 10..20 }
-  validates :constitution, numericality: { in: 10..20 }
-  validates :intelligence, numericality: { in: 10..20 }
-  validates :wisdom, numericality: { in: 10..20 }
-  validates :charisma, numericality: { in: 10..20 }
+  validates :strength, numericality: { in: 1..30 }
+  validates :dexterity, numericality: { in: 1..30 }
+  validates :constitution, numericality: { in: 1..30 }
+  validates :intelligence, numericality: { in: 1..30 }
+  validates :wisdom, numericality: { in: 1..30 }
+  validates :charisma, numericality: { in: 1..30 }
 
   belongs_to :user
   belongs_to :game
@@ -30,6 +30,7 @@ class Character < ApplicationRecord
   has_many :attacks, dependent: :destroy
   has_many :character_items, dependent: :destroy
   has_many :items, through: :character_items
+  has_many :character_trackers, class_name: "Character::Tracker", dependent: :destroy
 
   validate :current_spell_list_belongs_to_character, if: -> { current_spell_list_id.present? }
 
@@ -65,8 +66,54 @@ class Character < ApplicationRecord
     (archetype.hit_die.split("d").last.to_i + modifier_for(:constitution)) * level
   end
 
+  def max_hitpoints
+    total_hitpoints + max_hitpoints_bonus
+  end
+
   def current_hitpoints
-    self[:current_hitpoints] || total_hitpoints
+    self[:current_hitpoints] || max_hitpoints
+  end
+
+  def hit_die_type
+    archetype.hit_die
+  end
+
+  def spell_slots_max
+    return [] unless archetype.caster?
+
+    archetype.spell_slots_at_level(level) || []
+  end
+
+  def pact_slot_level
+    return nil unless archetype.caster?
+
+    archetype.spell_slot_level_at_level(level)
+  end
+
+  def take_short_rest!
+    character_trackers.where(reset_on: "short_rest").update_all(current_uses: 0) # rubocop:disable Rails/SkipsModelValidations
+    return unless pact_slot_level && spell_slots_used["pact"].to_i.positive?
+
+    slots = spell_slots_used.dup
+    slots["pact"] = 0
+    update!(spell_slots_used: slots)
+  end
+
+  def take_long_rest!
+    recovered = [hit_dice_remaining.to_i + [level / 2, 1].max, level].min
+    update!(
+      current_hitpoints: total_hitpoints, # bonus cleared, base formula becomes the new max
+      temp_hitpoints: 0,
+      max_hitpoints_bonus: 0,
+      spell_slots_used: {},
+      hit_dice_remaining: recovered,
+      death_save_successes: 0,
+      death_save_failures: 0,
+      exhaustion: [exhaustion - 1, 0].max,
+    )
+    character_trackers
+      .where(reset_on: %w[short_rest long_rest dawn])
+      .update_all(current_uses: 0) # rubocop:disable Rails/SkipsModelValidations
   end
 
   def ac

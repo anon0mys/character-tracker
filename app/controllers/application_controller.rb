@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
   attr_reader :current_user
 
   def authenticate_user!(_options = {})
-    head :unauthorized unless signed_in?
+    render json: { errors: ["Unauthorized"] }, status: :unauthorized unless signed_in?
   end
 
   def signed_in?

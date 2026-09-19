@@ -10,7 +10,7 @@ class RegistrationsController < Devise::RegistrationsController
     resource.save!
 
     render json: {
-      user: resource,
+      user: UserSerializer.render_as_hash(resource),
       token: resource.generate_jwt,
     }
   end

@@ -40,7 +40,7 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password" className="text-sm sm:text-base">Pa word</Label>
+                            <Label htmlFor="password" className="text-sm sm:text-base">Password</Label>
                             <Input
                                 id="password"
                                 type='password'
@@ -51,7 +51,7 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="passwordConfirmation" className="text-sm sm:text-base">Confirm Pa word</Label>
+                            <Label htmlFor="passwordConfirmation" className="text-sm sm:text-base">Confirm Password</Label>
                             <Input
                                 id="passwordConfirmation"
                                 type='password'

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '../Components/ui';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../Components/ui';
-import { Client, IAttackType, ICharacterType, ISpellListType } from '../Api';
+import { Client, IAttackType, ICharacterTrackerType, ICharacterType, ISpellListType } from '../Api';
 import { useAuth } from '../Auth';
-import { SpellListForm } from '../Components/Characters';
+import { SpellListForm, PlayPanel, TrackersSection, CurrencyFooter, CurrentCharacterButton } from '../Components/Characters';
 import { useError } from '../Errors';
 import SpellTable from '../Components/Spells/SpellTable';
 import AttackForm from '../Components/Characters/AttackForm';
-import { Edit } from 'lucide-react';
+import { Edit, Star } from 'lucide-react';
+import { useCharacterPatch } from '../Hooks/useCharacterPatch';
 
 const CharacterDisplay = () => {
     const { id } = useParams()
@@ -36,6 +37,25 @@ const CharacterDisplay = () => {
         concentration: 0,
         total_hitpoints: 0,
         current_hitpoints: 0,
+        max_hitpoints: 0,
+        max_hitpoints_bonus: 0,
+        temp_hitpoints: 0,
+        hit_dice_remaining: null,
+        hit_die_type: '',
+        inspiration: 0,
+        death_save_successes: 0,
+        death_save_failures: 0,
+        exhaustion: 0,
+        spell_slots_used: {},
+        spell_slots_max: [],
+        pact_slot_level: null,
+        concentration_spell: null,
+        copper: 0,
+        silver: 0,
+        electrum: 0,
+        gold: 0,
+        platinum: 0,
+        character_trackers: [],
         injury_condition: 'Healthy',
         hit_die: '',
         strength: {value: 10, modifier: 0, save: 0},
@@ -46,6 +66,8 @@ const CharacterDisplay = () => {
         charisma: {value: 10, modifier: 0, save: 0},
     })
     const [attacks, setAttacks] = useState<IAttackType[]>(character?.attacks)
+    const [trackers, setTrackers] = useState<ICharacterTrackerType[]>([])
+    const { patch } = useCharacterPatch(character, setCharacter)
     const auth = useAuth()
     const client = Client()
     const errors = useError()
@@ -56,6 +78,7 @@ const CharacterDisplay = () => {
             setCharacter(response.data)
             setCurrentSpellList(response.data.current_spell_list)
             setAttacks(response.data.attacks || [])
+            setTrackers(response.data.character_trackers || [])
         })
         .catch(error => errors.setError(error))
     }, [id])
@@ -109,18 +132,21 @@ const CharacterDisplay = () => {
         return { label: spellList.name, value: spellList.id ? spellList.id.toString() : '' }
     })
 
-    const attackRows = character.attacks.map((attack, index) => {
+    const attackRows = attacks.map((attack, index) => {
         return (
             <div key={attack.id || index} className="grid grid-cols-12 gap-2 sm:gap-4 py-3 px-2 rounded hover:bg-accent/50 transition-colors group">
-                <div className="col-span-4 sm:col-span-3 font-medium group-hover:text-primary transition-colors text-sm sm:text-base">
+                <div className="col-span-3 sm:col-span-3 font-medium group-hover:text-primary transition-colors text-sm sm:text-base">
                     {attack.name}
                 </div>
-                <div className="col-span-3 sm:col-span-2">
+                <div className="col-span-2 sm:col-span-1">
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs font-semibold">
                         {attack.bonus}
                     </span>
                 </div>
-                <div className="col-span-5 sm:col-span-4 text-xs sm:text-sm text-muted-foreground">
+                <div className="col-span-3 sm:col-span-3 text-xs sm:text-sm">
+                    {attack.damage}
+                </div>
+                <div className="col-span-4 sm:col-span-5 text-xs sm:text-sm text-muted-foreground">
                     {attack.description}
                 </div>
             </div>
@@ -145,15 +171,21 @@ const CharacterDisplay = () => {
                         </div>
                     </div>
                     {character.id && (
-                        <Button asChild size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px] shrink-0">
-                            <Link to={`/characters/${character.id}/edit`} className="flex items-center justify-center">
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit Character
-                            </Link>
-                        </Button>
+                        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto shrink-0">
+                            <CurrentCharacterButton characterId={Number(character.id)} />
+                            <Button asChild size="lg" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px]">
+                                <Link to={`/characters/${character.id}/edit`} className="flex items-center justify-center">
+                                    <Edit className="mr-2 h-4 w-4" />
+                                    Edit Character
+                                </Link>
+                            </Button>
+                        </div>
                     )}
                 </div>
             </div>
+            {character.id && (
+                <PlayPanel character={character} setCharacter={setCharacter} patch={patch} />
+            )}
             <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6">
                 <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-primary">Character Information</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
@@ -164,7 +196,7 @@ const CharacterDisplay = () => {
                         <div className="font-semibold">{character.race}</div>
                     </div>
                     <div className="space-y-2">
-                        <div className="text-sm text-muted-foreground">Cla  & Level</div>
+                        <div className="text-sm text-muted-foreground">Class & Level</div>
                         <div className="font-semibold">{character.archetype} {character.level}</div>
                         <div className="text-sm text-muted-foreground mt-3">Background</div>
                         <div className="font-semibold">{character.background}</div>
@@ -268,7 +300,7 @@ const CharacterDisplay = () => {
                     <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-primary">Combat Stats</h3>
                     <div className="space-y-3 sm:space-y-4">
                         <div className="flex justify-between items-center pb-2 border-b">
-                            <span className="text-sm text-muted-foreground">Armor Cla </span>
+                            <span className="text-sm text-muted-foreground">Armor Class</span>
                             <span className="text-xl font-bold">{character.ac}</span>
                         </div>
                         <div className="flex justify-between items-center pb-2 border-b">
@@ -312,9 +344,10 @@ const CharacterDisplay = () => {
                     <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
                         <div className="min-w-[500px] sm:min-w-0">
                             <div className="grid grid-cols-12 gap-2 sm:gap-4 pb-2 border-b font-medium text-xs sm:text-sm text-muted-foreground">
-                                <div className="col-span-4 sm:col-span-3">Attack</div>
-                                <div className="col-span-3 sm:col-span-2">Bonus</div>
-                                <div className="col-span-5 sm:col-span-4">Damage & Notes</div>
+                                <div className="col-span-3 sm:col-span-3">Attack</div>
+                                <div className="col-span-2 sm:col-span-1">Bonus</div>
+                                <div className="col-span-3 sm:col-span-3">Damage</div>
+                                <div className="col-span-4 sm:col-span-5">Notes</div>
                             </div>
                             <div className="space-y-1">{attackRows}</div>
                         </div>
@@ -323,7 +356,7 @@ const CharacterDisplay = () => {
                     <p className="text-xs sm:text-sm text-muted-foreground text-center py-4">No attacks added yet</p>
                 )}
             </div>
-            <AttackForm opened={attackModalOpen} onClose={closeAttackForm} attack={undefined} />
+            <AttackForm opened={attackModalOpen} onClose={closeAttackForm} attack={undefined} characterId={character.id} />
             <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-primary/30 shadow-lg p-4 sm:p-6 mb-4 sm:mb-6">
                 <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 pb-2 border-b border-primary/20 text-primary">Hit Points & Abilities</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
@@ -386,6 +419,12 @@ const CharacterDisplay = () => {
                 </div>
             </div>
             {currentSpellList && <SpellTable spells={currentSpellList.spells} />}
+            {character.id && (
+                <>
+                    <TrackersSection characterId={character.id} trackers={trackers} setTrackers={setTrackers} />
+                    <CurrencyFooter character={character} patch={patch} />
+                </>
+            )}
             <SpellListForm characterId={character.id} open={spellListFormOpen} setOpen={setSpellListFormOpen} onSubmit={addSpellList} />
         </>
     )

@@ -26,6 +26,7 @@ import {
 const attackSchema = z.object({
     name: z.string().min(2, 'Name must have at least 2 letters'),
     bonus: z.string(),
+    damage: z.string().optional(),
     description: z.string().min(2, 'Description must have at least 2 letters'),
     character_id: z.string(),
 })
@@ -34,49 +35,45 @@ type AttackFormData = z.infer<typeof attackSchema>
 
 interface AttackFormProps {
     attack?: IAttackType
+    characterId?: string | number
     opened: boolean
     onClose: (attack: IAttackType | undefined) => void;
 }
 
-const AttackForm = ({ attack, opened, onClose }: AttackFormProps) => {
+const AttackForm = ({ attack, characterId, opened, onClose }: AttackFormProps) => {
     const auth = useAuth()
     const client = Client()
 
     const isUpdate = !!attack
+    const effectiveCharacterId = attack?.character_id || (characterId != null ? String(characterId) : '')
 
     const form = useForm<AttackFormData>({
         resolver: zodResolver(attackSchema),
         defaultValues: {
             name: attack ? attack.name : '',
             bonus: attack ? attack.bonus : '',
+            damage: attack ? (attack.damage || '') : '',
             description: attack ? attack.description : '',
-            character_id: attack ? attack.character_id : '',
+            character_id: effectiveCharacterId,
         },
     })
 
-    const handleClose = () => {
+    const handleClose = (result?: IAttackType) => {
         form.reset()
-        onClose(attack)
+        onClose(result ?? attack)
     }
 
     const handleSubmit = (values: AttackFormData) => {
-        let url = `/characters/${attack?.character_id}/attacks`
-        if (isUpdate) {
-            url += `/${attack?.id}`
-        }
-        const data = {
-            ...values
-        }
-        const request = { path: url, payload: data, token: auth.getToken() }
-        if (isUpdate) {
-            client.post(request).then(data => handleClose())
-        } else {
-            client.patch(request).then(data => handleClose())
-        }
+        const base = `/characters/${effectiveCharacterId}/attacks`
+        const url = isUpdate ? `${base}/${attack?.id}` : base
+        const payload = { attack: values }
+        const request = { path: url, payload, token: auth.getToken() }
+        const promise = isUpdate ? client.patch(request) : client.post(request)
+        promise.then(response => handleClose(response?.data))
     }
 
     return (
-        <Dialog open={opened} onOpenChange={handleClose}>
+        <Dialog open={opened} onOpenChange={(o) => { if (!o) handleClose() }}>
             <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
                 <DialogHeader>
                     <DialogTitle className="text-primary">Attack</DialogTitle>
@@ -103,7 +100,20 @@ const AttackForm = ({ attack, opened, onClose }: AttackFormProps) => {
                                 <FormItem>
                                     <FormLabel>Bonus</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Bonus" {...field} />
+                                        <Input placeholder="e.g. +10" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="damage"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Damage</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="e.g. 1d8+7 bludgeoning" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -123,7 +133,7 @@ const AttackForm = ({ attack, opened, onClose }: AttackFormProps) => {
                             )}
                         />
                         <DialogFooter className="gap-2 border-t border-primary/20 pt-4">
-                            <Button type="button" variant="outline" onClick={handleClose} className="border-primary/30">Cancel</Button>
+                            <Button type="button" variant="outline" onClick={() => handleClose()} className="border-primary/30">Cancel</Button>
                             <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 ">Save</Button>
                         </DialogFooter>
                     </form>
