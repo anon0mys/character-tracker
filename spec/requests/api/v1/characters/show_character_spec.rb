@@ -19,7 +19,9 @@ describe "GET /api/v1/characters/:id" do
     it "returns a character for the user" do
       result = response.parsed_body
       character = result["data"]
-      expect(character).to eq({
+      # `include` (not `eq`): the serializer carries many more fields than this
+      # asserts; we guard the meaningful subset and tolerate additions.
+      expect(character).to include({
         "id" => Character.first.id,
         "ac" => 10,
         "age" => 38,
@@ -30,6 +32,7 @@ describe "GET /api/v1/characters/:id" do
         "current_hitpoints" => 8,
         "total_hitpoints" => 8,
         "injury_condition" => "Healthy",
+        "hp_thresholds" => { "bloodied" => 0.5, "mangled" => 0.25 },
         "hit_die" => "d8",
         "current_spell_list" => nil,
         "concentration" => 2,

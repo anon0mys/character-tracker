@@ -18,6 +18,12 @@ class CharacterSerializer < Blueprinter::Base
     character.archetype.hit_die
   end
 
+  # Fractions of max HP where the bar flips tier. Hardcoded to match
+  # #injury_condition below; Phase 4g moves these to the game.
+  field :hp_thresholds do |_character, _options|
+    { bloodied: 0.5, mangled: 0.25 }
+  end
+
   field :injury_condition do |character, _options|
     if character.current_hitpoints < (character.total_hitpoints * 0.25).floor
       "Mangled"

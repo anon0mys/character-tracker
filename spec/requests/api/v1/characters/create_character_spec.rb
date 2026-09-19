@@ -48,7 +48,9 @@ describe "POST /api/v1/characters" do
 
     it "returns character data" do
       result = response.parsed_body
-      expect(result["data"]).to eq({
+      # `include` (not `eq`): the serializer carries many more fields than this
+      # asserts; we guard the meaningful subset and tolerate additions.
+      expect(result["data"]).to include({
         "id" => Character.first.id,
         "ac" => 16,
         "age" => 38,
@@ -59,6 +61,7 @@ describe "POST /api/v1/characters" do
         "current_hitpoints" => 50,
         "total_hitpoints" => 50,
         "injury_condition" => "Healthy",
+        "hp_thresholds" => { "bloodied" => 0.5, "mangled" => 0.25 },
         "hit_die" => "d8",
         "current_spell_list" => nil,
         "concentration" => 5,

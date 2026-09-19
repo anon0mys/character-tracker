@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         resources :spell_lists, only: %i[index create show update destroy] do
           post "/add_spell", to: "spell_lists#add_spell"
         end
+        resources :items, only: %i[index], controller: "character_items"
         post :rest, to: "characters#rest"
       end
       resources :spells, only: [:index]
