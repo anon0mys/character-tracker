@@ -35,6 +35,11 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 - No ESLint/Prettier config in the repo (`devDependencies` empty). Use `npx prettier --write <file>`; don't add configs without asking.
 - Google Fonts `<link>` — check `config/initializers/content_security_policy.rb` before Phase 0; `csp_meta_tag` is in the layout.
 - `class_data.json` skill proficiencies are prose ("Choose two from Arcana, …") parsed by regex in `CharacterService#extract_valid_skills`. Brittle; 4d relies on it for the "valid skills" hint only.
+- **`rescue_from StandardError` ordering bug** (`app/controllers/api_controller.rb`): it's declared last, so Rails checks it first and it shadows the specific `RecordNotFound`/`RecordInvalid`/`ParameterMissing` handlers. The API returns **500 for not-found**, not 404. Move the StandardError rescue above the specific ones to fix the whole API's error contract. Out of Phase 2 scope; `items_spec` asserts the security property (no leak) rather than 404.
+- **Worktree setup: `config/master.key`** is gitignored and absent in a fresh worktree, so `credentials.secret_key_base` is nil → every authenticated request spec 401s and the app can't verify JWTs. Copied from the main checkout for this session. Any new worktree needs it copied in.
+- create/show character specs were stale exact-match (`eq`) hashes missing ~20 serializer fields; converted to `include`. Other exact-match body specs may exist.
+- 17 pre-existing suite failures, all in §9 out-of-scope / unrelated areas (location, npc, user `is_game_admin?`, spell_list add_spell, create_user). Not touched by the redesign.
+- Backend is **ahead of the plan**: ability validations already `1..30`; `character_params` already permits current_hitpoints, temp_hitpoints, death saves, exhaustion, spell_slots_used, hit_dice_remaining, concentration_spell; `characters#rest` implemented; `character_trackers` (Phase 4b's "resources") already modelled + routed (`/trackers`) with a serializer. Verify code before each phase; several phases are lighter than written.
 
 ## Update protocol
 
