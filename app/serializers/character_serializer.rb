@@ -7,7 +7,7 @@ class CharacterSerializer < Blueprinter::Base
     :current_hitpoints, :max_hitpoints, :max_hitpoints_bonus, :temp_hitpoints,
     :hit_dice_remaining, :hit_die_type, :inspiration, :death_save_successes,
     :death_save_failures, :exhaustion, :spell_slots_used, :spell_slots_max,
-    :pact_slot_level, :concentration_spell,
+    :pact_slot_level, :concentration_spell, :notes,
     :copper, :silver, :electrum, :gold, :platinum
 
   association :current_spell_list, blueprint: SpellListSerializer

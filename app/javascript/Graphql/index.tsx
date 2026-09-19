@@ -1,3 +1,3 @@
 import { useClient } from "./Client";
 
-export { useClient }
+export { useClient };

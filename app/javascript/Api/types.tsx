@@ -71,6 +71,7 @@ interface ICharacterType {
   gold: number;
   platinum: number;
   injury_condition: InjuryCondition;
+  notes?: string;
   hp_thresholds?: { bloodied: number; mangled: number };
   current_spell_list?: ISpellListType;
   character_trackers: ICharacterTrackerType[];

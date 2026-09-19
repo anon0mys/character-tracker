@@ -11,9 +11,18 @@ import TrackersSection from "./Trackers";
 import CurrencyFooter from "./CurrencyFooter";
 import CurrentCharacterButton from "./CurrentCharacterButton";
 
-export * from './types'
+export * from "./types";
 export {
-    AbilityScoresForm, AddSpellForm, CharacterCard, CharacterBioForm,
-    CharacterStatsForm, SpellListCard, SpellListForm, SpellListModal,
-    PlayPanel, TrackersSection, CurrencyFooter, CurrentCharacterButton,
-}
+  AbilityScoresForm,
+  AddSpellForm,
+  CharacterCard,
+  CharacterBioForm,
+  CharacterStatsForm,
+  SpellListCard,
+  SpellListForm,
+  SpellListModal,
+  PlayPanel,
+  TrackersSection,
+  CurrencyFooter,
+  CurrentCharacterButton,
+};

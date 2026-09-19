@@ -1,4 +1,4 @@
 import ButtonToggle from "./ButtonToggle";
 import ConfirmModal from "./ConfirmModal";
 
-export { ButtonToggle, ConfirmModal }
+export { ButtonToggle, ConfirmModal };

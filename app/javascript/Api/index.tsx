@@ -1,5 +1,5 @@
-import Client from './Client'
+import Client from "./Client";
 
-export * from './constants'
-export * from './types'
-export { Client }
+export * from "./constants";
+export * from "./types";
+export { Client };

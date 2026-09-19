@@ -1,16 +1,16 @@
-import React from 'react'
-import { Outlet, Navigate, useLocation } from 'react-router-dom'
-import { useGame } from './GameProvider';
+import React from "react";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { useGame } from "./GameProvider";
 
 const GameSubRoute = () => {
-    const {game} = useGame()
-    let location = useLocation();
+  const { game } = useGame();
+  let location = useLocation();
 
-    if (!game) {
-        return <Navigate to="/dashboard" state={{ from: location }} replace />;
-    }
+  if (!game) {
+    return <Navigate to="/dashboard" state={{ from: location }} replace />;
+  }
 
-    return <Outlet />;
-}
+  return <Outlet />;
+};
 
-export default GameSubRoute
+export default GameSubRoute;

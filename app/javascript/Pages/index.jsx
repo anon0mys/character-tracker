@@ -1,6 +1,7 @@
 import Characters from "./Characters";
 import CharacterDisplay from "./CharacterDisplay";
 import CharacterForm from "./CharacterForm";
+import CharacterNotes from "./CharacterNotes";
 import Compendium from "./Compendium";
 import Dashboard from "./Dashboard";
 import Home from "./Home";
@@ -14,6 +15,7 @@ export {
   Characters,
   CharacterDisplay,
   CharacterForm,
+  CharacterNotes,
   Compendium,
   Dashboard,
   Home,

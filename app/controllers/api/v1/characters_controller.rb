@@ -108,6 +108,7 @@ module Api
           :death_save_failures,
           :exhaustion,
           :concentration_spell,
+          :notes,
           :copper,
           :silver,
           :electrum,

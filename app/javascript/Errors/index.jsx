@@ -1,4 +1,4 @@
 import { ErrorProvider, useError } from "./ErrorProvider";
-import ErrorBanner from "./ErrorBanner"
+import ErrorBanner from "./ErrorBanner";
 
-export { ErrorBanner, ErrorProvider, useError }
+export { ErrorBanner, ErrorProvider, useError };

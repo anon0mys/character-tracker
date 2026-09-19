@@ -1,71 +1,93 @@
-import React, { useState } from 'react'
-import { Button, Input, Label } from '../ui'
+import React, { useState } from "react";
+import { Button, Input, Label } from "../ui";
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '../ui/dialog'
-import { Client } from '../../Api'
-import { useAuth } from '../../Auth'
-import { useError } from '../../Errors'
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
+import { Client } from "../../Api";
+import { useAuth } from "../../Auth";
+import { useError } from "../../Errors";
 
 interface SpellListFormProps {
-    characterId?: string
-    open: boolean
-    setOpen: (open: boolean) => void
-    onSubmit: (data: any) => void
+  characterId?: string;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onSubmit: (data: any) => void;
 }
 
-const SpellListForm = ({ characterId, open, setOpen, onSubmit }: SpellListFormProps) => {
-    const [name, setName] = useState('')
-    const auth = useAuth()
-    const client = Client()
-    const errors = useError()
+const SpellListForm = ({
+  characterId,
+  open,
+  setOpen,
+  onSubmit,
+}: SpellListFormProps) => {
+  const [name, setName] = useState("");
+  const auth = useAuth();
+  const client = Client();
+  const errors = useError();
 
-    const submit = (event: React.FormEvent) => {
-        event.preventDefault()
-        client.post({
-            path: `/characters/${characterId}/spell_lists`, payload: {
-                name: name,
-            }, token: auth.getToken()
-        })
-            .then(response => {
-                onSubmit(response.data)
-                setOpen(false)
-                setName('')
-            })
-            .catch(error => errors.setError(error))
-    }
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    client
+      .post({
+        path: `/characters/${characterId}/spell_lists`,
+        payload: {
+          name: name,
+        },
+        token: auth.getToken(),
+      })
+      .then((response) => {
+        onSubmit(response.data);
+        setOpen(false);
+        setName("");
+      })
+      .catch((error) => errors.setError(error));
+  };
 
-    return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="border-primary/30 bg-card/95 backdrop-blur-xl">
-                <DialogHeader>
-                    <DialogTitle className="text-primary">Create a Spell List</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={submit}>
-                    <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="name">Name</Label>
-                            <Input 
-                                id="name"
-                                placeholder='Enter spell list name' 
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="h-11"
-                            />
-                        </div>
-                    </div>
-                    <DialogFooter className="gap-2 border-t border-primary/20 pt-4">
-                        <Button type="button" variant="outline" onClick={() => setOpen(false)} className="border-primary/30">Cancel</Button>
-                        <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 ">Create Spell List</Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
-    )
-}
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="border-border bg-card ">
+        <DialogHeader>
+          <DialogTitle className="text-primary">
+            Create a Spell List
+          </DialogTitle>
+        </DialogHeader>
+        <form onSubmit={submit}>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                placeholder="Enter spell list name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="h-11"
+              />
+            </div>
+          </div>
+          <DialogFooter className="gap-2 border-t border-border pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              className="border-border"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 "
+            >
+              Create Spell List
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
-export default SpellListForm
+export default SpellListForm;

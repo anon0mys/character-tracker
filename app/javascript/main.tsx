@@ -6,15 +6,15 @@ import "./index.scss";
 import App from "./App";
 
 // ts-ignore
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('app');
-    if (!container) {
-        throw new Error('Root element not found');
-    }
-    const root = createRoot(container);
-    root.render(
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    );
-})
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("app");
+  if (!container) {
+    throw new Error("Root element not found");
+  }
+  const root = createRoot(container);
+  root.render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+  );
+});

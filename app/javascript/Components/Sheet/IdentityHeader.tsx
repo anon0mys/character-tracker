@@ -90,15 +90,19 @@ const IdentityHeader = ({ character, onRested }: IdentityHeaderProps) => {
           >
             Features
           </NavLink>
-          <span
-            className={cn(
-              segment,
-              "cursor-not-allowed text-muted-foreground/60",
-            )}
-            title="Notes arrive in Phase 3"
+          <NavLink
+            to={`/characters/${id}/notes`}
+            className={({ isActive }) =>
+              cn(
+                segment,
+                isActive
+                  ? "bg-card font-semibold text-foreground"
+                  : "text-foreground-2",
+              )
+            }
           >
             Notes
-          </span>
+          </NavLink>
         </div>
 
         {id && (

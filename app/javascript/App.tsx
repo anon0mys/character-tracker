@@ -7,6 +7,7 @@ import {
   Characters,
   CharacterDisplay,
   CharacterForm,
+  CharacterNotes,
   Compendium,
   Dashboard,
   Home,
@@ -71,6 +72,10 @@ const App = () => {
                       <Route
                         path="characters/:id/features"
                         element={<FeaturesPlaceholder />}
+                      />
+                      <Route
+                        path="characters/:id/notes"
+                        element={<CharacterNotes />}
                       />
                       <Route
                         path="characters/:id"
