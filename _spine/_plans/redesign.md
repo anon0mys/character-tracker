@@ -13,8 +13,8 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 | 0 | Tokens + type | ✅ | d69be4d |
 | 1 | Shell: rail, tabs, routes, settings page | ✅ | d8e6942 |
 | 2 | Sheet restructure (existing data only) | ✅ | d7344f4 + 36d376c |
-| 3 | Forms + known bugs | ⏳ next | — |
-| 4a | Attacks: damage, action type, riders, Extra Attack | ⏳ | — |
+| 3 | Forms + known bugs | ✅ | ab49a80 |
+| 4a | Attacks: damage, action type, riders, Extra Attack | ⏳ next | — |
 | 4b | Resources (pips + consumables) | ⏳ | — |
 | 4c | Temp HP, hit dice, death saves, conditions, spell slots | ⏳ | — |
 | 4d | Skills | ⏳ | — |
@@ -353,7 +353,14 @@ Divergences / deferrals:
 **Acceptance**: each form round-trips create + edit against the API; attack create spec green; `tsc` clean.
 
 **Session notes**
-_(empty)_
+Shipped ab49a80. AttackForm was already fixed in code (create posts) — added the
+missing spec only. Notes: migration + permit + serializer + `/characters/:id/notes`
+page. zod loosened (abilities 1..30, speed 0..120). De-neon done by mechanical
+sweep (backdrop-blur, bg-card/NN, border-primary/NN, blue→purple gradient) rather
+than a per-form pixel reskin — form dialogs are tokenised but not individually
+rebuilt to the boards; a full form reskin remains as polish. This commit also
+carries a one-time repo-wide prettier normalization (no config existed).
+Full suite: 17 pre-existing failures (unchanged), new specs green.
 
 ### Phase 4 — Paper-sheet data
 
