@@ -157,6 +157,7 @@ interface IPaginationType {
 }
 
 export type {
+  IAbilityType,
   IAttackType,
   ICharacterType,
   ICharacterItemType,

@@ -1,0 +1,144 @@
+import React, { useState } from "react";
+import { ISpellListType, ISpellType } from "../../Api";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Button,
+} from "../ui";
+import { cn } from "../../lib/utils";
+import SpellDetail from "./SpellDetail";
+import GearTab from "./GearTab";
+import ConsumablesTab from "./ConsumablesTab";
+
+type Tab = "spells" | "gear" | "consumables";
+
+interface RightPanelProps {
+  characterId: string | number;
+  spellLists: ISpellListType[];
+  currentSpellList?: ISpellListType;
+  onSelectSpellList: (value: string) => void;
+  onAddSpellList: () => void;
+}
+
+const NO_LIST = "none";
+
+const levelBadge = (level: string) => {
+  if (!level || level.toLowerCase() === "cantrip" || level === "0") return "C";
+  return level;
+};
+
+const RightPanel = ({
+  characterId,
+  spellLists,
+  currentSpellList,
+  onSelectSpellList,
+  onAddSpellList,
+}: RightPanelProps) => {
+  const [tab, setTab] = useState<Tab>("spells");
+  const [selectedSpell, setSelectedSpell] = useState<ISpellType | null>(null);
+
+  const tabs: { key: Tab; label: string }[] = [
+    { key: "spells", label: "Spells" },
+    { key: "gear", label: "Gear" },
+    { key: "consumables", label: "Consumables" },
+  ];
+
+  const spells = currentSpellList?.spells ?? [];
+
+  return (
+    <div className="flex min-h-0 w-full flex-col gap-3 rounded-2xl border border-border bg-card p-[14px] lg:w-[430px] lg:flex-shrink-0">
+      {!selectedSpell && (
+        <div className="flex flex-shrink-0 rounded-[9px] bg-rail p-[3px]">
+          {tabs.map(({ key, label }) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setTab(key)}
+              className={cn(
+                "flex-grow rounded-[7px] py-[10px] text-center text-[13px]",
+                tab === key
+                  ? "bg-card font-semibold text-foreground"
+                  : "text-foreground-2",
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {tab === "spells" &&
+        (selectedSpell ? (
+          <SpellDetail
+            spell={selectedSpell}
+            onBack={() => setSelectedSpell(null)}
+          />
+        ) : (
+          <>
+            <div className="flex flex-shrink-0 flex-col gap-2 sm:flex-row">
+              <Select
+                value={currentSpellList?.id?.toString() ?? NO_LIST}
+                onValueChange={onSelectSpellList}
+              >
+                <SelectTrigger className="min-h-[40px] flex-grow">
+                  <SelectValue placeholder="Switch list" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={NO_LIST}>No list</SelectItem>
+                  {spellLists.map((list) => (
+                    <SelectItem key={list.id} value={String(list.id)}>
+                      {list.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                variant="outline"
+                className="min-h-[40px]"
+                onClick={onAddSpellList}
+              >
+                New list
+              </Button>
+            </div>
+
+            {spells.length === 0 ? (
+              <p className="py-6 text-center text-[13px] text-muted-foreground">
+                {currentSpellList
+                  ? "This list has no spells."
+                  : "No spell list selected."}
+              </p>
+            ) : (
+              <div className="flex min-h-0 flex-grow flex-col gap-[3px] overflow-y-auto pr-1">
+                {spells.map((spell) => (
+                  <button
+                    key={spell.id}
+                    type="button"
+                    onClick={() => setSelectedSpell(spell)}
+                    className="flex items-center gap-[9px] rounded-lg px-2 py-2 text-left hover:bg-secondary"
+                  >
+                    <span className="flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-md bg-arcane-soft font-mono text-[10px] text-arcane-ink">
+                      {levelBadge(spell.level)}
+                    </span>
+                    <span className="min-w-0 flex-grow truncate text-[13px]">
+                      {spell.name}
+                    </span>
+                    <span className="font-mono text-[11px] text-muted-foreground">
+                      {spell.school}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        ))}
+
+      {tab === "gear" && <GearTab characterId={characterId} />}
+      {tab === "consumables" && <ConsumablesTab />}
+    </div>
+  );
+};
+
+export default RightPanel;
