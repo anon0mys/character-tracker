@@ -79918,7 +79918,9 @@ var RightPanel = function RightPanel(_ref) {
     }, spell.school));
   })))), tab === "gear" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GearTab__WEBPACK_IMPORTED_MODULE_4__["default"], {
     characterId: characterId
-  }), tab === "consumables" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ConsumablesTab__WEBPACK_IMPORTED_MODULE_5__["default"], null));
+  }), tab === "consumables" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ConsumablesTab__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    characterId: characterId
+  }));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RightPanel);
@@ -80101,16 +80103,166 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
- // Phase 4b fills this from the resources/pips endpoint.
+/* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
+/* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
+/* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(125);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(267);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(158);
+/* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(28);
+/* harmony import */ var _format__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(263);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-var ConsumablesTab = function ConsumablesTab() {
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+ // 4b: resources are the existing character_trackers (name/max_uses/current_uses/
+// reset_on). Small pools render as pips; larger ones as +/- steppers.
+
+var PIP_LIMIT = 8;
+
+var ConsumablesTab = function ConsumablesTab(_ref) {
+  var characterId = _ref.characterId;
+  var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
+  var client = (0,_Api__WEBPACK_IMPORTED_MODULE_1__.Client)();
+  var errors = (0,_Errors__WEBPACK_IMPORTED_MODULE_3__.useError)();
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      trackers = _useState2[0],
+      setTrackers = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+      _useState4 = _slicedToArray(_useState3, 2),
+      loading = _useState4[0],
+      setLoading = _useState4[1];
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    client.get({
+      path: "/characters/".concat(characterId, "/trackers"),
+      token: auth.getToken()
+    }).then(function (res) {
+      var _res$data;
+
+      return setTrackers((_res$data = res.data) !== null && _res$data !== void 0 ? _res$data : []);
+    })["catch"](function (err) {
+      return errors.setError(err);
+    })["finally"](function () {
+      return setLoading(false);
+    }); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [characterId]);
+
+  var setUses = function setUses(tracker, next) {
+    var current_uses = (0,_format__WEBPACK_IMPORTED_MODULE_5__.clamp)(next, 0, tracker.max_uses);
+    setTrackers(function (prev) {
+      return prev.map(function (t) {
+        return t.id === tracker.id ? _objectSpread(_objectSpread({}, t), {}, {
+          current_uses: current_uses
+        }) : t;
+      });
+    });
+    client.patch({
+      path: "/characters/".concat(characterId, "/trackers/").concat(tracker.id),
+      payload: {
+        character_tracker: {
+          current_uses: current_uses
+        }
+      },
+      token: auth.getToken(),
+      showSuccessToast: false
+    })["catch"](function (err) {
+      return errors.setError(err);
+    });
+  };
+
+  if (loading) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+      className: "py-6 text-center text-[13px] text-muted-foreground"
+    }, "Loading\u2026");
+  }
+
+  if (trackers.length === 0) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "flex flex-grow flex-col items-center justify-center gap-1 py-10 text-center"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+      className: "text-[13px] font-medium text-foreground-2"
+    }, "No consumables yet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+      className: "text-[12px] text-muted-foreground"
+    }, "Add a resource to track pips or charges."));
+  }
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex flex-grow flex-col items-center justify-center gap-1 py-10 text-center"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-[13px] font-medium text-foreground-2"
-  }, "No consumables yet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    className: "text-[12px] text-muted-foreground"
-  }, "Pips and charges arrive in a later phase."));
+    className: "flex min-h-0 flex-grow flex-col gap-3 overflow-y-auto pr-1"
+  }, trackers.map(function (tracker) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: tracker.id,
+      className: "flex flex-col gap-[6px] rounded-lg bg-secondary p-[10px]"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "flex items-baseline gap-2"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "text-[13px] font-medium"
+    }, tracker.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "font-mono text-[11px] text-muted-foreground"
+    }, tracker.current_uses, "/", tracker.max_uses), tracker.reset_on && tracker.reset_on !== "never" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "ml-auto font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground"
+    }, tracker.reset_on.replace("_", " "))), tracker.max_uses <= PIP_LIMIT ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "flex flex-wrap gap-[5px]"
+    }, Array.from({
+      length: tracker.max_uses
+    }).map(function (_, i) {
+      var filled = i < tracker.current_uses;
+      var next = i + 1 === tracker.current_uses ? i : i + 1;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+        key: i,
+        type: "button",
+        "aria-label": "".concat(tracker.name, " ").concat(i + 1),
+        onClick: function onClick() {
+          return setUses(tracker, next);
+        },
+        className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_4__.cn)("h-[22px] w-[22px] rounded-[6px] border transition-colors", filled ? "border-arcane bg-arcane" : "border-border-strong bg-background")
+      });
+    })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "flex items-center gap-2"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      type: "button",
+      "aria-label": "Spend one",
+      onClick: function onClick() {
+        return setUses(tracker, tracker.current_uses - 1);
+      },
+      className: "flex h-8 w-8 items-center justify-center rounded-lg border border-border-strong"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      className: "h-4 w-4"
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "font-mono text-[15px]"
+    }, tracker.current_uses), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      type: "button",
+      "aria-label": "Restore one",
+      onClick: function onClick() {
+        return setUses(tracker, tracker.current_uses + 1);
+      },
+      className: "flex h-8 w-8 items-center justify-center rounded-lg border border-border-strong"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      className: "h-4 w-4"
+    }))));
+  }));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ConsumablesTab);
