@@ -21,6 +21,7 @@ import { ApolloProvider } from "@apollo/client";
 import { useClient } from "./Graphql";
 import GameSubRoute from "./Contexts/GameSubRoute";
 import { Toaster } from "./Components/ui";
+import "./Components/Shell/appearance";
 
 const App = () => {
   const client = useClient();

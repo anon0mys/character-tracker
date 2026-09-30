@@ -120,5 +120,18 @@
   }
 }
 
+@layer base {
+  html {
+    font-size: calc(16px * var(--text-scale, 1));
+  }
+  :root[data-density="compact"] {
+    --density-gap: 0.5rem;
+  }
+  :root[data-reduce-motion="true"] * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
 @layer utilities {
 }
