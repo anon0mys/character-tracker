@@ -8,6 +8,9 @@ import Features from "./Features";
 import Home from "./Home";
 import Items from "./Items";
 import Login from "./Login";
+import MobileAttacks from "./MobileAttacks";
+import MobileGear from "./MobileGear";
+import MobileSpells from "./MobileSpells";
 import Settings from "./Settings";
 import SignUp from "./SignUp";
 import Spells from "./Spells";
@@ -23,6 +26,9 @@ export {
   Home,
   Items,
   Login,
+  MobileAttacks,
+  MobileGear,
+  MobileSpells,
   Settings,
   SignUp,
   Spells,

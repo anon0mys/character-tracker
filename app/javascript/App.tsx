@@ -13,6 +13,9 @@ import {
   Dashboard,
   Home,
   Login,
+  MobileAttacks,
+  MobileGear,
+  MobileSpells,
   Settings,
   SignUp,
 } from "./Pages";
@@ -68,6 +71,18 @@ const App = () => {
                       <Route
                         path="characters/:id/notes"
                         element={<CharacterNotes />}
+                      />
+                      <Route
+                        path="characters/:id/attacks"
+                        element={<MobileAttacks />}
+                      />
+                      <Route
+                        path="characters/:id/spells"
+                        element={<MobileSpells />}
+                      />
+                      <Route
+                        path="characters/:id/gear"
+                        element={<MobileGear />}
                       />
                       <Route
                         path="characters/:id"

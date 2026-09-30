@@ -33,13 +33,11 @@ const globalTabs: Tab[] = [
   { to: "/settings", label: "Settings", Icon: SettingsIcon },
 ];
 
-// Sheet sub-tabs (Attacks/Spells/Gear) land on the sheet until Phase 2/4
-// splits them out; Sheet and Features are real routes today.
 const characterTabs = (id: string): Tab[] => [
   { to: `/characters/${id}`, label: "Sheet", Icon: Users, end: true },
-  { to: `/characters/${id}`, label: "Attacks", Icon: Sword },
-  { to: `/characters/${id}`, label: "Spells", Icon: Sparkles },
-  { to: `/characters/${id}`, label: "Gear", Icon: Boxes },
+  { to: `/characters/${id}/attacks`, label: "Attacks", Icon: Sword },
+  { to: `/characters/${id}/spells`, label: "Spells", Icon: Sparkles },
+  { to: `/characters/${id}/gear`, label: "Gear", Icon: Boxes },
   { to: `/characters/${id}/features`, label: "Features", Icon: BookOpen },
 ];
 

@@ -15,7 +15,9 @@ import {
   AttacksCard,
   RightPanel,
   LoadoutBar,
+  PinnedHp,
 } from "../Components/Sheet";
+import { cn } from "../lib/utils";
 
 const emptyAbility = { value: 10, modifier: 0, save: 0 };
 
@@ -79,6 +81,9 @@ const CharacterDisplay = () => {
   const [attackModalOpen, setAttackModalOpen] = useState(false);
   const [editingAttack, setEditingAttack] = useState<IAttackType | undefined>();
   const [spellListFormOpen, setSpellListFormOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState<
+    "combat" | "abilities" | "skills" | "bio"
+  >("combat");
   const { patch } = useCharacterPatch(character, setCharacter);
   const auth = useAuth();
   const client = Client();
@@ -151,32 +156,111 @@ const CharacterDisplay = () => {
 
       <LoadoutBar character={character} onChange={setCharacter} />
 
-      <div className="flex flex-col gap-[13px] lg:flex-row">
-        <AbilitiesCard character={character} />
-        <CombatCard character={character} />
-        <SkillsCard character={character} patch={patch} />
+      {/* Desktop: the full sheet in one view */}
+      <div className="hidden lg:flex lg:flex-col lg:gap-[14px]">
+        <div className="flex flex-row gap-[13px]">
+          <AbilitiesCard character={character} />
+          <CombatCard character={character} />
+          <SkillsCard character={character} patch={patch} />
+        </div>
+
+        <HpBand character={character} patch={patch} />
+
+        <div className="flex flex-row gap-[13px]">
+          <AttacksCard
+            attacks={attacks}
+            onAddAttack={() => {
+              setEditingAttack(undefined);
+              setAttackModalOpen(true);
+            }}
+            onEditAttack={openEditAttack}
+            activeLoadoutId={character.active_loadout_id}
+          />
+          <RightPanel
+            character={character}
+            spellLists={spellLists}
+            currentSpellList={currentSpellList}
+            onSelectSpellList={selectSpellList}
+            onAddSpellList={() => setSpellListFormOpen(true)}
+            patch={patch}
+          />
+        </div>
       </div>
 
-      <HpBand character={character} patch={patch} />
-
-      <div className="flex flex-col gap-[13px] lg:flex-row">
-        <AttacksCard
-          attacks={attacks}
-          onAddAttack={() => {
-            setEditingAttack(undefined);
-            setAttackModalOpen(true);
-          }}
-          onEditAttack={openEditAttack}
-          activeLoadoutId={character.active_loadout_id}
-        />
-        <RightPanel
-          character={character}
-          spellLists={spellLists}
-          currentSpellList={currentSpellList}
-          onSelectSpellList={selectSpellList}
-          onAddSpellList={() => setSpellListFormOpen(true)}
-          patch={patch}
-        />
+      {/* Phone: pinned HP + segmented reference sections. Attacks / Spells /
+          Gear are their own bottom-tab screens. */}
+      <div className="-mx-4 -mt-[14px] flex flex-col lg:hidden">
+        <PinnedHp character={character} patch={patch} />
+        <div className="flex gap-[6px] overflow-x-auto px-4 pb-1 pt-3">
+          {(["combat", "abilities", "skills", "bio"] as const).map((sec) => (
+            <button
+              key={sec}
+              type="button"
+              onClick={() => setMobileSection(sec)}
+              className={cn(
+                "min-h-[40px] flex-shrink-0 rounded-full px-4 text-[13px] capitalize",
+                mobileSection === sec
+                  ? "bg-foreground text-background font-semibold"
+                  : "border border-border bg-card text-foreground-2",
+              )}
+            >
+              {sec}
+            </button>
+          ))}
+        </div>
+        <div className="px-4 pt-3">
+          {mobileSection === "combat" && <CombatCard character={character} />}
+          {mobileSection === "abilities" && (
+            <AbilitiesCard character={character} />
+          )}
+          {mobileSection === "skills" && (
+            <SkillsCard character={character} patch={patch} />
+          )}
+          {mobileSection === "bio" && (
+            <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
+                    Subclass
+                  </span>
+                  <span className="text-[14px]">
+                    {character.subclass || "—"}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
+                    Languages
+                  </span>
+                  <span className="text-[14px]">
+                    {(character.languages ?? []).join(", ") || "—"}
+                  </span>
+                </div>
+              </div>
+              {(
+                [
+                  ["trait", "Trait"],
+                  ["ideal", "Ideal"],
+                  ["bond", "Bond"],
+                  ["flaw", "Flaw"],
+                ] as const
+              ).map(([k, label]) =>
+                character[k] ? (
+                  <div key={k} className="flex flex-col">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
+                      {label}
+                    </span>
+                    <span className="text-[13px] leading-relaxed text-foreground-2">
+                      {character[k] as string}
+                    </span>
+                  </div>
+                ) : null,
+              )}
+              <span className="text-[11px] text-muted-foreground">
+                Edit bio on the Features tab.
+              </span>
+            </div>
+          )}
+        </div>
       </div>
 
       <AttackForm

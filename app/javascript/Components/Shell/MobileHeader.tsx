@@ -20,7 +20,7 @@ const MobileHeader = ({
   const back = onBack ?? (() => navigate(-1));
 
   return (
-    <header className="flex h-[52px] flex-shrink-0 items-center gap-1 border-b border-border bg-rail px-[6px] lg:hidden">
+    <header className="sticky top-0 z-40 flex h-[52px] flex-shrink-0 items-center gap-1 border-b border-border bg-rail px-[6px] lg:hidden">
       <button
         type="button"
         aria-label="Back"

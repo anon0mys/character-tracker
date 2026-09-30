@@ -6,6 +6,8 @@ import HpBand from "./HpBand";
 import AttacksCard from "./AttacksCard";
 import RightPanel from "./RightPanel";
 import LoadoutBar from "./LoadoutBar";
+import PinnedHp from "./PinnedHp";
+import SpellDetail from "./SpellDetail";
 
 export {
   IdentityHeader,
@@ -16,4 +18,6 @@ export {
   AttacksCard,
   RightPanel,
   LoadoutBar,
+  PinnedHp,
+  SpellDetail,
 };
