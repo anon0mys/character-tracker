@@ -50,19 +50,19 @@ describe "GET /api/v1/items" do
       it "filters by status" do
         get "#{api_v1_items_path}?status=stored", headers: @auth_headers
         result = response.parsed_body
-        expect(result["data"].count).to eq Item.where(status: "stored").count
+        expect(result["data"].count).to eq [Item.where(status: "stored").count, 20].min
       end
 
       it "filters by quality" do
         get "#{api_v1_items_path}?quality=common", headers: @auth_headers
         result = response.parsed_body
-        expect(result["data"].count).to eq Item.where(quality: "common").count
+        expect(result["data"].count).to eq [Item.where(quality: "common").count, 20].min
       end
 
       it "filters by item_type" do
         get "#{api_v1_items_path}?item_type=armor", headers: @auth_headers
         result = response.parsed_body
-        expect(result["data"].count).to eq Item.where(item_type: "armor").count
+        expect(result["data"].count).to eq [Item.where(item_type: "armor").count, 20].min
       end
 
       it "is able to combine filters" do

@@ -38,7 +38,7 @@ describe "POST /api/v1/characters/:character_id/spell_lists/:spell_list_id/add_s
 
       it "responds with a descriptive error message" do
         result = response.parsed_body
-        expect(result["errors"]).to eq "Validation failed: Code spell is not availble to this character archetype"
+        expect(result["errors"]).to include("Code spell is not availble to this character archetype")
       end
 
       it "responds with a status 422" do

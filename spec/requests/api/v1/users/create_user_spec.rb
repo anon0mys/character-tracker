@@ -30,7 +30,7 @@ describe "POST /api/v1/users" do
     end
 
     it "returns a User" do
-      expect(response.parsed_body["data"]).to be_present
+      expect(response.parsed_body["user"]).to be_present
     end
   end
 

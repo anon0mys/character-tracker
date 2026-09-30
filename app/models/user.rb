@@ -34,4 +34,6 @@ class User < ApplicationRecord
 
     game.admin? || game.dm?
   end
+
+  alias is_game_admin? game_admin?
 end
