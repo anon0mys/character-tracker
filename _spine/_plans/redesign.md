@@ -32,7 +32,10 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 - **Group A shipped (b4a6213):** coins editor in the Gear tab (desktop + mobile); add-resource in Consumables (reused TrackerForm). Restores features the redesign had dropped.
 - **Group B shipped (31e9a3b):** Compendium fidelity — SpellsTab/ItemsTab board tables, DetailPane takeover (replaces SpellModal), single header, 2-col on lg / Dialog on phone.
 - **Group C shipped (3722144):** deleted dead pre-redesign code (Pages/Spells+Items, Components/Spells/*, PlayPanel/*, Trackers index+Row, CurrencyFooter, CurrentCharacterButton, VisiitorNav, ItemRow); barrels trimmed. tsc + webpack clean.
-- Still open (D/E/F): per-form pixel reskin; Home/Login/SignUp neon purge; `MobileFeatures`/`MobileCampaigns` boards not built as separate screens (Features + Dashboard are responsive). Visual 1440/390 pass still not run here.
+- **Group D shipped (d03fc02):** folded the board's mobile niceties into the responsive pages instead of duplicate mobile-only screens — Features category filter chips + Dashboard search (both serve phone + desktop).
+- **Group E shipped (d03fc02):** FormLabel → mono uppercase caption; Home/Login/SignUp headings → font-display (Fraunces), ink not primary.
+- **Group F shipped (63325e2):** all 16 pre-existing spec failures fixed + a flaky index_items test made robust — full suite 462 examples, 0 failures across repeated runs. (location/npc factories, User#is_game_admin? alias, add_spell/create_user response-shape asserts, SpellList#add_spell idempotent, paginated-count caps.)
+- **Only open item: the visual 1440/390 pass** — needs a browser/Postgres; can't be done headless. Everything else is built, typechecked, built, and tested.
 
 ## Deferred / follow-ups
 
