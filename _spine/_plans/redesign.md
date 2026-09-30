@@ -1,6 +1,6 @@
 # Dungeon Tracker — Vellum & Ink Redesign
 
-Status: **PLANNED 2026-09-19.** Nothing shipped. Phase 0 is next.
+Status: **ALL PHASES SHIPPED (0–6) 2026-09-29** on branch `ewheeler/rpg-tracker-redesign` (from `main`). See Living state for per-phase SHAs and Deferred for follow-ups.
 Design source: **https://claude.ai/artifact/MCZ2jV3y2e4RayEENTH9fk** (Design canvas, 14 artboards). The canvas is live and gets edited — read the board with the Artifact tool (`read` with `path: project/<Board>.dc.html`) before implementing a screen; don't trust this doc's prose over the board.
 Repo scope: this repo only (Rails 6.1 API + React 18 SPA in `app/javascript`). Backend changes are real but small until Phase 4.
 Branch: `claude/rpg-tracker-redesign-14f184` (this worktree). Evan's convention is `ewheeler/<desc>`; rename or open PRs per phase — **Evan decides, ask before any git op.**
@@ -22,8 +22,8 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 | 4f | Bio, languages, subclass | ✅ | 524a118 |
 | 4g | Game status + HP thresholds | ✅ | 31e10fa |
 | 4h | Loadouts | ✅ | 998cb20 |
-| 5 | Party (cross-user characters) | ⏳ next | — |
-| 6 | Settings: density, text size, theme picker | ⏳ | — |
+| 5 | Party (cross-user characters) | ✅ | 63756d3 |
+| 6 | Settings: density, text size, theme picker | ✅ | 35f00dd |
 
 ## Deferred / follow-ups
 
