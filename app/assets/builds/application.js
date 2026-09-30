@@ -78621,10 +78621,15 @@ var CharacterDisplay = function CharacterDisplay() {
       attackModalOpen = _useState10[0],
       setAttackModalOpen = _useState10[1];
 
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
       _useState12 = _slicedToArray(_useState11, 2),
-      spellListFormOpen = _useState12[0],
-      setSpellListFormOpen = _useState12[1];
+      editingAttack = _useState12[0],
+      setEditingAttack = _useState12[1];
+
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState14 = _slicedToArray(_useState13, 2),
+      spellListFormOpen = _useState14[0],
+      setSpellListFormOpen = _useState14[1];
 
   var _useCharacterPatch = (0,_Hooks_useCharacterPatch__WEBPACK_IMPORTED_MODULE_6__.useCharacterPatch)(character, setCharacter),
       patch = _useCharacterPatch.patch;
@@ -78677,8 +78682,24 @@ var CharacterDisplay = function CharacterDisplay() {
   };
 
   var closeAttackForm = function closeAttackForm(attack) {
-    if (attack) setAttacks([].concat(_toConsumableArray(attacks), [attack]));
+    if (attack) {
+      setAttacks(function (prev) {
+        var exists = prev.some(function (a) {
+          return a.id === attack.id;
+        });
+        return exists ? prev.map(function (a) {
+          return a.id === attack.id ? attack : a;
+        }) : [].concat(_toConsumableArray(prev), [attack]);
+      });
+    }
+
     setAttackModalOpen(false);
+    setEditingAttack(undefined);
+  };
+
+  var openEditAttack = function openEditAttack(attack) {
+    setEditingAttack(attack);
+    setAttackModalOpen(true);
   };
 
   if (!character.id) {
@@ -78708,8 +78729,10 @@ var CharacterDisplay = function CharacterDisplay() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Sheet__WEBPACK_IMPORTED_MODULE_7__.AttacksCard, {
     attacks: attacks,
     onAddAttack: function onAddAttack() {
-      return setAttackModalOpen(true);
-    }
+      setEditingAttack(undefined);
+      setAttackModalOpen(true);
+    },
+    onEditAttack: openEditAttack
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Sheet__WEBPACK_IMPORTED_MODULE_7__.RightPanel, {
     characterId: character.id,
     spellLists: spellLists,
@@ -78721,7 +78744,7 @@ var CharacterDisplay = function CharacterDisplay() {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Characters_AttackForm__WEBPACK_IMPORTED_MODULE_5__["default"], {
     opened: attackModalOpen,
     onClose: closeAttackForm,
-    attack: undefined,
+    attack: editingAttack,
     characterId: character.id
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Characters__WEBPACK_IMPORTED_MODULE_4__.SpellListForm, {
     characterId: character.id,
@@ -78752,7 +78775,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(118);
 /* harmony import */ var _hookform_resolvers_zod__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(180);
 /* harmony import */ var zod__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(244);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(163);
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 
 
 
@@ -78769,10 +78794,20 @@ var attackSchema = zod__WEBPACK_IMPORTED_MODULE_6__.object({
   bonus: zod__WEBPACK_IMPORTED_MODULE_6__.string(),
   damage: zod__WEBPACK_IMPORTED_MODULE_6__.string().optional(),
   description: zod__WEBPACK_IMPORTED_MODULE_6__.string().min(2, "Description must have at least 2 letters"),
-  character_id: zod__WEBPACK_IMPORTED_MODULE_6__.string()
+  character_id: zod__WEBPACK_IMPORTED_MODULE_6__.string(),
+  action_type: zod__WEBPACK_IMPORTED_MODULE_6__["enum"](["action", "bonus", "reaction", "dash"]),
+  extra_attack: zod__WEBPACK_IMPORTED_MODULE_6__.boolean(),
+  riders: zod__WEBPACK_IMPORTED_MODULE_6__.array(zod__WEBPACK_IMPORTED_MODULE_6__.object({
+    name: zod__WEBPACK_IMPORTED_MODULE_6__.string().min(1, "Rider needs a name"),
+    tag: zod__WEBPACK_IMPORTED_MODULE_6__.string().optional(),
+    damage: zod__WEBPACK_IMPORTED_MODULE_6__.string().optional(),
+    note: zod__WEBPACK_IMPORTED_MODULE_6__.string().optional()
+  }))
 });
 
 var AttackForm = function AttackForm(_ref) {
+  var _attack$name, _attack$bonus, _attack$damage, _attack$description, _attack$action_type, _attack$extra_attack, _attack$riders;
+
   var attack = _ref.attack,
       characterId = _ref.characterId,
       opened = _ref.opened,
@@ -78784,12 +78819,19 @@ var AttackForm = function AttackForm(_ref) {
   var form = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useForm)({
     resolver: (0,_hookform_resolvers_zod__WEBPACK_IMPORTED_MODULE_5__.zodResolver)(attackSchema),
     defaultValues: {
-      name: attack ? attack.name : "",
-      bonus: attack ? attack.bonus : "",
-      damage: attack ? attack.damage || "" : "",
-      description: attack ? attack.description : "",
-      character_id: effectiveCharacterId
+      name: (_attack$name = attack === null || attack === void 0 ? void 0 : attack.name) !== null && _attack$name !== void 0 ? _attack$name : "",
+      bonus: (_attack$bonus = attack === null || attack === void 0 ? void 0 : attack.bonus) !== null && _attack$bonus !== void 0 ? _attack$bonus : "",
+      damage: (_attack$damage = attack === null || attack === void 0 ? void 0 : attack.damage) !== null && _attack$damage !== void 0 ? _attack$damage : "",
+      description: (_attack$description = attack === null || attack === void 0 ? void 0 : attack.description) !== null && _attack$description !== void 0 ? _attack$description : "",
+      character_id: effectiveCharacterId,
+      action_type: (_attack$action_type = attack === null || attack === void 0 ? void 0 : attack.action_type) !== null && _attack$action_type !== void 0 ? _attack$action_type : "action",
+      extra_attack: (_attack$extra_attack = attack === null || attack === void 0 ? void 0 : attack.extra_attack) !== null && _attack$extra_attack !== void 0 ? _attack$extra_attack : false,
+      riders: (_attack$riders = attack === null || attack === void 0 ? void 0 : attack.riders) !== null && _attack$riders !== void 0 ? _attack$riders : []
     }
+  });
+  var riders = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useFieldArray)({
+    control: form.control,
+    name: "riders"
   });
 
   var handleClose = function handleClose(result) {
@@ -78800,12 +78842,11 @@ var AttackForm = function AttackForm(_ref) {
   var handleSubmit = function handleSubmit(values) {
     var base = "/characters/".concat(effectiveCharacterId, "/attacks");
     var url = isUpdate ? "".concat(base, "/").concat(attack === null || attack === void 0 ? void 0 : attack.id) : base;
-    var payload = {
-      attack: values
-    };
     var request = {
       path: url,
-      payload: payload,
+      payload: {
+        attack: values
+      },
       token: auth.getToken()
     };
     var promise = isUpdate ? client.patch(request) : client.post(request);
@@ -78819,7 +78860,9 @@ var AttackForm = function AttackForm(_ref) {
     onOpenChange: function onOpenChange(o) {
       if (!o) handleClose();
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogContent, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogHeader, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogTitle, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogContent, {
+    className: "max-h-[90vh] overflow-y-auto"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogHeader, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogTitle, {
     className: "font-display"
   }, "Attack")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Form, form, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     onSubmit: form.handleSubmit(handleSubmit),
@@ -78833,12 +78876,14 @@ var AttackForm = function AttackForm(_ref) {
         placeholder: "Name"
       }, field))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormMessage, null));
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormField, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormField, {
     control: form.control,
     name: "bonus",
     render: function render(_ref3) {
       var field = _ref3.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormItem, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormLabel, null, "Bonus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormControl, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Input, _extends({
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormItem, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormLabel, null, "Hit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormControl, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Input, _extends({
         placeholder: "e.g. +10"
       }, field))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormMessage, null));
     }
@@ -78848,19 +78893,93 @@ var AttackForm = function AttackForm(_ref) {
     render: function render(_ref4) {
       var field = _ref4.field;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormItem, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormLabel, null, "Damage"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormControl, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Input, _extends({
-        placeholder: "e.g. 1d8+7 bludgeoning"
+        placeholder: "e.g. 1d8+7"
       }, field))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormMessage, null));
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormField, {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "grid grid-cols-2 items-end gap-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormItem, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormLabel, null, "Action"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
     control: form.control,
-    name: "description",
+    name: "action_type",
     render: function render(_ref5) {
       var field = _ref5.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormItem, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormLabel, null, "Description"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormControl, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Input, _extends({
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Select, {
+        value: field.value,
+        onValueChange: field.onChange
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.SelectTrigger, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.SelectValue, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.SelectContent, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
+        value: "action"
+      }, "Action"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
+        value: "bonus"
+      }, "Bonus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
+        value: "reaction"
+      }, "Reaction"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
+        value: "dash"
+      }, "Dash")));
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    control: form.control,
+    name: "extra_attack",
+    render: function render(_ref6) {
+      var field = _ref6.field;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+        className: "flex min-h-[40px] items-center gap-2 text-sm"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Checkbox, {
+        checked: field.value,
+        onCheckedChange: function onCheckedChange(v) {
+          return field.onChange(v === true);
+        }
+      }), "Extra Attack (\xD72)");
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormField, {
+    control: form.control,
+    name: "description",
+    render: function render(_ref7) {
+      var field = _ref7.field;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormItem, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormLabel, null, "Notes"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormControl, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Input, _extends({
         placeholder: "Description"
       }, field))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.FormMessage, null));
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogFooter, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col gap-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
+  }, "Riders"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: function onClick() {
+      return riders.append({
+        name: "",
+        tag: "",
+        damage: "",
+        note: ""
+      });
+    },
+    className: "ml-auto min-h-[30px] rounded-full border border-border-strong px-3 text-[11px]"
+  }, "Add rider")), riders.fields.map(function (r, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: r.id,
+      className: "grid grid-cols-[1fr_1fr_auto] gap-2"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Input, _extends({
+      placeholder: "Name"
+    }, form.register("riders.".concat(i, ".name")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Input, _extends({
+      placeholder: "Damage"
+    }, form.register("riders.".concat(i, ".damage")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      type: "button",
+      onClick: function onClick() {
+        return riders.remove(i);
+      },
+      "aria-label": "Remove rider",
+      className: "px-2 text-muted-foreground"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      className: "h-4 w-4"
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Input, _extends({
+      placeholder: "Tag (e.g. guardian)"
+    }, form.register("riders.".concat(i, ".tag")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Input, _extends({
+      placeholder: "Note",
+      className: "col-span-2"
+    }, form.register("riders.".concat(i, ".note")))));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui_dialog__WEBPACK_IMPORTED_MODULE_2__.DialogFooter, {
     className: "gap-2 border-t border-border pt-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_3__.Button, {
     type: "button",
@@ -79594,9 +79713,18 @@ __webpack_require__.r(__webpack_exports__);
 
 var cols = "grid grid-cols-[1.7fr_0.8fr_1.1fr_2fr] gap-3";
 
+var actionTag = function actionTag(t) {
+  if (!t || t === "action") return null;
+  var label = t === "bonus" ? "BA" : t;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "ml-1 font-mono text-[10px] uppercase text-muted-foreground"
+  }, label);
+};
+
 var AttacksCard = function AttacksCard(_ref) {
   var attacks = _ref.attacks,
-      onAddAttack = _ref.onAddAttack;
+      onAddAttack = _ref.onAddAttack,
+      onEditAttack = _ref.onEditAttack;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex min-w-0 flex-grow flex-col gap-[9px] rounded-2xl border border-border bg-card p-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -79619,18 +79747,41 @@ var AttacksCard = function AttacksCard(_ref) {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-col gap-[5px]"
   }, attacks.map(function (attack, i) {
+    var _attack$riders;
+
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: attack.id || i,
-      className: "".concat(cols, " items-center rounded-[10px] px-[10px] py-[9px] odd:bg-secondary")
+      className: "rounded-[10px] odd:bg-secondary",
+      onClick: function onClick() {
+        return onEditAttack === null || onEditAttack === void 0 ? void 0 : onEditAttack(attack);
+      },
+      role: onEditAttack ? "button" : undefined
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "".concat(cols, " items-center px-[10px] py-[9px]")
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "text-[14.5px] font-semibold"
-    }, attack.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    }, attack.name, attack.extra_attack && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "ml-2 rounded-full bg-harm-soft px-[6px] py-[2px] font-mono text-[9.5px] uppercase text-harm"
+    }, "\xD72"), actionTag(attack.action_type)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "font-mono text-[15px] text-proficiency"
     }, attack.bonus), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "font-mono text-[15px]"
     }, attack.damage || "—"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "text-[12.5px] text-foreground-2"
-    }, attack.description));
+    }, attack.description)), ((_attack$riders = attack.riders) !== null && _attack$riders !== void 0 ? _attack$riders : []).map(function (rider, ri) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        key: ri,
+        className: "".concat(cols, " items-center px-[10px] py-[6px] pl-[26px]")
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+        className: "text-[12.5px] text-foreground-2"
+      }, "\u21B3 ", rider.name, rider.tag && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+        className: "ml-1 font-mono text-[10px] text-proficiency-ink"
+      }, rider.tag)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+        className: "font-mono text-[12.5px] text-foreground-2"
+      }, rider.damage || ""), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+        className: "text-[12.5px] text-foreground-2"
+      }, rider.note));
+    }));
   }))));
 };
 

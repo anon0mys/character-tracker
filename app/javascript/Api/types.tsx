@@ -6,6 +6,15 @@ interface IAbilityType {
   save: number;
 }
 
+interface IRider {
+  name: string;
+  tag?: string;
+  damage?: string;
+  note?: string;
+}
+
+type ActionType = "action" | "bonus" | "reaction" | "dash";
+
 interface IAttackType {
   id?: string;
   name: string;
@@ -13,6 +22,9 @@ interface IAttackType {
   bonus: string;
   damage?: string;
   character_id: string;
+  action_type?: ActionType;
+  extra_attack?: boolean;
+  riders?: IRider[];
 }
 
 type ResetOn = "short_rest" | "long_rest" | "dawn" | "manual" | "never";
@@ -160,6 +172,8 @@ interface IPaginationType {
 export type {
   IAbilityType,
   IAttackType,
+  IRider,
+  ActionType,
   ICharacterType,
   ICharacterItemType,
   ICharacterTrackerType,

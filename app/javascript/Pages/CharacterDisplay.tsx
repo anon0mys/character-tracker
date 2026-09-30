@@ -76,6 +76,7 @@ const CharacterDisplay = () => {
   const [spellLists, setSpellLists] = useState<ISpellListType[]>([]);
   const [currentSpellList, setCurrentSpellList] = useState<ISpellListType>();
   const [attackModalOpen, setAttackModalOpen] = useState(false);
+  const [editingAttack, setEditingAttack] = useState<IAttackType | undefined>();
   const [spellListFormOpen, setSpellListFormOpen] = useState(false);
   const { patch } = useCharacterPatch(character, setCharacter);
   const auth = useAuth();
@@ -118,8 +119,21 @@ const CharacterDisplay = () => {
   };
 
   const closeAttackForm = (attack: IAttackType | undefined) => {
-    if (attack) setAttacks([...attacks, attack]);
+    if (attack) {
+      setAttacks((prev) => {
+        const exists = prev.some((a) => a.id === attack.id);
+        return exists
+          ? prev.map((a) => (a.id === attack.id ? attack : a))
+          : [...prev, attack];
+      });
+    }
     setAttackModalOpen(false);
+    setEditingAttack(undefined);
+  };
+
+  const openEditAttack = (attack: IAttackType) => {
+    setEditingAttack(attack);
+    setAttackModalOpen(true);
   };
 
   if (!character.id) {
@@ -145,7 +159,11 @@ const CharacterDisplay = () => {
       <div className="flex flex-col gap-[13px] lg:flex-row">
         <AttacksCard
           attacks={attacks}
-          onAddAttack={() => setAttackModalOpen(true)}
+          onAddAttack={() => {
+            setEditingAttack(undefined);
+            setAttackModalOpen(true);
+          }}
+          onEditAttack={openEditAttack}
         />
         <RightPanel
           characterId={character.id}
@@ -159,7 +177,7 @@ const CharacterDisplay = () => {
       <AttackForm
         opened={attackModalOpen}
         onClose={closeAttackForm}
-        attack={undefined}
+        attack={editingAttack}
         characterId={character.id}
       />
       <SpellListForm

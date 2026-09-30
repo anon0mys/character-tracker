@@ -39,7 +39,8 @@ module Api
       end
 
       def attack_params
-        params.require(:attack).permit(:name, :description, :bonus, :damage)
+        params.require(:attack).permit(:name, :description, :bonus, :damage,
+          :action_type, :extra_attack, riders: %i[name tag damage note])
       end
     end
   end

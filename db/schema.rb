@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_09_19_190000) do
+ActiveRecord::Schema.define(version: 2026_09_19_191000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,9 @@ ActiveRecord::Schema.define(version: 2026_09_19_190000) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "damage"
+    t.string "action_type", default: "action", null: false
+    t.boolean "extra_attack", default: false, null: false
+    t.jsonb "riders", default: [], null: false
     t.index ["character_id"], name: "index_attacks_on_character_id"
   end
 
