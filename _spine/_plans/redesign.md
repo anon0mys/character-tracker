@@ -29,7 +29,10 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 
 - **API bug fixed** — rescue_from ordering (483abaa), see below.
 - **Mobile board-match shipped (67e104d):** `PinnedHp` sticky strip; `CharacterDisplay` splits desktop bands vs phone segmented Combat/Abilities/Skills/Bio; real bottom-tab screens `MobileAttacks` (expanding cards + 82px gutter + riders), `MobileSpells` (slot pips + full-screen `SpellDetail`), `MobileGear` (Gear/Consumables); `useCharacterData`/`useIsDesktop`; sub-routes redirect to the sheet at lg+. This clears the Phase 2 PinnedHp / Phase 4a mobile-attack-gutter deferrals.
-- Still open: per-form pixel reskin; Home/Login/SignUp neon purge; orphaned old PlayPanel/Trackers/CurrencyFooter; `MobileFeatures`/`MobileCampaigns` boards not built as separate screens (Features + Dashboard are responsive). Visual 1440/390 pass still not run here.
+- **Group A shipped (b4a6213):** coins editor in the Gear tab (desktop + mobile); add-resource in Consumables (reused TrackerForm). Restores features the redesign had dropped.
+- **Group B shipped (31e9a3b):** Compendium fidelity — SpellsTab/ItemsTab board tables, DetailPane takeover (replaces SpellModal), single header, 2-col on lg / Dialog on phone.
+- **Group C shipped (3722144):** deleted dead pre-redesign code (Pages/Spells+Items, Components/Spells/*, PlayPanel/*, Trackers index+Row, CurrencyFooter, CurrentCharacterButton, VisiitorNav, ItemRow); barrels trimmed. tsc + webpack clean.
+- Still open (D/E/F): per-form pixel reskin; Home/Login/SignUp neon purge; `MobileFeatures`/`MobileCampaigns` boards not built as separate screens (Features + Dashboard are responsive). Visual 1440/390 pass still not run here.
 
 ## Deferred / follow-ups
 
