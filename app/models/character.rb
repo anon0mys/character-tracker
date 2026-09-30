@@ -199,4 +199,31 @@ class Character < ApplicationRecord
       # For Warlocks with Pact Magic or other special cases
     end
   end
+
+  SKILL_ABILITIES = {
+    "acrobatics" => "dexterity", "animal_handling" => "wisdom", "arcana" => "intelligence",
+    "athletics" => "strength", "deception" => "charisma", "history" => "intelligence",
+    "insight" => "wisdom", "intimidation" => "charisma", "investigation" => "intelligence",
+    "medicine" => "wisdom", "nature" => "intelligence", "perception" => "wisdom",
+    "performance" => "charisma", "persuasion" => "charisma", "religion" => "intelligence",
+    "sleight_of_hand" => "dexterity", "stealth" => "dexterity", "survival" => "wisdom"
+  }.freeze
+
+  def skills
+    standard = CharacterService::DND_SKILLS.map do |skill|
+      ability = SKILL_ABILITIES[skill]
+      skill_row(skill.tr("_", " ").split.map(&:capitalize).join(" "), ability,
+        proficiencies.include?(skill.to_sym), expertise.include?(skill))
+    end
+    custom = (custom_skills || []).map do |cs|
+      skill_row(cs["name"], cs["ability"], cs["proficient"] == true, cs["expertise"] == true, custom: true)
+    end
+    standard + custom
+  end
+
+  def skill_row(name, ability, proficient, expert, custom: false)
+    base = ability ? modifier_for(ability) : 0
+    modifier = base + (proficient ? proficiency_bonus : 0) + (expert ? proficiency_bonus : 0)
+    { name:, ability:, modifier:, proficient:, expertise: expert, custom: }
+  end
 end

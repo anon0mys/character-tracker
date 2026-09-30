@@ -14,6 +14,10 @@ class CharacterSerializer < Blueprinter::Base
   association :attacks, blueprint: AttackSerializer
   association :character_trackers, blueprint: Character::TrackerSerializer
 
+  field :skills do |character, _options|
+    character.skills
+  end
+
   field :hit_die do |character, _options|
     character.archetype.hit_die
   end

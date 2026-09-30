@@ -151,7 +151,7 @@ const CharacterDisplay = () => {
       <div className="flex flex-col gap-[13px] lg:flex-row">
         <AbilitiesCard character={character} />
         <CombatCard character={character} />
-        <SkillsCard character={character} />
+        <SkillsCard character={character} patch={patch} />
       </div>
 
       <HpBand character={character} patch={patch} />

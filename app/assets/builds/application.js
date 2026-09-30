@@ -78720,7 +78720,8 @@ var CharacterDisplay = function CharacterDisplay() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Sheet__WEBPACK_IMPORTED_MODULE_7__.CombatCard, {
     character: character
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Sheet__WEBPACK_IMPORTED_MODULE_7__.SkillsCard, {
-    character: character
+    character: character,
+    patch: patch
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Sheet__WEBPACK_IMPORTED_MODULE_7__.HpBand, {
     character: character,
     patch: patch
@@ -79444,57 +79445,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
 /* harmony import */ var _format__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(263);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
- // Phase 2 placeholder: the skills slot shows the six saving throws.
-// The full two-column skills list arrives in Phase 4d.
 
-var saves = [{
-  key: "strength",
-  label: "Strength"
-}, {
-  key: "dexterity",
-  label: "Dexterity"
-}, {
-  key: "constitution",
-  label: "Constitution"
-}, {
-  key: "intelligence",
-  label: "Intelligence"
-}, {
-  key: "wisdom",
-  label: "Wisdom"
-}, {
-  key: "charisma",
-  label: "Charisma"
-}];
 
-var SkillsCard = function SkillsCard(_ref) {
-  var character = _ref.character;
+
+var SkillRow = function SkillRow(_ref) {
+  var skill = _ref.skill;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("flex items-center gap-[6px] rounded-[5px] px-[5px] py-[3px]", skill.proficient && "bg-proficiency-soft")
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("h-[6px] w-[6px] flex-shrink-0 rounded-full", skill.proficient ? "bg-proficiency" : "bg-border-strong")
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("min-w-0 flex-grow truncate text-[11.5px]", skill.proficient ? "font-semibold" : "text-foreground-2")
+  }, skill.name, skill.expertise && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "ml-1 text-[9.5px] font-normal text-muted-foreground"
+  }, "exp")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("font-mono text-[11.5px]", skill.proficient && "text-proficiency-ink")
+  }, (0,_format__WEBPACK_IMPORTED_MODULE_2__.signed)(skill.modifier)));
+};
+
+var SkillsCard = function SkillsCard(_ref2) {
+  var _character$skills;
+
+  var character = _ref2.character,
+      patch = _ref2.patch;
+  var skills = (_character$skills = character.skills) !== null && _character$skills !== void 0 ? _character$skills : [];
+  var mid = Math.ceil(skills.length / 2);
+  var left = skills.slice(0, mid);
+  var right = skills.slice(mid);
+
+  var addCustom = function addCustom() {
+    var _character$custom_ski;
+
+    var name = window.prompt("Custom skill name (e.g. Alchemy)");
+    if (!name || !name.trim()) return;
+    var ability = (window.prompt("Ability (strength/dexterity/…/intelligence)", "intelligence") || "intelligence").trim();
+    var next = [].concat(_toConsumableArray((_character$custom_ski = character.custom_skills) !== null && _character$custom_ski !== void 0 ? _character$custom_ski : []), [{
+      name: name.trim(),
+      ability: ability,
+      proficient: true,
+      expertise: false
+    }]);
+    patch({
+      custom_skills: next
+    }, {
+      debounce: false
+    });
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex w-full flex-col gap-2 rounded-2xl border border-border bg-card p-[13px] lg:w-[372px] lg:flex-shrink-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
-  }, "Saving throws"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex flex-col"
-  }, saves.map(function (_ref2) {
-    var key = _ref2.key,
-        label = _ref2.label;
-    var ability = character[key];
-    var proficient = character.proficiencies.includes(key);
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      key: key,
-      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("flex items-center gap-[6px] rounded-[5px] px-[5px] py-[3px]", proficient && "bg-proficiency-soft")
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("h-[6px] w-[6px] flex-shrink-0 rounded-full", proficient ? "bg-proficiency" : "bg-border-strong")
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("min-w-0 flex-grow text-[11.5px]", proficient ? "font-semibold" : "text-foreground-2")
-    }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("font-mono text-[11.5px]", proficient && "text-proficiency-ink")
-    }, (0,_format__WEBPACK_IMPORTED_MODULE_2__.signed)(ability.save)));
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: "mt-auto pt-1 text-[11px] text-muted-foreground"
-  }, "Skills arrive in a later phase."));
+  }, "Skills"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: addCustom,
+    className: "ml-auto min-h-[30px] rounded-full border border-dashed border-border-strong px-[10px] text-[11px] text-foreground-2"
+  }, "Add custom")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex gap-[9px]"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex min-w-0 flex-grow flex-col"
+  }, left.map(function (s) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SkillRow, {
+      key: s.name,
+      skill: s
+    });
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex min-w-0 flex-grow flex-col"
+  }, right.map(function (s) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SkillRow, {
+      key: s.name,
+      skill: s
+    });
+  }))));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SkillsCard);

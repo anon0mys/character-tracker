@@ -6,6 +6,15 @@ interface IAbilityType {
   save: number;
 }
 
+interface ISkill {
+  name: string;
+  ability: string | null;
+  modifier: number;
+  proficient: boolean;
+  expertise: boolean;
+  custom?: boolean;
+}
+
 interface IRider {
   name: string;
   tag?: string;
@@ -85,6 +94,14 @@ interface ICharacterType {
   injury_condition: InjuryCondition;
   notes?: string;
   conditions?: string[];
+  skills?: ISkill[];
+  expertise?: string[];
+  custom_skills?: {
+    name: string;
+    ability: string;
+    proficient: boolean;
+    expertise: boolean;
+  }[];
   hp_thresholds?: { bloodied: number; mangled: number };
   current_spell_list?: ISpellListType;
   character_trackers: ICharacterTrackerType[];
@@ -174,6 +191,7 @@ export type {
   IAbilityType,
   IAttackType,
   IRider,
+  ISkill,
   ActionType,
   ICharacterType,
   ICharacterItemType,

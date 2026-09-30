@@ -116,6 +116,8 @@ module Api
           :platinum,
           proficiencies: [],
           conditions: [],
+          expertise: [],
+          custom_skills: %i[name ability proficient expertise],
           spell_slots_used: {},
         )
       end
