@@ -1,0 +1,259 @@
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Client, ICharacterType, IFeature, FeatureCategory } from "../Api";
+import { useAuth } from "../Auth";
+import { useError } from "../Errors";
+import { IdentityHeader } from "../Components/Sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  Button,
+  Input,
+  Textarea,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../Components/ui";
+import { Pencil, Trash2 } from "lucide-react";
+
+const CATEGORIES: FeatureCategory[] = [
+  "class",
+  "infusion",
+  "racial",
+  "feat",
+  "item",
+  "blessing",
+  "other",
+];
+
+const emptyFeature = (): IFeature => ({
+  category: "other",
+  name: "",
+  description: "",
+});
+
+const FeatureForm = ({
+  open,
+  feature,
+  onClose,
+  onSave,
+}: {
+  open: boolean;
+  feature: IFeature;
+  onClose: () => void;
+  onSave: (f: IFeature) => void;
+}) => {
+  const [draft, setDraft] = useState<IFeature>(feature);
+  useEffect(() => setDraft(feature), [feature]);
+
+  return (
+    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="font-display">
+            {feature.id ? "Edit feature" : "Add feature"}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-3">
+          <Input
+            placeholder="Name"
+            value={draft.name}
+            onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+          />
+          <Select
+            value={draft.category}
+            onValueChange={(v) =>
+              setDraft({ ...draft, category: v as FeatureCategory })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CATEGORIES.map((c) => (
+                <SelectItem key={c} value={c} className="capitalize">
+                  {c}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Textarea
+            placeholder="Description"
+            value={draft.description ?? ""}
+            onChange={(e) =>
+              setDraft({ ...draft, description: e.target.value })
+            }
+            className="min-h-[140px]"
+          />
+        </div>
+        <DialogFooter className="gap-2 border-t border-border pt-4">
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button onClick={() => onSave(draft)} disabled={!draft.name.trim()}>
+            Save
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const Features = () => {
+  const { id } = useParams();
+  const auth = useAuth();
+  const client = Client();
+  const errors = useError();
+  const [character, setCharacter] = useState<ICharacterType>({
+    name: "",
+  } as ICharacterType);
+  const [features, setFeatures] = useState<IFeature[]>([]);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editing, setEditing] = useState<IFeature>(emptyFeature());
+
+  const token = auth.getToken();
+
+  useEffect(() => {
+    client
+      .get({ path: `/characters/${id}`, token })
+      .then((r) => setCharacter(r.data))
+      .catch((e) => errors.setError(e));
+    client
+      .get({ path: `/characters/${id}/features`, token })
+      .then((r) => setFeatures(r.data ?? []))
+      .catch((e) => errors.setError(e));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  const save = (f: IFeature) => {
+    const req = { token, payload: { feature: f } };
+    const p = f.id
+      ? client.patch({ ...req, path: `/characters/${id}/features/${f.id}` })
+      : client.post({ ...req, path: `/characters/${id}/features` });
+    p.then((r) => {
+      setFeatures((prev) => {
+        const exists = prev.some((x) => x.id === r.data.id);
+        return exists
+          ? prev.map((x) => (x.id === r.data.id ? r.data : x))
+          : [...prev, r.data];
+      });
+      setFormOpen(false);
+    }).catch((e) => errors.setError(e));
+  };
+
+  const remove = (f: IFeature) => {
+    client
+      .destroy({ path: `/characters/${id}/features/${f.id}`, token })
+      .then(() => setFeatures((prev) => prev.filter((x) => x.id !== f.id)))
+      .catch((e) => errors.setError(e));
+  };
+
+  const importClass = () => {
+    client
+      .post({ path: `/characters/${id}/features/import_class`, token })
+      .then((r) => setFeatures((prev) => [...prev, ...(r.data ?? [])]))
+      .catch((e) => errors.setError(e));
+  };
+
+  const openAdd = () => {
+    setEditing(emptyFeature());
+    setFormOpen(true);
+  };
+  const openEdit = (f: IFeature) => {
+    setEditing(f);
+    setFormOpen(true);
+  };
+
+  if (!character.id) {
+    return <p className="py-10 text-center text-muted-foreground">Loading…</p>;
+  }
+
+  const byCategory = CATEGORIES.map((cat) => ({
+    cat,
+    items: features.filter((f) => f.category === cat),
+  })).filter((g) => g.items.length > 0);
+
+  return (
+    <div className="flex flex-col gap-[14px]">
+      <IdentityHeader character={character} onRested={setCharacter} />
+
+      <div className="flex items-center gap-2">
+        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+          Features
+        </span>
+        <div className="ml-auto flex gap-2">
+          <Button variant="outline" onClick={importClass}>
+            Import class
+          </Button>
+          <Button onClick={openAdd}>Add feature</Button>
+        </div>
+      </div>
+
+      {byCategory.length === 0 ? (
+        <p className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
+          No features yet. Import your class or add one.
+        </p>
+      ) : (
+        <div className="columns-1 gap-[14px] lg:columns-3">
+          {byCategory.map(({ cat, items }) => (
+            <div
+              key={cat}
+              className="mb-[14px] flex break-inside-avoid flex-col gap-2 rounded-2xl border border-border bg-card p-4"
+            >
+              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-proficiency-ink">
+                {cat}
+              </span>
+              {items.map((f) => (
+                <div
+                  key={f.id}
+                  className="group flex flex-col gap-1 border-t border-hairline pt-2 first:border-t-0 first:pt-0"
+                >
+                  <div className="flex items-start gap-2">
+                    <span className="flex-grow font-display text-[15px] font-semibold">
+                      {f.name}
+                    </span>
+                    <button
+                      type="button"
+                      aria-label="Edit"
+                      onClick={() => openEdit(f)}
+                      className="text-muted-foreground opacity-0 group-hover:opacity-100"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Delete"
+                      onClick={() => remove(f)}
+                      className="text-muted-foreground opacity-0 group-hover:opacity-100"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                  {f.description && (
+                    <p className="text-[12.5px] leading-relaxed text-foreground-2">
+                      {f.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <FeatureForm
+        open={formOpen}
+        feature={editing}
+        onClose={() => setFormOpen(false)}
+        onSave={save}
+      />
+    </div>
+  );
+};
+
+export default Features;

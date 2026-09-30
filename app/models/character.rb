@@ -31,6 +31,7 @@ class Character < ApplicationRecord
   has_many :character_items, dependent: :destroy
   has_many :items, through: :character_items
   has_many :character_trackers, class_name: "Character::Tracker", dependent: :destroy
+  has_many :features, dependent: :destroy
 
   validate :current_spell_list_belongs_to_character, if: -> { current_spell_list_id.present? }
 

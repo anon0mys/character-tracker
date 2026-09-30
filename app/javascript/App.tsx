@@ -9,6 +9,7 @@ import {
   CharacterForm,
   CharacterNotes,
   Compendium,
+  Features,
   Dashboard,
   Home,
   Login,
@@ -20,16 +21,6 @@ import { ApolloProvider } from "@apollo/client";
 import { useClient } from "./Graphql";
 import GameSubRoute from "./Contexts/GameSubRoute";
 import { Toaster } from "./Components/ui";
-
-// Placeholder until the Features page ships in Phase 4e.
-const FeaturesPlaceholder = () => (
-  <div className="rounded-xl border border-border bg-card p-10 text-center text-muted-foreground">
-    <p className="font-display text-xl text-foreground">Features</p>
-    <p className="mt-2 text-sm">
-      Infusions, class features and bio arrive in a later phase.
-    </p>
-  </div>
-);
 
 const App = () => {
   const client = useClient();
@@ -71,7 +62,7 @@ const App = () => {
                       />
                       <Route
                         path="characters/:id/features"
-                        element={<FeaturesPlaceholder />}
+                        element={<Features />}
                       />
                       <Route
                         path="characters/:id/notes"

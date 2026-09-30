@@ -6,6 +6,19 @@ interface IAbilityType {
   save: number;
 }
 
+type FeatureCategory =
+  "class" | "racial" | "feat" | "infusion" | "item" | "blessing" | "other";
+
+interface IFeature {
+  id?: number;
+  character_id?: number;
+  category: FeatureCategory;
+  name: string;
+  description?: string;
+  tracker_id?: number | null;
+  position?: number;
+}
+
 interface ISkill {
   name: string;
   ability: string | null;
@@ -192,6 +205,8 @@ export type {
   IAttackType,
   IRider,
   ISkill,
+  IFeature,
+  FeatureCategory,
   ActionType,
   ICharacterType,
   ICharacterItemType,

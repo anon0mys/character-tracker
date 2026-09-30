@@ -4,6 +4,7 @@ import CharacterForm from "./CharacterForm";
 import CharacterNotes from "./CharacterNotes";
 import Compendium from "./Compendium";
 import Dashboard from "./Dashboard";
+import Features from "./Features";
 import Home from "./Home";
 import Items from "./Items";
 import Login from "./Login";
@@ -18,6 +19,7 @@ export {
   CharacterNotes,
   Compendium,
   Dashboard,
+  Features,
   Home,
   Items,
   Login,
