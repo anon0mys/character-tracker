@@ -19,7 +19,14 @@ module Api
         render json: { data: @game }, status: :created
       end
 
-      def update; end
+      def update
+        @game = current_user.games.find(params[:id])
+        if @game.update(game_params)
+          render json: { data: @game }
+        else
+          render json: { errors: @game.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
 
       def destroy
         @game = Game.find(params[:id])
@@ -33,7 +40,8 @@ module Api
       private
 
       def game_params
-        params.require(:game).permit(:name, :description, :start_date)
+        params.require(:game).permit(:name, :description, :start_date, :status,
+          hp_thresholds: %i[bloodied mangled])
       end
 
       def eligible_for_destroy

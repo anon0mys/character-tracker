@@ -82393,10 +82393,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(163);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(163);
 /* harmony import */ var _Contexts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(131);
 /* harmony import */ var _Shared__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(160);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(129);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(129);
+/* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(28);
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -82416,6 +82417,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+var STATUS_LABEL = {
+  pending: {
+    label: "Prepping",
+    cls: "bg-arcane-soft text-arcane-ink"
+  },
+  active: {
+    label: "Active",
+    cls: "bg-vitality-soft text-vitality-ink"
+  },
+  finished: {
+    label: "Wrapped",
+    cls: "bg-secondary text-foreground-2"
+  }
+};
+
 var GameCard = function GameCard(_ref) {
   var game = _ref.game,
       deleteGame = _ref.deleteGame;
@@ -82425,7 +82441,7 @@ var GameCard = function GameCard(_ref) {
       open = _useState2[0],
       setOpen = _useState2[1];
 
-  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate)();
+  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
 
   var _useGame = (0,_Contexts__WEBPACK_IMPORTED_MODULE_2__.useGame)(),
       setCurrentGame = _useGame.setCurrentGame;
@@ -82458,12 +82474,16 @@ var GameCard = function GameCard(_ref) {
     className: "pb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex justify-between items-start"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-xl font-bold group-hover:text-primary transition-colors text-primary"
-  }, game.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    className: "text-xl font-bold text-primary transition-colors group-hover:text-primary"
+  }, game.name), game.status && STATUS_LABEL[game.status] && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_4__.cn)("rounded-full px-2 py-[2px] font-mono text-[9px] uppercase tracking-[0.08em]", STATUS_LABEL[game.status].cls)
+  }, STATUS_LABEL[game.status].label)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: openDeleteModal,
     className: "text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10 transition-colors z-10"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
     className: "h-5 w-5"
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.CardContent, {
     className: "space-y-2"
@@ -83276,12 +83296,77 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Components_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
 /* harmony import */ var _Components_ui_theme_toggle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(297);
+/* harmony import */ var _Contexts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(131);
+/* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(19);
+/* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(125);
+/* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(22);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
- // Phase 1: Appearance card carrying the existing light/dark toggle.
-// The 3-way theme radio, density, text size and thresholds arrive in Phase 6.
+
+
+
+
+
+ // Phase 1 Appearance + Phase 4g health thresholds. The full theme radio /
+// density / text-size controls land in Phase 6.
 
 var Settings = function Settings() {
+  var _game$hp_thresholds$b, _game$hp_thresholds, _game$hp_thresholds$m, _game$hp_thresholds2;
+
+  var _useGame = (0,_Contexts__WEBPACK_IMPORTED_MODULE_3__.useGame)(),
+      game = _useGame.game,
+      setCurrentGame = _useGame.setCurrentGame;
+
+  var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_4__.useAuth)();
+  var client = (0,_Api__WEBPACK_IMPORTED_MODULE_6__.Client)();
+  var errors = (0,_Errors__WEBPACK_IMPORTED_MODULE_5__.useError)();
+
+  var asPct = function asPct(v) {
+    return v != null ? "".concat(Math.round(v * 100)) : "";
+  };
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(asPct((_game$hp_thresholds$b = game === null || game === void 0 ? void 0 : (_game$hp_thresholds = game.hp_thresholds) === null || _game$hp_thresholds === void 0 ? void 0 : _game$hp_thresholds.bloodied) !== null && _game$hp_thresholds$b !== void 0 ? _game$hp_thresholds$b : 0.5)),
+      _useState2 = _slicedToArray(_useState, 2),
+      bloodied = _useState2[0],
+      setBloodied = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(asPct((_game$hp_thresholds$m = game === null || game === void 0 ? void 0 : (_game$hp_thresholds2 = game.hp_thresholds) === null || _game$hp_thresholds2 === void 0 ? void 0 : _game$hp_thresholds2.mangled) !== null && _game$hp_thresholds$m !== void 0 ? _game$hp_thresholds$m : 0.25)),
+      _useState4 = _slicedToArray(_useState3, 2),
+      mangled = _useState4[0],
+      setMangled = _useState4[1];
+
+  var saveThresholds = function saveThresholds() {
+    if (!(game !== null && game !== void 0 && game.id)) return;
+    var payload = {
+      game: {
+        hp_thresholds: {
+          bloodied: (parseInt(bloodied, 10) || 50) / 100,
+          mangled: (parseInt(mangled, 10) || 25) / 100
+        }
+      }
+    };
+    client.patch({
+      path: "/games/".concat(game.id),
+      payload: payload,
+      token: auth.getToken()
+    }).then(function (r) {
+      return setCurrentGame(r.data);
+    })["catch"](function (e) {
+      return errors.setError(e);
+    });
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-col gap-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
@@ -83296,7 +83381,39 @@ var Settings = function Settings() {
     className: "flex items-center justify-between gap-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "text-sm text-foreground-2"
-  }, "Switch between Vellum & Ink and Nocturne."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui_theme_toggle__WEBPACK_IMPORTED_MODULE_2__.ThemeToggle, null))));
+  }, "Switch between Vellum & Ink and Nocturne."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui_theme_toggle__WEBPACK_IMPORTED_MODULE_2__.ThemeToggle, null))), game && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Card, {
+    className: "max-w-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.CardHeader, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.CardTitle, {
+    className: "font-display"
+  }, "Health thresholds")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.CardContent, {
+    className: "flex flex-col gap-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "text-sm text-foreground-2"
+  }, "Drawn as ticks on every HP bar in ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, game.name), ". Percent of max HP."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-end gap-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "flex flex-grow flex-col gap-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[10px] uppercase tracking-[0.08em] text-proficiency-ink"
+  }, "Bloodied"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
+    value: bloodied,
+    onChange: function onChange(e) {
+      return setBloodied(e.target.value.replace(/[^0-9]/g, ""));
+    },
+    className: "text-center font-mono"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "flex flex-grow flex-col gap-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[10px] uppercase tracking-[0.08em] text-harm"
+  }, "Mangled"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
+    value: mangled,
+    onChange: function onChange(e) {
+      return setMangled(e.target.value.replace(/[^0-9]/g, ""));
+    },
+    className: "text-center font-mono"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    onClick: saveThresholds
+  }, "Save")))));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Settings);

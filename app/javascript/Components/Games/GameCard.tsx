@@ -5,6 +5,13 @@ import { useGame } from "../../Contexts";
 import { IGameType } from "../../Api";
 import { ConfirmModal } from "../Shared";
 import { useNavigate } from "react-router-dom";
+import { cn } from "../../lib/utils";
+
+const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
+  pending: { label: "Prepping", cls: "bg-arcane-soft text-arcane-ink" },
+  active: { label: "Active", cls: "bg-vitality-soft text-vitality-ink" },
+  finished: { label: "Wrapped", cls: "bg-secondary text-foreground-2" },
+};
 
 interface GameCardProps {
   game: IGameType;
@@ -42,9 +49,21 @@ const GameCard = ({ game, deleteGame }: GameCardProps) => {
     >
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
-          <h3 className="text-xl font-bold group-hover:text-primary transition-colors text-primary">
-            {game.name}
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-xl font-bold text-primary transition-colors group-hover:text-primary">
+              {game.name}
+            </h3>
+            {game.status && STATUS_LABEL[game.status] && (
+              <span
+                className={cn(
+                  "rounded-full px-2 py-[2px] font-mono text-[9px] uppercase tracking-[0.08em]",
+                  STATUS_LABEL[game.status].cls,
+                )}
+              >
+                {STATUS_LABEL[game.status].label}
+              </span>
+            )}
+          </div>
           <button
             onClick={openDeleteModal}
             className="text-muted-foreground hover:text-destructive p-1 rounded-md hover:bg-destructive/10 transition-colors z-10"

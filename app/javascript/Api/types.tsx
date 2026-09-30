@@ -136,11 +136,15 @@ interface ICharacterType {
   user_id?: number;
 }
 
+type GameStatus = "pending" | "active" | "finished" | "deleted";
+
 interface IGameType {
   id?: number;
   name: string;
   description: string;
   start_date?: string;
+  status?: GameStatus;
+  hp_thresholds?: { bloodied: number; mangled: number };
   created_at: string;
   updated_at: string;
 }
@@ -218,6 +222,7 @@ export type {
   ICharacterItemType,
   ICharacterTrackerType,
   IGameType,
+  GameStatus,
   IItemType,
   ISpellType,
   ISpellListType,
