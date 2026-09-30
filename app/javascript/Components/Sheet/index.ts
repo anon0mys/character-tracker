@@ -5,6 +5,7 @@ import SkillsCard from "./SkillsCard";
 import HpBand from "./HpBand";
 import AttacksCard from "./AttacksCard";
 import RightPanel from "./RightPanel";
+import LoadoutBar from "./LoadoutBar";
 
 export {
   IdentityHeader,
@@ -14,4 +15,5 @@ export {
   HpBand,
   AttacksCard,
   RightPanel,
+  LoadoutBar,
 };

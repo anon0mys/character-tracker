@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_09_19_196000) do
+ActiveRecord::Schema.define(version: 2026_09_19_197000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2026_09_19_196000) do
     t.string "action_type", default: "action", null: false
     t.boolean "extra_attack", default: false, null: false
     t.jsonb "riders", default: [], null: false
+    t.integer "loadout_ids", default: [], null: false, array: true
     t.index ["character_id"], name: "index_attacks_on_character_id"
   end
 
@@ -196,6 +197,16 @@ ActiveRecord::Schema.define(version: 2026_09_19_196000) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "loadouts", force: :cascade do |t|
+    t.bigint "character_id", null: false
+    t.string "name", null: false
+    t.boolean "active", default: false, null: false
+    t.jsonb "modifiers", default: {"notes"=>"", "ac_bonus"=>0, "attack_ids"=>[], "speed_bonus"=>0}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_id"], name: "index_loadouts_on_character_id"
+  end
+
   create_table "locations", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -283,6 +294,7 @@ ActiveRecord::Schema.define(version: 2026_09_19_196000) do
   add_foreign_key "faction_npcs", "factions"
   add_foreign_key "faction_npcs", "npcs"
   add_foreign_key "features", "characters"
+  add_foreign_key "loadouts", "characters"
   add_foreign_key "npcs", "locations"
   add_foreign_key "users", "characters", column: "current_character_id"
 end

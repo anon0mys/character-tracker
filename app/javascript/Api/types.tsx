@@ -6,6 +6,19 @@ interface IAbilityType {
   save: number;
 }
 
+interface ILoadout {
+  id?: number;
+  character_id?: number;
+  name: string;
+  active: boolean;
+  modifiers: {
+    speed_bonus?: number;
+    ac_bonus?: number;
+    attack_ids?: number[];
+    notes?: string;
+  };
+}
+
 type FeatureCategory =
   "class" | "racial" | "feat" | "infusion" | "item" | "blessing" | "other";
 
@@ -47,6 +60,7 @@ interface IAttackType {
   action_type?: ActionType;
   extra_attack?: boolean;
   riders?: IRider[];
+  loadout_ids?: number[];
 }
 
 type ResetOn = "short_rest" | "long_rest" | "dawn" | "manual" | "never";
@@ -122,6 +136,8 @@ interface ICharacterType {
     expertise: boolean;
   }[];
   hp_thresholds?: { bloodied: number; mangled: number };
+  loadouts?: ILoadout[];
+  active_loadout_id?: number | null;
   current_spell_list?: ISpellListType;
   character_trackers: ICharacterTrackerType[];
   hit_die: string;
@@ -216,6 +232,7 @@ export type {
   IRider,
   ISkill,
   IFeature,
+  ILoadout,
   FeatureCategory,
   ActionType,
   ICharacterType,

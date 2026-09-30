@@ -40,7 +40,7 @@ module Api
 
       def attack_params
         params.require(:attack).permit(:name, :description, :bonus, :damage,
-          :action_type, :extra_attack, riders: %i[name tag damage note])
+          :action_type, :extra_attack, riders: %i[name tag damage note], loadout_ids: [])
       end
     end
   end

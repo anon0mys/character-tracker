@@ -9,11 +9,17 @@ class CharacterSerializer < Blueprinter::Base
     :death_save_failures, :exhaustion, :spell_slots_used, :spell_slots_max,
     :pact_slot_level, :concentration_spell, :notes, :conditions,
     :subclass, :trait, :ideal, :flaw, :bond, :languages,
+    :subclass, :trait, :ideal, :flaw, :bond, :languages,
     :copper, :silver, :electrum, :gold, :platinum
 
   association :current_spell_list, blueprint: SpellListSerializer
   association :attacks, blueprint: AttackSerializer
   association :character_trackers, blueprint: Character::TrackerSerializer
+  association :loadouts, blueprint: LoadoutSerializer
+
+  field :active_loadout_id do |character, _options|
+    character.active_loadout&.id
+  end
 
   field :skills do |character, _options|
     character.skills

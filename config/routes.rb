@@ -30,6 +30,9 @@ Rails.application.routes.draw do
         resources :features, only: %i[index create update destroy] do
           post :import_class, on: :collection
         end
+        resources :loadouts, only: %i[index create update destroy] do
+          post :activate, on: :member
+        end
         post :rest, to: "characters#rest"
       end
       resources :spells, only: [:index]

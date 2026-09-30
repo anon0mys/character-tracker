@@ -1,11 +1,18 @@
 import React from "react";
 import { IAttackType } from "../../Api";
+import { cn } from "../../lib/utils";
 
 interface AttacksCardProps {
   attacks: IAttackType[];
   onAddAttack: () => void;
   onEditAttack?: (attack: IAttackType) => void;
+  activeLoadoutId?: number | null;
 }
+
+const dimmed = (attack: IAttackType, activeLoadoutId?: number | null) => {
+  const ids = attack.loadout_ids ?? [];
+  return ids.length > 0 && !ids.includes(activeLoadoutId as number);
+};
 
 const cols = "grid grid-cols-[1.7fr_0.8fr_1.1fr_2fr] gap-3";
 
@@ -23,6 +30,7 @@ const AttacksCard = ({
   attacks,
   onAddAttack,
   onEditAttack,
+  activeLoadoutId,
 }: AttacksCardProps) => {
   return (
     <div className="flex min-w-0 flex-grow flex-col gap-[9px] rounded-2xl border border-border bg-card p-4">
@@ -61,7 +69,10 @@ const AttacksCard = ({
             {attacks.map((attack, i) => (
               <div
                 key={attack.id || i}
-                className="rounded-[10px] odd:bg-secondary"
+                className={cn(
+                  "rounded-[10px] odd:bg-secondary",
+                  dimmed(attack, activeLoadoutId) && "opacity-40",
+                )}
                 onClick={() => onEditAttack?.(attack)}
                 role={onEditAttack ? "button" : undefined}
               >

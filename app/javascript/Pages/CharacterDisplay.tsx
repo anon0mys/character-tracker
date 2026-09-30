@@ -14,6 +14,7 @@ import {
   HpBand,
   AttacksCard,
   RightPanel,
+  LoadoutBar,
 } from "../Components/Sheet";
 
 const emptyAbility = { value: 10, modifier: 0, save: 0 };
@@ -148,6 +149,8 @@ const CharacterDisplay = () => {
     <div className="flex flex-col gap-[14px]">
       <IdentityHeader character={character} onRested={setCharacter} />
 
+      <LoadoutBar character={character} onChange={setCharacter} />
+
       <div className="flex flex-col gap-[13px] lg:flex-row">
         <AbilitiesCard character={character} />
         <CombatCard character={character} />
@@ -164,6 +167,7 @@ const CharacterDisplay = () => {
             setAttackModalOpen(true);
           }}
           onEditAttack={openEditAttack}
+          activeLoadoutId={character.active_loadout_id}
         />
         <RightPanel
           character={character}

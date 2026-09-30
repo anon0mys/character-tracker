@@ -32,6 +32,7 @@ class Character < ApplicationRecord
   has_many :items, through: :character_items
   has_many :character_trackers, class_name: "Character::Tracker", dependent: :destroy
   has_many :features, dependent: :destroy
+  has_many :loadouts, dependent: :destroy
 
   validate :current_spell_list_belongs_to_character, if: -> { current_spell_list_id.present? }
 
@@ -118,7 +119,15 @@ class Character < ApplicationRecord
   end
 
   def ac
-    10 + ac_bonus + modifier_for(:dexterity)
+    10 + ac_bonus + modifier_for(:dexterity) + (active_loadout&.ac_bonus || 0)
+  end
+
+  def speed
+    self[:speed].to_i + (active_loadout&.speed_bonus || 0)
+  end
+
+  def active_loadout
+    loadouts.find_by(active: true)
   end
 
   def concentration
