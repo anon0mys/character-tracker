@@ -1,23 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
+import { ISpellType } from "../Api";
 import { cn } from "../lib/utils";
-import Spells from "./Spells";
-import Items from "./Items";
+import { Dialog, DialogContent } from "../Components/ui";
+import SpellsTab from "../Components/Compendium/SpellsTab";
+import ItemsTab from "../Components/Compendium/ItemsTab";
+import DetailPane from "../Components/Compendium/DetailPane";
+import { useIsDesktop } from "../Hooks/useIsDesktop";
 
 const tabs = [
   { key: "spells", label: "Spells" },
   { key: "items", label: "Items" },
 ];
 
-// Compendium shell: one segmented control over the existing Spells and
-// Items browsers. The board's richer table/detail-pane is a later refinement;
-// Phase 1 mounts the existing bodies (each keeps its own filters + forms).
 const Compendium = () => {
   const { tab } = useParams<{ tab: string }>();
   const active = tab === "items" ? "items" : "spells";
+  const isDesktop = useIsDesktop();
+  const [selected, setSelected] = useState<ISpellType | null>(null);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex min-h-[75vh] flex-col gap-4">
       <div>
         <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
           Compendium
@@ -32,6 +35,7 @@ const Compendium = () => {
           <NavLink
             key={key}
             to={`/compendium/${key}`}
+            onClick={() => setSelected(null)}
             className={cn(
               "flex min-h-[38px] items-center rounded-lg px-4 text-[13px] no-underline",
               active === key
@@ -44,7 +48,27 @@ const Compendium = () => {
         ))}
       </div>
 
-      {active === "items" ? <Items /> : <Spells />}
+      {active === "items" ? (
+        <ItemsTab />
+      ) : (
+        <div className="flex min-h-0 flex-grow gap-4">
+          <SpellsTab onSelect={setSelected} selectedId={selected?.id} />
+          {selected && isDesktop && (
+            <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
+              <DetailPane spell={selected} onClose={() => setSelected(null)} />
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Phone: detail as a dialog takeover */}
+      {selected && !isDesktop && (
+        <Dialog open onOpenChange={(o) => !o && setSelected(null)}>
+          <DialogContent className="max-h-[85vh] overflow-y-auto">
+            <DetailPane spell={selected} onClose={() => setSelected(null)} />
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
