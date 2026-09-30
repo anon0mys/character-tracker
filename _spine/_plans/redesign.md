@@ -25,6 +25,12 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 | 5 | Party (cross-user characters) | ✅ | 63756d3 |
 | 6 | Settings: density, text size, theme picker | ✅ | 35f00dd |
 
+## Post-completion work (2026-09-29)
+
+- **API bug fixed** — rescue_from ordering (483abaa), see below.
+- **Mobile board-match shipped (67e104d):** `PinnedHp` sticky strip; `CharacterDisplay` splits desktop bands vs phone segmented Combat/Abilities/Skills/Bio; real bottom-tab screens `MobileAttacks` (expanding cards + 82px gutter + riders), `MobileSpells` (slot pips + full-screen `SpellDetail`), `MobileGear` (Gear/Consumables); `useCharacterData`/`useIsDesktop`; sub-routes redirect to the sheet at lg+. This clears the Phase 2 PinnedHp / Phase 4a mobile-attack-gutter deferrals.
+- Still open: per-form pixel reskin; Home/Login/SignUp neon purge; orphaned old PlayPanel/Trackers/CurrencyFooter; `MobileFeatures`/`MobileCampaigns` boards not built as separate screens (Features + Dashboard are responsive). Visual 1440/390 pass still not run here.
+
 ## Deferred / follow-ups
 
 - `UserProfile.tsx` links to `/profile` — no such route. Drop the link or add the page (Phase 1 decides).
@@ -35,7 +41,7 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 - No ESLint/Prettier config in the repo (`devDependencies` empty). Use `npx prettier --write <file>`; don't add configs without asking.
 - Google Fonts `<link>` — check `config/initializers/content_security_policy.rb` before Phase 0; `csp_meta_tag` is in the layout.
 - `class_data.json` skill proficiencies are prose ("Choose two from Arcana, …") parsed by regex in `CharacterService#extract_valid_skills`. Brittle; 4d relies on it for the "valid skills" hint only.
-- **`rescue_from StandardError` ordering bug** (`app/controllers/api_controller.rb`): it's declared last, so Rails checks it first and it shadows the specific `RecordNotFound`/`RecordInvalid`/`ParameterMissing` handlers. The API returns **500 for not-found**, not 404. Move the StandardError rescue above the specific ones to fix the whole API's error contract. Out of Phase 2 scope; `items_spec` asserts the security property (no leak) rather than 404.
+- ~~`rescue_from StandardError` ordering bug~~ **FIXED (483abaa)**: StandardError now declared first so specific handlers win; not-found returns 404. `error_handling_spec` locks it; `items_spec` asserts 404; also un-broke one pre-existing add_spell spec.
 - **Worktree setup: `config/master.key`** is gitignored and absent in a fresh worktree, so `credentials.secret_key_base` is nil → every authenticated request spec 401s and the app can't verify JWTs. Copied from the main checkout for this session. Any new worktree needs it copied in.
 - create/show character specs were stale exact-match (`eq`) hashes missing ~20 serializer fields; converted to `include`. Other exact-match body specs may exist.
 - 17 pre-existing suite failures, all in §9 out-of-scope / unrelated areas (location, npc, user `is_game_admin?`, spell_list add_spell, create_user). Not touched by the redesign.
