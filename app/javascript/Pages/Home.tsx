@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] space-y-8 sm:space-y-12 px-4">
       <div className="text-center space-y-3 sm:space-y-4">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-primary">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight text-foreground">
           Welcome to Dungeon Tracker
         </h1>
         <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
@@ -21,7 +21,7 @@ const Home = () => {
             <UserPlus className="h-8 w-8 sm:h-12 sm:w-12 text-primary" />
           </div>
           <div className="text-center space-y-2">
-            <h3 className="text-base sm:text-lg font-semibold">
+            <h3 className="font-display text-base font-semibold sm:text-lg">
               New to Dungeon Tracker?
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground">
@@ -38,7 +38,7 @@ const Home = () => {
             <LogIn className="h-8 w-8 sm:h-12 sm:w-12 text-accent" />
           </div>
           <div className="text-center space-y-2">
-            <h3 className="text-base sm:text-lg font-semibold">
+            <h3 className="font-display text-base font-semibold sm:text-lg">
               Returning User?
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground">

@@ -50501,7 +50501,7 @@ var FormLabel = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(funct
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_label__WEBPACK_IMPORTED_MODULE_2__.Label, _extends({
     ref: ref,
-    className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)(error && "text-destructive", className),
+    className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground", error && "text-destructive", className),
     htmlFor: formItemId
   }, props));
 });
@@ -81419,6 +81419,11 @@ var Dashboard = function Dashboard() {
       games = _useState4[0],
       setGames = _useState4[1];
 
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+      _useState6 = _slicedToArray(_useState5, 2),
+      search = _useState6[0],
+      setSearch = _useState6[1];
+
   var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
   var client = (0,_Api__WEBPACK_IMPORTED_MODULE_4__.Client)();
   var errors = (0,_Errors__WEBPACK_IMPORTED_MODULE_3__.useError)();
@@ -81461,7 +81466,10 @@ var Dashboard = function Dashboard() {
     });
   };
 
-  var gameCards = games.map(function (game) {
+  var visible = games.filter(function (g) {
+    return g.name.toLowerCase().includes(search.toLowerCase());
+  });
+  var gameCards = visible.map(function (game) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Games__WEBPACK_IMPORTED_MODULE_5__.GameCard, {
       key: game.id,
       game: game,
@@ -81480,7 +81488,16 @@ var Dashboard = function Dashboard() {
     },
     size: "lg",
     className: "w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px]"
-  }, "Create Game")), gameCards.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "Create Game")), games.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mb-4 max-w-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Input, {
+    placeholder: "Search campaigns",
+    value: search,
+    onChange: function onChange(e) {
+      return setSearch(e.target.value);
+    },
+    className: "min-h-[44px]"
+  })), gameCards.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
   }, gameCards) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-col items-center justify-center py-16 px-4"
@@ -81797,15 +81814,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(129);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(129);
 /* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
 /* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
 /* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(125);
 /* harmony import */ var _Components_Sheet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(245);
 /* harmony import */ var _Components_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(24);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(280);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(163);
-/* harmony import */ var _Hooks_useCharacterPatch__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(244);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(280);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(163);
+/* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(28);
+/* harmony import */ var _Hooks_useCharacterPatch__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(244);
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -81831,6 +81849,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -81922,7 +81941,7 @@ var FeatureForm = function FeatureForm(_ref) {
 var Features = function Features() {
   var _character$subclass, _character$languages;
 
-  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useParams)(),
+  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useParams)(),
       id = _useParams.id;
 
   var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
@@ -81941,7 +81960,7 @@ var Features = function Features() {
       features = _useState6[0],
       setFeatures = _useState6[1];
 
-  var _useCharacterPatch = (0,_Hooks_useCharacterPatch__WEBPACK_IMPORTED_MODULE_6__.useCharacterPatch)(character, setCharacter),
+  var _useCharacterPatch = (0,_Hooks_useCharacterPatch__WEBPACK_IMPORTED_MODULE_7__.useCharacterPatch)(character, setCharacter),
       patch = _useCharacterPatch.patch;
 
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
@@ -81953,6 +81972,11 @@ var Features = function Features() {
       _useState10 = _slicedToArray(_useState9, 2),
       editing = _useState10[0],
       setEditing = _useState10[1];
+
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("all"),
+      _useState12 = _slicedToArray(_useState11, 2),
+      filter = _useState12[0],
+      setFilter = _useState12[1];
 
   var token = auth.getToken();
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -82049,6 +82073,11 @@ var Features = function Features() {
     }, "Loading\u2026");
   }
 
+  var present = CATEGORIES.filter(function (c) {
+    return features.some(function (f) {
+      return f.category === c;
+    });
+  });
   var byCategory = CATEGORIES.map(function (cat) {
     return {
       cat: cat,
@@ -82058,6 +82087,8 @@ var Features = function Features() {
     };
   }).filter(function (g) {
     return g.items.length > 0;
+  }).filter(function (g) {
+    return filter === "all" || g.cat === filter;
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-col gap-[14px]"
@@ -82122,7 +82153,18 @@ var Features = function Features() {
     onClick: importClass
   }, "Import class"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Button, {
     onClick: openAdd
-  }, "Add feature"))), byCategory.length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+  }, "Add feature"))), present.length > 1 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex gap-[6px] overflow-x-auto pb-1"
+  }, ["all"].concat(_toConsumableArray(present)).map(function (c) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      key: c,
+      type: "button",
+      onClick: function onClick() {
+        return setFilter(c);
+      },
+      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_6__.cn)("min-h-[36px] flex-shrink-0 rounded-full px-4 text-[12.5px] capitalize", filter === c ? "bg-foreground text-background font-semibold" : "border border-border bg-card text-foreground-2")
+    }, c);
+  })), byCategory.length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground"
   }, "No features yet. Import your class or add one.") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "columns-1 gap-[14px] lg:columns-3"
@@ -82149,7 +82191,7 @@ var Features = function Features() {
           return openEdit(f);
         },
         className: "text-muted-foreground opacity-0 group-hover:opacity-100"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], {
         className: "h-3.5 w-3.5"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
         type: "button",
@@ -82158,7 +82200,7 @@ var Features = function Features() {
           return remove(f);
         },
         className: "text-muted-foreground opacity-0 group-hover:opacity-100"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], {
         className: "h-3.5 w-3.5"
       }))), f.description && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
         className: "text-[12.5px] leading-relaxed text-foreground-2"
@@ -82236,7 +82278,7 @@ var Home = function Home() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-center space-y-3 sm:space-y-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
-    className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-primary"
+    className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight text-foreground"
   }, "Welcome to Dungeon Tracker"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4"
   }, "Manage your D&D campaigns, characters, spells, and items all in one place")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -82250,7 +82292,7 @@ var Home = function Home() {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-center space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-base sm:text-lg font-semibold"
+    className: "font-display text-base font-semibold sm:text-lg"
   }, "New to Dungeon Tracker?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "text-xs sm:text-sm text-muted-foreground"
   }, "Create an account to get started")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
@@ -82270,7 +82312,7 @@ var Home = function Home() {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-center space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    className: "text-base sm:text-lg font-semibold"
+    className: "font-display text-base font-semibold sm:text-lg"
   }, "Returning User?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "text-xs sm:text-sm text-muted-foreground"
   }, "Sign in to continue your adventures")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_1__.Button, {
@@ -82415,7 +82457,7 @@ var Login = function Login() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-center space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    className: "text-2xl sm:text-3xl font-bold text-primary"
+    className: "text-2xl sm:text-3xl font-display font-semibold text-foreground"
   }, "Welcome back"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "text-sm sm:text-base text-muted-foreground"
   }, "Sign in to your account to continue")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
@@ -83425,7 +83467,7 @@ var SignUp = function SignUp() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "text-center space-y-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    className: "text-2xl sm:text-3xl font-bold text-primary"
+    className: "text-2xl sm:text-3xl font-display font-semibold text-foreground"
   }, "Create an account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "text-sm sm:text-base text-muted-foreground"
   }, "Get started with Dungeon Tracker")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {

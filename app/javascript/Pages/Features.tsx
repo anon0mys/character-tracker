@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "../Components/ui";
 import { Pencil, Trash2 } from "lucide-react";
+import { cn } from "../lib/utils";
 import { useCharacterPatch } from "../Hooks/useCharacterPatch";
 
 const CATEGORIES: FeatureCategory[] = [
@@ -117,6 +118,7 @@ const Features = () => {
   const { patch } = useCharacterPatch(character, setCharacter);
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<IFeature>(emptyFeature());
+  const [filter, setFilter] = useState<FeatureCategory | "all">("all");
 
   const token = auth.getToken();
 
@@ -175,10 +177,15 @@ const Features = () => {
     return <p className="py-10 text-center text-muted-foreground">Loading…</p>;
   }
 
+  const present = CATEGORIES.filter((c) =>
+    features.some((f) => f.category === c),
+  );
   const byCategory = CATEGORIES.map((cat) => ({
     cat,
     items: features.filter((f) => f.category === cat),
-  })).filter((g) => g.items.length > 0);
+  }))
+    .filter((g) => g.items.length > 0)
+    .filter((g) => filter === "all" || g.cat === filter);
 
   return (
     <div className="flex flex-col gap-[14px]">
@@ -244,6 +251,26 @@ const Features = () => {
           <Button onClick={openAdd}>Add feature</Button>
         </div>
       </div>
+
+      {present.length > 1 && (
+        <div className="flex gap-[6px] overflow-x-auto pb-1">
+          {(["all", ...present] as (FeatureCategory | "all")[]).map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setFilter(c)}
+              className={cn(
+                "min-h-[36px] flex-shrink-0 rounded-full px-4 text-[12.5px] capitalize",
+                filter === c
+                  ? "bg-foreground text-background font-semibold"
+                  : "border border-border bg-card text-foreground-2",
+              )}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      )}
 
       {byCategory.length === 0 ? (
         <p className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">

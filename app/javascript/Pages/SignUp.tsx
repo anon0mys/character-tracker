@@ -24,7 +24,7 @@ const SignUp = () => {
       <div className="w-full max-w-md">
         <div className="bg-card rounded-2xl p-6 sm:p-8 space-y-5 sm:space-y-6">
           <div className="text-center space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-bold text-primary">
+            <h2 className="text-2xl sm:text-3xl font-display font-semibold text-foreground">
               Create an account
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground">

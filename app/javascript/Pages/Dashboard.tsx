@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "../Components/ui";
+import { Button, Input } from "../Components/ui";
 import { useAuth } from "../Auth";
 import { useError } from "../Errors";
 import { Client, IGameType } from "../Api";
@@ -14,6 +14,7 @@ interface GameAttrs {
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
   const [games, setGames] = useState<IGameType[]>([]);
+  const [search, setSearch] = useState("");
   const auth = useAuth();
   const client = Client();
   const errors = useError();
@@ -43,7 +44,10 @@ const Dashboard = () => {
       .catch((error) => errors.setError(error));
   };
 
-  const gameCards = games.map((game) => {
+  const visible = games.filter((g) =>
+    g.name.toLowerCase().includes(search.toLowerCase()),
+  );
+  const gameCards = visible.map((game) => {
     return <GameCard key={game.id} game={game} deleteGame={deleteGame} />;
   });
 
@@ -66,6 +70,16 @@ const Dashboard = () => {
           Create Game
         </Button>
       </div>
+      {games.length > 0 && (
+        <div className="mb-4 max-w-md">
+          <Input
+            placeholder="Search campaigns"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="min-h-[44px]"
+          />
+        </div>
+      )}
       {gameCards.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {gameCards}
