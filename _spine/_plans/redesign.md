@@ -14,15 +14,15 @@ Mode: one phase at a time. Update **Living state** after each shipped phase so t
 | 1 | Shell: rail, tabs, routes, settings page | ✅ | d8e6942 |
 | 2 | Sheet restructure (existing data only) | ✅ | d7344f4 + 36d376c |
 | 3 | Forms + known bugs | ✅ | ab49a80 |
-| 4a | Attacks: damage, action type, riders, Extra Attack | ⏳ next | — |
-| 4b | Resources (pips + consumables) | ⏳ | — |
-| 4c | Temp HP, hit dice, death saves, conditions, spell slots | ⏳ | — |
-| 4d | Skills | ⏳ | — |
-| 4e | Features page | ⏳ | — |
-| 4f | Bio, languages, subclass | ⏳ | — |
-| 4g | Game status + HP thresholds | ⏳ | — |
-| 4h | Loadouts | ⏳ | — |
-| 5 | Party (cross-user characters) | ⏳ | — |
+| 4a | Attacks: damage, action type, riders, Extra Attack | ✅ | 9c924ed |
+| 4b | Resources (pips + consumables) | ✅ | e0b7841 |
+| 4c | Temp HP, hit dice, death saves, conditions, spell slots | ✅ | ad1bb6b |
+| 4d | Skills | ✅ | 877bae9 |
+| 4e | Features page | ✅ | 8e30aa2 |
+| 4f | Bio, languages, subclass | ✅ | 524a118 |
+| 4g | Game status + HP thresholds | ✅ | 31e10fa |
+| 4h | Loadouts | ✅ | 998cb20 |
+| 5 | Party (cross-user characters) | ⏳ next | — |
 | 6 | Settings: density, text size, theme picker | ⏳ | — |
 
 ## Deferred / follow-ups
