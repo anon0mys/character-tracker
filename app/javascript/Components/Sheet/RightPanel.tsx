@@ -213,7 +213,7 @@ const RightPanel = ({
           </>
         ))}
 
-      {tab === "gear" && <GearTab characterId={character.id!} />}
+      {tab === "gear" && <GearTab character={character} patch={patch} />}
       {tab === "consumables" && <ConsumablesTab characterId={character.id!} />}
     </div>
   );

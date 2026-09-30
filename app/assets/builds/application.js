@@ -80297,7 +80297,8 @@ var RightPanel = function RightPanel(_ref2) {
       className: "font-mono text-[11px] text-muted-foreground"
     }, spell.school));
   })))), tab === "gear" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GearTab__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    characterId: character.id
+    character: character,
+    patch: patch
   }), tab === "consumables" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ConsumablesTab__WEBPACK_IMPORTED_MODULE_6__["default"], {
     characterId: character.id
   }));
@@ -80395,6 +80396,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
 /* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
 /* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(125);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -80411,9 +80414,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+var COINS = [{
+  field: "platinum",
+  label: "PP"
+}, {
+  field: "gold",
+  label: "GP"
+}, {
+  field: "electrum",
+  label: "EP"
+}, {
+  field: "silver",
+  label: "SP"
+}, {
+  field: "copper",
+  label: "CP"
+}];
 
 var GearTab = function GearTab(_ref) {
-  var characterId = _ref.characterId;
+  var character = _ref.character,
+      patch = _ref.patch;
   var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
   var client = (0,_Api__WEBPACK_IMPORTED_MODULE_1__.Client)();
   var errors = (0,_Errors__WEBPACK_IMPORTED_MODULE_3__.useError)();
@@ -80430,7 +80450,7 @@ var GearTab = function GearTab(_ref) {
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     client.get({
-      path: "/characters/".concat(characterId, "/items"),
+      path: "/characters/".concat(character.id, "/items"),
       token: auth.getToken()
     }).then(function (res) {
       var _res$data;
@@ -80441,22 +80461,39 @@ var GearTab = function GearTab(_ref) {
     })["finally"](function () {
       return setLoading(false);
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [characterId]);
-
-  if (loading) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-      className: "py-6 text-center text-[13px] text-muted-foreground"
-    }, "Loading gear\u2026");
-  }
-
-  if (items.length === 0) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-      className: "py-6 text-center text-[13px] text-muted-foreground"
-    }, "No gear carried.");
-  }
-
+  }, [character.id]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex min-h-0 flex-grow flex-col gap-[3px] overflow-y-auto pr-1"
+    className: "flex min-h-0 flex-grow flex-col gap-3 overflow-y-auto pr-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col gap-2 rounded-xl bg-secondary p-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground"
+  }, "Coin"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "grid grid-cols-5 gap-2"
+  }, COINS.map(function (_ref2) {
+    var _ref3;
+
+    var field = _ref2.field,
+        label = _ref2.label;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+      key: field,
+      className: "flex flex-col items-center gap-1"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "font-mono text-[10px] font-semibold text-proficiency-ink"
+    }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+      inputMode: "numeric",
+      value: (_ref3 = character[field]) !== null && _ref3 !== void 0 ? _ref3 : 0,
+      onChange: function onChange(e) {
+        return patch(_defineProperty({}, field, Math.max(0, parseInt(e.target.value || "0", 10))));
+      },
+      className: "h-8 w-full rounded-md border border-border bg-card text-center font-mono text-[13px]"
+    }));
+  }))), loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "py-6 text-center text-[13px] text-muted-foreground"
+  }, "Loading gear\u2026") : items.length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "py-6 text-center text-[13px] text-muted-foreground"
+  }, "No gear carried.") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col gap-[3px]"
   }, items.map(function (item) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: item.id,
@@ -80468,7 +80505,7 @@ var GearTab = function GearTab(_ref) {
     }, "Attune"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "font-mono text-[11px] text-muted-foreground"
     }, "\xD7", item.quantity));
-  }));
+  })));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GearTab);
@@ -80486,10 +80523,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
 /* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
 /* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(125);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(267);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(158);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(267);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(158);
 /* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(28);
 /* harmony import */ var _format__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(263);
+/* harmony import */ var _Characters_Trackers_TrackerForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(179);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -80514,8 +80560,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
- // 4b: resources are the existing character_trackers (name/max_uses/current_uses/
-// reset_on). Small pools render as pips; larger ones as +/- steppers.
+
+ // 4b: resources are the existing character_trackers. Small pools render as
+// pips; larger ones as +/- steppers. Add creates a new tracker.
 
 var PIP_LIMIT = 8;
 
@@ -80534,6 +80581,11 @@ var ConsumablesTab = function ConsumablesTab(_ref) {
       _useState4 = _slicedToArray(_useState3, 2),
       loading = _useState4[0],
       setLoading = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      formOpen = _useState6[0],
+      setFormOpen = _useState6[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     client.get({
@@ -80573,25 +80625,47 @@ var ConsumablesTab = function ConsumablesTab(_ref) {
     });
   };
 
-  if (loading) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-      className: "py-6 text-center text-[13px] text-muted-foreground"
-    }, "Loading\u2026");
-  }
+  var create = function create(values) {
+    client.post({
+      path: "/characters/".concat(characterId, "/trackers"),
+      payload: {
+        character_tracker: _objectSpread(_objectSpread({}, values), {}, {
+          current_uses: values.max_uses
+        })
+      },
+      token: auth.getToken()
+    }).then(function (res) {
+      setTrackers(function (prev) {
+        return [].concat(_toConsumableArray(prev), [res.data]);
+      });
+      setFormOpen(false);
+    })["catch"](function (err) {
+      return errors.setError(err);
+    });
+  };
 
-  if (trackers.length === 0) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "flex flex-grow flex-col items-center justify-center gap-1 py-10 text-center"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-      className: "text-[13px] font-medium text-foreground-2"
-    }, "No consumables yet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-      className: "text-[12px] text-muted-foreground"
-    }, "Add a resource to track pips or charges."));
-  }
-
+  var header = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
+  }, "Consumables"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: function onClick() {
+      return setFormOpen(true);
+    },
+    className: "ml-auto min-h-[30px] rounded-full border border-border-strong px-3 text-[11px]"
+  }, "Add"));
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex min-h-0 flex-grow flex-col gap-3 overflow-y-auto pr-1"
-  }, trackers.map(function (tracker) {
+  }, header, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "py-6 text-center text-[13px] text-muted-foreground"
+  }, "Loading\u2026") : trackers.length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col items-center gap-1 py-8 text-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "text-[13px] font-medium text-foreground-2"
+  }, "No consumables yet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "text-[12px] text-muted-foreground"
+  }, "Add a resource to track pips or charges.")) : trackers.map(function (tracker) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: tracker.id,
       className: "flex flex-col gap-[6px] rounded-lg bg-secondary p-[10px]"
@@ -80628,7 +80702,7 @@ var ConsumablesTab = function ConsumablesTab(_ref) {
         return setUses(tracker, tracker.current_uses - 1);
       },
       className: "flex h-8 w-8 items-center justify-center rounded-lg border border-border-strong"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], {
       className: "h-4 w-4"
     })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "font-mono text-[15px]"
@@ -80639,9 +80713,15 @@ var ConsumablesTab = function ConsumablesTab(_ref) {
         return setUses(tracker, tracker.current_uses + 1);
       },
       className: "flex h-8 w-8 items-center justify-center rounded-lg border border-border-strong"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
       className: "h-4 w-4"
     }))));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Characters_Trackers_TrackerForm__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    open: formOpen,
+    onClose: function onClose() {
+      return setFormOpen(false);
+    },
+    onSubmit: create
   }));
 };
 
@@ -84171,7 +84251,8 @@ var MobileGear = function MobileGear() {
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-grow flex-col px-4 pb-4"
   }, tab === "gear" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Sheet_GearTab__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    characterId: character.id
+    character: character,
+    patch: patch
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Sheet_ConsumablesTab__WEBPACK_IMPORTED_MODULE_5__["default"], {
     characterId: character.id
   })));

@@ -41,7 +41,7 @@ const MobileGear = () => {
       </div>
       <div className="flex flex-grow flex-col px-4 pb-4">
         {tab === "gear" ? (
-          <GearTab characterId={character.id} />
+          <GearTab character={character} patch={patch} />
         ) : (
           <ConsumablesTab characterId={character.id} />
         )}
