@@ -84,6 +84,7 @@ interface ICharacterType {
   platinum: number;
   injury_condition: InjuryCondition;
   notes?: string;
+  conditions?: string[];
   hp_thresholds?: { bloodied: number; mangled: number };
   current_spell_list?: ISpellListType;
   character_trackers: ICharacterTrackerType[];

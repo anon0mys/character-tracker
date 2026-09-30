@@ -115,6 +115,7 @@ module Api
           :gold,
           :platinum,
           proficiencies: [],
+          conditions: [],
           spell_slots_used: {},
         )
       end

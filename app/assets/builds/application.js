@@ -78734,13 +78734,14 @@ var CharacterDisplay = function CharacterDisplay() {
     },
     onEditAttack: openEditAttack
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Sheet__WEBPACK_IMPORTED_MODULE_7__.RightPanel, {
-    characterId: character.id,
+    character: character,
     spellLists: spellLists,
     currentSpellList: currentSpellList,
     onSelectSpellList: selectSpellList,
     onAddSpellList: function onAddSpellList() {
       return setSpellListFormOpen(true);
-    }
+    },
+    patch: patch
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Characters_AttackForm__WEBPACK_IMPORTED_MODULE_5__["default"], {
     opened: attackModalOpen,
     onClose: closeAttackForm,
@@ -79510,8 +79511,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(267);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(158);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(75);
 /* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
 /* harmony import */ var _format__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(263);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -79535,7 +79547,7 @@ var injuryStyles = {
 };
 
 var HpBand = function HpBand(_ref) {
-  var _character$hp_thresho, _character$constituti, _character$constituti2, _injuryStyles$charact, _character$hit_dice_r;
+  var _character$hp_thresho, _character$constituti, _character$constituti2, _character$hit_dice_r, _injuryStyles$charact, _character$conditions3;
 
   var character = _ref.character,
       patch = _ref.patch;
@@ -79554,11 +79566,15 @@ var HpBand = function HpBand(_ref) {
   };
   var delta = Math.max(0, parseInt(amount, 10) || 0);
 
-  var setHp = function setHp(next) {
-    return patch({
-      current_hitpoints: (0,_format__WEBPACK_IMPORTED_MODULE_2__.clamp)(next, 0, total)
-    }, {
+  var now = function now(u) {
+    return patch(u, {
       debounce: false
+    });
+  };
+
+  var setHp = function setHp(next) {
+    return now({
+      current_hitpoints: (0,_format__WEBPACK_IMPORTED_MODULE_2__.clamp)(next, 0, total)
     });
   };
 
@@ -79566,8 +79582,39 @@ var HpBand = function HpBand(_ref) {
   var tempPct = total > 0 ? temp / total * 100 : 0;
   var hitDie = character.hit_die || character.hit_die_type || "d8";
   var conMod = (_character$constituti = (_character$constituti2 = character.constitution) === null || _character$constituti2 === void 0 ? void 0 : _character$constituti2.modifier) !== null && _character$constituti !== void 0 ? _character$constituti : 0;
+  var hitDiceLeft = (_character$hit_dice_r = character.hit_dice_remaining) !== null && _character$hit_dice_r !== void 0 ? _character$hit_dice_r : character.level; // death save circle: click sets count to i+1, or clears the top one
+
+  var saveClick = function saveClick(field, i) {
+    var cur = character[field];
+    now(_defineProperty({}, field, i + 1 === cur ? i : i + 1));
+  };
+
+  var removeCondition = function removeCondition(name) {
+    var _character$conditions;
+
+    return now({
+      conditions: ((_character$conditions = character.conditions) !== null && _character$conditions !== void 0 ? _character$conditions : []).filter(function (c) {
+        return c !== name;
+      })
+    });
+  };
+
+  var addCondition = function addCondition() {
+    var name = window.prompt("Condition");
+
+    if (name && name.trim()) {
+      var _character$conditions2;
+
+      now({
+        conditions: [].concat(_toConsumableArray((_character$conditions2 = character.conditions) !== null && _character$conditions2 !== void 0 ? _character$conditions2 : []), [name.trim()])
+      });
+    }
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 lg:flex-row lg:items-center lg:gap-6 lg:px-[18px] lg:py-[14px]"
+    className: "flex flex-col gap-4 rounded-2xl border border-border bg-card p-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex w-full flex-col gap-[7px] lg:w-[400px] lg:flex-shrink-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -79650,26 +79697,120 @@ var HpBand = function HpBand(_ref) {
     className: "flex flex-col gap-[5px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
-  }, "Hit dice"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    className: "font-mono text-[16px]"
-  }, (_character$hit_dice_r = character.hit_dice_remaining) !== null && _character$hit_dice_r !== void 0 ? _character$hit_dice_r : character.level, " / ", character.level, " ", hitDie)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "Temp HP"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    "aria-label": "Less temp",
+    onClick: function onClick() {
+      return now({
+        temp_hitpoints: Math.max(0, temp - 1)
+      });
+    },
+    className: "flex h-7 w-7 items-center justify-center rounded-md border border-border-strong"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    className: "h-3.5 w-3.5"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[15px]"
+  }, temp), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    "aria-label": "More temp",
+    onClick: function onClick() {
+      return now({
+        temp_hitpoints: temp + 1
+      });
+    },
+    className: "flex h-7 w-7 items-center justify-center rounded-md border border-border-strong"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    className: "h-3.5 w-3.5"
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col gap-[5px]"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
+  }, "Hit dice"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    "aria-label": "Spend hit die",
+    onClick: function onClick() {
+      return now({
+        hit_dice_remaining: (0,_format__WEBPACK_IMPORTED_MODULE_2__.clamp)(hitDiceLeft - 1, 0, character.level)
+      });
+    },
+    className: "flex h-7 w-7 items-center justify-center rounded-md border border-border-strong"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    className: "h-3.5 w-3.5"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[15px]"
+  }, hitDiceLeft, " / ", character.level, " ", hitDie), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    "aria-label": "Restore hit die",
+    onClick: function onClick() {
+      return now({
+        hit_dice_remaining: (0,_format__WEBPACK_IMPORTED_MODULE_2__.clamp)(hitDiceLeft + 1, 0, character.level)
+      });
+    },
+    className: "flex h-7 w-7 items-center justify-center rounded-md border border-border-strong"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    className: "h-3.5 w-3.5"
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-col gap-[6px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
   }, "Death saves"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex gap-[5px]"
   }, [0, 1, 2].map(function (i) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      key: i,
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      key: "s".concat(i),
+      type: "button",
+      "aria-label": "Success ".concat(i + 1),
+      onClick: function onClick() {
+        return saveClick("death_save_successes", i);
+      },
+      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("h-[15px] w-[15px] rounded-full border-[1.5px] border-border-strong", i < character.death_save_successes && "border-vitality bg-vitality")
+    });
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex gap-[5px]"
+  }, [0, 1, 2].map(function (i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      key: "f".concat(i),
+      type: "button",
+      "aria-label": "Failure ".concat(i + 1),
+      onClick: function onClick() {
+        return saveClick("death_save_failures", i);
+      },
       className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("h-[15px] w-[15px] rounded-full border-[1.5px] border-border-strong", i < character.death_save_failures && "border-harm bg-harm")
     });
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-col gap-[5px] lg:ml-auto lg:items-end"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
   }, "Rest recovery"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "font-mono text-[13px] text-foreground-2"
-  }, hitDie, "+", conMod, " \xD7 ", character.level)));
+  }, hitDie, "+", conMod, " \xD7 ", character.level))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-wrap items-center gap-2 border-t border-hairline pt-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
+  }, "Conditions"), ((_character$conditions3 = character.conditions) !== null && _character$conditions3 !== void 0 ? _character$conditions3 : []).map(function (c) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      key: c,
+      className: "flex items-center gap-1 rounded-full bg-arcane-soft px-[10px] py-1 text-[12px] text-arcane-ink"
+    }, c, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      type: "button",
+      "aria-label": "Remove ".concat(c),
+      onClick: function onClick() {
+        return removeCondition(c);
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      className: "h-3 w-3"
+    })));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: addCondition,
+    className: "min-h-[28px] rounded-full border border-dashed border-border-strong px-3 text-[12px] text-foreground-2"
+  }, "Add")));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (HpBand);
@@ -79799,9 +79940,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
 /* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(28);
-/* harmony import */ var _SpellDetail__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(270);
-/* harmony import */ var _GearTab__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(271);
-/* harmony import */ var _ConsumablesTab__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(272);
+/* harmony import */ var _format__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(263);
+/* harmony import */ var _SpellDetail__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(270);
+/* harmony import */ var _GearTab__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(271);
+/* harmony import */ var _ConsumablesTab__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(272);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -79820,6 +79968,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var NO_LIST = "none";
 
 var levelBadge = function levelBadge(level) {
@@ -79827,14 +79976,45 @@ var levelBadge = function levelBadge(level) {
   return level;
 };
 
-var RightPanel = function RightPanel(_ref) {
-  var _currentSpellList$spe, _currentSpellList$id$, _currentSpellList$id;
+var SlotRow = function SlotRow(_ref) {
+  var level = _ref.level,
+      max = _ref.max,
+      used = _ref.used,
+      onSpend = _ref.onSpend;
+  var remaining = max - used;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-[9px]"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "w-[14px] font-mono text-[11px] text-muted-foreground"
+  }, level), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-grow flex-wrap gap-[5px]"
+  }, Array.from({
+    length: max
+  }).map(function (_, i) {
+    var filled = i < remaining;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      key: i,
+      type: "button",
+      "aria-label": "Level ".concat(level, " slot ").concat(i + 1),
+      onClick: function onClick() {
+        return onSpend((0,_format__WEBPACK_IMPORTED_MODULE_3__.clamp)(filled ? used + 1 : used - 1, 0, max));
+      },
+      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_2__.cn)("h-[24px] w-[24px] rounded-[7px] border", filled ? "border-arcane bg-arcane" : "border-border-strong bg-background")
+    });
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[11px] text-muted-foreground"
+  }, remaining, "/", max));
+};
 
-  var characterId = _ref.characterId,
-      spellLists = _ref.spellLists,
-      currentSpellList = _ref.currentSpellList,
-      onSelectSpellList = _ref.onSelectSpellList,
-      onAddSpellList = _ref.onAddSpellList;
+var RightPanel = function RightPanel(_ref2) {
+  var _currentSpellList$spe, _character$spell_slot, _character$spell_slot2, _currentSpellList$id$, _currentSpellList$id;
+
+  var character = _ref2.character,
+      spellLists = _ref2.spellLists,
+      currentSpellList = _ref2.currentSpellList,
+      onSelectSpellList = _ref2.onSelectSpellList,
+      onAddSpellList = _ref2.onAddSpellList,
+      patch = _ref2.patch;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("spells"),
       _useState2 = _slicedToArray(_useState, 2),
@@ -79857,13 +80037,24 @@ var RightPanel = function RightPanel(_ref) {
     label: "Consumables"
   }];
   var spells = (_currentSpellList$spe = currentSpellList === null || currentSpellList === void 0 ? void 0 : currentSpellList.spells) !== null && _currentSpellList$spe !== void 0 ? _currentSpellList$spe : [];
+  var slotsMax = (_character$spell_slot = character.spell_slots_max) !== null && _character$spell_slot !== void 0 ? _character$spell_slot : [];
+  var slotsUsed = (_character$spell_slot2 = character.spell_slots_used) !== null && _character$spell_slot2 !== void 0 ? _character$spell_slot2 : {};
+
+  var spend = function spend(level, used) {
+    return patch({
+      spell_slots_used: _objectSpread(_objectSpread({}, slotsUsed), {}, _defineProperty({}, String(level), used))
+    }, {
+      debounce: false
+    });
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex min-h-0 w-full flex-col gap-3 rounded-2xl border border-border bg-card p-[14px] lg:w-[430px] lg:flex-shrink-0"
   }, !selectedSpell && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-shrink-0 rounded-[9px] bg-rail p-[3px]"
-  }, tabs.map(function (_ref2) {
-    var key = _ref2.key,
-        label = _ref2.label;
+  }, tabs.map(function (_ref3) {
+    var key = _ref3.key,
+        label = _ref3.label;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       key: key,
       type: "button",
@@ -79872,12 +80063,28 @@ var RightPanel = function RightPanel(_ref) {
       },
       className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_2__.cn)("flex-grow rounded-[7px] py-[10px] text-center text-[13px]", tab === key ? "bg-card font-semibold text-foreground" : "text-foreground-2")
     }, label);
-  })), tab === "spells" && (selectedSpell ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SpellDetail__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  })), tab === "spells" && (selectedSpell ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SpellDetail__WEBPACK_IMPORTED_MODULE_4__["default"], {
     spell: selectedSpell,
     onBack: function onBack() {
       return setSelectedSpell(null);
     }
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, slotsMax.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-shrink-0 flex-col gap-[6px] border-b border-hairline pb-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
+  }, "Slots"), slotsMax.map(function (max, idx) {
+    var _slotsUsed$String;
+
+    return max > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SlotRow, {
+      key: idx,
+      level: idx + 1,
+      max: max,
+      used: (_slotsUsed$String = slotsUsed[String(idx + 1)]) !== null && _slotsUsed$String !== void 0 ? _slotsUsed$String : 0,
+      onSpend: function onSpend(u) {
+        return spend(idx + 1, u);
+      }
+    }) : null;
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-shrink-0 flex-col gap-2 sm:flex-row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Select, {
     value: (_currentSpellList$id$ = currentSpellList === null || currentSpellList === void 0 ? void 0 : (_currentSpellList$id = currentSpellList.id) === null || _currentSpellList$id === void 0 ? void 0 : _currentSpellList$id.toString()) !== null && _currentSpellList$id$ !== void 0 ? _currentSpellList$id$ : NO_LIST,
@@ -79916,10 +80123,10 @@ var RightPanel = function RightPanel(_ref) {
     }, spell.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "font-mono text-[11px] text-muted-foreground"
     }, spell.school));
-  })))), tab === "gear" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GearTab__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    characterId: characterId
-  }), tab === "consumables" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ConsumablesTab__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    characterId: characterId
+  })))), tab === "gear" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GearTab__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    characterId: character.id
+  }), tab === "consumables" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ConsumablesTab__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    characterId: character.id
   }));
 };
 

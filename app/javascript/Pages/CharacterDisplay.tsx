@@ -166,11 +166,12 @@ const CharacterDisplay = () => {
           onEditAttack={openEditAttack}
         />
         <RightPanel
-          characterId={character.id}
+          character={character}
           spellLists={spellLists}
           currentSpellList={currentSpellList}
           onSelectSpellList={selectSpellList}
           onAddSpellList={() => setSpellListFormOpen(true)}
+          patch={patch}
         />
       </div>
 

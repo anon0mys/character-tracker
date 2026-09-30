@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ISpellListType, ISpellType } from "../../Api";
+import { ICharacterType, ISpellListType, ISpellType } from "../../Api";
 import {
   Select,
   SelectContent,
@@ -9,6 +9,7 @@ import {
   Button,
 } from "../ui";
 import { cn } from "../../lib/utils";
+import { clamp } from "./format";
 import SpellDetail from "./SpellDetail";
 import GearTab from "./GearTab";
 import ConsumablesTab from "./ConsumablesTab";
@@ -16,11 +17,15 @@ import ConsumablesTab from "./ConsumablesTab";
 type Tab = "spells" | "gear" | "consumables";
 
 interface RightPanelProps {
-  characterId: string | number;
+  character: ICharacterType;
   spellLists: ISpellListType[];
   currentSpellList?: ISpellListType;
   onSelectSpellList: (value: string) => void;
   onAddSpellList: () => void;
+  patch: (
+    updates: Partial<ICharacterType>,
+    opts?: { debounce?: boolean },
+  ) => void;
 }
 
 const NO_LIST = "none";
@@ -30,12 +35,58 @@ const levelBadge = (level: string) => {
   return level;
 };
 
+const SlotRow = ({
+  level,
+  max,
+  used,
+  onSpend,
+}: {
+  level: number;
+  max: number;
+  used: number;
+  onSpend: (used: number) => void;
+}) => {
+  const remaining = max - used;
+  return (
+    <div className="flex items-center gap-[9px]">
+      <span className="w-[14px] font-mono text-[11px] text-muted-foreground">
+        {level}
+      </span>
+      <div className="flex flex-grow flex-wrap gap-[5px]">
+        {Array.from({ length: max }).map((_, i) => {
+          const filled = i < remaining;
+          return (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Level ${level} slot ${i + 1}`}
+              onClick={() =>
+                onSpend(clamp(filled ? used + 1 : used - 1, 0, max))
+              }
+              className={cn(
+                "h-[24px] w-[24px] rounded-[7px] border",
+                filled
+                  ? "border-arcane bg-arcane"
+                  : "border-border-strong bg-background",
+              )}
+            />
+          );
+        })}
+      </div>
+      <span className="font-mono text-[11px] text-muted-foreground">
+        {remaining}/{max}
+      </span>
+    </div>
+  );
+};
+
 const RightPanel = ({
-  characterId,
+  character,
   spellLists,
   currentSpellList,
   onSelectSpellList,
   onAddSpellList,
+  patch,
 }: RightPanelProps) => {
   const [tab, setTab] = useState<Tab>("spells");
   const [selectedSpell, setSelectedSpell] = useState<ISpellType | null>(null);
@@ -47,6 +98,14 @@ const RightPanel = ({
   ];
 
   const spells = currentSpellList?.spells ?? [];
+  const slotsMax = character.spell_slots_max ?? [];
+  const slotsUsed = character.spell_slots_used ?? {};
+
+  const spend = (level: number, used: number) =>
+    patch(
+      { spell_slots_used: { ...slotsUsed, [String(level)]: used } },
+      { debounce: false },
+    );
 
   return (
     <div className="flex min-h-0 w-full flex-col gap-3 rounded-2xl border border-border bg-card p-[14px] lg:w-[430px] lg:flex-shrink-0">
@@ -78,6 +137,25 @@ const RightPanel = ({
           />
         ) : (
           <>
+            {slotsMax.length > 0 && (
+              <div className="flex flex-shrink-0 flex-col gap-[6px] border-b border-hairline pb-3">
+                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                  Slots
+                </span>
+                {slotsMax.map((max, idx) =>
+                  max > 0 ? (
+                    <SlotRow
+                      key={idx}
+                      level={idx + 1}
+                      max={max}
+                      used={slotsUsed[String(idx + 1)] ?? 0}
+                      onSpend={(u) => spend(idx + 1, u)}
+                    />
+                  ) : null,
+                )}
+              </div>
+            )}
+
             <div className="flex flex-shrink-0 flex-col gap-2 sm:flex-row">
               <Select
                 value={currentSpellList?.id?.toString() ?? NO_LIST}
@@ -135,8 +213,8 @@ const RightPanel = ({
           </>
         ))}
 
-      {tab === "gear" && <GearTab characterId={characterId} />}
-      {tab === "consumables" && <ConsumablesTab characterId={characterId} />}
+      {tab === "gear" && <GearTab characterId={character.id!} />}
+      {tab === "consumables" && <ConsumablesTab characterId={character.id!} />}
     </div>
   );
 };
