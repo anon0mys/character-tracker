@@ -4,8 +4,15 @@ module Api
       before_action :authenticate_user!
 
       def index
-        @characters = current_user.characters.all
-        render json: CharacterSerializer.render(@characters, root: :data)
+        game_id = params[:game_id]
+        # A player in the game can see the whole party (light payload);
+        # otherwise you only see your own characters (full payload).
+        if game_id.present? && current_user.in_game?(game_id)
+          characters = Game.find(game_id).characters
+          render json: PartyCharacterSerializer.render(characters, root: :data)
+        else
+          render json: CharacterSerializer.render(current_user.characters.all, root: :data)
+        end
       end
 
       def show

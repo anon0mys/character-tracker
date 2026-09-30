@@ -46,6 +46,7 @@ const Rail = () => {
   });
   const [games, setGames] = useState<IGameType[]>([]);
   const [characters, setCharacters] = useState<ICharacterType[]>([]);
+  const [party, setParty] = useState<ICharacterType[]>([]);
 
   useEffect(() => {
     try {
@@ -68,6 +69,19 @@ const Rail = () => {
       .catch(() => setCharacters([]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.user]);
+
+  useEffect(() => {
+    const token = auth.getToken();
+    if (!token || !game?.id) {
+      setParty([]);
+      return;
+    }
+    client
+      .get({ path: `/characters?game_id=${game.id}`, token })
+      .then((res) => setParty(res.data ?? []))
+      .catch(() => setParty([]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth.user, game?.id]);
 
   const current = auth.currentCharacter;
 
@@ -121,13 +135,14 @@ const Rail = () => {
           </NavLink>
         ))}
 
-        {characters.length > 0 && <div className="h-px w-6 bg-border" />}
-        {characters.map((c) => (
+        {party.length > 0 && <div className="h-px w-6 bg-border" />}
+        {party.map((c) => (
           <button
             key={c.id}
             type="button"
             title={c.name}
-            onClick={() => switchCharacter(c)}
+            disabled={c.user_id !== auth.user?.id}
+            onClick={() => c.user_id === auth.user?.id && switchCharacter(c)}
             className={cn(
               "flex h-7 w-7 items-center justify-center rounded-full font-mono text-[8.5px] text-primary-foreground",
               current?.id === Number(c.id) ? "bg-proficiency" : "bg-arcane",
@@ -262,19 +277,24 @@ const Rail = () => {
       </div>
 
       {/* Party */}
-      {characters.length > 0 && (
+      {party.length > 0 && (
         <div className="flex flex-col gap-[5px] border-t border-border pt-[14px]">
           <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
             The party
           </span>
-          {characters.map((c) => {
+          {party.map((c) => {
             const isCurrent = current?.id === Number(c.id);
+            const owned = c.user_id === auth.user?.id;
             return (
               <button
                 key={c.id}
                 type="button"
-                onClick={() => switchCharacter(c)}
-                className="flex items-center gap-[9px] rounded-md px-1 py-[5px] text-left hover:bg-card"
+                disabled={!owned}
+                onClick={() => owned && switchCharacter(c)}
+                className={cn(
+                  "flex items-center gap-[9px] rounded-md px-1 py-[5px] text-left",
+                  owned ? "hover:bg-card" : "cursor-default",
+                )}
               >
                 <span
                   className={cn(

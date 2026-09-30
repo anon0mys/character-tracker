@@ -59547,6 +59547,11 @@ var Rail = function Rail() {
       characters = _useState6[0],
       setCharacters = _useState6[1];
 
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState8 = _slicedToArray(_useState7, 2),
+      party = _useState8[0],
+      setParty = _useState8[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     try {
       localStorage.setItem(RAIL_COLLAPSED_KEY, String(collapsed));
@@ -59578,6 +59583,25 @@ var Rail = function Rail() {
       return setCharacters([]);
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.user]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var token = auth.getToken();
+
+    if (!token || !(game !== null && game !== void 0 && game.id)) {
+      setParty([]);
+      return;
+    }
+
+    client.get({
+      path: "/characters?game_id=".concat(game.id),
+      token: token
+    }).then(function (res) {
+      var _res$data3;
+
+      return setParty((_res$data3 = res.data) !== null && _res$data3 !== void 0 ? _res$data3 : []);
+    })["catch"](function () {
+      return setParty([]);
+    }); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth.user, game === null || game === void 0 ? void 0 : game.id]);
   var current = auth.currentCharacter;
 
   var switchCharacter = /*#__PURE__*/function () {
@@ -59652,15 +59676,20 @@ var Rail = function Rail() {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
         className: "h-[17px] w-[17px]"
       }));
-    }), characters.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    }), party.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: "h-px w-6 bg-border"
-    }), characters.map(function (c) {
+    }), party.map(function (c) {
+      var _auth$user;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
         key: c.id,
         type: "button",
         title: c.name,
+        disabled: c.user_id !== ((_auth$user = auth.user) === null || _auth$user === void 0 ? void 0 : _auth$user.id),
         onClick: function onClick() {
-          return switchCharacter(c);
+          var _auth$user2;
+
+          return c.user_id === ((_auth$user2 = auth.user) === null || _auth$user2 === void 0 ? void 0 : _auth$user2.id) && switchCharacter(c);
         },
         className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_5__.cn)("flex h-7 w-7 items-center justify-center rounded-full font-mono text-[8.5px] text-primary-foreground", (current === null || current === void 0 ? void 0 : current.id) === Number(c.id) ? "bg-proficiency" : "bg-arcane")
       }, (0,_initials__WEBPACK_IMPORTED_MODULE_6__["default"])(c.name));
@@ -59758,19 +59787,23 @@ var Rail = function Rail() {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Icon, {
       className: "h-[18px] w-[18px]"
     }), label);
-  })), characters.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  })), party.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex flex-col gap-[5px] border-t border-border pt-[14px]"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground"
-  }, "The party"), characters.map(function (c) {
+  }, "The party"), party.map(function (c) {
+    var _auth$user3;
+
     var isCurrent = (current === null || current === void 0 ? void 0 : current.id) === Number(c.id);
+    var owned = c.user_id === ((_auth$user3 = auth.user) === null || _auth$user3 === void 0 ? void 0 : _auth$user3.id);
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       key: c.id,
       type: "button",
+      disabled: !owned,
       onClick: function onClick() {
-        return switchCharacter(c);
+        return owned && switchCharacter(c);
       },
-      className: "flex items-center gap-[9px] rounded-md px-1 py-[5px] text-left hover:bg-card"
+      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_5__.cn)("flex items-center gap-[9px] rounded-md px-1 py-[5px] text-left", owned ? "hover:bg-card" : "cursor-default")
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_5__.cn)("flex h-[26px] w-[26px] items-center justify-center rounded-full font-mono text-[10px] text-primary-foreground", isCurrent ? "bg-proficiency" : "bg-arcane")
     }, (0,_initials__WEBPACK_IMPORTED_MODULE_6__["default"])(c.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
