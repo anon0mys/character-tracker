@@ -27,9 +27,7 @@ describe "character items routes" do
 
       get api_v1_character_items_path(other), headers: @auth_headers
 
-      # scoped through current_user.characters, so the lookup misses and raises.
-      # (Status is 500 not 404 due to a rescue_from ordering bug — see plan follow-ups.)
-      expect(response).not_to have_http_status(:success)
+      expect(response).to have_http_status(:not_found)
       expect(response.body).not_to include("Someone Else's Blade")
     end
   end

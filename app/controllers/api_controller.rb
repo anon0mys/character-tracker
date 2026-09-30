@@ -5,12 +5,14 @@ class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
   after_action { pagy_headers_merge(@pagy) if @pagy }
 
-  # Handle common exceptions and return JSON responses
+  # Handle common exceptions and return JSON responses.
+  # rescue_from is matched in REVERSE order of declaration, so the broad
+  # StandardError handler must come first to let the specific ones win.
+  rescue_from StandardError, with: :handle_standard_error
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
   rescue_from ActionController::ParameterMissing, with: :parameter_missing
   rescue_from ActiveRecord::RecordNotUnique, with: :record_not_unique
-  rescue_from StandardError, with: :handle_standard_error
 
   def paginate(data)
     @pagy, @data = pagy(data)
