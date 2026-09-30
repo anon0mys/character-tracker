@@ -79146,7 +79146,7 @@ var IdentityHeader = function IdentityHeader(_ref) {
   var client = (0,_Api__WEBPACK_IMPORTED_MODULE_1__.Client)();
   var errors = (0,_Errors__WEBPACK_IMPORTED_MODULE_3__.useError)();
   var id = character.id;
-  var meta = ["".concat(character.archetype, " ").concat(character.level), character.race, character.background, character.alignment, character.age ? "Age ".concat(character.age) : null].filter(Boolean).join(" · ");
+  var meta = ["".concat(character.archetype, " ").concat(character.level).concat(character.subclass ? " (".concat(character.subclass, ")") : ""), character.race, character.background, character.alignment, character.age ? "Age ".concat(character.age) : null].filter(Boolean).join(" · ");
 
   var rest = function rest(type) {
     if (!id) return;
@@ -82629,14 +82629,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(129);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(129);
 /* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
 /* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
 /* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(125);
 /* harmony import */ var _Components_Sheet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(259);
 /* harmony import */ var _Components_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(24);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(178);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(163);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(178);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(163);
+/* harmony import */ var _Hooks_useCharacterPatch__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(258);
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -82662,6 +82663,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -82750,7 +82752,9 @@ var FeatureForm = function FeatureForm(_ref) {
 };
 
 var Features = function Features() {
-  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useParams)(),
+  var _character$subclass, _character$languages;
+
+  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useParams)(),
       id = _useParams.id;
 
   var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
@@ -82768,6 +82772,9 @@ var Features = function Features() {
       _useState6 = _slicedToArray(_useState5, 2),
       features = _useState6[0],
       setFeatures = _useState6[1];
+
+  var _useCharacterPatch = (0,_Hooks_useCharacterPatch__WEBPACK_IMPORTED_MODULE_6__.useCharacterPatch)(character, setCharacter),
+      patch = _useCharacterPatch.patch;
 
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState8 = _slicedToArray(_useState7, 2),
@@ -82890,6 +82897,53 @@ var Features = function Features() {
     character: character,
     onRested: setCharacter
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "grid gap-[14px] rounded-2xl border border-border bg-card p-4 lg:grid-cols-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col gap-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
+  }, "Subclass"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Input, {
+    value: (_character$subclass = character.subclass) !== null && _character$subclass !== void 0 ? _character$subclass : "",
+    onChange: function onChange(e) {
+      return patch({
+        subclass: e.target.value
+      });
+    },
+    placeholder: "e.g. Armorer"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col gap-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
+  }, "Languages"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Input, {
+    value: ((_character$languages = character.languages) !== null && _character$languages !== void 0 ? _character$languages : []).join(", "),
+    onChange: function onChange(e) {
+      return patch({
+        languages: e.target.value.split(",").map(function (l) {
+          return l.trim();
+        }).filter(Boolean)
+      });
+    },
+    placeholder: "Common, Draconic"
+  })), [["trait", "Personality trait"], ["ideal", "Ideal"], ["bond", "Bond"], ["flaw", "Flaw"]].map(function (_ref2) {
+    var _ref4;
+
+    var _ref3 = _slicedToArray(_ref2, 2),
+        key = _ref3[0],
+        label = _ref3[1];
+
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: key,
+      className: "flex flex-col gap-1"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+      className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
+    }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Textarea, {
+      value: (_ref4 = character[key]) !== null && _ref4 !== void 0 ? _ref4 : "",
+      onChange: function onChange(e) {
+        return patch(_defineProperty({}, key, e.target.value));
+      },
+      className: "min-h-[64px] bg-secondary"
+    }));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex items-center gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
@@ -82904,9 +82958,9 @@ var Features = function Features() {
     className: "rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground"
   }, "No features yet. Import your class or add one.") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "columns-1 gap-[14px] lg:columns-3"
-  }, byCategory.map(function (_ref2) {
-    var cat = _ref2.cat,
-        items = _ref2.items;
+  }, byCategory.map(function (_ref5) {
+    var cat = _ref5.cat,
+        items = _ref5.items;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: cat,
       className: "mb-[14px] flex break-inside-avoid flex-col gap-2 rounded-2xl border border-border bg-card p-4"
@@ -82927,7 +82981,7 @@ var Features = function Features() {
           return openEdit(f);
         },
         className: "text-muted-foreground opacity-0 group-hover:opacity-100"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
         className: "h-3.5 w-3.5"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
         type: "button",
@@ -82936,7 +82990,7 @@ var Features = function Features() {
           return remove(f);
         },
         className: "text-muted-foreground opacity-0 group-hover:opacity-100"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], {
         className: "h-3.5 w-3.5"
       }))), f.description && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
         className: "text-[12.5px] leading-relaxed text-foreground-2"

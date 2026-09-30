@@ -8,6 +8,7 @@ class CharacterSerializer < Blueprinter::Base
     :hit_dice_remaining, :hit_die_type, :inspiration, :death_save_successes,
     :death_save_failures, :exhaustion, :spell_slots_used, :spell_slots_max,
     :pact_slot_level, :concentration_spell, :notes, :conditions,
+    :subclass, :trait, :ideal, :flaw, :bond, :languages,
     :copper, :silver, :electrum, :gold, :platinum
 
   association :current_spell_list, blueprint: SpellListSerializer

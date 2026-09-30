@@ -25,7 +25,7 @@ const IdentityHeader = ({ character, onRested }: IdentityHeaderProps) => {
   const id = character.id;
 
   const meta = [
-    `${character.archetype} ${character.level}`,
+    `${character.archetype} ${character.level}${character.subclass ? ` (${character.subclass})` : ""}`,
     character.race,
     character.background,
     character.alignment,

@@ -107,6 +107,12 @@ interface ICharacterType {
   injury_condition: InjuryCondition;
   notes?: string;
   conditions?: string[];
+  subclass?: string;
+  trait?: string;
+  ideal?: string;
+  flaw?: string;
+  bond?: string;
+  languages?: string[];
   skills?: ISkill[];
   expertise?: string[];
   custom_skills?: {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_09_19_194000) do
+ActiveRecord::Schema.define(version: 2026_09_19_195000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,6 +121,12 @@ ActiveRecord::Schema.define(version: 2026_09_19_194000) do
     t.string "conditions", default: [], null: false, array: true
     t.string "expertise", default: [], null: false, array: true
     t.jsonb "custom_skills", default: [], null: false
+    t.string "subclass"
+    t.text "trait"
+    t.text "ideal"
+    t.text "flaw"
+    t.text "bond"
+    t.string "languages", default: [], null: false, array: true
     t.index ["current_spell_list_id"], name: "index_characters_on_current_spell_list_id"
     t.index ["game_id"], name: "index_characters_on_game_id"
     t.index ["user_id"], name: "index_characters_on_user_id"

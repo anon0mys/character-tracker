@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "../Components/ui";
 import { Pencil, Trash2 } from "lucide-react";
+import { useCharacterPatch } from "../Hooks/useCharacterPatch";
 
 const CATEGORIES: FeatureCategory[] = [
   "class",
@@ -113,6 +114,7 @@ const Features = () => {
     name: "",
   } as ICharacterType);
   const [features, setFeatures] = useState<IFeature[]>([]);
+  const { patch } = useCharacterPatch(character, setCharacter);
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<IFeature>(emptyFeature());
 
@@ -181,6 +183,55 @@ const Features = () => {
   return (
     <div className="flex flex-col gap-[14px]">
       <IdentityHeader character={character} onRested={setCharacter} />
+
+      <div className="grid gap-[14px] rounded-2xl border border-border bg-card p-4 lg:grid-cols-2">
+        <div className="flex flex-col gap-1">
+          <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+            Subclass
+          </label>
+          <Input
+            value={character.subclass ?? ""}
+            onChange={(e) => patch({ subclass: e.target.value })}
+            placeholder="e.g. Armorer"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+            Languages
+          </label>
+          <Input
+            value={(character.languages ?? []).join(", ")}
+            onChange={(e) =>
+              patch({
+                languages: e.target.value
+                  .split(",")
+                  .map((l) => l.trim())
+                  .filter(Boolean),
+              })
+            }
+            placeholder="Common, Draconic"
+          />
+        </div>
+        {(
+          [
+            ["trait", "Personality trait"],
+            ["ideal", "Ideal"],
+            ["bond", "Bond"],
+            ["flaw", "Flaw"],
+          ] as const
+        ).map(([key, label]) => (
+          <div key={key} className="flex flex-col gap-1">
+            <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              {label}
+            </label>
+            <Textarea
+              value={(character[key] as string) ?? ""}
+              onChange={(e) => patch({ [key]: e.target.value })}
+              className="min-h-[64px] bg-secondary"
+            />
+          </div>
+        ))}
+      </div>
 
       <div className="flex items-center gap-2">
         <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
