@@ -12,6 +12,7 @@ class Spell < ApplicationRecord
   validates :archetypes, array: { presence: true, inclusion: { in: Archetypes.names.map(&:to_s) } }
   validates :components, array: { presence: true, inclusion: { in: COMPONENTS } }
   validates :name, :casting_time, :range, :duration, presence: true
+  validates :name, uniqueness: { case_sensitive: false }
 
   default_scope { by_level }
   scope :by_level, -> { order(order_by_level) }

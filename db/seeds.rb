@@ -2,7 +2,7 @@ require 'csv'
 
 File.foreach(Rails.root.join('lib', 'seeds', 'spell_data.json')) do |line|
   spell_data = JSON.parse(line)
-  Spell.create!(spell_data)
+  Spell.find_or_initialize_by(name: spell_data['name']).update!(spell_data)
 end
 
 AdminUser.create!(

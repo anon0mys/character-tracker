@@ -6,7 +6,7 @@ FactoryBot.define do
   nouns = %w[Fire Flame Frost Acid Strength]
 
   factory :spell do
-    name { "#{descriptors.sample}of#{nouns.sample}" }
+    sequence(:name) { |n| "#{descriptors.sample}of#{nouns.sample}#{n}" }
     description { "This spell does some things" }
     archetypes { rand(1..5).times.map { Archetypes.names.sample } }
     level { Spell::LEVELS.sample }
