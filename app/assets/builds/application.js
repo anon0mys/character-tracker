@@ -81951,7 +81951,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var CATEGORIES = ["class", "infusion", "racial", "feat", "item", "blessing", "other"];
+var CATEGORIES = ["class", "subclass", "infusion", "racial", "feat", "item", "blessing", "other"];
 
 var emptyFeature = function emptyFeature() {
   return {
@@ -82142,6 +82142,21 @@ var Features = function Features() {
         var _r$data2;
 
         return [].concat(_toConsumableArray(prev), _toConsumableArray((_r$data2 = r.data) !== null && _r$data2 !== void 0 ? _r$data2 : []));
+      });
+    })["catch"](function (e) {
+      return errors.setError(e);
+    });
+  };
+
+  var importSubclass = function importSubclass() {
+    client.post({
+      path: "/characters/".concat(id, "/features/import_subclass"),
+      token: token
+    }).then(function (r) {
+      return setFeatures(function (prev) {
+        var _r$data3;
+
+        return [].concat(_toConsumableArray(prev), _toConsumableArray((_r$data3 = r.data) !== null && _r$data3 !== void 0 ? _r$data3 : []));
       });
     })["catch"](function (e) {
       return errors.setError(e);

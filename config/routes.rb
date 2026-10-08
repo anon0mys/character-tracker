@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         resources :items, only: %i[index], controller: "character_items"
         resources :features, only: %i[index create update destroy] do
           post :import_class, on: :collection
+          post :import_subclass, on: :collection
         end
         resources :loadouts, only: %i[index create update destroy] do
           post :activate, on: :member

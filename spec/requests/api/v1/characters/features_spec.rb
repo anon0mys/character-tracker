@@ -29,4 +29,26 @@ describe "character features (4e)" do
     delete api_v1_character_feature_path(character, id), headers: @auth_headers
     expect(character.features.where(id:)).to be_empty
   end
+
+  describe "POST import_subclass" do
+    it "seeds subclass features for the character's subclass" do
+      character = create(:character, user:, archetype: :wizard)
+      character.update!(subclass: "Necromancy")
+
+      expect do
+        post import_subclass_api_v1_character_features_path(character), headers: @auth_headers
+      end.to change { character.features.where(category: "subclass").count }.by_at_least(1)
+      expect(response).to have_http_status(:success)
+
+      before_count = character.features.count
+      post import_subclass_api_v1_character_features_path(character), headers: @auth_headers
+      expect(character.features.count).to eq before_count
+    end
+
+    it "422 when no matching subclass" do
+      character = create(:character, user:, archetype: :wizard)
+      post import_subclass_api_v1_character_features_path(character), headers: @auth_headers
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
 end

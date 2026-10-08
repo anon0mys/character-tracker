@@ -25,6 +25,7 @@ import { useCharacterPatch } from "../Hooks/useCharacterPatch";
 
 const CATEGORIES: FeatureCategory[] = [
   "class",
+  "subclass",
   "infusion",
   "racial",
   "feat",
@@ -160,6 +161,13 @@ const Features = () => {
   const importClass = () => {
     client
       .post({ path: `/characters/${id}/features/import_class`, token })
+      .then((r) => setFeatures((prev) => [...prev, ...(r.data ?? [])]))
+      .catch((e) => errors.setError(e));
+  };
+
+  const importSubclass = () => {
+    client
+      .post({ path: `/characters/${id}/features/import_subclass`, token })
       .then((r) => setFeatures((prev) => [...prev, ...(r.data ?? [])]))
       .catch((e) => errors.setError(e));
   };

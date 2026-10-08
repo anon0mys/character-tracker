@@ -27,6 +27,7 @@ module ArchetypeSeeder
 
       Subclass.find_or_initialize_by(archetype:, name: data["name"]).update!(
         slug: data["slug"], source: data["source"], description: data["description"],
+        features: data["features"] || []
       )
     end
   end

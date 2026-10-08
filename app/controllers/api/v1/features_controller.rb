@@ -50,6 +50,24 @@ module Api
         render json: FeatureSerializer.render(imported, root: :data)
       end
 
+      def import_subclass
+        subclass = @character.archetype.try(:subclasses)&.find_by("lower(name) = ?", @character.subclass.to_s.downcase)
+        unless subclass
+          return render json: { errors: ["No matching subclass for this character"] },
+            status: :unprocessable_entity
+        end
+
+        existing = @character.features.where(category: "subclass").pluck(:name).to_set
+        imported = (subclass.features || []).filter_map do |feature|
+          name = feature["name"]
+          next if name.blank? || existing.include?(name)
+
+          existing << name
+          @character.features.create!(category: "subclass", name:, description: feature["description"])
+        end
+        render json: FeatureSerializer.render(imported, root: :data)
+      end
+
       private
 
       def set_character

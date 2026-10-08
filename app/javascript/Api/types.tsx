@@ -20,7 +20,14 @@ interface ILoadout {
 }
 
 type FeatureCategory =
-  "class" | "racial" | "feat" | "infusion" | "item" | "blessing" | "other";
+  | "class"
+  | "subclass"
+  | "racial"
+  | "feat"
+  | "infusion"
+  | "item"
+  | "blessing"
+  | "other";
 
 interface IFeature {
   id?: number;
