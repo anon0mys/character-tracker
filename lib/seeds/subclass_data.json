@@ -1,0 +1,175 @@
+{"archetype": "artificer", "name": "Alchemist", "slug": "artificer:alchemist", "source": "Tasha's Cauldron of Everything\nEberron: Rising from the Last War"}
+{"archetype": "artificer", "name": "Archivist", "slug": "artificer:archivist-ua", "source": "Unearthed Arcana 58 - Artificer"}
+{"archetype": "artificer", "name": "Armorer", "slug": "artificer:armorer-ua", "source": "Unearthed Arcana 69 - Subclasses, Part 3"}
+{"archetype": "artificer", "name": "Artillerist", "slug": "artificer:artillerist", "source": "Tasha's Cauldron of Everything\nEberron: Rising from the Last War"}
+{"archetype": "artificer", "name": "Battle Smith", "slug": "artificer:battle-smith", "source": "Tasha's Cauldron of Everything\nEberron: Rising from the Last War"}
+{"archetype": "barbarian", "name": "Ancestral Guardian", "slug": "barbarian:ancestral-guardian", "source": "Xanathar's Guide to Everything"}
+{"archetype": "barbarian", "name": "Battlerager", "slug": "barbarian:battlerager", "source": "Sword Coast Adventurer's Guide"}
+{"archetype": "barbarian", "name": "Beast", "slug": "barbarian:beast-ua", "source": "Unearthed Arcana 67 - Subclasses, Part 1"}
+{"archetype": "barbarian", "name": "Berserker", "slug": "barbarian:berserker", "source": "Player's Handbook"}
+{"archetype": "barbarian", "name": "Giant", "slug": "barbarian:giant-ua", "source": "Unearthed Arcana 83 - Giant Options"}
+{"archetype": "barbarian", "name": "Storm Herald", "slug": "barbarian:storm-herald", "source": "Xanathar's Guide to Everything"}
+{"archetype": "barbarian", "name": "Totem Warrior", "slug": "barbarian:totem-warrior", "source": "Player's Handbook"}
+{"archetype": "barbarian", "name": "Wild Magic", "slug": "barbarian:wild-magic", "source": "Tasha's Cauldron of Everything"}
+{"archetype": "barbarian", "name": "Wild Soul", "slug": "barbarian:wild-soul-ua", "source": "Unearthed Arcana 60 - Barbarian and Monk"}
+{"archetype": "barbarian", "name": "Zealot", "slug": "barbarian:zealot", "source": "Xanathar's Guide to Everything"}
+{"archetype": "bard", "name": "Creation", "slug": "bard:creation-ua", "source": "Unearthed Arcana 68 - Subclasses, Part 2"}
+{"archetype": "bard", "name": "Eloquence", "slug": "bard:eloquence", "source": "Mythic Odysseys of Theros\nTasha's Cauldron of Everything"}
+{"archetype": "bard", "name": "Glamour", "slug": "bard:glamour", "source": "Xanathar's Guide to Everything"}
+{"archetype": "bard", "name": "Lore", "slug": "bard:lore", "source": "Player's Handbook"}
+{"archetype": "bard", "name": "Mage of Lorehold", "slug": "bard:mage-of-lorehold-ua", "source": "Unearthed Arcana 79 - Mages of Strixhaven"}
+{"archetype": "bard", "name": "Mage of Silverquill", "slug": "bard:mage-of-silverquill-ua", "source": "Unearthed Arcana 79 - Mages of Strixhaven"}
+{"archetype": "bard", "name": "Satire", "slug": "bard:satire-ua", "source": "Unearthed Arcana 12 - Kits of Old"}
+{"archetype": "bard", "name": "Spirits", "slug": "bard:spirits-ua", "source": "Unearthed Arcana 74 - Subclasses, Part 4"}
+{"archetype": "bard", "name": "Swords", "slug": "bard:swords", "source": "Xanathar's Guide to Everything"}
+{"archetype": "bard", "name": "Valor", "slug": "bard:valor", "source": "Player's Handbook"}
+{"archetype": "bard", "name": "Whispers", "slug": "bard:whispers", "source": "Xanathar's Guide to Everything"}
+{"archetype": "cleric", "name": "Ambition", "slug": "cleric:ambition", "source": "Amonkhet"}
+{"archetype": "cleric", "name": "Arcana", "slug": "cleric:arcana", "source": "Sword Coast Adventurer's Guide"}
+{"archetype": "cleric", "name": "City", "slug": "cleric:city-ua", "source": "Unearthed Arcana 7 - Modern Magic"}
+{"archetype": "cleric", "name": "Death", "slug": "cleric:death", "source": "Dungeon Master's Guide"}
+{"archetype": "cleric", "name": "Fate", "slug": "cleric:fate-ua", "source": "Unearthed Arcana 85 - Wonders of the Multiverse"}
+{"archetype": "cleric", "name": "Forge", "slug": "cleric:forge", "source": "Xanathar's Guide to Everything"}
+{"archetype": "cleric", "name": "Grave", "slug": "cleric:grave", "source": "Xanathar's Guide to Everything"}
+{"archetype": "cleric", "name": "Knowledge", "slug": "cleric:knowledge", "source": "Player's Handbook"}
+{"archetype": "cleric", "name": "Life", "slug": "cleric:life", "source": "Player's Handbook"}
+{"archetype": "cleric", "name": "Light", "slug": "cleric:light", "source": "Player's Handbook"}
+{"archetype": "cleric", "name": "Nature", "slug": "cleric:nature", "source": "Player's Handbook"}
+{"archetype": "cleric", "name": "Order", "slug": "cleric:order", "source": "Guildmaster's Guide to Ravnica\nTasha's Cauldron of Everything"}
+{"archetype": "cleric", "name": "Peace", "slug": "cleric:peace", "source": "Tasha's Cauldron of Everything"}
+{"archetype": "cleric", "name": "Protection", "slug": "cleric:protection-ua", "source": "Unearthed Arcana 22 - Cleric"}
+{"archetype": "cleric", "name": "Solidarity", "slug": "cleric:solidarity", "source": "Amonkhet"}
+{"archetype": "cleric", "name": "Strength", "slug": "cleric:strength", "source": "Amonkhet"}
+{"archetype": "cleric", "name": "Tempest", "slug": "cleric:tempest", "source": "Player's Handbook"}
+{"archetype": "cleric", "name": "Trickery", "slug": "cleric:trickery", "source": "Player's Handbook"}
+{"archetype": "cleric", "name": "Twilight", "slug": "cleric:twilight-ua", "source": "Unearthed Arcana 63 - Cleric, Druid, Wizard"}
+{"archetype": "cleric", "name": "Unity", "slug": "cleric:unity-ua", "source": "Unearthed Arcana 68 - Subclasses, Part 2"}
+{"archetype": "cleric", "name": "War", "slug": "cleric:war", "source": "Player's Handbook"}
+{"archetype": "cleric", "name": "Zeal", "slug": "cleric:zeal", "source": "Amonkhet"}
+{"archetype": "druid", "name": "Dreams", "slug": "druid:dreams", "source": "Xanathar's Guide to Everything"}
+{"archetype": "druid", "name": "Land", "slug": "druid:land", "source": "Player's Handbook"}
+{"archetype": "druid", "name": "Moon", "slug": "druid:moon", "source": "Player's Handbook"}
+{"archetype": "druid", "name": "Primeval", "slug": "druid:primeval-ua", "source": "Unearthed Arcana 83 - Giant Options"}
+{"archetype": "druid", "name": "Shepherd", "slug": "druid:shepherd", "source": "Xanathar's Guide to Everything"}
+{"archetype": "druid", "name": "Spores", "slug": "druid:spores", "source": "Guildmaster's Guide to Ravnica\nTasha's Cauldron of Everything"}
+{"archetype": "druid", "name": "Stars", "slug": "druid:stars-ua", "source": "Unearthed Arcana 69 - Subclasses, Part 3"}
+{"archetype": "druid", "name": "Twilight", "slug": "druid:twilight-ua", "source": "Unearthed Arcana 22 - Druid"}
+{"archetype": "druid", "name": "Wildfire", "slug": "druid:wildlife-ua", "source": "Unearthed Arcana 63 - Cleric, Druid, Wizard"}
+{"archetype": "fighter", "name": "Arcane Archer", "slug": "fighter:arcane-archer", "source": "Xanathar's Guide to Everything"}
+{"archetype": "fighter", "name": "Arcane Archer (2016)", "slug": "fighter:arcane-archer-ua", "source": "Unearthed Arcana 23 - Fighter"}
+{"archetype": "fighter", "name": "Arcane Archer (2017)", "slug": "fighter:arcane-archer-revised-ua", "source": "Unearthed Arcana 39 - Revised Subclasses"}
+{"archetype": "fighter", "name": "Banneret", "slug": "fighter:banneret", "source": "Sword Coast Adventurer's Guide"}
+{"archetype": "fighter", "name": "Battle Master", "slug": "fighter:battle-master", "source": "Player's Handbook"}
+{"archetype": "fighter", "name": "Brute", "slug": "fighter:brute-ua", "source": "Unearthed Arcana 46 - Three Subclasses"}
+{"archetype": "fighter", "name": "Cavalier", "slug": "fighter:cavalier-ua", "source": "Unearthed Arcana 40 - Revised Class Options"}
+{"archetype": "fighter", "name": "Champion", "slug": "fighter:champion", "source": "Player's Handbook"}
+{"archetype": "fighter", "name": "Echo Knight", "slug": "fighter:echo-knight", "source": "Explorer's Guide to Wildemount"}
+{"archetype": "fighter", "name": "Eldritch Knight", "slug": "fighter:eldritch-knight", "source": "Player's Handbook"}
+{"archetype": "fighter", "name": "Knight", "slug": "fighter:knight-ua", "source": "Unearthed Arcana 23 - Fighter"}
+{"archetype": "fighter", "name": "Monster Hunter", "slug": "fighter:monster-hunter-ua", "source": "Unearthed Arcana 13 - Gothic Heroes"}
+{"archetype": "fighter", "name": "Psi Knight", "slug": "fighter:psi-knight-ua", "source": "Unearthed Arcana 71 - Psionic Options Revisited"}
+{"archetype": "fighter", "name": "Psi Warrior", "slug": "fighter:psi-warrior", "source": "Tasha's Cauldron of Everything"}
+{"archetype": "fighter", "name": "Psychic Warrior", "slug": "fighter:psychic-warrior-ua", "source": "Unearthed Arcana 66 - Fighter, Rogue, Wizard"}
+{"archetype": "fighter", "name": "Rune Knight", "slug": "fighter:rune-knight-ua", "source": "Unearthed Arcana 64 - Fighter, Ranger, Rogue"}
+{"archetype": "fighter", "name": "Samurai", "slug": "fighter:samurai-ua", "source": "Unearthed Arcana 23 - Fighter"}
+{"archetype": "fighter", "name": "Scout", "slug": "fighter:scout-ua", "source": "Unearthed Arcana 12 - Kits of Old"}
+{"archetype": "fighter", "name": "Sharpshooter", "slug": "fighter:sharpshooter-ua", "source": "Unearthed Arcana 23 - Fighter"}
+{"archetype": "monk", "name": "Ascendant Dragon", "slug": "monk:ascendant-dragon-ua", "source": "Unearthed Arcana 75 - Subclasses, Part 5"}
+{"archetype": "monk", "name": "Astral Self", "slug": "monk:astral-self-ua", "source": "Unearthed Arcana 60 - Barbarian and Monk"}
+{"archetype": "monk", "name": "Drunken Master", "slug": "monk:drunken-master", "source": "Xanathar's Guide to Everything"}
+{"archetype": "monk", "name": "Four Elements", "slug": "monk:four-elements", "source": "Player's Handbook"}
+{"archetype": "monk", "name": "Kensei", "slug": "monk:kensei-ua", "source": "Source: Unearthed Arcana 24 - Monk"}
+{"archetype": "monk", "name": "Long Death", "slug": "monk:long-death", "source": "Sword Coast Adventurer's Guide"}
+{"archetype": "monk", "name": "Mercy", "slug": "monk:mercy-ua", "source": "Unearthed Arcana 67 - Subclasses, Part 1"}
+{"archetype": "monk", "name": "Open Hand", "slug": "monk:open-hand", "source": "Player's Handbook"}
+{"archetype": "monk", "name": "Shadow", "slug": "monk:shadow", "source": "Player's Handbook"}
+{"archetype": "monk", "name": "Sun Soul", "slug": "monk:sun-soul", "source": "Sword Coast Adventurer's Guide\nXanathar's Guide to Everything"}
+{"archetype": "monk", "name": "Tranquility", "slug": "monk:tranquility-ua", "source": "Unearthed Arcana 24 - Monk"}
+{"archetype": "paladin", "name": "Ancients", "slug": "paladin:ancients", "source": "Player's Handbook"}
+{"archetype": "paladin", "name": "Conquest", "slug": "paladin:conquest", "source": "Xanathar's Guide to Everything"}
+{"archetype": "paladin", "name": "Crown", "slug": "paladin:crown", "source": "Sword Coast Adventurer's Guide"}
+{"archetype": "paladin", "name": "Devotion", "slug": "paladin:devotion", "source": "Player's Handbook"}
+{"archetype": "paladin", "name": "Glory", "slug": "paladin:glory", "source": "Mythic Odysseys of Theros\nTasha's Cauldron of Everything"}
+{"archetype": "paladin", "name": "Heroism", "slug": "paladin:heroism-ua", "source": "Unearthed Arcana 62 - Bard and Paladin"}
+{"archetype": "paladin", "name": "Oathbreaker", "slug": "paladin:oathbreaker", "source": "Dungeon Master\u2019s Guide"}
+{"archetype": "paladin", "name": "Redemption", "slug": "paladin:redemption-ua", "source": "Unearthed Arcana 35 - A Trio of Subclasses"}
+{"archetype": "paladin", "name": "Treachery", "slug": "paladin:treachery-ua", "source": "Unearthed Arcana 26 - Paladin"}
+{"archetype": "paladin", "name": "Vengeance", "slug": "paladin:vengeance", "source": "Player's Handbook"}
+{"archetype": "paladin", "name": "Watchers", "slug": "paladin:watchers-ua", "source": "Unearthed Arcana 67 - Subclasses, Part 1"}
+{"archetype": "ranger", "name": "Beast Master", "slug": "ranger:beast-master", "source": "Player's Handbook"}
+{"archetype": "ranger", "name": "Deep Stalker", "slug": "ranger:deep-stalker-ua", "source": "Unearthed Arcana 10 - Light, Dark, Underdark!"}
+{"archetype": "ranger", "name": "Drakewarden", "slug": "ranger:drakewarden", "source": "Fizban's Treasury of Dragons"}
+{"archetype": "ranger", "name": "Drakewarden (UA)", "slug": "ranger:drakewarden-ua", "source": "Unearthed Arcana 75 - Subclasses, Part 5"}
+{"archetype": "ranger", "name": "Fey Wanderer", "slug": "ranger:fey-wanderer-ua", "source": "Unearthed Arcana 69 - Subclasses, Part 3"}
+{"archetype": "ranger", "name": "Gloom Stalker", "slug": "ranger:gloom-stalker", "source": "Xanathar's Guide to Everything"}
+{"archetype": "ranger", "name": "Horizon Walker", "slug": "ranger:horizon-walker", "source": "Xanathar's Guide to Everything"}
+{"archetype": "ranger", "name": "Hunter", "slug": "ranger:hunter", "source": "Player's Handbook"}
+{"archetype": "ranger", "name": "Monster Slayer", "slug": "ranger:monster-slayer-ua", "source": "Unearthed Arcana 35 - A Trio of Subclasses"}
+{"archetype": "ranger", "name": "Primeval Guardian", "slug": "ranger:primeval-guardian-ua", "source": "Unearthed Arcana 27 - Ranger & Rogue"}
+{"archetype": "ranger", "name": "Swarmkeeper", "slug": "ranger:swarmkeeper-ua", "source": "Unearthed Arcana 64 - Fighter, Ranger, Rogue"}
+{"archetype": "rogue", "name": "Arcane Trickster", "slug": "rogue:arcane-trickster", "source": "Player's Handbook"}
+{"archetype": "rogue", "name": "Assassin", "slug": "rogue:assassin", "source": "Player's Handbook"}
+{"archetype": "rogue", "name": "Inquisitive", "slug": "rogue:inquisitive", "source": "Xanathar's Guide to Everything"}
+{"archetype": "rogue", "name": "Mastermind", "slug": "rogue:mastermind", "source": "Xanathar's Guide to Everything"}
+{"archetype": "rogue", "name": "Phantom", "slug": "rogue:phantom-ua", "source": "Unearthed Arcana 72 - Subclasses Revisited"}
+{"archetype": "rogue", "name": "Revived", "slug": "rogue:revived-ua", "source": "Unearthed Arcana 64 - Fighter, Ranger, Rogue"}
+{"archetype": "rogue", "name": "Scout", "slug": "rogue:scout", "source": "Xanathar's Guide to Everything"}
+{"archetype": "rogue", "name": "Soulknife", "slug": "rogue:soulknife", "source": "Tasha's Cauldron of Everything"}
+{"archetype": "rogue", "name": "Soulknife (2019)", "slug": "rogue:soulknife-ua", "source": "Unearthed Arcana 66 - Fighter, Rogue, Wizard"}
+{"archetype": "rogue", "name": "Soulknife (2020)", "slug": "rogue:soulknife-revisited-ua", "source": "Unearthed Arcana 71 - Psionic Options Revisited"}
+{"archetype": "rogue", "name": "Swashbuckler", "slug": "rogue:swashbuckler", "source": "Xanathar's Guide to Everything"}
+{"archetype": "rogue", "name": "Thief", "slug": "rogue:thief", "source": "Player's Handbook"}
+{"archetype": "sorcerer", "name": "Aberrant Mind", "slug": "sorcerer:aberrant-mind-ua", "source": "Unearthed Arcana 61 - Sorcerer and Warlock"}
+{"archetype": "sorcerer", "name": "Clockwork Soul", "slug": "sorcerer:clockwork-soul-ua", "source": "Unearthed Arcana 68 - Subclasses, Part 2"}
+{"archetype": "sorcerer", "name": "Divine Soul", "slug": "sorcerer:divine-soul", "source": "Xanathar's Guide to Everything"}
+{"archetype": "sorcerer", "name": "Draconic Bloodline", "slug": "sorcerer:draconic-bloodline", "source": "Player's Handbook"}
+{"archetype": "sorcerer", "name": "Favored Soul (2015)", "slug": "sorcerer:favored-soul-ua", "source": "Unearthed Arcana 3 - Modifying Classes"}
+{"archetype": "sorcerer", "name": "Favored Soul (2017)", "slug": "sorcerer:favored-soul-revisited-ua", "source": "Unearthed Arcana 28 - Sorcerer"}
+{"archetype": "sorcerer", "name": "Giant Soul", "slug": "sorcerer:giant-soul-ua", "source": "Unearthed Arcana 50 - Giant Soul"}
+{"archetype": "sorcerer", "name": "Lunar Magic", "slug": "sorcerer:lunar-magic-ua", "source": "Unearthed Arcana 81 - Heroes of Krynn"}
+{"archetype": "sorcerer", "name": "Lunar Sorcery", "slug": "sorcerer:lunar-sorcery", "source": "Dragonlance: Shadow of the Dragon Queen"}
+{"archetype": "sorcerer", "name": "Phoenix Sorcery", "slug": "sorcerer:phoenix-sorcery-ua", "source": "Unearthed Arcana 28 - Sorcerer"}
+{"archetype": "sorcerer", "name": "Psionic Soul", "slug": "sorcerer:psionic-soul-ua", "source": "Unearthed Arcana 71 - Psionic Options Revisited"}
+{"archetype": "sorcerer", "name": "Pyromancy", "slug": "sorcerer:pyromancy", "source": "Plane Shift: Kaladesh"}
+{"archetype": "sorcerer", "name": "Sea Sorcery", "slug": "sorcerer:sea-sorcery-ua", "source": "Unearthed Arcana 28 - Sorcerer"}
+{"archetype": "sorcerer", "name": "Shadow", "slug": "sorcerer:shadow-ua", "source": "Unearthed Arcana 10 - Light, Dark, Underdark!"}
+{"archetype": "sorcerer", "name": "Shadow Magic", "slug": "sorcerer:shadow-magic", "source": "Xanathar's Guide to Everything"}
+{"archetype": "sorcerer", "name": "Stone Sorcery", "slug": "sorcerer:stone-sorcery-ua", "source": "Unearthed Arcana 28 - Sorcerer"}
+{"archetype": "sorcerer", "name": "Storm Sorcery", "slug": "sorcerer:storm-sorcery", "source": "Sword Coast Adventurer's Guide\nXanathar's Guide to Everything"}
+{"archetype": "sorcerer", "name": "Wild Magic", "slug": "sorcerer:wild-magic", "source": "Player's Handbook"}
+{"archetype": "warlock", "name": "Archfey", "slug": "warlock:archfey", "source": "Player's Handbook"}
+{"archetype": "warlock", "name": "Celestial", "slug": "warlock:celestial-ua", "source": "Unearthed Arcana 40 - Revised Class Options"}
+{"archetype": "warlock", "name": "Fathomless", "slug": "warlock:fathomless", "source": "Tasha's Cauldron of Everything"}
+{"archetype": "warlock", "name": "Fiend", "slug": "warlock:fiend", "source": "Player's Handbook"}
+{"archetype": "warlock", "name": "Genie", "slug": "warlock:genie-ua", "source": "Unearthed Arcana 72 - Subclasses Revisited"}
+{"archetype": "warlock", "name": "Ghost in the Machine", "slug": "warlock:ghost-in-the-machine-ua", "source": "Unearthed Arcana 7 - Modern Magic"}
+{"archetype": "warlock", "name": "Great Old One", "slug": "warlock:great-old-one", "source": "Player's Handbook"}
+{"archetype": "warlock", "name": "Hexblade", "slug": "warlock:hexblade-ua", "source": "Unearthed Arcana 29 - Warlock and Wizard"}
+{"archetype": "warlock", "name": "Lurker in the Deep", "slug": "warlock:lurker-in-the-deep-ua", "source": "Unearthed Arcana 61 - Sorcerer and Warlock"}
+{"archetype": "warlock", "name": "Noble Genie", "slug": "warlock:noble-genie-ua", "source": "Unearthed Arcana 67 - Subclasses, Part 1"}
+{"archetype": "warlock", "name": "Raven Queen", "slug": "warlock:raven-queen-ua", "source": "Unearthed Arcana 29 - Warlock and Wizard"}
+{"archetype": "warlock", "name": "Seeker", "slug": "warlock:seeker-ua", "source": "Unearthed Arcana 16 - The Faithful"}
+{"archetype": "warlock", "name": "Undead", "slug": "warlock:undead-ua", "source": "Unearthed Arcana 74 - Subclasses, Part 4"}
+{"archetype": "warlock", "name": "Undying", "slug": "warlock:undying", "source": "Sword Coast Adventurer's Guide"}
+{"archetype": "warlock", "name": "Undying Light", "slug": "warlock:undying-light-ua", "source": "Unearthed Arcana 10 - Light, Dark, Underdark!"}
+{"archetype": "wizard", "name": "Abjuration", "slug": "wizard:abjuration", "source": "Player's Handbook"}
+{"archetype": "wizard", "name": "Artificer", "slug": "wizard:artificer-ua", "source": "Unearthed Arcana 1 - Eberron"}
+{"archetype": "wizard", "name": "Bladesinging", "slug": "wizard:bladesinging", "source": "Sword Coast Adventurer's Guide\nTasha's Cauldron of Everything"}
+{"archetype": "wizard", "name": "Chronurgy", "slug": "wizard:chronurgy", "source": "Explorer's Guide to Wildemount"}
+{"archetype": "wizard", "name": "Conjuration", "slug": "wizard:conjuration", "source": "Player's Handbook"}
+{"archetype": "wizard", "name": "Divination", "slug": "wizard:divination", "source": "Player's Handbook"}
+{"archetype": "wizard", "name": "Enchantment", "slug": "wizard:enchantment", "source": "Player's Handbook"}
+{"archetype": "wizard", "name": "Evocation", "slug": "wizard:evocation", "source": "Player's Handbook"}
+{"archetype": "wizard", "name": "Graviturgy", "slug": "wizard:graviturgy", "source": "Explorer's Guide to Wildemount"}
+{"archetype": "wizard", "name": "Illusion", "slug": "wizard:illusion", "source": "Player's Handbook"}
+{"archetype": "wizard", "name": "Invention", "slug": "wizard:invention-ua", "source": "Unearthed Arcana 46 - Three Subclasses"}
+{"archetype": "wizard", "name": "Lore Mastery", "slug": "wizard:lore-mastery-ua", "source": "Unearthed Arcana 29 - Warlock and Wizard"}
+{"archetype": "wizard", "name": "Necromancy", "slug": "wizard:necromancy", "source": "Player's Handbook"}
+{"archetype": "wizard", "name": "Onomancy", "slug": "wizard:onomancy-ua", "source": "Unearthed Arcana 63 - Cleric, Druid, Wizard"}
+{"archetype": "wizard", "name": "Order of Scribes", "slug": "wizard:order-of-scribes-ua", "source": "Unearthed Arcana 72 - Subclasses Revisited"}
+{"archetype": "wizard", "name": "Psionics", "slug": "wizard:psionics-ua", "source": "Unearthed Arcana 66 - Fighter, Rogue, Wizard"}
+{"archetype": "wizard", "name": "Runecrafter", "slug": "wizard:runecrafter-ua", "source": "Unearthed Arcana 83 - Giant Options"}
+{"archetype": "wizard", "name": "Technomancy", "slug": "wizard:technomancy-ua", "source": "Unearthed Arcana 7 - Modern Magic"}
+{"archetype": "wizard", "name": "Theurgy", "slug": "wizard:theurgy-ua", "source": "Unearthed Arcana 33 - Wizard Revisited"}
+{"archetype": "wizard", "name": "Transmutation", "slug": "wizard:transmutation", "source": "Player's Handbook"}
+{"archetype": "wizard", "name": "War Magic", "slug": "wizard:war-magic", "source": "Xanathar's Guide to Everything"}

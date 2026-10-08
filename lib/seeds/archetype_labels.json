@@ -1,0 +1,15 @@
+{
+  "artificer": "Specialty",
+  "barbarian": "Path",
+  "bard": "College",
+  "cleric": "Domain",
+  "druid": "Circle",
+  "fighter": "Archetype",
+  "monk": "Tradition",
+  "paladin": "Oath",
+  "ranger": "Conclave",
+  "rogue": "Archetype",
+  "sorcerer": "Origin",
+  "warlock": "Patron",
+  "wizard": "School"
+}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_10_08_000000) do
+ActiveRecord::Schema.define(version: 2026_10_08_010000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,23 @@ ActiveRecord::Schema.define(version: 2026_10_08_000000) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "archetypes", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "hit_die"
+    t.string "spellcasting_ability"
+    t.string "hit_points_at_1st_level"
+    t.string "hit_points_at_higher_levels"
+    t.jsonb "proficiencies", default: {}, null: false
+    t.jsonb "equipment", default: [], null: false
+    t.jsonb "spellcasting", default: {}, null: false
+    t.jsonb "class_features", default: [], null: false
+    t.string "subclass_label"
+    t.string "source"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_archetypes_on_name", unique: true
   end
 
   create_table "attacks", force: :cascade do |t|
@@ -128,6 +145,8 @@ ActiveRecord::Schema.define(version: 2026_10_08_000000) do
     t.text "flaw"
     t.text "bond"
     t.string "languages", default: [], null: false, array: true
+    t.bigint "archetype_id"
+    t.index ["archetype_id"], name: "index_characters_on_archetype_id"
     t.index ["current_spell_list_id"], name: "index_characters_on_current_spell_list_id"
     t.index ["game_id"], name: "index_characters_on_game_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
@@ -259,6 +278,19 @@ ActiveRecord::Schema.define(version: 2026_10_08_000000) do
     t.index ["name"], name: "index_spells_on_name", unique: true
   end
 
+  create_table "subclasses", force: :cascade do |t|
+    t.bigint "archetype_id", null: false
+    t.string "name", null: false
+    t.string "slug"
+    t.text "description"
+    t.jsonb "features", default: [], null: false
+    t.string "source"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["archetype_id", "name"], name: "index_subclasses_on_archetype_id_and_name", unique: true
+    t.index ["archetype_id"], name: "index_subclasses_on_archetype_id"
+  end
+
   create_table "user_games", force: :cascade do |t|
     t.string "role", default: "player", null: false
     t.string "status", default: "active", null: false
@@ -290,6 +322,7 @@ ActiveRecord::Schema.define(version: 2026_10_08_000000) do
   add_foreign_key "character_items", "characters"
   add_foreign_key "character_items", "items"
   add_foreign_key "character_trackers", "characters"
+  add_foreign_key "characters", "archetypes"
   add_foreign_key "characters", "games"
   add_foreign_key "faction_locations", "factions"
   add_foreign_key "faction_locations", "locations"
@@ -298,5 +331,6 @@ ActiveRecord::Schema.define(version: 2026_10_08_000000) do
   add_foreign_key "features", "characters"
   add_foreign_key "loadouts", "characters"
   add_foreign_key "npcs", "locations"
+  add_foreign_key "subclasses", "archetypes"
   add_foreign_key "users", "characters", column: "current_character_id"
 end
