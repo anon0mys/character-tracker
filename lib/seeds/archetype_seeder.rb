@@ -26,7 +26,7 @@ module ArchetypeSeeder
       next unless archetype
 
       Subclass.find_or_initialize_by(archetype:, name: data["name"]).update!(
-        slug: data["slug"], source: data["source"],
+        slug: data["slug"], source: data["source"], description: data["description"],
       )
     end
   end
