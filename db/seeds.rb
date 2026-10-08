@@ -10,6 +10,11 @@ File.foreach(Rails.root.join("lib/seeds/item_data.json")) do |line|
   Item.find_or_initialize_by(name: item_data["name"]).update!(item_data)
 end
 
+File.foreach(Rails.root.join("lib/seeds/monster_data.json")) do |line|
+  monster_data = JSON.parse(line)
+  Monster.find_or_initialize_by(name: monster_data["name"]).update!(monster_data)
+end
+
 if Rails.env.development? && !AdminUser.exists?(email: "admin@example.com")
   AdminUser.create!(
     email: "admin@example.com",

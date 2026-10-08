@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_10_08_010000) do
+ActiveRecord::Schema.define(version: 2026_10_08_020000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -233,6 +233,33 @@ ActiveRecord::Schema.define(version: 2026_10_08_010000) do
     t.string "location_type", default: "zone", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "monsters", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug"
+    t.string "size"
+    t.string "creature_type"
+    t.string "subtype"
+    t.string "alignment"
+    t.integer "armor_class"
+    t.integer "hit_points"
+    t.string "challenge_rating"
+    t.integer "strength"
+    t.integer "dexterity"
+    t.integer "constitution"
+    t.integer "intelligence"
+    t.integer "wisdom"
+    t.integer "charisma"
+    t.text "description"
+    t.jsonb "stat_block", default: {}, null: false
+    t.string "source"
+    t.string "license_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["challenge_rating"], name: "index_monsters_on_challenge_rating"
+    t.index ["creature_type"], name: "index_monsters_on_creature_type"
+    t.index ["name"], name: "index_monsters_on_name", unique: true
   end
 
   create_table "npcs", force: :cascade do |t|

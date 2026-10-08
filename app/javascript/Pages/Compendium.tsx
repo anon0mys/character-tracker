@@ -1,25 +1,31 @@
 import React, { useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { ISpellType, IItemType } from "../Api";
+import { ISpellType, IItemType, IMonsterType } from "../Api";
 import { cn } from "../lib/utils";
 import { Dialog, DialogContent } from "../Components/ui";
 import SpellsTab from "../Components/Compendium/SpellsTab";
 import ItemsTab from "../Components/Compendium/ItemsTab";
 import DetailPane from "../Components/Compendium/DetailPane";
 import ItemDetailPane from "../Components/Compendium/ItemDetailPane";
+import MonstersTab from "../Components/Compendium/MonstersTab";
+import MonsterDetailPane from "../Components/Compendium/MonsterDetailPane";
 import { useIsDesktop } from "../Hooks/useIsDesktop";
 
 const tabs = [
   { key: "spells", label: "Spells" },
   { key: "items", label: "Items" },
+  { key: "monsters", label: "Monsters" },
 ];
 
 const Compendium = () => {
   const { tab } = useParams<{ tab: string }>();
-  const active = tab === "items" ? "items" : "spells";
+  const active = ["items", "monsters"].includes(tab ?? "") ? tab! : "spells";
   const isDesktop = useIsDesktop();
   const [selected, setSelected] = useState<ISpellType | null>(null);
   const [selectedItem, setSelectedItem] = useState<IItemType | null>(null);
+  const [selectedMonster, setSelectedMonster] = useState<IMonsterType | null>(
+    null,
+  );
 
   return (
     <div className="flex min-h-[75vh] flex-col gap-4">
@@ -53,7 +59,22 @@ const Compendium = () => {
         ))}
       </div>
 
-      {active === "items" ? (
+      {active === "monsters" ? (
+        <div className="flex min-h-0 flex-grow gap-4">
+          <MonstersTab
+            onSelect={setSelectedMonster}
+            selectedId={selectedMonster?.id}
+          />
+          {selectedMonster && isDesktop && (
+            <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
+              <MonsterDetailPane
+                monster={selectedMonster}
+                onClose={() => setSelectedMonster(null)}
+              />
+            </div>
+          )}
+        </div>
+      ) : active === "items" ? (
         <div className="flex min-h-0 flex-grow gap-4">
           <ItemsTab onSelect={setSelectedItem} selectedId={selectedItem?.id} />
           {selectedItem && isDesktop && (
@@ -91,6 +112,17 @@ const Compendium = () => {
             <ItemDetailPane
               item={selectedItem}
               onClose={() => setSelectedItem(null)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {selectedMonster && !isDesktop && (
+        <Dialog open onOpenChange={(o) => !o && setSelectedMonster(null)}>
+          <DialogContent className="max-h-[85vh] overflow-y-auto">
+            <MonsterDetailPane
+              monster={selectedMonster}
+              onClose={() => setSelectedMonster(null)}
             />
           </DialogContent>
         </Dialog>

@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       end
       resources :spells, only: [:index]
       resources :archetypes, only: [:index]
+      resources :monsters, only: [:index]
       resources :items, only: %i[index create update]
       resources :games, only: %i[index show create update destroy]
       get "users/me", to: "users#me"

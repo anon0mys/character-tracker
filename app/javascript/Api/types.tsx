@@ -208,6 +208,43 @@ interface ICharacterItemType {
   quantity: number;
 }
 
+interface IMonsterAction {
+  name: string;
+  desc?: string;
+}
+
+interface IMonsterType {
+  id?: number;
+  name: string;
+  slug?: string;
+  size?: string;
+  creature_type?: string;
+  subtype?: string;
+  alignment?: string;
+  armor_class?: number;
+  hit_points?: number;
+  challenge_rating?: string;
+  strength?: number;
+  dexterity?: number;
+  constitution?: number;
+  intelligence?: number;
+  wisdom?: number;
+  charisma?: number;
+  description?: string;
+  source?: string;
+  license_url?: string;
+  stat_block?: {
+    speed?: Record<string, unknown>;
+    senses?: string;
+    languages?: string;
+    special_abilities?: IMonsterAction[];
+    actions?: IMonsterAction[];
+    legendary_actions?: IMonsterAction[];
+    reactions?: IMonsterAction[];
+    [k: string]: unknown;
+  };
+}
+
 interface ISpellType {
   id: number | null;
   name: string;
@@ -251,6 +288,8 @@ export type {
   IGameType,
   GameStatus,
   IItemType,
+  IMonsterType,
+  IMonsterAction,
   ISpellType,
   ISpellListType,
   IPaginationType,
