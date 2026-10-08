@@ -202,7 +202,9 @@ const Features = () => {
               onValueChange={(v) => patch({ subclass: v })}
             >
               <SelectTrigger>
-                <SelectValue placeholder={`Choose ${character.subclass_label ?? "subclass"}`} />
+                <SelectValue
+                  placeholder={`Choose ${character.subclass_label ?? "subclass"}`}
+                />
               </SelectTrigger>
               <SelectContent>
                 {Array.from(
@@ -225,6 +227,18 @@ const Features = () => {
             />
           )}
         </div>
+        {(character.subclass_details ?? []).find(
+          (x) => x.name === character.subclass,
+        )?.description && (
+          <p className="text-[12.5px] leading-relaxed text-foreground-2 sm:col-span-2">
+            {
+              (character.subclass_details ?? []).find(
+                (x) => x.name === character.subclass,
+              )?.description
+            }
+          </p>
+        )}
+
         <div className="flex flex-col gap-1">
           <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
             Languages

@@ -4,11 +4,18 @@ import { ItemForm } from "../Items";
 import { useAuth } from "../../Auth";
 import { useError } from "../../Errors";
 import { Client, IItemType } from "../../Api";
+import { cn } from "../../lib/utils";
 import { Search } from "lucide-react";
 
 const cols = "grid grid-cols-[2.2fr_1.2fr_1fr_0.6fr_0.8fr] gap-3";
 
-const ItemsTab = () => {
+const ItemsTab = ({
+  onSelect,
+  selectedId,
+}: {
+  onSelect?: (i: IItemType) => void;
+  selectedId?: number | null;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -74,9 +81,16 @@ const ItemsTab = () => {
         </div>
         <div className="min-h-0 flex-grow overflow-y-auto">
           {items.map((item) => (
-            <div
+            <button
               key={item.id}
-              className={`${cols} items-center px-[14px] py-[12px] odd:bg-secondary`}
+              type="button"
+              onClick={() => onSelect?.(item)}
+              className={cn(
+                `${cols} w-full items-center px-[14px] py-[12px] text-left`,
+                selectedId === item.id
+                  ? "bg-proficiency-soft"
+                  : "odd:bg-secondary",
+              )}
             >
               <span className="text-[14px] font-semibold">{item.name}</span>
               <span className="text-[13px] text-foreground-2">
@@ -91,7 +105,7 @@ const ItemsTab = () => {
               <span className="text-[13px] text-foreground-2">
                 {item.requires_attunement ? "yes" : "—"}
               </span>
-            </div>
+            </button>
           ))}
           {items.length === 0 && (
             <p className="py-10 text-center text-[13px] text-muted-foreground">

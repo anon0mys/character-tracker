@@ -30,6 +30,13 @@ class CharacterSerializer < Blueprinter::Base
     a.respond_to?(:subclasses) ? a.subclasses.order(:name).pluck(:name) : []
   end
 
+  field :subclass_details do |character, _options|
+    a = character.archetype
+    next [] unless a.respond_to?(:subclasses)
+
+    a.subclasses.order(:name).map { |sc| { name: sc.name, description: sc.description } }
+  end
+
   field :skills do |character, _options|
     character.skills
   end

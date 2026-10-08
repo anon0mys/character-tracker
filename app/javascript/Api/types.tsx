@@ -124,6 +124,7 @@ interface ICharacterType {
   subclass?: string;
   subclass_label?: string;
   subclass_options?: string[];
+  subclass_details?: { name: string; description?: string }[];
   trait?: string;
   ideal?: string;
   flaw?: string;
