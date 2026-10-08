@@ -12,7 +12,7 @@ class Item < ApplicationRecord
   enum status: combine_to_hash(STATUSES)
   enum item_type: combine_to_hash(ITEM_TYPES)
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
   has_many :character_items
   has_many :characters, through: :character_items
 

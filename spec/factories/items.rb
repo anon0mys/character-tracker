@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :item do
-    name { Faker::JapaneseMedia::SwordArtOnline.item }
+    sequence(:name) { |n| "#{Faker::JapaneseMedia::SwordArtOnline.item} #{n}" }
     item_type { Item::ITEM_TYPES.sample }
     status { Item::STATUSES.sample }
     quality { Item::QUALITIES.sample }

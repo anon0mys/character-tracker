@@ -1,0 +1,830 @@
+{"name": "Abracadabrus", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Absorbing Tattoo", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Acheron Blade", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Adamantine Armor", "item_type": "armor", "quality": "uncommon", "requires_attunement": false}
+{"name": "Adze of Annam", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Akmon, Hammer of Purphoros", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Alchemical Compendium", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Alchemy Jug", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Alchemy Jug (Blue)", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Alchemy Jug (Orange)", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "All-Purpose Tool", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Amethyst Lodestone", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ammunition, +1, +2, or +3", "item_type": "weapon", "quality": "very_rare", "requires_attunement": false}
+{"name": "Amulet of Health", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Amulet of Proof Against Detection and Location", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Amulet of Protection from Turning", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Amulet of the Black Skull", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Amulet of the Devout", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Amulet of the Drunkard", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Amulet of the Planes", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Animated Shield", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Antimagic Armor", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Apparatus of Kwalish", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Arcane Cannon", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Arcane Grimoire", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Arcane Propulsion Arm", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Armblade", "item_type": "weapon", "quality": "common", "requires_attunement": true}
+{"name": "Armor Of Fungal Spores", "item_type": "armor", "quality": "uncommon", "requires_attunement": false}
+{"name": "Armor Of The Fallen", "item_type": "armor", "quality": "uncommon", "requires_attunement": true}
+{"name": "Armor Of Weightlessness", "item_type": "armor", "quality": "uncommon", "requires_attunement": true}
+{"name": "Armor of Gleaming", "item_type": "armor", "quality": "common", "requires_attunement": false}
+{"name": "Armor of Invulnerability", "item_type": "armor", "quality": "legendary", "requires_attunement": true}
+{"name": "Armor of Resistance", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Armor of Safeguarding", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Armor of Vulnerability", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Armor, +1, +2, or +3", "item_type": "armor", "quality": "legendary", "requires_attunement": false}
+{"name": "Arrow of Slaying", "item_type": "weapon", "quality": "very_rare", "requires_attunement": false}
+{"name": "Arrow-Catching Shield", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Astral Shard", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Astromancy Archive", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Atlas of Endless Horizons", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Axe of the Dwarvish Lords", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Azuredge", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Baba Yaga's Mortar and Pestle", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Badge of the Watch", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Bag Of Bounty", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Bag of Beans", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Bag of Devouring", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Bag of Holding", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Bag of Tricks", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Balance of Harmony", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Baleful Talon", "item_type": "weapon", "quality": "very_rare", "requires_attunement": false}
+{"name": "Balloon Pack", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Band of Loyalty", "item_type": "jewelry", "quality": "common", "requires_attunement": true}
+{"name": "Banner of the Krig Rune", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Barrier Tattoo", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Battering Shield", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Battle Standard of Infernal Power", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Bead of Force", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Bead of Nourishment", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Bead of Refreshment", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Belashyrra's Beholder Crown", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Bell Branch", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Belt of Dwarvenkind", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Belt of Giant Strength", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Berserker Axe", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Bigby's Beneficent Bracelet", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Black Crystal Tablet", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Blackrazor", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Blackstaff", "item_type": "staff", "quality": "legendary", "requires_attunement": true}
+{"name": "Blade of Avernus", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Blade of Broken Mirrors", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Blade of the Medusa", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Blast Scepter", "item_type": "rod", "quality": "very_rare", "requires_attunement": true}
+{"name": "Blasted Goggles", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Blod Stone", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Blood Fury Tattoo", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Blood Spear", "item_type": "weapon", "quality": "uncommon", "requires_attunement": true}
+{"name": "Blood of the Lycanthrope Antidote", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Bloodaxe", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Bloodrage Greataxe", "item_type": "weapon", "quality": "uncommon", "requires_attunement": false}
+{"name": "Bloodseeker Ammunition", "item_type": "weapon", "quality": "very_rare", "requires_attunement": false}
+{"name": "Bloodshed Blade", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Bloodwell Vial", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Bobbing Lily Pad", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Bonecounter", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Book of Exalted Deeds", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Book of Vile Darkness", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Book of Vile Darkness (Variant)", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Bookmark", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Boomerang Shield", "item_type": "armor", "quality": "uncommon", "requires_attunement": true}
+{"name": "Boots of Elvenkind", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Boots of False Tracks", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Boots of Levitation", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Boots of Speed", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Boots of Striding and Springing", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Boots of the Winterlands", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Bottle of Boundless Coffee", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Bottled Breath", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Bow Of Conflagration", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Bow Of Melodies", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Bowl of Commanding Water Elementals", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Bracelet of Rock Magic", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Bracer of Flying Daggers", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Bracers of Archery", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Bracers of Celerity", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Bracers of Defense", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Brazier of Commanding Fire Elementals", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Breastplate Of Balance", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Breathing Bubble", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Bridle of Capturing", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Brooch of Living Essence", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Brooch of Shielding", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Broom of Flying", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Butcher's Bib", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Candle of Invocation", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Candle of the Deep", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Cap of Water Breathing", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Cape of Enlargement", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Cape of the Mountebank", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Card Sharp's Deck", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Carpet of Flying", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Cast-Off Armor", "item_type": "armor", "quality": "common", "requires_attunement": false}
+{"name": "Cauldron of Plenty", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Cauldron of Rebirth", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Censer of Controlling Air Elementals", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Charlatan's Die", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Charm of Plant Command", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Chest of Preserving", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Chime of Exile", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Chime of Opening", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Chromatic Rose", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Chronolometer", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Circlet of Blasting", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Circlet of Human Perfection", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Claw of the Wyrm Rune", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Claws of the Umber Hulk", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Cleansing Stone", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Cloak of Arachnida", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Cloak of Billowing", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Cloak of Displacement", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Cloak of Elvenkind", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Cloak of Invisibility", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Cloak of Many Fashions", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Cloak of Protection", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Cloak of the Bat", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Cloak of the Manta Ray", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Clockwork Amulet", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Clockwork Armor", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Clothes of Mending", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Coiling Grasp Tattoo", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Coin of Delving", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Conch of Teleportation", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Constantori's Portrait", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Corpse Slayer", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Cracked Driftglobe", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Crook of Rao", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Crown Of Whirling Comets", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Crown of Lies", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Crown of the Wrath Bringer", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Crusader's Shortsword", "item_type": "weapon", "quality": null, "requires_attunement": true}
+{"name": "Crystal Ball", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Crystal Blade", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Crystalline Chronicle", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Cube of Force", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Cubic Gate", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Cuddly Strixhaven Mascot", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Cursed Luckstone", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Daern's Instant Fortress", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Dagger of Blindsight", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Dagger of Venom", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Dancing Sword", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Danoth's Visor", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Daoud's Wondrous Lantern", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Dark Shard Amulet", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Dawnbringer", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Decanter of Endless Water", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Deck Of Dimensions", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Deck Of Many More Things", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Deck Of Miscellany", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Deck Of Oracles", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Deck Of Wild Cards", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Deck Of Wonder", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Deck of Illusions", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Deck of Many Things", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Deck of Several Things", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Defender", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Dekella, Bident of Thassa", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Delver's Claws", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Demon Armor", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Demon Skin", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Demonomicon of Iggwilv", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Devastation Orb", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Devotee's Censer", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Dimensional Loop", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Dimensional Shackles", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Dispelling Stone", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Docent", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Dodecahedron of Doom", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Donjon's Sundering Sphere", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Draakhorn", "item_type": "wondrous", "quality": null, "requires_attunement": false}
+{"name": "Dragon Mask", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Dragon Scale Mail", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Dragon Slayer", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Dragon Vessel", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Dragon Wing Bow", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Dragon's Wrath Weapon", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Dragon-Touched Focus", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Dragonhide Belt", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Dragonlance", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Dragonstaff of Ahghairon", "item_type": "staff", "quality": "legendary", "requires_attunement": true}
+{"name": "Dragontooth Dagger", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Dread Helm", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Dried Leech", "item_type": "weapon", "quality": "uncommon", "requires_attunement": false}
+{"name": "Driftglobe", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Drown", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Duplicitous Manuscript", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Duskcrusher", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Dust of Corrosion", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Dust of Deliciousness", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Dust of Disappearance", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Dust of Dryness", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Dust of Sneezing and Choking", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Dwarven Plate", "item_type": "armor", "quality": "very_rare", "requires_attunement": false}
+{"name": "Dwarven Thrower", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Dyrrn's Tentacle Whip", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Eagle Whistle", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Ear Horn of Hearing", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Earring of Message", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Earworm", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Efreeti Bottle", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Efreeti Chain", "item_type": "armor", "quality": "legendary", "requires_attunement": true}
+{"name": "Eldritch Claw Tattoo", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Eldritch Staff", "item_type": "staff", "quality": "very_rare", "requires_attunement": true}
+{"name": "Elemental Essence Shard", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Elemental Gem", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Elixir of Health", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Elven Chain", "item_type": "armor", "quality": "rare", "requires_attunement": false}
+{"name": "Emerald Pen", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Enduring Spellbook", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Ephixis, Bow of Nyela", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Ersatz Eye", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Euryale's Aegis", "item_type": "armor", "quality": "legendary", "requires_attunement": true}
+{"name": "Everbright Lantern", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Eversmoking Bottle", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Eye and Hand of Vecna", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Eyes of Charming", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Eyes of Minute Seeing", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Eyes of the Eagle", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Fabulist Gem", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Fane-Eater", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Far Gear", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Far Realm Shard", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Fate Cutter Shears", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Fate Dealer's Deck", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Feather Token", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Feather of Diatryma Summoning", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Fedifensor", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Feywild Shard", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Feywrought Armor", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Figurine of Wondrous Power", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Finder's Goggles", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Fish Suit", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Flail of Tiamat", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Flame Tongue", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Flayer Slayer", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Flying Chariot", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Flying Citadel Helm", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Folding Boat", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Fool's Blade", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Forcebreaker Weapon", "item_type": "weapon", "quality": "very_rare", "requires_attunement": false}
+{"name": "Frost Brand", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Fulminating Treatise", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Galder's Bubble Pipe", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Gambler's Blade", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Gauntlets of Flaming Fury", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Gauntlets of Ogre Power", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Gavel of the Venn Rune", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Gem of Brightness", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Gem of Seeing", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Ghost Lantern", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Ghost Step Tattoo", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Giant Slayer", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Glamerweave", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Glamoured Studded Leather", "item_type": "armor", "quality": "rare", "requires_attunement": false}
+{"name": "Glimmering Moonbow", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Gloomwrought Armor", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Gloves of Missile Snaring", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Gloves of Soul Catching", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Gloves of Swimming and Climbing", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Gloves of Thievery", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Glowrune Pigment", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Gnomengarde Grenade", "item_type": "wondrous", "quality": null, "requires_attunement": false}
+{"name": "Goggles of Night", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Goggles of Object Reading", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Grasping Whip", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Grimoire Infinitus", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Grovelthrash", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Guardian Emblem", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Guild Keyrune", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Guild Signet", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": true}
+{"name": "Gulthias Staff", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Gurt's Greataxe", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Hammer of Runic Focus", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Hammer of Thunderbolts", "item_type": "weapon", "quality": "legendary", "requires_attunement": false}
+{"name": "Hammock of Worlds", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Harkon's Bite", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Harp of Gilded Plenty", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Hat of Disguise", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Hat of Vermin", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Hat of Wizardry", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Hazirawn", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Headband of Intellect", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Heart Weaver's Primer", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Hell Hound Cloak", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Hellfire Weapon", "item_type": "weapon", "quality": "uncommon", "requires_attunement": false}
+{"name": "Helm of Brilliance", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Helm of Comprehending Languages", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Helm of Devil Command", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Helm of Disjunction", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Helm of Perfect Potential", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Helm of Telepathy", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Helm of Teleportation", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Helm of Underwater Action", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Helm of the Gods", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Helm of the Scavenger", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Heretic", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Heward's Handy Haversack", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Heward's Handy Spice Pouch", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Heward's Hireling Armor", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Hide of the Feral Guardian", "item_type": "armor", "quality": "legendary", "requires_attunement": true}
+{"name": "Hither-Thither Staff", "item_type": "staff", "quality": "legendary", "requires_attunement": false}
+{"name": "Holy Avenger", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Holy Symbol of Ravenkind", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Hook of Fisher's Delight", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Horn of Beckoning Death", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Horn of Blasting", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Horn of Silent Alarm", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Horn of Valhalla", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Horn of the Endless Maze", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Horned Ring", "item_type": "jewelry", "quality": "very_rare", "requires_attunement": true}
+{"name": "Horseshoes of Speed", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Horseshoes of a Zephyr", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "House Of Cards", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Hunter's Coat", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Icon of Ravenloft", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Iggwilv's Cauldron", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Iggwylv's Horn", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Illuminator's Tattoo", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Illusionist's Bracers", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Imbued Wood Focus", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Immovable Rod", "item_type": "rod", "quality": "uncommon", "requires_attunement": false}
+{"name": "Infernal Puzzle Box", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Infernal Tack", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Infiltrator's Key", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Ingot of the Skold Rune", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Inquisitive's Goggles", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Insignia of Claws", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Instrument of Illusions", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Instrument of Scribing", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Instrument of the Bards", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Ioun Stone", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Iron Bands of Bilarro", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Iron Flask", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Ironfang", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Javelin of Lightning", "item_type": "weapon", "quality": "uncommon", "requires_attunement": false}
+{"name": "Jester's Mask", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Jewel of Three Prayers", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Kagonesti Forest Shroud", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Keoghtom's Ointment", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Keycharm", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Khrusor, Spear of Heliod", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Knave's Eye Patch", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Korolnor Scepter", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Kyrzin's Ooze", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Lantern of Revealing", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Lantern of Tracking", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Lash of Immolation", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Lash of Shadows", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Last Stand Armor", "item_type": "armor", "quality": "very_rare", "requires_attunement": false}
+{"name": "Leather Golem Armor", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Libram of Souls and Flesh", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Lifewell Tattoo", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Living Armor", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Living Gloves", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Loadstone", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Lock of Trickery", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Longbow of the Healing Hearth", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Lord's Ensemble", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Lorehold Primer", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Lost Crown of Besilmer", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Luba's Tarokka of Souls", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Lucent Destroyer", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Luck Blade", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Luminous War Pick", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Luxon Beacon", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Lyre of Building", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Mace of Disruption", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Mace of Smiting", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Mace of Terror", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Mace of the Black Crown", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Mantle of Spell Resistance", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Manual of Bodily Health", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Manual of Gainful Exercise", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Manual of Golems", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Manual of Quickness of Action", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Mariner's Armor", "item_type": "armor", "quality": "uncommon", "requires_attunement": false}
+{"name": "Mask of the Beast", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Mask of the Dragon Queen", "item_type": "wondrous", "quality": null, "requires_attunement": true}
+{"name": "Masque Charm", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Masquerade Tattoo", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Mastix, Whip of Erebos", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Matalotok", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Medal of Muscle", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Medal of Wit", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Medal of the Conch", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Medal of the Horizonback", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Medal of the Maze", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Medal of the Meat Pie", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Medal of the Wetlands", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Medallion of Thoughts", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Mighty Servant of Leuk-o", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Mimir", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Mind Blade", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Mind Carapace Armor", "item_type": "armor", "quality": "uncommon", "requires_attunement": true}
+{"name": "Mind Crystal", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Mind Lash", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Mindblasting Cap", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Mindguard Crown", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Mirror of Life Trapping", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Mirror of Reflected Pasts", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Mirror of the Past", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Mistral Mantle", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Mithral Armor", "item_type": "armor", "quality": "uncommon", "requires_attunement": false}
+{"name": "Mizzium Apparatus", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Mizzium Armor", "item_type": "armor", "quality": "rare", "requires_attunement": false}
+{"name": "Mizzium Mortar", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Molten Bronze Skin", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Moodmark Paint", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Moon Sickle", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Moon-Touched Sword", "item_type": "weapon", "quality": "common", "requires_attunement": false}
+{"name": "Moonblade", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Mudslick Tower", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Mummy Rot Antidote", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Murgaxor's Orb", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Mystery Key", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Nature's Mantle", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Navigation Orb", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Necklace of Adaptation", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Necklace of Fireballs", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Necklace of Prayer Beads", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Needle of Mending", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Nepenthe", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Nether Scroll of Azumar", "item_type": "scroll", "quality": "legendary", "requires_attunement": false}
+{"name": "Night Caller", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Nightbringer", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Nightfall Pearl", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Nimbus Coronet", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Nine Lives Stealer", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Nolzur's Marvelous Pigments", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Oathbow", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Obsidian Flint Dragon Plate", "item_type": "armor", "quality": "legendary", "requires_attunement": false}
+{"name": "Oil of Etherealness", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Oil of Sharpness", "item_type": "potion", "quality": "very_rare", "requires_attunement": false}
+{"name": "Oil of Slipperiness", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Opal of the Ild Rune", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Orb of Direction", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Orb of Dragonkind", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Orb of Gonging", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Orb of Shielding", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Orb of Skoraeus", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Orb of Time", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Orb of the Stein Rune", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Orb of the Veil", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Orcsplitter", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Orcus Figurine", "item_type": "wondrous", "quality": null, "requires_attunement": false}
+{"name": "Ornithopter of Flying", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Orrery Of The Wanderer", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Outer Essence Shard", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Paper Bird", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Pariah's Shield", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Pearl of Power", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Pennant of the Vind Rune", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Peregrine Mask", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Perfume of Bewitching", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Periapt of Health", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Periapt of Proof against Poison", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Periapt of Wound Closure", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Philter of Love", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Pipe of Remembrance", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Pipe of Smoke Monsters", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Pipes of Haunting", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Pipes of the Sewers", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Piwafwi", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Piwafwi of Fire Resistance", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Pixie Dust", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Planecaller's Codex", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Plate Armor of Etherealness", "item_type": "armor", "quality": "legendary", "requires_attunement": true}
+{"name": "Plate Of Knight's Fellowship", "item_type": "armor", "quality": "uncommon", "requires_attunement": true}
+{"name": "Platinum Scarf", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Pole of Angling", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Pole of Collapsing", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Polymorph Blade", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Portable Hole", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Portal Compass", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Pot of Awakening", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Potion Of Polychromy", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Potion of Advantage", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Potion of Animal Friendship", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Potion of Aqueous Form", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Potion of Clairvoyance", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Potion of Climbing", "item_type": "potion", "quality": "common", "requires_attunement": false}
+{"name": "Potion of Diminution", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Potion of Dragon's Majesty", "item_type": "potion", "quality": "legendary", "requires_attunement": false}
+{"name": "Potion of Fire Breath", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Potion of Flying", "item_type": "potion", "quality": "very_rare", "requires_attunement": false}
+{"name": "Potion of Gaseous Form", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Potion of Giant Size", "item_type": "potion", "quality": "legendary", "requires_attunement": false}
+{"name": "Potion of Giant Strength", "item_type": "potion", "quality": "legendary", "requires_attunement": false}
+{"name": "Potion of Growth", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Potion of Healing", "item_type": "potion", "quality": "very_rare", "requires_attunement": false}
+{"name": "Potion of Heroism", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Potion of Invisibility", "item_type": "potion", "quality": "very_rare", "requires_attunement": false}
+{"name": "Potion of Invulnerability", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Potion of Longevity", "item_type": "potion", "quality": "very_rare", "requires_attunement": false}
+{"name": "Potion of Maximum Power", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Potion of Mind Control", "item_type": "potion", "quality": "very_rare", "requires_attunement": false}
+{"name": "Potion of Mind Reading", "item_type": "potion", "quality": "rare", "requires_attunement": false}
+{"name": "Potion of Poison", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Potion of Possibility", "item_type": "potion", "quality": "very_rare", "requires_attunement": false}
+{"name": "Potion of Psionic Fortitude", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Potion of Resistance", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Potion of Speed", "item_type": "potion", "quality": "very_rare", "requires_attunement": false}
+{"name": "Potion of Vitality", "item_type": "potion", "quality": "very_rare", "requires_attunement": false}
+{"name": "Potion of Watchful Rest", "item_type": "potion", "quality": "common", "requires_attunement": false}
+{"name": "Potion of Water Breathing", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Powered Armor", "item_type": "armor", "quality": "legendary", "requires_attunement": true}
+{"name": "Prehistoric Figurines of Wondrous Power", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Pressure Capsule", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Prismari Primer", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Professor Orb", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Propeller Helm", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Prosthetic Limb", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Protective Verses", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Psi Crystal", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Pyroconverger", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Pyxis of Pandemonium", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Quaal's Feather Token", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Quandrix Primer", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Quiver of Ehlonna", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Radiance", "item_type": "wand", "quality": null, "requires_attunement": true}
+{"name": "Rakdos Riteknife", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Reaper's Scream", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Red Wizard Blade", "item_type": "weapon", "quality": "legendary", "requires_attunement": false}
+{"name": "Reincarnation Dust", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Reveler's Concertina", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Rhythm Maker's Drum", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ring Of Puzzler's Wit", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": false}
+{"name": "Ring of Amity", "item_type": "jewelry", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ring of Animal Influence", "item_type": "jewelry", "quality": "rare", "requires_attunement": false}
+{"name": "Ring of Djinni Summoning", "item_type": "jewelry", "quality": "legendary", "requires_attunement": true}
+{"name": "Ring of Elemental Command", "item_type": "jewelry", "quality": "legendary", "requires_attunement": true}
+{"name": "Ring of Evasion", "item_type": "jewelry", "quality": "rare", "requires_attunement": true}
+{"name": "Ring of Feather Falling", "item_type": "jewelry", "quality": "rare", "requires_attunement": true}
+{"name": "Ring of Free Action", "item_type": "jewelry", "quality": "rare", "requires_attunement": true}
+{"name": "Ring of Invisibility", "item_type": "jewelry", "quality": "legendary", "requires_attunement": true}
+{"name": "Ring of Jumping", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": true}
+{"name": "Ring of Mind Shielding", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": true}
+{"name": "Ring of Obscuring", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": true}
+{"name": "Ring of Protection", "item_type": "jewelry", "quality": "rare", "requires_attunement": true}
+{"name": "Ring of Red Fury", "item_type": "jewelry", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ring of Regeneration", "item_type": "jewelry", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ring of Resistance", "item_type": "jewelry", "quality": "rare", "requires_attunement": true}
+{"name": "Ring of Shooting Stars", "item_type": "jewelry", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ring of Spell Storing", "item_type": "jewelry", "quality": "rare", "requires_attunement": true}
+{"name": "Ring of Spell Turning", "item_type": "jewelry", "quality": "legendary", "requires_attunement": true}
+{"name": "Ring of Swimming", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": false}
+{"name": "Ring of Telekinesis", "item_type": "jewelry", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ring of Temporal Salvation", "item_type": "jewelry", "quality": "rare", "requires_attunement": true}
+{"name": "Ring of Three Wishes", "item_type": "jewelry", "quality": "legendary", "requires_attunement": false}
+{"name": "Ring of Truth Telling", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": true}
+{"name": "Ring of Warmth", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": true}
+{"name": "Ring of Water Walking", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": false}
+{"name": "Ring of Winter", "item_type": "jewelry", "quality": "artifact", "requires_attunement": true}
+{"name": "Ring of X-Ray Vision", "item_type": "jewelry", "quality": "rare", "requires_attunement": true}
+{"name": "Ring of the Orator", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": true}
+{"name": "Ring of the Ram", "item_type": "jewelry", "quality": "rare", "requires_attunement": true}
+{"name": "Rings of Shared Suffering", "item_type": "jewelry", "quality": "uncommon", "requires_attunement": true}
+{"name": "Robe of Eyes", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Robe of Scintillating Colors", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Robe of Serpents", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Robe of Stars", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Robe of Summer", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Robe of Useful Items", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Robe of the Archmagi", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Rod Of Hellish Flames", "item_type": "rod", "quality": "very_rare", "requires_attunement": true}
+{"name": "Rod of Absorption", "item_type": "rod", "quality": "very_rare", "requires_attunement": true}
+{"name": "Rod of Alertness", "item_type": "rod", "quality": "very_rare", "requires_attunement": true}
+{"name": "Rod of Lordly Might", "item_type": "rod", "quality": "legendary", "requires_attunement": true}
+{"name": "Rod of Resurrection", "item_type": "rod", "quality": "legendary", "requires_attunement": true}
+{"name": "Rod of Retribution", "item_type": "rod", "quality": "uncommon", "requires_attunement": true}
+{"name": "Rod of Rulership", "item_type": "rod", "quality": "rare", "requires_attunement": true}
+{"name": "Rod of Security", "item_type": "rod", "quality": "very_rare", "requires_attunement": false}
+{"name": "Rod of Seven Parts", "item_type": "rod", "quality": "artifact", "requires_attunement": true}
+{"name": "Rod of the Pact Keeper, +1, +2, +3", "item_type": "rod", "quality": "very_rare", "requires_attunement": true}
+{"name": "Rod of the Vonindod", "item_type": "rod", "quality": "rare", "requires_attunement": true}
+{"name": "Rogue's Mantle", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Rope of Climbing", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Rope of Entanglement", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Rope of Mending", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Rotor of Return", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ruby Weave Gem", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Ruby of the War Mage", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Ruidium Armor", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ruidium Shield", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ruidium Weapon", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Ruin's Wake", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Ruinblade", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Ruinous Flail", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Ruinstone", "item_type": "wondrous", "quality": "artifact", "requires_attunement": false}
+{"name": "Saddle of the Cavalier", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Sage's Signet", "item_type": "jewelry", "quality": "very_rare", "requires_attunement": true}
+{"name": "Saint Markovia's Thighbone", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Sanctum Amulet", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Sapphire Buckler", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Scaled Ornament", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Scarab of Protection", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Scimitar of Speed", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Scissors of Shadow Snipping", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Scorpion Armor", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Scribe's Pen", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Scroll of Protection", "item_type": "scroll", "quality": "rare", "requires_attunement": false}
+{"name": "Scroll of Tarrasque Summoning", "item_type": "scroll", "quality": "legendary", "requires_attunement": false}
+{"name": "Scroll of the Comet", "item_type": "scroll", "quality": "legendary", "requires_attunement": false}
+{"name": "Seeker Dart", "item_type": "weapon", "quality": "uncommon", "requires_attunement": false}
+{"name": "Sekolahian Worshipping Statuette", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Sending Stones", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Sensory Stone", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Sentinel Shield", "item_type": "armor", "quality": "uncommon", "requires_attunement": false}
+{"name": "Serpent Scale Armor", "item_type": "armor", "quality": "uncommon", "requires_attunement": false}
+{"name": "Serpent's Fang", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Shadowfell Brand Tattoo", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Shadowfell Shard", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Shard Solitaire", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Shard of Xeluan", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Shard of the Ise Rune", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Shatterspike", "item_type": "weapon", "quality": "uncommon", "requires_attunement": true}
+{"name": "Shield Of The Tortoise", "item_type": "armor", "quality": "uncommon", "requires_attunement": true}
+{"name": "Shield of Expression", "item_type": "armor", "quality": "common", "requires_attunement": false}
+{"name": "Shield of Far Sight", "item_type": "armor", "quality": "rare", "requires_attunement": false}
+{"name": "Shield of Missile Attraction", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Shield of the Blazing Dreadnought", "item_type": "armor", "quality": "legendary", "requires_attunement": true}
+{"name": "Shield of the Hidden Lord", "item_type": "armor", "quality": "legendary", "requires_attunement": true}
+{"name": "Shield of the Silver Dragon", "item_type": "armor", "quality": null, "requires_attunement": false}
+{"name": "Shield of the Uven Rune", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Shield, +1, +2, +3", "item_type": "armor", "quality": "very_rare", "requires_attunement": false}
+{"name": "Shiftweave", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Shrieking Greaves", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Silken Spite", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Silverquill Primer", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Siren Song Lyre", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Skull Helm", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Skyblinder Staff", "item_type": "staff", "quality": "uncommon", "requires_attunement": true}
+{"name": "Sling Bullets of Althemone", "item_type": "weapon", "quality": "very_rare", "requires_attunement": false}
+{"name": "Sling Of Giant Felling", "item_type": "weapon", "quality": "uncommon", "requires_attunement": false}
+{"name": "Slippers of Spider Climbing", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Smokepowder", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Smoldering Armor", "item_type": "armor", "quality": "common", "requires_attunement": false}
+{"name": "Snicker-Snack", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Soul Coin", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Sovereign Glue", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Speaking Stone", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Spear of Backbiting", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Spell Bottle", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Spell Gem", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Spell Scroll", "item_type": "scroll", "quality": "legendary", "requires_attunement": false}
+{"name": "Spellguard Shield", "item_type": "armor", "quality": "very_rare", "requires_attunement": true}
+{"name": "Spelljamming Helm", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Spellshard", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Spellwrought Tattoo", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Sphere Of Annihilation", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Spider Staff", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Spies' Murmur", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Spindle Of Fate", "item_type": "wand", "quality": "legendary", "requires_attunement": true}
+{"name": "Staff of Adornment", "item_type": "staff", "quality": "common", "requires_attunement": false}
+{"name": "Staff of Birdcalls", "item_type": "staff", "quality": "common", "requires_attunement": false}
+{"name": "Staff of Charming", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Staff of Defense", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Staff of Dunamancy", "item_type": "staff", "quality": "very_rare", "requires_attunement": true}
+{"name": "Staff of Fate", "item_type": "staff", "quality": "very_rare", "requires_attunement": true}
+{"name": "Staff of Fire", "item_type": "staff", "quality": "very_rare", "requires_attunement": true}
+{"name": "Staff of Flowers", "item_type": "staff", "quality": "common", "requires_attunement": false}
+{"name": "Staff of Frost", "item_type": "staff", "quality": "very_rare", "requires_attunement": true}
+{"name": "Staff of Healing", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Staff of Power", "item_type": "staff", "quality": "very_rare", "requires_attunement": true}
+{"name": "Staff of Ruling", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Staff of Striking", "item_type": "staff", "quality": "very_rare", "requires_attunement": true}
+{"name": "Staff of Swarming Insects", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Staff of Thunder and Lightning", "item_type": "staff", "quality": "very_rare", "requires_attunement": true}
+{"name": "Staff of Withering", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Staff of the Adder", "item_type": "staff", "quality": "uncommon", "requires_attunement": true}
+{"name": "Staff of the Forgotten One", "item_type": "staff", "quality": "artifact", "requires_attunement": true}
+{"name": "Staff of the Ivory Claw", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Staff of the Magi", "item_type": "staff", "quality": "legendary", "requires_attunement": true}
+{"name": "Staff of the Python", "item_type": "staff", "quality": "uncommon", "requires_attunement": true}
+{"name": "Staff of the Rooted Hills", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Staff of the Woodlands", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Starshot Crossbow", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Steel", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Stone of Controlling Earth Elementals", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Stone of Golorr", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Stone of Good Luck (Luckstone)", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Stone of Ill Luck", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Stonebreaker's Breastplate", "item_type": "armor", "quality": "legendary", "requires_attunement": true}
+{"name": "Stonemaker War Pick", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Stonespeaker Crystal", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Stonky's Ring", "item_type": "jewelry", "quality": null, "requires_attunement": true}
+{"name": "Storm Boomerang", "item_type": "weapon", "quality": "uncommon", "requires_attunement": false}
+{"name": "Stormgirdle", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Strixhaven Pennant", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Sun Blade", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Sun Pellet", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Sun Staff", "item_type": "staff", "quality": "rare", "requires_attunement": true}
+{"name": "Sunforger", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Sunsword", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Sword of Answering", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Sword of Kas", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Sword of Life Stealing", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Sword of Sharpness", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Sword of Vengeance", "item_type": "weapon", "quality": "uncommon", "requires_attunement": true}
+{"name": "Sword of Wounding", "item_type": "weapon", "quality": "rare", "requires_attunement": true}
+{"name": "Sword of Zariel", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Sword of the Paruns", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Sword of the Planes", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Tablet of Reawakening", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Talarith", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Talisman of Pure Good", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Talisman of Ultimate Evil", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Talisman of the Sphere", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Talking Doll", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Tankard of Plenty", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Tankard of Sobriety", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Tasha's Creeping Keepboat", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Tearulai", "item_type": "weapon", "quality": null, "requires_attunement": true}
+{"name": "Teeth of Dahlver-Nar", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Teleportation Tablet", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Telescopic Transporter", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Tentacle Rod", "item_type": "rod", "quality": "rare", "requires_attunement": true}
+{"name": "The Bloody End", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "The Infernal Machine Of Lum The Mad", "item_type": "wondrous", "quality": "artifact", "requires_attunement": true}
+{"name": "Thermal Cube", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Thessaltoxin Antidote", "item_type": "potion", "quality": "uncommon", "requires_attunement": false}
+{"name": "Thunderbuss", "item_type": "weapon", "quality": "very_rare", "requires_attunement": false}
+{"name": "Tidecaller Trident", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Timepiece of Travel", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Tinderstrike", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Tome of Clear Thought", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Tome of Leadership and Influence", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Tome of Understanding", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Tome of the Stilled Tongue", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Topaz Annihilator", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Trident of Fish Command", "item_type": "weapon", "quality": "uncommon", "requires_attunement": true}
+{"name": "Two-Birds Sling", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Unbreakable Arrow", "item_type": "weapon", "quality": "common", "requires_attunement": false}
+{"name": "Universal Solvent", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Ventilating Lungs", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Verminshroud", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Veteran's Cane", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Vicious Weapon", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Voidwalker Armor", "item_type": "armor", "quality": "rare", "requires_attunement": true}
+{"name": "Vorpal Sword", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Vox Seeker", "item_type": "wondrous", "quality": "common", "requires_attunement": false}
+{"name": "Voyager Staff", "item_type": "staff", "quality": "very_rare", "requires_attunement": true}
+{"name": "Walloping Ammunition", "item_type": "weapon", "quality": "common", "requires_attunement": false}
+{"name": "Wand Sheath", "item_type": "wondrous", "quality": "common", "requires_attunement": true}
+{"name": "Wand of Binding", "item_type": "wand", "quality": "rare", "requires_attunement": true}
+{"name": "Wand of Conducting", "item_type": "wand", "quality": "common", "requires_attunement": false}
+{"name": "Wand of Enemy Detection", "item_type": "wand", "quality": "rare", "requires_attunement": true}
+{"name": "Wand of Entangle", "item_type": "wand", "quality": "uncommon", "requires_attunement": true}
+{"name": "Wand of Fear", "item_type": "wand", "quality": "rare", "requires_attunement": true}
+{"name": "Wand of Fireballs", "item_type": "wand", "quality": "rare", "requires_attunement": true}
+{"name": "Wand of Lightning Bolts", "item_type": "wand", "quality": "rare", "requires_attunement": true}
+{"name": "Wand of Magic Detection", "item_type": "wand", "quality": "uncommon", "requires_attunement": false}
+{"name": "Wand of Magic Missiles", "item_type": "wand", "quality": "uncommon", "requires_attunement": false}
+{"name": "Wand of Orcus", "item_type": "wand", "quality": "artifact", "requires_attunement": true}
+{"name": "Wand of Paralysis", "item_type": "wand", "quality": "rare", "requires_attunement": true}
+{"name": "Wand of Polymorph", "item_type": "wand", "quality": "very_rare", "requires_attunement": true}
+{"name": "Wand of Pyrotechnics", "item_type": "wand", "quality": "common", "requires_attunement": false}
+{"name": "Wand of Scowls", "item_type": "wand", "quality": "common", "requires_attunement": false}
+{"name": "Wand of Secrets", "item_type": "wand", "quality": "uncommon", "requires_attunement": false}
+{"name": "Wand of Smiles", "item_type": "wand", "quality": "common", "requires_attunement": false}
+{"name": "Wand of Viscid Globs", "item_type": "wand", "quality": "rare", "requires_attunement": true}
+{"name": "Wand of Web", "item_type": "wand", "quality": "uncommon", "requires_attunement": true}
+{"name": "Wand of Winter", "item_type": "wand", "quality": "rare", "requires_attunement": true}
+{"name": "Wand of Wonder", "item_type": "wand", "quality": "rare", "requires_attunement": true}
+{"name": "Wand of the War Mage", "item_type": "wand", "quality": "very_rare", "requires_attunement": true}
+{"name": "War Horn of Valor", "item_type": "wondrous", "quality": "rare", "requires_attunement": false}
+{"name": "Warrior's Passkey", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Watchful Helm", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Wave", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Wayfarer's Boots", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Waythe", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Weapon of Certain Death", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Weapon of Throne's Command", "item_type": "weapon", "quality": "very_rare", "requires_attunement": true}
+{"name": "Weapon of Warning", "item_type": "weapon", "quality": "uncommon", "requires_attunement": true}
+{"name": "Weapon, +1, +2, or +3", "item_type": "weapon", "quality": "very_rare", "requires_attunement": false}
+{"name": "Weird Tank", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Well of Many Worlds", "item_type": "wondrous", "quality": "legendary", "requires_attunement": false}
+{"name": "Wheel of Stars", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Wheel of Wind and Water", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Whelm", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Wildspace Orrery", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Will of the Talon", "item_type": "weapon", "quality": "artifact", "requires_attunement": true}
+{"name": "Wind Fan", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": false}
+{"name": "Windvane", "item_type": "weapon", "quality": "legendary", "requires_attunement": true}
+{"name": "Winged Ammunition", "item_type": "weapon", "quality": "uncommon", "requires_attunement": false}
+{"name": "Winged Boots", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Wings of Flying", "item_type": "wondrous", "quality": "rare", "requires_attunement": true}
+{"name": "Wingwear", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Witchlight Vane", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Witchlight Watch", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Witherbloom Primer", "item_type": "wondrous", "quality": "uncommon", "requires_attunement": true}
+{"name": "Woodcutter's Axe", "item_type": "weapon", "quality": "rare", "requires_attunement": false}
+{"name": "Wraps Of Unarmed Prowess", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": false}
+{"name": "Wreath of the Prism", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Wyrmreaver Gauntlets", "item_type": "wondrous", "quality": "very_rare", "requires_attunement": true}
+{"name": "Wyrmskull Throne", "item_type": "wondrous", "quality": "artifact", "requires_attunement": false}
+{"name": "Yester Hill Axe", "item_type": "weapon", "quality": null, "requires_attunement": false}
+{"name": "Ythryn Mythallar", "item_type": "wondrous", "quality": "legendary", "requires_attunement": true}
+{"name": "Zephyr Armor", "item_type": "armor", "quality": "rare", "requires_attunement": true}
