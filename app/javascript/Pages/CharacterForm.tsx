@@ -23,6 +23,7 @@ const characterSchema = z.object({
   archetype: z
     .string()
     .refine((val) => archetypes.includes(val), "Invalid archetype"),
+  subclass: z.string().optional(),
   background: z.string().min(2, "Background must have at least 2 letters"),
   alignment: z
     .string()
@@ -67,6 +68,7 @@ const CharacterForm = () => {
       name: "",
       race: "",
       archetype: "",
+      subclass: "",
       background: "",
       alignment: "",
       age: 20,
@@ -98,6 +100,7 @@ const CharacterForm = () => {
             name: character.name || "",
             race: character.race || "",
             archetype: character.archetype || "",
+            subclass: character.subclass || "",
             background: character.background || "",
             alignment: character.alignment || "",
             age: character.age || 20,

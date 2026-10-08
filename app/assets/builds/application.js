@@ -62340,10 +62340,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(118);
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(118);
 /* harmony import */ var _ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
 /* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(22);
+/* harmony import */ var _Auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19);
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -62384,7 +62398,38 @@ var alignmentOptions = [{
 }];
 
 var CharacterBioForm = function CharacterBioForm() {
-  var form = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_3__.useFormContext)();
+  var _currentMeta$subclass;
+
+  var form = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_4__.useFormContext)();
+  var auth = (0,_Auth__WEBPACK_IMPORTED_MODULE_3__.useAuth)();
+  var client = (0,_Api__WEBPACK_IMPORTED_MODULE_2__.Client)();
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      meta = _useState2[0],
+      setMeta = _useState2[1];
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    client.get({
+      path: "/archetypes",
+      token: auth.getToken()
+    }).then(function (r) {
+      var _r$data;
+
+      return setMeta((_r$data = r.data) !== null && _r$data !== void 0 ? _r$data : []);
+    })["catch"](function () {
+      return setMeta([]);
+    }); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  var classNames = meta.length ? meta.map(function (m) {
+    return m.name;
+  }) : _Api__WEBPACK_IMPORTED_MODULE_2__.archetypes;
+  var selectedArchetype = form.watch("archetype");
+  var currentMeta = meta.find(function (m) {
+    return m.name === selectedArchetype;
+  });
+  var subOptions = (_currentMeta$subclass = currentMeta === null || currentMeta === void 0 ? void 0 : currentMeta.subclasses) !== null && _currentMeta$subclass !== void 0 ? _currentMeta$subclass : [];
+  var subLabel = (currentMeta === null || currentMeta === void 0 ? void 0 : currentMeta.subclass_label) || "Subclass";
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormField, {
@@ -62421,18 +62466,37 @@ var CharacterBioForm = function CharacterBioForm() {
         value: field.value
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormControl, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectTrigger, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectValue, {
         placeholder: "Select Class"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, _Api__WEBPACK_IMPORTED_MODULE_2__.archetypes.map(function (archetype) {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, classNames.map(function (archetype) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectItem, {
           key: archetype,
           value: archetype
         }, archetype);
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormMessage, null));
     }
+  }), subOptions.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormField, {
+    control: form.control,
+    name: "subclass",
+    render: function render(_ref4) {
+      var field = _ref4.field;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormItem, {
+        className: "min-w-[150px] flex-1"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormLabel, null, subLabel), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Select, {
+        onValueChange: field.onChange,
+        value: field.value || undefined
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormControl, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectTrigger, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectValue, {
+        placeholder: "Select ".concat(subLabel)
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectContent, null, subOptions.map(function (sc) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.SelectItem, {
+          key: sc,
+          value: sc
+        }, sc);
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormMessage, null));
+    }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormField, {
     control: form.control,
     name: "background",
-    render: function render(_ref4) {
-      var field = _ref4.field;
+    render: function render(_ref5) {
+      var field = _ref5.field;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormItem, {
         className: "flex-1 min-w-[150px]"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormLabel, null, "Background"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Select, {
@@ -62450,8 +62514,8 @@ var CharacterBioForm = function CharacterBioForm() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormField, {
     control: form.control,
     name: "alignment",
-    render: function render(_ref5) {
-      var field = _ref5.field;
+    render: function render(_ref6) {
+      var field = _ref6.field;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormItem, {
         className: "flex-1 min-w-[150px]"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormLabel, null, "Alignment"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Select, {
@@ -62469,8 +62533,8 @@ var CharacterBioForm = function CharacterBioForm() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormField, {
     control: form.control,
     name: "age",
-    render: function render(_ref6) {
-      var field = _ref6.field;
+    render: function render(_ref7) {
+      var field = _ref7.field;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormItem, {
         className: "flex-1 min-w-[150px]"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormLabel, null, "Age"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.FormControl, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ui__WEBPACK_IMPORTED_MODULE_1__.Input, _extends({
@@ -79933,6 +79997,7 @@ var characterSchema = zod__WEBPACK_IMPORTED_MODULE_8__.object({
   archetype: zod__WEBPACK_IMPORTED_MODULE_8__.string().refine(function (val) {
     return _Api__WEBPACK_IMPORTED_MODULE_5__.archetypes.includes(val);
   }, "Invalid archetype"),
+  subclass: zod__WEBPACK_IMPORTED_MODULE_8__.string().optional(),
   background: zod__WEBPACK_IMPORTED_MODULE_8__.string().min(2, "Background must have at least 2 letters"),
   alignment: zod__WEBPACK_IMPORTED_MODULE_8__.string().refine(function (val) {
     return alignments.includes(val);
@@ -79977,6 +80042,7 @@ var CharacterForm = function CharacterForm() {
       name: "",
       race: "",
       archetype: "",
+      subclass: "",
       background: "",
       alignment: "",
       age: 20,
@@ -80010,6 +80076,7 @@ var CharacterForm = function CharacterForm() {
           name: character.name || "",
           race: character.race || "",
           archetype: character.archetype || "",
+          subclass: character.subclass || "",
           background: character.background || "",
           alignment: character.alignment || "",
           age: character.age || 20,

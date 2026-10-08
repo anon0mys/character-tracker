@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import {
   FormField,
@@ -15,7 +15,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui";
-import { archetypes, backgrounds } from "../../Api";
+import { archetypes, backgrounds, Client } from "../../Api";
+import { useAuth } from "../../Auth";
+
+interface ArchMeta {
+  name: string;
+  subclass_label?: string;
+  subclasses: string[];
+}
 
 const alignmentOptions = [
   { label: "Lawful Good", value: "LG" },
@@ -32,6 +39,23 @@ const alignmentOptions = [
 
 const CharacterBioForm = () => {
   const form = useFormContext();
+  const auth = useAuth();
+  const client = Client();
+  const [meta, setMeta] = useState<ArchMeta[]>([]);
+
+  useEffect(() => {
+    client
+      .get({ path: "/archetypes", token: auth.getToken() })
+      .then((r) => setMeta(r.data ?? []))
+      .catch(() => setMeta([]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const classNames = meta.length ? meta.map((m) => m.name) : archetypes;
+  const selectedArchetype = form.watch("archetype");
+  const currentMeta = meta.find((m) => m.name === selectedArchetype);
+  const subOptions = currentMeta?.subclasses ?? [];
+  const subLabel = currentMeta?.subclass_label || "Subclass";
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -74,7 +98,7 @@ const CharacterBioForm = () => {
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {archetypes.map((archetype) => (
+                {classNames.map((archetype) => (
                   <SelectItem key={archetype} value={archetype}>
                     {archetype}
                   </SelectItem>
@@ -85,6 +109,36 @@ const CharacterBioForm = () => {
           </FormItem>
         )}
       />
+      {subOptions.length > 0 && (
+        <FormField
+          control={form.control}
+          name="subclass"
+          render={({ field }) => (
+            <FormItem className="min-w-[150px] flex-1">
+              <FormLabel>{subLabel}</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                value={field.value || undefined}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={`Select ${subLabel}`} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {subOptions.map((sc) => (
+                    <SelectItem key={sc} value={sc}>
+                      {sc}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+
       <FormField
         control={form.control}
         name="background"
