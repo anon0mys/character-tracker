@@ -122,6 +122,8 @@ interface ICharacterType {
   notes?: string;
   conditions?: string[];
   subclass?: string;
+  subclass_label?: string;
+  subclass_options?: string[];
   trait?: string;
   ideal?: string;
   flaw?: string;

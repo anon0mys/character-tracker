@@ -61,7 +61,7 @@ class Archetype < ApplicationRecord
     18 => [4, 3, 3, 3, 1], 19 => [4, 3, 3, 3, 2], 20 => [4, 3, 3, 3, 2]
   }.freeze
 
-  def spell_slots_at_level(level)
+  def spell_slots_at_level(level) # rubocop:disable Metrics/PerceivedComplexity
     return [] unless caster?
 
     slots = spellcasting_data["spell_slots"] || {}

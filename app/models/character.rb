@@ -25,6 +25,7 @@ class Character < ApplicationRecord
 
   belongs_to :user
   belongs_to :game
+  belongs_to :archetype_record, class_name: "Archetype", foreign_key: :archetype_id, optional: true
   belongs_to :current_spell_list, class_name: :SpellList, optional: true
   has_many :spell_lists, dependent: :destroy
   has_many :attacks, dependent: :destroy
@@ -45,7 +46,19 @@ class Character < ApplicationRecord
   end
 
   def archetype
-    Archetypes.new(self[:archetype])
+    key = self[:archetype].to_s.downcase
+    return @archetype if defined?(@archetype) && @archetype_key == key
+
+    @archetype_key = key
+    @archetype = Archetype.find_by("lower(name) = ?", key) || Archetypes.new(self[:archetype])
+  end
+
+  before_save :sync_archetype_id
+
+  def sync_archetype_id
+    return if self[:archetype].blank?
+
+    self.archetype_id = Archetype.where("lower(name) = ?", self[:archetype].to_s.downcase).pick(:id)
   end
 
   def add_proficiency(ability)

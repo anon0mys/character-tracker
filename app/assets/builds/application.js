@@ -81939,7 +81939,7 @@ var FeatureForm = function FeatureForm(_ref) {
 };
 
 var Features = function Features() {
-  var _character$subclass, _character$languages;
+  var _character$subclass_l, _character$subclass_o, _character$subclass_l2, _character$subclass_o2, _character$subclass, _character$languages;
 
   var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useParams)(),
       id = _useParams.id;
@@ -82101,7 +82101,21 @@ var Features = function Features() {
     className: "flex flex-col gap-1"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     className: "font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground"
-  }, "Subclass"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Input, {
+  }, (_character$subclass_l = character.subclass_label) !== null && _character$subclass_l !== void 0 ? _character$subclass_l : "Subclass"), ((_character$subclass_o = character.subclass_options) !== null && _character$subclass_o !== void 0 ? _character$subclass_o : []).length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Select, {
+    value: character.subclass || undefined,
+    onValueChange: function onValueChange(v) {
+      return patch({
+        subclass: v
+      });
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.SelectTrigger, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.SelectValue, {
+    placeholder: "Choose ".concat((_character$subclass_l2 = character.subclass_label) !== null && _character$subclass_l2 !== void 0 ? _character$subclass_l2 : "subclass")
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.SelectContent, null, Array.from(new Set([].concat(_toConsumableArray(character.subclass ? [character.subclass] : []), _toConsumableArray((_character$subclass_o2 = character.subclass_options) !== null && _character$subclass_o2 !== void 0 ? _character$subclass_o2 : [])))).map(function (name) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.SelectItem, {
+      key: name,
+      value: name
+    }, name);
+  }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_5__.Input, {
     value: (_character$subclass = character.subclass) !== null && _character$subclass !== void 0 ? _character$subclass : "",
     onChange: function onChange(e) {
       return patch({

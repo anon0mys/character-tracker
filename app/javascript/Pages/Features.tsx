@@ -194,13 +194,36 @@ const Features = () => {
       <div className="grid gap-[14px] rounded-2xl border border-border bg-card p-4 lg:grid-cols-2">
         <div className="flex flex-col gap-1">
           <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-            Subclass
+            {character.subclass_label ?? "Subclass"}
           </label>
-          <Input
-            value={character.subclass ?? ""}
-            onChange={(e) => patch({ subclass: e.target.value })}
-            placeholder="e.g. Armorer"
-          />
+          {(character.subclass_options ?? []).length > 0 ? (
+            <Select
+              value={character.subclass || undefined}
+              onValueChange={(v) => patch({ subclass: v })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={`Choose ${character.subclass_label ?? "subclass"}`} />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from(
+                  new Set([
+                    ...(character.subclass ? [character.subclass] : []),
+                    ...(character.subclass_options ?? []),
+                  ]),
+                ).map((name) => (
+                  <SelectItem key={name} value={name}>
+                    {name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            <Input
+              value={character.subclass ?? ""}
+              onChange={(e) => patch({ subclass: e.target.value })}
+              placeholder="e.g. Armorer"
+            />
+          )}
         </div>
         <div className="flex flex-col gap-1">
           <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">

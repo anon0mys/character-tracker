@@ -21,6 +21,15 @@ class CharacterSerializer < Blueprinter::Base
     character.active_loadout&.id
   end
 
+  field :subclass_label do |character, _options|
+    character.archetype.try(:subclass_label)
+  end
+
+  field :subclass_options do |character, _options|
+    a = character.archetype
+    a.respond_to?(:subclasses) ? a.subclasses.order(:name).pluck(:name) : []
+  end
+
   field :skills do |character, _options|
     character.skills
   end
