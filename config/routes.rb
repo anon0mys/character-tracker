@@ -26,7 +26,6 @@ Rails.application.routes.draw do
         resources :spell_lists, only: %i[index create show update destroy] do
           post "/add_spell", to: "spell_lists#add_spell"
         end
-        resources :items, only: %i[index], controller: "character_items"
         resources :features, only: %i[index create update destroy]
         resources :feats, only: %i[create destroy], controller: "character_feats"
         resources :loadouts, only: %i[index create update destroy] do
@@ -49,6 +48,9 @@ Rails.application.routes.draw do
         resources :journal_entries, only: %i[index show create update destroy]
         resources :mentions, only: [:index]
         resources :journal_mentions, only: [:index]
+        resources :holdings, only: %i[index show create update destroy]
+        resources :npcs, only: %i[index show create update]
+        resources :locations, only: %i[index create]
       end
       get "users/me", to: "users#me"
       patch "users/current_character", to: "users#set_current_character"

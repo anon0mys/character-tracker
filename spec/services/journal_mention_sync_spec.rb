@@ -38,4 +38,26 @@ RSpec.describe JournalMentionSync do
 
     expect(sync(journal_body([person(kai)])).map(&:mentionable)).to eq([kai])
   end
+
+  context "when a mentioned record is deleted" do
+    let(:venna) { create(:character, game:, name: "Venna") }
+    let(:body) { journal_body([person(venna), " and ", person(kai), " kept watch."]) }
+
+    before do
+      sync(body)
+      venna.destroy!
+    end
+
+    it "drops the deleted record's row" do
+      expect(entry.journal_mentions.reload.map(&:mentionable)).to eq([kai])
+    end
+
+    it "resyncs without trying to link it again" do
+      expect(sync(body).map(&:mentionable)).to eq([kai])
+    end
+
+    it "reports the chip as missing" do
+      expect(described_class.missing_targets(entry)).to eq([{ type: "Character", id: venna.id }])
+    end
+  end
 end

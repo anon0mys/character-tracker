@@ -2,7 +2,8 @@ module Api
   module V1
     class LoadoutsController < ApiController
       before_action :authenticate_user!
-      before_action :set_character
+      before_action :set_character, except: :index
+      before_action :set_viewable_character, only: :index
 
       def index
         render json: LoadoutSerializer.render(@character.loadouts.order(:id), root: :data)
@@ -45,6 +46,10 @@ module Api
 
       def set_character
         @character = current_user.characters.find(params[:character_id])
+      end
+
+      def set_viewable_character
+        @character = viewable_characters.find(params[:character_id])
       end
 
       def loadout_params

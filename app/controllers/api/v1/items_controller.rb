@@ -31,20 +31,21 @@ module Api
           :name,
           :description,
           :item_type,
-          :status,
           :quality,
           :potential_damage,
           :total_charges,
           :value,
-          :quantity,
           :requires_attunement,
           :ac,
           :stat_bonuses,
+          :source,
+          :homebrew,
+          tags: [],
         )
       end
 
       def filtering_params
-        params.slice(:id, :quality, :status, :item_type, :name)
+        params.slice(:id, :quality, :item_type, :name, :homebrew, :tag)
       end
     end
   end

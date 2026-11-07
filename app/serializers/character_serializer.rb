@@ -1,7 +1,7 @@
 class CharacterSerializer < Blueprinter::Base
   identifier :id
 
-  fields :id, :name, :race, :level, :background, :alignment, :age, :ac,
+  fields :id, :game_id, :user_id, :name, :race, :level, :background, :alignment, :age, :ac,
     :initiative, :speed, :perception, :proficiency_bonus, :proficiencies,
     :concentration, :spell_attack_mod, :spell_save_dc, :total_hitpoints,
     :current_hitpoints, :max_hitpoints, :max_hitpoints_bonus, :temp_hitpoints,

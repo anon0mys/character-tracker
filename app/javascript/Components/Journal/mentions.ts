@@ -1,7 +1,7 @@
 import { ReactRenderer } from "@tiptap/react";
 import Mention from "@tiptap/extension-mention";
 import { PluginKey } from "@tiptap/pm/state";
-import { Range } from "@tiptap/core";
+import { Range, mergeAttributes } from "@tiptap/core";
 import { Client, IMentionRef, IMentionResult } from "../../Api";
 import MentionList, { MentionKind, MentionListHandle } from "./MentionList";
 
@@ -13,6 +13,16 @@ const PEOPLE_CHIP =
   "rounded-[6px] bg-arcane-soft px-[6px] py-[1px] font-medium text-arcane-ink cursor-pointer hover:underline";
 const THING_CHIP =
   "rounded-[6px] bg-proficiency-soft px-[6px] py-[1px] font-medium text-proficiency-ink cursor-pointer hover:underline";
+
+/** A chip whose record was deleted: the written name, no link. */
+const DEAD_CHIP = "text-foreground-2";
+
+const refKey = ({ type, id }: Pick<IMentionRef, "type" | "id">) =>
+  `${type}-${id}`;
+
+/** Set of refKeys for the chips that point at deleted records. */
+const missingSet = (missing?: Pick<IMentionRef, "type" | "id">[]) =>
+  new Set((missing ?? []).map(refKey));
 
 const COMPENDIUM_TAB: Record<string, string> = {
   Item: "items",
@@ -30,6 +40,8 @@ interface MentionContext {
   gameId: number;
   token: string | null;
   onCreateItem: (name: string, range: Range) => void;
+  /** refKeys of chips whose record was deleted. */
+  missing?: Set<string>;
 }
 
 /** The context is read through a ref so the editor never rebuilds when it changes. */
@@ -143,6 +155,18 @@ const mentionNode = (
         },
       };
     },
+    renderHTML({ node, HTMLAttributes }) {
+      const dead = ctxRef.current.missing?.has(refKey(node.attrs as any));
+      return [
+        "span",
+        mergeAttributes(
+          { "data-type": name },
+          dead ? { class: DEAD_CHIP } : this.options.HTMLAttributes,
+          HTMLAttributes,
+        ),
+        dead ? node.attrs.label : `${char}${node.attrs.label}`,
+      ];
+    },
   }).configure({
     HTMLAttributes: { class: chip },
     suggestion: {
@@ -164,6 +188,9 @@ const journalMentions = (ctxRef: ContextRef) => [
 export {
   journalMentions,
   hrefFor,
+  refKey,
+  missingSet,
+  DEAD_CHIP,
   MENTION_NODES,
   PERSON,
   THING,

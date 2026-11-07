@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_11_07_000003) do
+ActiveRecord::Schema.define(version: 2026_11_07_100005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,16 +98,6 @@ ActiveRecord::Schema.define(version: 2026_11_07_000003) do
     t.index ["character_id", "feat_id"], name: "index_character_feats_on_character_id_and_feat_id", unique: true
     t.index ["character_id"], name: "index_character_feats_on_character_id"
     t.index ["feat_id"], name: "index_character_feats_on_feat_id"
-  end
-
-  create_table "character_items", force: :cascade do |t|
-    t.bigint "character_id"
-    t.bigint "item_id"
-    t.integer "quantity"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["character_id"], name: "index_character_items_on_character_id"
-    t.index ["item_id"], name: "index_character_items_on_item_id"
   end
 
   create_table "character_trackers", force: :cascade do |t|
@@ -243,21 +233,38 @@ ActiveRecord::Schema.define(version: 2026_11_07_000003) do
     t.jsonb "hp_thresholds", default: {"mangled"=>0.25, "bloodied"=>0.5}, null: false
   end
 
+  create_table "holdings", force: :cascade do |t|
+    t.bigint "game_id", null: false
+    t.bigint "item_id", null: false
+    t.string "holder_type"
+    t.bigint "holder_id"
+    t.integer "quantity", default: 1, null: false
+    t.string "status", default: "carried", null: false
+    t.text "notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_holdings_on_game_id"
+    t.index ["holder_type", "holder_id"], name: "index_holdings_on_holder"
+    t.index ["item_id"], name: "index_holdings_on_item_id"
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.string "item_type"
-    t.string "status"
     t.string "quality"
     t.integer "potential_damage"
     t.integer "total_charges"
     t.integer "value"
-    t.integer "quantity", default: 1
     t.boolean "requires_attunement", default: false
     t.integer "ac"
     t.json "stat_bonuses"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "source"
+    t.boolean "homebrew", default: false, null: false
+    t.string "tags", default: [], null: false, array: true
+    t.index ["homebrew"], name: "index_items_on_homebrew"
     t.index ["name"], name: "index_items_on_name", unique: true
   end
 
@@ -315,6 +322,8 @@ ActiveRecord::Schema.define(version: 2026_11_07_000003) do
     t.string "location_type", default: "zone", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "game_id"
+    t.index ["game_id"], name: "index_locations_on_game_id"
   end
 
   create_table "monsters", force: :cascade do |t|
@@ -348,11 +357,13 @@ ActiveRecord::Schema.define(version: 2026_11_07_000003) do
     t.string "name"
     t.string "description"
     t.string "race"
-    t.string "archetype", default: "artificer", null: false
+    t.string "archetype"
     t.bigint "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["location_id"], name: "index_npcs_on_location_id", unique: true
+    t.bigint "game_id"
+    t.index ["game_id"], name: "index_npcs_on_game_id"
+    t.index ["location_id"], name: "index_npcs_on_location_id"
   end
 
   create_table "races", force: :cascade do |t|
@@ -439,6 +450,8 @@ ActiveRecord::Schema.define(version: 2026_11_07_000003) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "current_character_id"
+    t.string "username"
+    t.index "lower((username)::text)", name: "index_users_on_lower_username", unique: true
     t.index ["current_character_id"], name: "index_users_on_current_character_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -447,8 +460,6 @@ ActiveRecord::Schema.define(version: 2026_11_07_000003) do
   add_foreign_key "attacks", "characters"
   add_foreign_key "character_feats", "characters"
   add_foreign_key "character_feats", "feats"
-  add_foreign_key "character_items", "characters"
-  add_foreign_key "character_items", "items"
   add_foreign_key "character_trackers", "characters"
   add_foreign_key "characters", "archetypes"
   add_foreign_key "characters", "backgrounds"
@@ -459,11 +470,15 @@ ActiveRecord::Schema.define(version: 2026_11_07_000003) do
   add_foreign_key "faction_npcs", "factions"
   add_foreign_key "faction_npcs", "npcs"
   add_foreign_key "features", "characters"
+  add_foreign_key "holdings", "games"
+  add_foreign_key "holdings", "items"
   add_foreign_key "journal_entries", "games"
   add_foreign_key "journal_entry_updates", "journal_entries", on_delete: :cascade
   add_foreign_key "journal_mentions", "journal_entries", on_delete: :cascade
   add_foreign_key "loadouts", "characters"
+  add_foreign_key "locations", "games"
+  add_foreign_key "npcs", "games"
   add_foreign_key "npcs", "locations"
   add_foreign_key "subclasses", "archetypes"
-  add_foreign_key "users", "characters", column: "current_character_id"
+  add_foreign_key "users", "characters", column: "current_character_id", on_delete: :nullify
 end

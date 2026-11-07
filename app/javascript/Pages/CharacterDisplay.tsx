@@ -17,6 +17,9 @@ import {
   RightPanel,
   LoadoutBar,
   PinnedHp,
+  SheetAccessProvider,
+  ReadOnlyFieldset,
+  ReadOnlyBanner,
 } from "../Components/Sheet";
 import { cn } from "../lib/utils";
 
@@ -152,143 +155,158 @@ const CharacterDisplay = () => {
   }
 
   return (
-    <div className="flex flex-col gap-[14px]">
-      <IdentityHeader character={character} onRested={setCharacter} />
+    <SheetAccessProvider character={character}>
+      <div className="flex flex-col gap-[14px]">
+        <IdentityHeader character={character} onRested={setCharacter} />
+        <ReadOnlyBanner name={character.name} />
 
-      <LoadoutBar character={character} onChange={setCharacter} />
+        <ReadOnlyFieldset>
+          <LoadoutBar character={character} onChange={setCharacter} />
+        </ReadOnlyFieldset>
 
-      {/* Desktop: the full sheet in one view */}
-      <div className="hidden lg:flex lg:flex-col lg:gap-[14px]">
-        <div className="flex flex-row gap-[13px]">
-          <AbilitiesCard character={character} />
-          <CombatCard character={character} />
-          <SkillsCard character={character} patch={patch} />
-        </div>
-
-        <HpBand character={character} patch={patch} />
-
-        <div className="flex flex-row gap-[13px]">
-          <AttacksCard
-            attacks={attacks}
-            onAddAttack={() => {
-              setEditingAttack(undefined);
-              setAttackModalOpen(true);
-            }}
-            onEditAttack={openEditAttack}
-            activeLoadoutId={character.active_loadout_id}
-          />
-          <RightPanel
-            character={character}
-            spellLists={spellLists}
-            currentSpellList={currentSpellList}
-            onSelectSpellList={selectSpellList}
-            onAddSpellList={() => setSpellListFormOpen(true)}
-            patch={patch}
-          />
-        </div>
-
-        <MentionedInJournal
-          type="Character"
-          id={character.id ? Number(character.id) : undefined}
-          className="rounded-2xl border border-border bg-card p-5"
-        />
-      </div>
-
-      {/* Phone: pinned HP + segmented reference sections. Attacks / Spells /
-          Gear are their own bottom-tab screens. */}
-      <div className="-mx-4 -mt-[14px] flex flex-col lg:hidden">
-        <PinnedHp character={character} patch={patch} />
-        <div className="flex gap-[6px] overflow-x-auto px-4 pb-1 pt-3">
-          {(["combat", "abilities", "skills", "bio"] as const).map((sec) => (
-            <button
-              key={sec}
-              type="button"
-              onClick={() => setMobileSection(sec)}
-              className={cn(
-                "min-h-[40px] flex-shrink-0 rounded-full px-4 text-[13px] capitalize",
-                mobileSection === sec
-                  ? "bg-foreground text-background font-semibold"
-                  : "border border-border bg-card text-foreground-2",
-              )}
-            >
-              {sec}
-            </button>
-          ))}
-        </div>
-        <div className="px-4 pt-3">
-          {mobileSection === "combat" && <CombatCard character={character} />}
-          {mobileSection === "abilities" && (
+        {/* Desktop: the full sheet in one view */}
+        <div className="hidden lg:flex lg:flex-col lg:gap-[14px]">
+          <div className="flex flex-row gap-[13px]">
             <AbilitiesCard character={character} />
-          )}
-          {mobileSection === "skills" && (
-            <SkillsCard character={character} patch={patch} />
-          )}
-          {mobileSection === "bio" && (
-            <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex flex-col">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
-                    Subclass
-                  </span>
-                  <span className="text-[14px]">
-                    {character.subclass || "—"}
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
-                    Languages
-                  </span>
-                  <span className="text-[14px]">
-                    {(character.languages ?? []).join(", ") || "—"}
-                  </span>
-                </div>
-              </div>
-              {(
-                [
-                  ["trait", "Trait"],
-                  ["ideal", "Ideal"],
-                  ["bond", "Bond"],
-                  ["flaw", "Flaw"],
-                ] as const
-              ).map(([k, label]) =>
-                character[k] ? (
-                  <div key={k} className="flex flex-col">
+            <CombatCard character={character} />
+            <ReadOnlyFieldset>
+              <SkillsCard character={character} patch={patch} />
+            </ReadOnlyFieldset>
+          </div>
+
+          <ReadOnlyFieldset>
+            <HpBand character={character} patch={patch} />
+          </ReadOnlyFieldset>
+
+          <div className="flex flex-row gap-[13px]">
+            <ReadOnlyFieldset>
+              <AttacksCard
+                attacks={attacks}
+                onAddAttack={() => {
+                  setEditingAttack(undefined);
+                  setAttackModalOpen(true);
+                }}
+                onEditAttack={openEditAttack}
+                activeLoadoutId={character.active_loadout_id}
+              />
+            </ReadOnlyFieldset>
+            <RightPanel
+              character={character}
+              spellLists={spellLists}
+              currentSpellList={currentSpellList}
+              onSelectSpellList={selectSpellList}
+              onAddSpellList={() => setSpellListFormOpen(true)}
+              patch={patch}
+            />
+          </div>
+
+          <MentionedInJournal
+            type="Character"
+            id={character.id ? Number(character.id) : undefined}
+            className="rounded-2xl border border-border bg-card p-5"
+          />
+        </div>
+
+        {/* Phone: pinned HP + segmented reference sections. Attacks / Spells /
+          Gear are their own bottom-tab screens. */}
+        <div className="-mx-4 -mt-[14px] flex flex-col lg:hidden">
+          <ReadOnlyFieldset>
+            <PinnedHp character={character} patch={patch} />
+          </ReadOnlyFieldset>
+          <div className="flex gap-[6px] overflow-x-auto px-4 pb-1 pt-3">
+            {(["combat", "abilities", "skills", "bio"] as const).map((sec) => (
+              <button
+                key={sec}
+                type="button"
+                onClick={() => setMobileSection(sec)}
+                className={cn(
+                  "min-h-[40px] flex-shrink-0 rounded-full px-4 text-[13px] capitalize",
+                  mobileSection === sec
+                    ? "bg-foreground text-background font-semibold"
+                    : "border border-border bg-card text-foreground-2",
+                )}
+              >
+                {sec}
+              </button>
+            ))}
+          </div>
+          <div className="px-4 pt-3">
+            {mobileSection === "combat" && <CombatCard character={character} />}
+            {mobileSection === "abilities" && (
+              <AbilitiesCard character={character} />
+            )}
+            {mobileSection === "skills" && (
+              <ReadOnlyFieldset>
+                <SkillsCard character={character} patch={patch} />
+              </ReadOnlyFieldset>
+            )}
+            {mobileSection === "bio" && (
+              <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col">
                     <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
-                      {label}
+                      Subclass
                     </span>
-                    <span className="text-[13px] leading-relaxed text-foreground-2">
-                      {character[k] as string}
+                    <span className="text-[14px]">
+                      {character.subclass || "—"}
                     </span>
                   </div>
-                ) : null,
-              )}
-              <span className="text-[11px] text-muted-foreground">
-                Edit bio on the Features tab.
-              </span>
-              <MentionedInJournal
-                type="Character"
-                id={character.id ? Number(character.id) : undefined}
-              />
-            </div>
-          )}
+                  <div className="flex flex-col">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
+                      Languages
+                    </span>
+                    <span className="text-[14px]">
+                      {(character.languages ?? []).join(", ") || "—"}
+                    </span>
+                  </div>
+                </div>
+                {(
+                  [
+                    ["trait", "Trait"],
+                    ["ideal", "Ideal"],
+                    ["bond", "Bond"],
+                    ["flaw", "Flaw"],
+                  ] as const
+                ).map(([k, label]) =>
+                  character[k] ? (
+                    <div key={k} className="flex flex-col">
+                      <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
+                        {label}
+                      </span>
+                      <span className="text-[13px] leading-relaxed text-foreground-2">
+                        {character[k] as string}
+                      </span>
+                    </div>
+                  ) : null,
+                )}
+                <span className="text-[11px] text-muted-foreground">
+                  Edit bio on the Features tab.
+                </span>
+                <MentionedInJournal
+                  type="Character"
+                  id={character.id ? Number(character.id) : undefined}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
 
-      <AttackForm
-        opened={attackModalOpen}
-        onClose={closeAttackForm}
-        attack={editingAttack}
-        characterId={character.id}
-      />
-      <SpellListForm
-        characterId={character.id}
-        open={spellListFormOpen}
-        setOpen={setSpellListFormOpen}
-        onSubmit={(list: ISpellListType) =>
-          setSpellLists([...spellLists, list])
-        }
-      />
-    </div>
+        <AttackForm
+          opened={attackModalOpen}
+          onClose={closeAttackForm}
+          attack={editingAttack}
+          characterId={character.id}
+        />
+        <SpellListForm
+          characterId={character.id}
+          open={spellListFormOpen}
+          setOpen={setSpellListFormOpen}
+          onSubmit={(list: ISpellListType) =>
+            setSpellLists([...spellLists, list])
+          }
+        />
+      </div>
+    </SheetAccessProvider>
   );
 };
 

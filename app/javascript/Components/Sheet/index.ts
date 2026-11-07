@@ -10,6 +10,14 @@ import PinnedHp from "./PinnedHp";
 import SpellDetail from "./SpellDetail";
 
 export {
+  SheetAccessProvider,
+  ReadOnlyFieldset,
+  ReadOnlyBanner,
+  useSheetAccess,
+  useIsReadOnly,
+} from "./SheetAccess";
+
+export {
   IdentityHeader,
   AbilitiesCard,
   CombatCard,

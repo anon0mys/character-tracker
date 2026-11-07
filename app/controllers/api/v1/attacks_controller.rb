@@ -2,7 +2,8 @@ module Api
   module V1
     class AttacksController < ApiController
       before_action :authenticate_user!
-      before_action :set_character
+      before_action :set_character, except: :index
+      before_action :set_viewable_character, only: :index
 
       def index
         @attacks = @character.attacks
@@ -36,6 +37,10 @@ module Api
 
       def set_character
         @character = current_user.characters.find(params[:character_id])
+      end
+
+      def set_viewable_character
+        @character = viewable_characters.find(params[:character_id])
       end
 
       def attack_params

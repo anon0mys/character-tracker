@@ -29,7 +29,7 @@ RSpec.describe Character do
     it { is_expected.to belong_to :game }
     it { is_expected.to have_many :spell_lists }
     it { is_expected.to have_many :character_trackers }
-    it { is_expected.to have_many(:items).through(:character_items) }
+    it { is_expected.to have_many(:holdings).dependent(:destroy) }
   end
 
   context "hit points" do

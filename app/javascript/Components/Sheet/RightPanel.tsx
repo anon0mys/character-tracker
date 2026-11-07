@@ -13,6 +13,7 @@ import { clamp } from "./format";
 import SpellDetail from "./SpellDetail";
 import GearTab from "./GearTab";
 import ConsumablesTab from "./ConsumablesTab";
+import { ReadOnlyFieldset } from "./SheetAccess";
 
 type Tab = "spells" | "gear" | "consumables";
 
@@ -90,6 +91,7 @@ const RightPanel = ({
 }: RightPanelProps) => {
   const [tab, setTab] = useState<Tab>("spells");
   const [selectedSpell, setSelectedSpell] = useState<ISpellType | null>(null);
+  const [gearTakeover, setGearTakeover] = useState(false);
 
   const tabs: { key: Tab; label: string }[] = [
     { key: "spells", label: "Spells" },
@@ -109,7 +111,7 @@ const RightPanel = ({
 
   return (
     <div className="flex min-h-0 w-full flex-col gap-3 rounded-2xl border border-border bg-card p-[14px] lg:w-[430px] lg:flex-shrink-0">
-      {!selectedSpell && (
+      {!selectedSpell && !(tab === "gear" && gearTakeover) && (
         <div className="flex flex-shrink-0 rounded-[9px] bg-rail p-[3px]">
           {tabs.map(({ key, label }) => (
             <button
@@ -137,50 +139,52 @@ const RightPanel = ({
           />
         ) : (
           <>
-            {slotsMax.length > 0 && (
-              <div className="flex flex-shrink-0 flex-col gap-[6px] border-b border-hairline pb-3">
-                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                  Slots
-                </span>
-                {slotsMax.map((max, idx) =>
-                  max > 0 ? (
-                    <SlotRow
-                      key={idx}
-                      level={idx + 1}
-                      max={max}
-                      used={slotsUsed[String(idx + 1)] ?? 0}
-                      onSpend={(u) => spend(idx + 1, u)}
-                    />
-                  ) : null,
-                )}
-              </div>
-            )}
+            <ReadOnlyFieldset>
+              {slotsMax.length > 0 && (
+                <div className="flex flex-shrink-0 flex-col gap-[6px] border-b border-hairline pb-3">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                    Slots
+                  </span>
+                  {slotsMax.map((max, idx) =>
+                    max > 0 ? (
+                      <SlotRow
+                        key={idx}
+                        level={idx + 1}
+                        max={max}
+                        used={slotsUsed[String(idx + 1)] ?? 0}
+                        onSpend={(u) => spend(idx + 1, u)}
+                      />
+                    ) : null,
+                  )}
+                </div>
+              )}
 
-            <div className="flex flex-shrink-0 flex-col gap-2 sm:flex-row">
-              <Select
-                value={currentSpellList?.id?.toString() ?? NO_LIST}
-                onValueChange={onSelectSpellList}
-              >
-                <SelectTrigger className="min-h-[40px] flex-grow">
-                  <SelectValue placeholder="Switch list" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value={NO_LIST}>No list</SelectItem>
-                  {spellLists.map((list) => (
-                    <SelectItem key={list.id} value={String(list.id)}>
-                      {list.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button
-                variant="outline"
-                className="min-h-[40px]"
-                onClick={onAddSpellList}
-              >
-                New list
-              </Button>
-            </div>
+              <div className="flex flex-shrink-0 flex-col gap-2 sm:flex-row">
+                <Select
+                  value={currentSpellList?.id?.toString() ?? NO_LIST}
+                  onValueChange={onSelectSpellList}
+                >
+                  <SelectTrigger className="min-h-[40px] flex-grow">
+                    <SelectValue placeholder="Switch list" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={NO_LIST}>No list</SelectItem>
+                    {spellLists.map((list) => (
+                      <SelectItem key={list.id} value={String(list.id)}>
+                        {list.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="outline"
+                  className="min-h-[40px]"
+                  onClick={onAddSpellList}
+                >
+                  New list
+                </Button>
+              </div>
+            </ReadOnlyFieldset>
 
             {spells.length === 0 ? (
               <p className="py-6 text-center text-[13px] text-muted-foreground">
@@ -213,8 +217,18 @@ const RightPanel = ({
           </>
         ))}
 
-      {tab === "gear" && <GearTab character={character} patch={patch} />}
-      {tab === "consumables" && <ConsumablesTab characterId={character.id!} />}
+      {tab === "gear" && (
+        <GearTab
+          character={character}
+          patch={patch}
+          onTakeoverChange={setGearTakeover}
+        />
+      )}
+      {tab === "consumables" && (
+        <ReadOnlyFieldset>
+          <ConsumablesTab characterId={character.id!} />
+        </ReadOnlyFieldset>
+      )}
     </div>
   );
 };

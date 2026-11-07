@@ -31,13 +31,13 @@ class Character < ApplicationRecord
   belongs_to :current_spell_list, class_name: :SpellList, optional: true
   has_many :spell_lists, dependent: :destroy
   has_many :attacks, dependent: :destroy
-  has_many :character_items, dependent: :destroy
-  has_many :items, through: :character_items
+  has_many :holdings, as: :holder, dependent: :destroy
   has_many :character_feats, dependent: :destroy
   has_many :feats, through: :character_feats
   has_many :character_trackers, class_name: "Character::Tracker", dependent: :destroy
   has_many :features, dependent: :destroy
   has_many :loadouts, dependent: :destroy
+  has_many :journal_mentions, as: :mentionable, dependent: :destroy
 
   validate :current_spell_list_belongs_to_character, if: -> { current_spell_list_id.present? }
 

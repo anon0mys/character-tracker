@@ -12,6 +12,7 @@ import {
 } from "../ui";
 import { cn } from "../../lib/utils";
 import initials from "../Shell/initials";
+import { useSheetAccess } from "./SheetAccess";
 
 interface IdentityHeaderProps {
   character: ICharacterType;
@@ -22,6 +23,7 @@ const IdentityHeader = ({ character, onRested }: IdentityHeaderProps) => {
   const auth = useAuth();
   const client = Client();
   const errors = useError();
+  const { readOnly } = useSheetAccess();
   const id = character.id;
 
   const meta = [
@@ -105,7 +107,7 @@ const IdentityHeader = ({ character, onRested }: IdentityHeaderProps) => {
           </NavLink>
         </div>
 
-        {id && (
+        {id && !readOnly && (
           <Link
             to={`/characters/${id}/edit`}
             className="flex min-h-[44px] items-center gap-2 rounded-[10px] border border-border-strong bg-card px-[15px] text-sm font-medium no-underline"
@@ -115,24 +117,26 @@ const IdentityHeader = ({ character, onRested }: IdentityHeaderProps) => {
           </Link>
         )}
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              className="min-h-[44px] rounded-[10px] border border-border-strong bg-secondary px-[15px] text-sm font-medium"
-            >
-              Rest
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => rest("short")}>
-              Short rest
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => rest("long")}>
-              Long rest
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {!readOnly && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="min-h-[44px] rounded-[10px] border border-border-strong bg-secondary px-[15px] text-sm font-medium"
+              >
+                Rest
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => rest("short")}>
+                Short rest
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => rest("long")}>
+                Long rest
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </div>
   );

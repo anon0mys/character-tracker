@@ -2,7 +2,8 @@ module Api
   module V1
     class FeaturesController < ApiController
       before_action :authenticate_user!
-      before_action :set_character
+      before_action :set_character, except: :index
+      before_action :set_viewable_character, only: :index
 
       # Derived rows (class, subclass, race, background) are projected from the
       # compendium; feat rows come from the character_feats join; custom rows
@@ -41,6 +42,10 @@ module Api
 
       def set_character
         @character = current_user.characters.find(params[:character_id])
+      end
+
+      def set_viewable_character
+        @character = viewable_characters.find(params[:character_id])
       end
 
       def feature_params

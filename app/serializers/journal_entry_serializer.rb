@@ -5,6 +5,9 @@ class JournalEntrySerializer < Blueprinter::Base
 
   fields :game_id, :number, :played_on, :title, :created_at, :updated_at
 
+  # Chips whose person or thing was deleted; the client shows them as plain text.
+  field(:missing_mentions) { |entry| JournalMentionSync.missing_targets(entry) }
+
   view :list do
     field(:preview) { |entry| Array(entry.body["content"]).find { |block| block["content"].present? } }
     field(:mention_count) { |entry| entry.journal_mentions.size }

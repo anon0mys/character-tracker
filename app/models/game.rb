@@ -8,6 +8,9 @@ class Game < ApplicationRecord
 
   has_many :characters
   has_many :journal_entries, dependent: :destroy
+  has_many :holdings, dependent: :destroy
+  has_many :npcs, dependent: :destroy
+  has_many :locations, dependent: :destroy
   has_many :user_games
   has_many :users, through: :user_games
 

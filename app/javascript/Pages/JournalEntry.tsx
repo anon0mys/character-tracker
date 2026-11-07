@@ -12,7 +12,7 @@ import {
   useJournalPresencePing,
   useJournalSync,
 } from "../Components/Journal";
-import { hrefFor } from "../Components/Journal/mentions";
+import { hrefFor, missingSet, refKey } from "../Components/Journal/mentions";
 import { cn } from "../lib/utils";
 
 /** Cursor colours: the theme's accents, so a writer keeps one colour everywhere. */
@@ -50,27 +50,41 @@ const useWriters = (awareness: Awareness | undefined): Writer[] => {
 const LinkGroup = ({
   title,
   links,
+  missing,
 }: {
   title: string;
   links: IMentionRef[];
+  missing: Set<string>;
 }) =>
   links.length === 0 ? null : (
     <div className="flex flex-col gap-[6px]">
       <span className="font-mono text-[9.5px] uppercase tracking-[0.1em] text-muted-foreground">
         {title}
       </span>
-      {links.map((link) => (
-        <Link
-          key={`${link.type}-${link.id}`}
-          to={hrefFor(link)}
-          className="flex min-h-10 items-center gap-[9px] rounded-[9px] px-2 py-[6px] text-[14px] text-foreground hover:bg-secondary"
-        >
-          <span className="flex-grow">{link.label}</span>
-          <span className="font-mono text-[11px] text-muted-foreground">
-            {link.type.toLowerCase()}
+      {links.map((link) =>
+        missing.has(refKey(link)) ? (
+          <span
+            key={refKey(link)}
+            className="flex min-h-10 items-center gap-[9px] px-2 py-[6px] text-[14px] text-foreground-2"
+          >
+            <span className="flex-grow">{link.label}</span>
+            <span className="font-mono text-[11px] text-muted-foreground">
+              deleted
+            </span>
           </span>
-        </Link>
-      ))}
+        ) : (
+          <Link
+            key={refKey(link)}
+            to={hrefFor(link)}
+            className="flex min-h-10 items-center gap-[9px] rounded-[9px] px-2 py-[6px] text-[14px] text-foreground hover:bg-secondary"
+          >
+            <span className="flex-grow">{link.label}</span>
+            <span className="font-mono text-[11px] text-muted-foreground">
+              {link.type.toLowerCase()}
+            </span>
+          </Link>
+        ),
+      )}
     </div>
   );
 
@@ -139,6 +153,7 @@ const JournalEntry = () => {
 
   if (!entry) return null;
 
+  const missing = missingSet(entry?.missing_mentions);
   const people = links.filter((l) => l.type === "Character");
   const things = links.filter((l) => l.type !== "Character");
 
@@ -242,6 +257,7 @@ const JournalEntry = () => {
               token={token}
               user={user}
               onLinksChange={setLinks}
+              missing={missing}
             />
           ) : (
             <p className="text-[14px] text-muted-foreground">
@@ -256,11 +272,11 @@ const JournalEntry = () => {
               <h2 className="font-display text-[19px] font-semibold">
                 In this entry
               </h2>
-              <LinkGroup title="People" links={people} />
+              <LinkGroup title="People" links={people} missing={missing} />
               {people.length > 0 && things.length > 0 && (
                 <div className="h-px bg-hairline" />
               )}
-              <LinkGroup title="Things" links={things} />
+              <LinkGroup title="Things" links={things} missing={missing} />
             </div>
           )}
           {entry.previous && (

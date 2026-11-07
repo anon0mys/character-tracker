@@ -16,4 +16,18 @@ describe "DELETE /api/v1/characters/:id" do
       expect(response).to have_http_status(:accepted)
     end
   end
+
+  context "when the character was the user's current one" do
+    let(:character) { create(:character, user:, name: "Venna") }
+
+    before do
+      user.update!(current_character: character)
+      sign_in(user)
+      delete api_v1_character_path(character.id), headers: @auth_headers
+    end
+
+    it "clears the user's current character" do
+      expect(user.reload.current_character_id).to be_nil
+    end
+  end
 end

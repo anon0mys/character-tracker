@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :games, through: :user_games
   belongs_to :current_character, class_name: "Character", optional: true
 
+  validates :username, uniqueness: { case_sensitive: false }, allow_nil: true
   validate :current_character_belongs_to_user, if: -> { current_character_id.present? }
 
   def current_character_belongs_to_user

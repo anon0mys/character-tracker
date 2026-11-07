@@ -95,6 +95,7 @@ type SpellSlotsUsed = Record<string, number>;
 
 interface ICharacterType {
   id?: string;
+  game_id?: number;
   name: string;
   race: string;
   archetype: string;
@@ -203,32 +204,67 @@ interface IItemType {
   name: string;
   description?: string;
   item_type: string;
-  status: string;
   quality: string;
   potential_damage?: number;
   total_charges?: number;
   value?: number;
-  quantity?: number;
   requires_attunement: boolean;
   ac?: number;
   stat_bonuses?: Object;
+  source?: string | null;
+  homebrew?: boolean;
+  tags?: string[];
 }
 
-interface ICharacterItemType {
+type HoldingStatus =
+  "equipped" | "carried" | "stored" | "sold" | "lost" | "destroyed";
+
+type HolderType = "Character" | "Npc" | "Location" | "Holding";
+
+/** One copy, or pile, of an item somewhere in a campaign. No holder = not placed. */
+interface IHoldingType {
   id: number;
+  game_id: number;
   item_id: number;
-  name: string;
-  description?: string;
-  item_type: string;
-  status: string;
-  quality: string;
-  potential_damage?: number;
-  total_charges?: number;
-  value?: number;
-  ac?: number;
-  stat_bonuses?: Object;
-  requires_attunement: boolean;
+  holder_type: HolderType | null;
+  holder_id: number | null;
+  holder_name: string | null;
   quantity: number;
+  status: HoldingStatus;
+  notes: string | null;
+  item: Pick<
+    IItemType,
+    | "name"
+    | "item_type"
+    | "quality"
+    | "homebrew"
+    | "source"
+    | "tags"
+    | "total_charges"
+    | "requires_attunement"
+    | "ac"
+  > & { id: number };
+  description?: string | null;
+}
+
+interface INpcType {
+  id: number;
+  game_id: number;
+  name: string;
+  description: string | null;
+  race: string | null;
+  archetype: string | null;
+  location_id: number | null;
+  location_name: string | null;
+  holding_count: number;
+}
+
+interface ILocationType {
+  id: number;
+  game_id: number;
+  name: string;
+  description: string | null;
+  location_type: string;
 }
 
 interface IMonsterAction {
@@ -388,6 +424,8 @@ interface IJournalEntry {
   preview?: IRichNode | null;
   mention_count?: number;
   mentions?: IMentionRef[];
+  /** Chips in the body whose person or thing has been deleted. */
+  missing_mentions?: Pick<IMentionRef, "type" | "id">[];
   previous?: Pick<
     IJournalEntry,
     "id" | "number" | "title" | "played_on"
@@ -422,7 +460,11 @@ export type {
   FeatureCategory,
   ActionType,
   ICharacterType,
-  ICharacterItemType,
+  IHoldingType,
+  HoldingStatus,
+  HolderType,
+  INpcType,
+  ILocationType,
   ICharacterTrackerType,
   IGameType,
   GameStatus,

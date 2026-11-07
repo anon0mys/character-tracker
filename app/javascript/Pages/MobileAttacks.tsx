@@ -3,7 +3,12 @@ import { useParams, Navigate } from "react-router-dom";
 import { IAttackType } from "../Api";
 import { useCharacterData } from "../Hooks/useCharacterData";
 import { useIsDesktop } from "../Hooks/useIsDesktop";
-import { PinnedHp } from "../Components/Sheet";
+import {
+  PinnedHp,
+  ReadOnlyFieldset,
+  SheetAccessProvider,
+  useIsReadOnly,
+} from "../Components/Sheet";
 import AttackForm from "../Components/Characters/AttackForm";
 import { ChevronDown, Plus } from "lucide-react";
 import { cn } from "../lib/utils";
@@ -20,7 +25,8 @@ const AttackCard = ({
   onEdit,
 }: {
   attack: IAttackType;
-  onEdit: () => void;
+  /** Omitted on someone else's sheet. */
+  onEdit?: () => void;
 }) => {
   const [open, setOpen] = useState(false);
   const riders = attack.riders ?? [];
@@ -30,7 +36,7 @@ const AttackCard = ({
     <div className="overflow-hidden rounded-xl border border-border bg-card">
       <button
         type="button"
-        onClick={() => (hasBody ? setOpen((v) => !v) : onEdit())}
+        onClick={() => (hasBody ? setOpen((v) => !v) : onEdit?.())}
         className="flex min-h-[60px] w-full items-center gap-[11px] px-[13px] py-[11px] text-left"
       >
         <span className="flex min-w-0 flex-grow flex-col gap-[2px]">
@@ -90,13 +96,15 @@ const AttackCard = ({
               </span>
             </div>
           ))}
-          <button
-            type="button"
-            onClick={onEdit}
-            className="self-start text-[12px] text-primary"
-          >
-            Edit
-          </button>
+          {onEdit && (
+            <button
+              type="button"
+              onClick={onEdit}
+              className="self-start text-[12px] text-primary"
+            >
+              Edit
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -110,6 +118,7 @@ const MobileAttacks = () => {
   const [attacks, setAttacks] = useState<IAttackType[]>([]);
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<IAttackType | undefined>();
+  const readOnly = useIsReadOnly(character);
 
   React.useEffect(() => {
     if (character.attacks) setAttacks(character.attacks);
@@ -131,49 +140,59 @@ const MobileAttacks = () => {
   };
 
   return (
-    <div className="-mx-4 -my-4 flex flex-col">
-      <PinnedHp character={character} patch={patch} />
-      <div className="flex items-center justify-between px-4 pb-2 pt-3">
-        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Attacks
-        </span>
-        <button
-          type="button"
-          aria-label="Add attack"
-          onClick={() => {
-            setEditing(undefined);
-            setFormOpen(true);
-          }}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-strong"
-        >
-          <Plus className="h-4 w-4" />
-        </button>
-      </div>
-      <div className="flex flex-col gap-[7px] px-4 pb-4">
-        {attacks.length === 0 ? (
-          <p className="py-6 text-center text-[13px] text-muted-foreground">
-            No attacks yet.
-          </p>
-        ) : (
-          attacks.map((a, i) => (
-            <AttackCard
-              key={a.id || i}
-              attack={a}
-              onEdit={() => {
-                setEditing(a);
+    <SheetAccessProvider character={character}>
+      <div className="-mx-4 -my-4 flex flex-col">
+        <ReadOnlyFieldset>
+          <PinnedHp character={character} patch={patch} />
+        </ReadOnlyFieldset>
+        <div className="flex items-center justify-between px-4 pb-2 pt-3">
+          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+            Attacks
+          </span>
+          {!readOnly && (
+            <button
+              type="button"
+              aria-label="Add attack"
+              onClick={() => {
+                setEditing(undefined);
                 setFormOpen(true);
               }}
-            />
-          ))
-        )}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-strong"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+        <div className="flex flex-col gap-[7px] px-4 pb-4">
+          {attacks.length === 0 ? (
+            <p className="py-6 text-center text-[13px] text-muted-foreground">
+              No attacks yet.
+            </p>
+          ) : (
+            attacks.map((a, i) => (
+              <AttackCard
+                key={a.id || i}
+                attack={a}
+                onEdit={
+                  readOnly
+                    ? undefined
+                    : () => {
+                        setEditing(a);
+                        setFormOpen(true);
+                      }
+                }
+              />
+            ))
+          )}
+        </div>
+        <AttackForm
+          opened={formOpen}
+          onClose={close}
+          attack={editing}
+          characterId={character.id}
+        />
       </div>
-      <AttackForm
-        opened={formOpen}
-        onClose={close}
-        attack={editing}
-        characterId={character.id}
-      />
-    </div>
+    </SheetAccessProvider>
   );
 };
 

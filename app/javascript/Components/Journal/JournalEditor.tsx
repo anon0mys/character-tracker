@@ -14,6 +14,7 @@ import { SyncedDoc } from "./useJournalSync";
 import {
   journalMentions,
   hrefFor,
+  refKey,
   MENTION_NODES,
   MentionContext,
   THING,
@@ -25,6 +26,8 @@ interface JournalEditorProps {
   token: string | null;
   user: { name: string; color: string };
   onLinksChange: (links: IMentionRef[]) => void;
+  /** refKeys of chips whose record was deleted; shown as plain text. */
+  missing?: Set<string>;
 }
 
 /**
@@ -160,6 +163,7 @@ const JournalEditor = ({
   token,
   user,
   onLinksChange,
+  missing,
 }: JournalEditorProps) => {
   const navigate = useNavigate();
   const [creating, setCreating] = useState<{
@@ -172,7 +176,7 @@ const JournalEditor = ({
     token,
     onCreateItem: (name, range) => setCreating({ name, range }),
   });
-  ctxRef.current = { ...ctxRef.current, gameId, token };
+  ctxRef.current = { ...ctxRef.current, gameId, token, missing };
 
   const editor = useEditor(
     {
@@ -192,7 +196,8 @@ const JournalEditor = ({
         },
         handleClickOn: (_view, _pos, node) => {
           if (!MENTION_NODES.includes(node.type.name)) return false;
-          navigate(hrefFor({ type: node.attrs.type, id: node.attrs.id }));
+          const ref = { type: node.attrs.type, id: node.attrs.id };
+          if (!ctxRef.current.missing?.has(refKey(ref))) navigate(hrefFor(ref));
           return true;
         },
       },

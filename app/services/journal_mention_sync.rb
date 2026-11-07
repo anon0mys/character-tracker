@@ -8,13 +8,22 @@ class JournalMentionSync
     new(entry).call
   end
 
+  # Chips in the body whose record has since been deleted, as [{ type:, id: }].
+  def self.missing_targets(entry)
+    new(entry).missing_targets
+  end
+
   def initialize(entry)
     @entry = entry
   end
 
   def call
     entry.journal_mentions.delete_all
-    unique_mentions.each { |attrs| entry.journal_mentions.create!(attrs) }
+    unique_mentions.reject { |m| missing?(m) }.each { |attrs| entry.journal_mentions.create!(attrs) }
+  end
+
+  def missing_targets
+    unique_mentions.select { |m| missing?(m) }.map { |m| { type: m[:mentionable_type], id: m[:mentionable_id] } }
   end
 
   private
@@ -22,7 +31,19 @@ class JournalMentionSync
   attr_reader :entry
 
   def unique_mentions
-    blocks.flat_map { |block| mentions_in(block) }.uniq { |m| [m[:mentionable_type], m[:mentionable_id]] }
+    @unique_mentions ||= blocks.flat_map { |block| mentions_in(block) }
+                               .uniq { |m| [m[:mentionable_type], m[:mentionable_id]] }
+  end
+
+  # Types are limited to MENTIONABLE_TYPES by row_for, so constantize is safe.
+  def missing?(mention)
+    existing[mention[:mentionable_type]].exclude?(mention[:mentionable_id])
+  end
+
+  def existing
+    @existing ||= unique_mentions.group_by { |m| m[:mentionable_type] }.to_h do |type, rows|
+      [type, type.constantize.where(id: rows.pluck(:mentionable_id)).pluck(:id)]
+    end
   end
 
   def blocks

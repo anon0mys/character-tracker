@@ -18,7 +18,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Check } from "lucide-react";
-import { Client, IItemType, item_types, qualities, statuses } from "../../Api";
+import { Client, IItemType, item_types, qualities } from "../../Api";
 import { useAuth } from "../../Auth";
 import { useError } from "../../Errors";
 
@@ -41,16 +41,18 @@ const ItemForm = ({
     name: initialName ?? "",
     description: "",
     item_type: "",
-    status: "",
     quality: "",
     potential_damage: 0,
     total_charges: 0,
     value: 0,
-    quantity: 0,
     requires_attunement: false,
     ac: 0,
     stat_bonuses: {},
+    source: "",
+    homebrew: true,
+    tags: [],
   });
+  const [tagText, setTagText] = useState((item?.tags ?? []).join(", "));
   const auth = useAuth();
   const client = Client();
   const errors = useError();
@@ -61,18 +63,25 @@ const ItemForm = ({
 
   const makeRequest = () => {
     var path = "/items";
+    const payload = {
+      ...itemData,
+      tags: tagText
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
+    };
     if (itemData.id) {
       path += `/${itemData.id}`;
       return client.patch({
         path: path,
         token: auth.getToken(),
-        payload: itemData,
+        payload,
       });
     } else {
       return client.post({
         path: path,
         token: auth.getToken(),
-        payload: itemData,
+        payload,
       });
     }
   };
@@ -144,25 +153,39 @@ const ItemForm = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Select
-                value={itemData.status}
-                onValueChange={(value) =>
-                  setItemData({ ...itemData, status: value })
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="source">Source</Label>
+                <Input
+                  id="source"
+                  value={itemData.source ?? ""}
+                  placeholder="Book or campaign"
+                  onChange={(e) =>
+                    setItemData({ ...itemData, source: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="tags">Tags</Label>
+                <Input
+                  id="tags"
+                  value={tagText}
+                  placeholder="magic item, gadget"
+                  onChange={(e) => setTagText(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="homebrew"
+                checked={!!itemData.homebrew}
+                onCheckedChange={(checked) =>
+                  setItemData({ ...itemData, homebrew: !!checked })
                 }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select item status" />
-                </SelectTrigger>
-                <SelectContent>
-                  {statuses.map((status) => (
-                    <SelectItem key={status} value={status}>
-                      {status}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              />
+              <Label htmlFor="homebrew" className="cursor-pointer">
+                Homebrew
+              </Label>
             </div>
             <div className="space-y-2">
               <Label htmlFor="quality">Quality</Label>
@@ -229,22 +252,6 @@ const ItemForm = ({
                     setItemData({
                       ...itemData,
                       value: parseInt(e.target.value) || 0,
-                    })
-                  }
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="quantity">Quantity Owned</Label>
-                <Input
-                  id="quantity"
-                  type="number"
-                  min={0}
-                  max={99999}
-                  value={itemData.quantity || 0}
-                  onChange={(e) =>
-                    setItemData({
-                      ...itemData,
-                      quantity: parseInt(e.target.value) || 0,
                     })
                   }
                 />

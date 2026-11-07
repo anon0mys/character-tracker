@@ -47,10 +47,18 @@ describe "GET /api/v1/items" do
         expect(result["data"].count).to eq Item.where("name ILIKE ?", "%search%").count
       end
 
-      it "filters by status" do
-        get "#{api_v1_items_path}?status=stored", headers: @auth_headers
+      it "filters by homebrew" do
+        create(:item, name: "Wynmaw", homebrew: true, source: "Race Wars", tags: ["magic item"])
+        get "#{api_v1_items_path}?homebrew=true", headers: @auth_headers
         result = response.parsed_body
-        expect(result["data"].count).to eq [Item.where(status: "stored").count, 20].min
+        expect(result["data"].pluck("name")).to eq ["Wynmaw"]
+        expect(result["data"].first).to include("source" => "Race Wars", "tags" => ["magic item"])
+      end
+
+      it "filters by tag" do
+        create(:item, name: "Wynmaw", tags: ["magic item"])
+        get "#{api_v1_items_path}?tag=magic%20item", headers: @auth_headers
+        expect(response.parsed_body["data"].pluck("name")).to eq ["Wynmaw"]
       end
 
       it "filters by quality" do
@@ -66,14 +74,14 @@ describe "GET /api/v1/items" do
       end
 
       it "is able to combine filters" do
-        create(:item, status: "equipped", quality: "legendary", item_type: "weapon")
+        create(:item, homebrew: true, quality: "legendary", item_type: "weapon")
         get(
-          "#{api_v1_items_path}?status=equipped&quality=legendary&item_type=weapon",
+          "#{api_v1_items_path}?homebrew=true&quality=legendary&item_type=weapon",
           headers: @auth_headers,
         )
         result = response.parsed_body
         expect(result["data"].count).to eq Item
-          .where(status: "equipped", quality: "legendary", item_type: "weapon")
+          .where(homebrew: true, quality: "legendary", item_type: "weapon")
           .count
       end
     end

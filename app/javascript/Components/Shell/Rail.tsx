@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   Shield,
   PanelLeft,
@@ -35,6 +35,7 @@ const Rail = () => {
   const auth = useAuth();
   const { game, setCurrentGame } = useGame();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const client = Client();
 
   const [collapsed, setCollapsed] = useState<boolean>(() => {
@@ -67,8 +68,10 @@ const Rail = () => {
       .get({ path: "/characters", token })
       .then((res) => setCharacters(res.data ?? []))
       .catch(() => setCharacters([]));
+    // Navigating refreshes the lists, so a character created or deleted
+    // elsewhere doesn't linger here.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.user]);
+  }, [auth.user, pathname]);
 
   useEffect(() => {
     const token = auth.getToken();
@@ -81,15 +84,25 @@ const Rail = () => {
       .then((res) => setParty(res.data ?? []))
       .catch(() => setParty([]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.user, game?.id]);
+  }, [auth.user, game?.id, pathname]);
 
-  const current = auth.currentCharacter;
+  // Only your characters in the campaign you're looking at.
+  const mine = characters.filter((c) => c.game_id === game?.id);
+  const current = mine.some((c) => Number(c.id) === auth.currentCharacter?.id)
+    ? auth.currentCharacter
+    : null;
 
   const switchCharacter = async (character: ICharacterType) => {
     if (!character.id) return;
     await auth.setCurrentCharacter(Number(character.id));
     navigate(`/characters/${character.id}`);
   };
+
+  // Your own character becomes current; anyone else's opens read-only.
+  const openPartyMember = (character: ICharacterType) =>
+    character.user_id === auth.user?.id
+      ? switchCharacter(character)
+      : navigate(`/characters/${character.id}`);
 
   const brandMark = (
     <span className="flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-[7px] bg-primary text-primary-foreground">
@@ -141,8 +154,7 @@ const Rail = () => {
             key={c.id}
             type="button"
             title={c.name}
-            disabled={c.user_id !== auth.user?.id}
-            onClick={() => c.user_id === auth.user?.id && switchCharacter(c)}
+            onClick={() => openPartyMember(c)}
             className={cn(
               "flex h-7 w-7 items-center justify-center rounded-full font-mono text-[8.5px] text-primary-foreground",
               current?.id === Number(c.id) ? "bg-proficiency" : "bg-arcane",
@@ -246,11 +258,16 @@ const Rail = () => {
           <DropdownMenuContent className="w-[196px]">
             <DropdownMenuLabel>Characters</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {characters.map((c) => (
+            {mine.map((c) => (
               <DropdownMenuItem key={c.id} onClick={() => switchCharacter(c)}>
                 {c.name}
               </DropdownMenuItem>
             ))}
+            {mine.length === 0 && (
+              <DropdownMenuItem disabled>
+                No characters in this campaign
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -284,17 +301,12 @@ const Rail = () => {
           </span>
           {party.map((c) => {
             const isCurrent = current?.id === Number(c.id);
-            const owned = c.user_id === auth.user?.id;
             return (
               <button
                 key={c.id}
                 type="button"
-                disabled={!owned}
-                onClick={() => owned && switchCharacter(c)}
-                className={cn(
-                  "flex items-center gap-[9px] rounded-md px-1 py-[5px] text-left",
-                  owned ? "hover:bg-card" : "cursor-default",
-                )}
+                onClick={() => openPartyMember(c)}
+                className="flex items-center gap-[9px] rounded-md px-1 py-[5px] text-left hover:bg-card"
               >
                 <span
                   className={cn(

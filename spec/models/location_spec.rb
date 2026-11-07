@@ -18,5 +18,7 @@ RSpec.describe Location do
   context "relationships" do
     it { is_expected.to have_many(:factions).through(:faction_locations) }
     it { is_expected.to have_many :npcs }
+    it { is_expected.to belong_to(:game).optional }
+    it { is_expected.to have_many(:holdings).dependent(:destroy) }
   end
 end

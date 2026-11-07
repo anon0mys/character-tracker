@@ -10,7 +10,7 @@ describe "party visibility (Phase 5)" do
     owner.user_games.create!(game:, status: :active, role: :admin)
   end
 
-  it "a fellow party member sees the whole party with HP but not another's edit" do
+  it "a fellow party member sees the whole party with HP and can read, not edit, another's sheet" do
     viewer.user_games.create!(game:, status: :active, role: :player)
     sign_in(viewer)
 
@@ -21,9 +21,13 @@ describe "party visibility (Phase 5)" do
     expect(row["current_hitpoints"]).to be_present
     expect(row["user_id"]).to eq owner.id
 
-    # viewer cannot load Kai's sheet (owner-scoped) -> not a success
+    # viewer can read Kai's sheet, but changing it stays owner-only
     get api_v1_character_path(kai), headers: @auth_headers
+    expect(response).to have_http_status(:success)
+
+    patch api_v1_character_path(kai), headers: @auth_headers, params: { character: { name: "Not Kai" } }
     expect(response).not_to have_http_status(:success)
+    expect(kai.reload.name).to eq "Kai"
   end
 
   it "a non-member only sees their own characters" do

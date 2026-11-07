@@ -3,7 +3,8 @@ module Api
     module Character
       class TrackersController < ApiController
         before_action :authenticate_user!
-        before_action :set_character
+        before_action :set_character, except: :index
+        before_action :set_viewable_character, only: :index
 
         def index
           render json: ::Character::TrackerSerializer.render(@character.character_trackers.order(:sort_order, :id),
@@ -37,6 +38,10 @@ module Api
 
         def set_character
           @character = current_user.characters.find(params[:character_id])
+        end
+
+        def set_viewable_character
+          @character = viewable_characters.find(params[:character_id])
         end
 
         def tracker_params

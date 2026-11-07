@@ -10,7 +10,13 @@ import {
 import FeatPicker from "../Components/Compendium/FeatPicker";
 import { useAuth } from "../Auth";
 import { useError } from "../Errors";
-import { IdentityHeader } from "../Components/Sheet";
+import {
+  IdentityHeader,
+  ReadOnlyBanner,
+  ReadOnlyFieldset,
+  SheetAccessProvider,
+  useIsReadOnly,
+} from "../Components/Sheet";
 import {
   Dialog,
   DialogContent,
@@ -150,6 +156,7 @@ const Features = () => {
   } as ICharacterType);
   const [features, setFeatures] = useState<IFeature[]>([]);
   const { patch } = useCharacterPatch(character, setCharacter);
+  const readOnly = useIsReadOnly(character);
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<IFeature>(emptyFeature());
   const [filter, setFilter] = useState<FeatureCategory | "all">("all");
@@ -251,245 +258,254 @@ const Features = () => {
     .filter((g) => filter === "all" || g.cat === filter);
 
   return (
-    <div className="flex flex-col gap-[14px]">
-      <IdentityHeader character={character} onRested={setCharacter} />
+    <SheetAccessProvider character={character}>
+      <div className="flex flex-col gap-[14px]">
+        <IdentityHeader character={character} onRested={setCharacter} />
+        <ReadOnlyBanner name={character.name} />
 
-      <div className="grid gap-[14px] rounded-2xl border border-border bg-card p-4 lg:grid-cols-2">
-        <div className="flex flex-col gap-1">
-          <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-            {character.subclass_label ?? "Subclass"}
-          </label>
-          {(character.subclass_options ?? []).length > 0 ? (
-            <Select
-              value={character.subclass || undefined}
-              onValueChange={(v) => patch({ subclass: v })}
-            >
-              <SelectTrigger>
-                <SelectValue
-                  placeholder={`Choose ${character.subclass_label ?? "subclass"}`}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {Array.from(
-                  new Set([
-                    ...(character.subclass ? [character.subclass] : []),
-                    ...(character.subclass_options ?? []),
-                  ]),
-                ).map((name) => (
-                  <SelectItem key={name} value={name}>
-                    {name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          ) : (
-            <Input
-              value={character.subclass ?? ""}
-              onChange={(e) => patch({ subclass: e.target.value })}
-              placeholder="e.g. Armorer"
-            />
-          )}
-        </div>
-        {(character.subclass_details ?? []).find(
-          (x) => x.name === character.subclass,
-        )?.description && (
-          <p className="text-[12.5px] leading-relaxed text-foreground-2 sm:col-span-2">
-            {
-              (character.subclass_details ?? []).find(
-                (x) => x.name === character.subclass,
-              )?.description
-            }
-          </p>
-        )}
-
-        {(character.race_details?.subraces ?? []).length > 0 && (
-          <div className="flex flex-col gap-1">
-            <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-              Subrace
-            </label>
-            <Select
-              value={character.subrace || undefined}
-              onValueChange={(v) => patch({ subrace: v })}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Choose subrace" />
-              </SelectTrigger>
-              <SelectContent>
-                {Array.from(
-                  new Set([
-                    ...(character.subrace ? [character.subrace] : []),
-                    ...(character.race_details?.subraces ?? []),
-                  ]),
-                ).map((name) => (
-                  <SelectItem key={name} value={name}>
-                    {name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-
-        <div className="flex flex-col gap-1">
-          <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-            Languages
-          </label>
-          <Input
-            value={(character.languages ?? []).join(", ")}
-            onChange={(e) =>
-              patch({
-                languages: e.target.value
-                  .split(",")
-                  .map((l) => l.trim())
-                  .filter(Boolean),
-              })
-            }
-            placeholder="Common, Draconic"
-          />
-        </div>
-        {(
-          [
-            ["trait", "Personality trait"],
-            ["ideal", "Ideal"],
-            ["bond", "Bond"],
-            ["flaw", "Flaw"],
-          ] as const
-        ).map(([key, label]) => {
-          const table = characteristicTable(character, key);
-          return (
-            <div key={key} className="flex flex-col gap-1">
+        <ReadOnlyFieldset>
+          <div className="grid gap-[14px] rounded-2xl border border-border bg-card p-4 lg:grid-cols-2">
+            <div className="flex flex-col gap-1">
               <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-                {label}
+                {character.subclass_label ?? "Subclass"}
               </label>
-              <Textarea
-                value={(character[key] as string) ?? ""}
-                onChange={(e) => patch({ [key]: e.target.value })}
-                className="min-h-[64px] bg-secondary"
-              />
-              {table.length > 0 && (
-                <Select value="" onValueChange={(v) => patch({ [key]: v })}>
-                  <SelectTrigger className="h-8 text-[12px] text-muted-foreground">
+              {(character.subclass_options ?? []).length > 0 ? (
+                <Select
+                  value={character.subclass || undefined}
+                  onValueChange={(v) => patch({ subclass: v })}
+                >
+                  <SelectTrigger>
                     <SelectValue
-                      placeholder={`Pick from ${character.background} table`}
+                      placeholder={`Choose ${character.subclass_label ?? "subclass"}`}
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    {table.map((row, i) => (
-                      <SelectItem key={i} value={row}>
-                        {row}
+                    {Array.from(
+                      new Set([
+                        ...(character.subclass ? [character.subclass] : []),
+                        ...(character.subclass_options ?? []),
+                      ]),
+                    ).map((name) => (
+                      <SelectItem key={name} value={name}>
+                        {name}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+              ) : (
+                <Input
+                  value={character.subclass ?? ""}
+                  onChange={(e) => patch({ subclass: e.target.value })}
+                  placeholder="e.g. Armorer"
+                />
               )}
             </div>
-          );
-        })}
-      </div>
+            {(character.subclass_details ?? []).find(
+              (x) => x.name === character.subclass,
+            )?.description && (
+              <p className="text-[12.5px] leading-relaxed text-foreground-2 sm:col-span-2">
+                {
+                  (character.subclass_details ?? []).find(
+                    (x) => x.name === character.subclass,
+                  )?.description
+                }
+              </p>
+            )}
 
-      <div className="flex items-center gap-2">
-        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Features
-        </span>
-        <div className="ml-auto flex flex-wrap justify-end gap-2">
-          <Button variant="outline" onClick={() => setFeatPickerOpen(true)}>
-            Add feat
-          </Button>
-          <Button onClick={openAdd}>Add feature</Button>
-        </div>
-      </div>
-
-      {present.length > 1 && (
-        <div className="flex gap-[6px] overflow-x-auto pb-1">
-          {(["all", ...present] as (FeatureCategory | "all")[]).map((c) => (
-            <button
-              key={c}
-              type="button"
-              onClick={() => setFilter(c)}
-              className={cn(
-                "min-h-[36px] flex-shrink-0 rounded-full px-4 text-[12.5px] capitalize",
-                filter === c
-                  ? "bg-foreground text-background font-semibold"
-                  : "border border-border bg-card text-foreground-2",
-              )}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {byCategory.length === 0 ? (
-        <p className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
-          No features yet. Pick a class, race or background, or add one.
-        </p>
-      ) : (
-        <div className="columns-1 gap-[14px] lg:columns-3">
-          {byCategory.map(({ cat, items }) => (
-            <div
-              key={cat}
-              className="mb-[14px] flex break-inside-avoid flex-col gap-2 rounded-2xl border border-border bg-card p-4"
-            >
-              <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-proficiency-ink">
-                {cat}
-              </span>
-              {items.map((f, index) => (
-                <div
-                  key={featureKey(f, index)}
-                  className="group flex flex-col gap-1 border-t border-hairline pt-2 first:border-t-0 first:pt-0"
+            {(character.race_details?.subraces ?? []).length > 0 && (
+              <div className="flex flex-col gap-1">
+                <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                  Subrace
+                </label>
+                <Select
+                  value={character.subrace || undefined}
+                  onValueChange={(v) => patch({ subrace: v })}
                 >
-                  <div className="flex items-start gap-2">
-                    <span className="flex-grow font-display text-[15px] font-semibold">
-                      {f.name}
-                    </span>
-                    {f.origin === "custom" && (
-                      <button
-                        type="button"
-                        aria-label="Edit"
-                        onClick={() => openEdit(f)}
-                        className="text-muted-foreground opacity-0 group-hover:opacity-100"
-                      >
-                        <Pencil className="h-3.5 w-3.5" />
-                      </button>
-                    )}
-                    {f.origin !== "derived" && (
-                      <button
-                        type="button"
-                        aria-label="Delete"
-                        onClick={() =>
-                          f.origin === "feat" ? removeFeat(f) : remove(f)
-                        }
-                        className="text-muted-foreground opacity-0 group-hover:opacity-100"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    )}
-                  </div>
-                  {f.description && (
-                    <p className="text-[12.5px] leading-relaxed text-foreground-2">
-                      {f.description}
-                    </p>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose subrace" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from(
+                      new Set([
+                        ...(character.subrace ? [character.subrace] : []),
+                        ...(character.race_details?.subraces ?? []),
+                      ]),
+                    ).map((name) => (
+                      <SelectItem key={name} value={name}>
+                        {name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                Languages
+              </label>
+              <Input
+                value={(character.languages ?? []).join(", ")}
+                onChange={(e) =>
+                  patch({
+                    languages: e.target.value
+                      .split(",")
+                      .map((l) => l.trim())
+                      .filter(Boolean),
+                  })
+                }
+                placeholder="Common, Draconic"
+              />
+            </div>
+            {(
+              [
+                ["trait", "Personality trait"],
+                ["ideal", "Ideal"],
+                ["bond", "Bond"],
+                ["flaw", "Flaw"],
+              ] as const
+            ).map(([key, label]) => {
+              const table = characteristicTable(character, key);
+              return (
+                <div key={key} className="flex flex-col gap-1">
+                  <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                    {label}
+                  </label>
+                  <Textarea
+                    value={(character[key] as string) ?? ""}
+                    onChange={(e) => patch({ [key]: e.target.value })}
+                    className="min-h-[64px] bg-secondary"
+                  />
+                  {table.length > 0 && (
+                    <Select value="" onValueChange={(v) => patch({ [key]: v })}>
+                      <SelectTrigger className="h-8 text-[12px] text-muted-foreground">
+                        <SelectValue
+                          placeholder={`Pick from ${character.background} table`}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {table.map((row, i) => (
+                          <SelectItem key={i} value={row}>
+                            {row}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   )}
+                </div>
+              );
+            })}
+          </div>
+        </ReadOnlyFieldset>
+
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+            Features
+          </span>
+          {!readOnly && (
+            <div className="ml-auto flex flex-wrap justify-end gap-2">
+              <Button variant="outline" onClick={() => setFeatPickerOpen(true)}>
+                Add feat
+              </Button>
+              <Button onClick={openAdd}>Add feature</Button>
+            </div>
+          )}
+        </div>
+
+        {present.length > 1 && (
+          <div className="flex gap-[6px] overflow-x-auto pb-1">
+            {(["all", ...present] as (FeatureCategory | "all")[]).map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setFilter(c)}
+                className={cn(
+                  "min-h-[36px] flex-shrink-0 rounded-full px-4 text-[12.5px] capitalize",
+                  filter === c
+                    ? "bg-foreground text-background font-semibold"
+                    : "border border-border bg-card text-foreground-2",
+                )}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {byCategory.length === 0 ? (
+          <p className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
+            No features yet. Pick a class, race or background, or add one.
+          </p>
+        ) : (
+          <ReadOnlyFieldset>
+            <div className="columns-1 gap-[14px] lg:columns-3">
+              {byCategory.map(({ cat, items }) => (
+                <div
+                  key={cat}
+                  className="mb-[14px] flex break-inside-avoid flex-col gap-2 rounded-2xl border border-border bg-card p-4"
+                >
+                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-proficiency-ink">
+                    {cat}
+                  </span>
+                  {items.map((f, index) => (
+                    <div
+                      key={featureKey(f, index)}
+                      className="group flex flex-col gap-1 border-t border-hairline pt-2 first:border-t-0 first:pt-0"
+                    >
+                      <div className="flex items-start gap-2">
+                        <span className="flex-grow font-display text-[15px] font-semibold">
+                          {f.name}
+                        </span>
+                        {f.origin === "custom" && (
+                          <button
+                            type="button"
+                            aria-label="Edit"
+                            onClick={() => openEdit(f)}
+                            className="text-muted-foreground opacity-0 group-hover:opacity-100"
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                        {f.origin !== "derived" && (
+                          <button
+                            type="button"
+                            aria-label="Delete"
+                            onClick={() =>
+                              f.origin === "feat" ? removeFeat(f) : remove(f)
+                            }
+                            className="text-muted-foreground opacity-0 group-hover:opacity-100"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                      </div>
+                      {f.description && (
+                        <p className="text-[12.5px] leading-relaxed text-foreground-2">
+                          {f.description}
+                        </p>
+                      )}
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
-          ))}
-        </div>
-      )}
+          </ReadOnlyFieldset>
+        )}
 
-      <FeatPicker
-        open={featPickerOpen}
-        onClose={() => setFeatPickerOpen(false)}
-        onPick={addFeat}
-      />
+        <FeatPicker
+          open={featPickerOpen}
+          onClose={() => setFeatPickerOpen(false)}
+          onPick={addFeat}
+        />
 
-      <FeatureForm
-        open={formOpen}
-        feature={editing}
-        onClose={() => setFormOpen(false)}
-        onSave={save}
-      />
-    </div>
+        <FeatureForm
+          open={formOpen}
+          feature={editing}
+          onClose={() => setFormOpen(false)}
+          onSave={save}
+        />
+      </div>
+    </SheetAccessProvider>
   );
 };
 

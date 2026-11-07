@@ -4,7 +4,12 @@ import { Client, ICharacterType } from "../Api";
 import { useAuth } from "../Auth";
 import { useError } from "../Errors";
 import { Textarea } from "../Components/ui";
-import { IdentityHeader } from "../Components/Sheet";
+import {
+  IdentityHeader,
+  ReadOnlyBanner,
+  ReadOnlyFieldset,
+  SheetAccessProvider,
+} from "../Components/Sheet";
 import { useCharacterPatch } from "../Hooks/useCharacterPatch";
 
 const placeholder = { name: "" } as ICharacterType;
@@ -34,23 +39,28 @@ const CharacterNotes = () => {
   }
 
   return (
-    <div className="flex flex-col gap-[14px]">
-      <IdentityHeader character={character} onRested={setCharacter} />
-      <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-4">
-        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-          Notes
-        </span>
-        <Textarea
-          value={character.notes ?? ""}
-          onChange={(e) => patch({ notes: e.target.value })}
-          placeholder="Session notes, reminders, anything…"
-          className="min-h-[320px] resize-y bg-secondary font-body"
-        />
-        <span className="text-[11px] text-muted-foreground">
-          Saved automatically.
-        </span>
+    <SheetAccessProvider character={character}>
+      <div className="flex flex-col gap-[14px]">
+        <IdentityHeader character={character} onRested={setCharacter} />
+        <ReadOnlyBanner name={character.name} />
+        <ReadOnlyFieldset>
+          <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              Notes
+            </span>
+            <Textarea
+              value={character.notes ?? ""}
+              onChange={(e) => patch({ notes: e.target.value })}
+              placeholder="Session notes, reminders, anything…"
+              className="min-h-[320px] resize-y bg-secondary font-body"
+            />
+            <span className="text-[11px] text-muted-foreground">
+              Saved automatically.
+            </span>
+          </div>
+        </ReadOnlyFieldset>
       </div>
-    </div>
+    </SheetAccessProvider>
   );
 };
 

@@ -19,6 +19,13 @@ class ApiController < ApplicationController
     pagy_metadata(@pagy).merge({ data: @data })
   end
 
+  # Characters the current user may read: their own, plus anyone's in a
+  # campaign they play in. Writes stay on current_user.characters.
+  def viewable_characters
+    Character.where(user_id: current_user.id)
+             .or(Character.where(game_id: current_user.user_games.active.select(:game_id)))
+  end
+
   private
 
   def record_not_found(exception)

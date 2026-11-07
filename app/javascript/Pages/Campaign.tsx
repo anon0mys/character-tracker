@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { ChevronLeft, Plus } from "lucide-react";
 import {
   Client,
@@ -14,7 +19,19 @@ import { useError } from "../Errors";
 import { GameForm } from "../Components/Games";
 import { initials } from "../Components/Shell";
 import { RichPreview, useJournalPresence } from "../Components/Journal";
+import { CampaignInventory, NpcsSection } from "../Components/Inventory";
+import { missingSet } from "../Components/Journal/mentions";
 import { cn } from "../lib/utils";
+
+type Section = "journal" | "party" | "inventory" | "npcs";
+const SECTIONS: Section[] = ["journal", "party", "inventory", "npcs"];
+const DESKTOP_SECTIONS: Section[] = ["journal", "inventory", "npcs"];
+const SECTION_LABEL: Record<Section, string> = {
+  journal: "Journal",
+  party: "Party",
+  inventory: "Inventory",
+  npcs: "NPCs",
+};
 
 const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
   pending: { label: "Prepping", cls: "bg-arcane-soft text-arcane-ink" },
@@ -67,7 +84,10 @@ const EntryCard = ({
       </div>
       {entry.preview && (
         <p className="line-clamp-2 text-[13.5px] leading-[1.6] text-foreground-2">
-          <RichPreview node={entry.preview} />
+          <RichPreview
+            node={entry.preview}
+            missing={missingSet(entry.missing_mentions)}
+          />
         </p>
       )}
     </div>
@@ -138,7 +158,13 @@ const Campaign = () => {
   const [entries, setEntries] = useState<IJournalEntry[]>([]);
   const [party, setParty] = useState<ICharacterType[]>([]);
   const [query, setQuery] = useState("");
-  const [section, setSection] = useState<"journal" | "party">("journal");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requested = searchParams.get("section") as Section | null;
+  const section: Section =
+    requested && SECTIONS.includes(requested) ? requested : "journal";
+  const setSection = (s: Section) =>
+    setSearchParams(s === "journal" ? {} : { section: s }, { replace: true });
+  const onBoard = section === "inventory" || section === "npcs";
   const [editing, setEditing] = useState(false);
   const token = auth.getToken();
   const writing = useJournalPresence(game?.id, token);
@@ -230,43 +256,77 @@ const Campaign = () => {
               </p>
             )}
           </div>
-          <button
-            type="button"
-            onClick={() => setEditing(true)}
-            className="hidden min-h-11 rounded-[10px] border border-border-strong bg-secondary px-4 py-3 text-[14px] font-medium lg:ml-auto lg:block"
-          >
-            Edit campaign
-          </button>
+          <div className="hidden items-center gap-3 lg:ml-auto lg:flex">
+            <div className="flex rounded-[10px] border border-border bg-rail p-[3px]">
+              {DESKTOP_SECTIONS.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  aria-pressed={
+                    section === s || (s === "journal" && section === "party")
+                  }
+                  onClick={() => setSection(s)}
+                  className={cn(
+                    "min-h-[38px] rounded-[8px] px-4 text-[13px]",
+                    section === s || (s === "journal" && section === "party")
+                      ? "bg-card font-semibold"
+                      : "text-foreground-2",
+                  )}
+                >
+                  {SECTION_LABEL[s]}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              className="min-h-11 rounded-[10px] border border-border-strong bg-secondary px-4 py-3 text-[14px] font-medium"
+            >
+              Edit campaign
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="flex gap-2 lg:hidden">
         <div className="flex flex-grow rounded-[11px] border border-border bg-rail p-[3px]">
-          {(["journal", "party"] as const).map((s) => (
+          {SECTIONS.map((s) => (
             <button
               key={s}
               type="button"
               onClick={() => setSection(s)}
               className={cn(
-                "min-h-[38px] flex-grow rounded-[8px] text-[13px] capitalize",
+                "min-h-[38px] flex-grow rounded-[8px] text-[13px]",
                 section === s ? "bg-card font-semibold" : "text-foreground-2",
               )}
             >
-              {s}
+              {SECTION_LABEL[s]}
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          aria-label="New entry"
-          onClick={newEntry}
-          className="flex h-[46px] w-[46px] items-center justify-center rounded-[11px] bg-primary text-primary-foreground"
-        >
-          <Plus className="h-5 w-5" />
-        </button>
+        {section === "journal" && (
+          <button
+            type="button"
+            aria-label="New entry"
+            onClick={newEntry}
+            className="flex h-[46px] w-[46px] items-center justify-center rounded-[11px] bg-primary text-primary-foreground"
+          >
+            <Plus className="h-5 w-5" />
+          </button>
+        )}
       </div>
 
-      <div className="flex flex-col gap-5 lg:flex-row">
+      {section === "inventory" && (
+        <CampaignInventory gameId={game.id!} party={party} />
+      )}
+      {section === "npcs" && <NpcsSection gameId={game.id!} />}
+
+      <div
+        className={cn(
+          "flex-col gap-5 lg:flex-row",
+          onBoard ? "hidden" : "flex",
+        )}
+      >
         <section
           aria-labelledby="journal-h"
           className={cn(

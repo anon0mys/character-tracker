@@ -5,7 +5,10 @@ RSpec.describe Npc do
 
   context "validations" do
     it { is_expected.to validate_presence_of :name }
-    it { is_expected.to validate_presence_of :race }
+
+    it "needs no class, race or location" do
+      expect(build(:npc, archetype: nil, race: nil, location: nil)).to be_valid
+    end
   end
 
   context "enums" do
@@ -18,6 +21,8 @@ RSpec.describe Npc do
 
   context "relationships" do
     it { is_expected.to have_many(:factions).through(:faction_npcs) }
-    it { is_expected.to belong_to :location }
+    it { is_expected.to belong_to(:location).optional }
+    it { is_expected.to belong_to(:game).optional }
+    it { is_expected.to have_many(:holdings).dependent(:destroy) }
   end
 end

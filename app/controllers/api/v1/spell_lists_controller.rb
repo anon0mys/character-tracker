@@ -1,7 +1,9 @@
 module Api
   module V1
     class SpellListsController < ApiController
-      before_action :set_character
+      before_action :authenticate_user!
+      before_action :set_character, except: %i[index show]
+      before_action :set_viewable_character, only: %i[index show]
 
       def index
         @spell_lists = @character.spell_lists.includes(:spells).all
@@ -54,6 +56,10 @@ module Api
 
       def set_character
         @character = current_user.characters.find(params[:character_id])
+      end
+
+      def set_viewable_character
+        @character = viewable_characters.find(params[:character_id])
       end
     end
   end

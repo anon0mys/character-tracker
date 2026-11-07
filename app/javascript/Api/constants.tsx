@@ -32,7 +32,15 @@ const schools = [
   "necromancy",
   "transmutation",
 ];
-const statuses = ["sold", "stored", "equipped"];
+const holdingStatuses = [
+  "equipped",
+  "carried",
+  "stored",
+  "sold",
+  "lost",
+  "destroyed",
+] as const;
+const goneStatuses = ["sold", "lost", "destroyed"] as const;
 const item_types = [
   "ammo",
   "arcane",
@@ -80,7 +88,8 @@ export {
   archetypes,
   spellLevels,
   schools,
-  statuses,
+  holdingStatuses,
+  goneStatuses,
   item_types,
   qualities,
   backgrounds,

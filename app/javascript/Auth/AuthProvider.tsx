@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState, createContext } from "react";
 import { AuthStore, UserType, CurrentCharacterSummary } from "./AuthStore";
 import { Client } from "../Api";
@@ -40,6 +40,21 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       current_character: incoming?.current_character ?? null,
     };
   };
+
+  // The stored user can be stale (a deleted current character, say), so
+  // re-read it from the server once per page load.
+  useEffect(() => {
+    if (!user?.token) return;
+    client
+      .get({ path: "/users/me", token: user.token })
+      .then((res) => {
+        const merged = mergeUser(user, res.data, user.token);
+        storage.saveUser(merged);
+        setUser(merged);
+      })
+      .catch(() => undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const signin = (email: string, password: string, callback: VoidFunction) => {
     let data = {
