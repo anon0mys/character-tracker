@@ -39651,7 +39651,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(75);
 /* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
 var _excluded = ["className"],
-    _excluded2 = ["className", "children"],
+    _excluded2 = ["className", "children", "hideClose"],
     _excluded3 = ["className"],
     _excluded4 = ["className"],
     _excluded5 = ["className"],
@@ -39684,12 +39684,13 @@ DialogOverlay.displayName = _radix_ui_react_dialog__WEBPACK_IMPORTED_MODULE_2__.
 var DialogContent = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (_ref2, ref) {
   var className = _ref2.className,
       children = _ref2.children,
+      hideClose = _ref2.hideClose,
       props = _objectWithoutProperties(_ref2, _excluded2);
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DialogPortal, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DialogOverlay, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_radix_ui_react_dialog__WEBPACK_IMPORTED_MODULE_2__.Content, _extends({
     ref: ref,
     className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_1__.cn)("fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] sm:max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border-2 border-border bg-card p-4 sm:p-6 duration-200", "shadow-[0_8px_16px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(0,0,0,0.2)]", "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg max-h-[90vh] overflow-y-auto", className)
-  }, props), children, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_radix_ui_react_dialog__WEBPACK_IMPORTED_MODULE_2__.Close, {
+  }, props), children, !hideClose && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_radix_ui_react_dialog__WEBPACK_IMPORTED_MODULE_2__.Close, {
     className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_3__["default"], {
     className: "h-4 w-4"
@@ -134918,6 +134919,7 @@ var Compendium = function Compendium() {
       return !o && setSelected(null);
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_4__.DialogContent, {
+    hideClose: true,
     className: "max-h-[85vh] overflow-y-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Compendium_DetailPane__WEBPACK_IMPORTED_MODULE_7__["default"], {
     spell: selected,
@@ -134930,6 +134932,7 @@ var Compendium = function Compendium() {
       return !o && setSelectedItem(null);
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_4__.DialogContent, {
+    hideClose: true,
     className: "max-h-[85vh] overflow-y-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Compendium_ItemDetailPane__WEBPACK_IMPORTED_MODULE_8__["default"], {
     item: selectedItem,
@@ -134942,6 +134945,7 @@ var Compendium = function Compendium() {
       return !o && setSelectedMonster(null);
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_4__.DialogContent, {
+    hideClose: true,
     className: "max-h-[85vh] overflow-y-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Compendium_MonsterDetailPane__WEBPACK_IMPORTED_MODULE_10__["default"], {
     monster: selectedMonster,
@@ -134954,6 +134958,7 @@ var Compendium = function Compendium() {
       return !o && setSelectedRace(null);
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_4__.DialogContent, {
+    hideClose: true,
     className: "max-h-[85vh] overflow-y-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Compendium_RaceDetailPane__WEBPACK_IMPORTED_MODULE_12__["default"], {
     race: selectedRace,
@@ -134966,6 +134971,7 @@ var Compendium = function Compendium() {
       return !o && setSelectedBackground(null);
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_4__.DialogContent, {
+    hideClose: true,
     className: "max-h-[85vh] overflow-y-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Compendium_BackgroundDetailPane__WEBPACK_IMPORTED_MODULE_14__["default"], {
     background: selectedBackground,
@@ -134978,6 +134984,7 @@ var Compendium = function Compendium() {
       return !o && setSelectedFeat(null);
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_ui__WEBPACK_IMPORTED_MODULE_4__.DialogContent, {
+    hideClose: true,
     className: "max-h-[85vh] overflow-y-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Components_Compendium_FeatDetailPane__WEBPACK_IMPORTED_MODULE_16__["default"], {
     feat: selectedFeat,

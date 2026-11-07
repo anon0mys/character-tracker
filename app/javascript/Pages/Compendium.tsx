@@ -191,7 +191,7 @@ const Compendium = () => {
       {/* Phone: detail as a dialog takeover */}
       {selected && !isDesktop && (
         <Dialog open onOpenChange={(o) => !o && setSelected(null)}>
-          <DialogContent className="max-h-[85vh] overflow-y-auto">
+          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
             <DetailPane spell={selected} onClose={() => setSelected(null)} />
           </DialogContent>
         </Dialog>
@@ -199,7 +199,7 @@ const Compendium = () => {
 
       {selectedItem && !isDesktop && (
         <Dialog open onOpenChange={(o) => !o && setSelectedItem(null)}>
-          <DialogContent className="max-h-[85vh] overflow-y-auto">
+          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
             <ItemDetailPane
               item={selectedItem}
               onClose={() => setSelectedItem(null)}
@@ -210,7 +210,7 @@ const Compendium = () => {
 
       {selectedMonster && !isDesktop && (
         <Dialog open onOpenChange={(o) => !o && setSelectedMonster(null)}>
-          <DialogContent className="max-h-[85vh] overflow-y-auto">
+          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
             <MonsterDetailPane
               monster={selectedMonster}
               onClose={() => setSelectedMonster(null)}
@@ -221,7 +221,7 @@ const Compendium = () => {
 
       {selectedRace && !isDesktop && (
         <Dialog open onOpenChange={(o) => !o && setSelectedRace(null)}>
-          <DialogContent className="max-h-[85vh] overflow-y-auto">
+          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
             <RaceDetailPane
               race={selectedRace}
               onClose={() => setSelectedRace(null)}
@@ -232,7 +232,7 @@ const Compendium = () => {
 
       {selectedBackground && !isDesktop && (
         <Dialog open onOpenChange={(o) => !o && setSelectedBackground(null)}>
-          <DialogContent className="max-h-[85vh] overflow-y-auto">
+          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
             <BackgroundDetailPane
               background={selectedBackground}
               onClose={() => setSelectedBackground(null)}
@@ -243,7 +243,7 @@ const Compendium = () => {
 
       {selectedFeat && !isDesktop && (
         <Dialog open onOpenChange={(o) => !o && setSelectedFeat(null)}>
-          <DialogContent className="max-h-[85vh] overflow-y-auto">
+          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
             <FeatDetailPane
               feat={selectedFeat}
               onClose={() => setSelectedFeat(null)}
