@@ -1,6 +1,6 @@
 module Api
   module V1
-    # Typeahead for journal links: kind=people searches this game's characters,
+    # Typeahead for journal links: kind=people searches this game's characters and NPCs,
     # kind=things searches items, monsters and spells by name.
     class MentionsController < ApiController
       LIMIT = 5
@@ -18,7 +18,12 @@ module Api
       def people(game)
         named(game.characters).map do |character|
           result("Character", character, "#{character.archetype.name.to_s.capitalize} #{character.level}")
-        end
+        end + named(game.npcs).map { |npc| result("Npc", npc, npc_detail(npc)) }
+      end
+
+      # "Human · Cleric"; an NPC with no class reads "Human · NPC".
+      def npc_detail(npc)
+        [npc.race.presence, npc.archetype ? npc.archetype.capitalize : "NPC"].compact.join(" · ")
       end
 
       def things

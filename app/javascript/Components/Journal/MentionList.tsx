@@ -12,6 +12,7 @@ type MentionKind = "people" | "things";
 
 const GROUPS: { type: MentionableType; label: string }[] = [
   { type: "Character", label: "Characters" },
+  { type: "Npc", label: "NPCs" },
   { type: "Spell", label: "Spells" },
   { type: "Monster", label: "Monsters" },
   { type: "Item", label: "Items" },
@@ -29,10 +30,10 @@ interface MentionListHandle {
   onKeyDown: (event: KeyboardEvent) => boolean;
 }
 
-/** The @ / # typeahead: results grouped by type, plus "Create item" for things. */
+/** The @ / # typeahead: results grouped by type, plus "Create NPC" / "Create item". */
 const MentionList = forwardRef<MentionListHandle, MentionListProps>(
   ({ kind, query, items, command, onCreate }, ref) => {
-    const canCreate = kind === "things" && query.trim().length > 0;
+    const canCreate = query.trim().length > 0;
     const ordered = GROUPS.flatMap(({ type }) =>
       items.filter((item) => item.type === type),
     );
@@ -127,7 +128,7 @@ const MentionList = forwardRef<MentionListHandle, MentionListProps>(
               )}
             >
               <Plus className="h-[15px] w-[15px]" aria-hidden="true" />
-              Create item “{query}”
+              Create {kind === "people" ? "NPC" : "item"} “{query}”
             </button>
           </>
         )}

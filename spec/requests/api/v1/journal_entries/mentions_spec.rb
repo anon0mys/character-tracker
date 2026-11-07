@@ -19,6 +19,17 @@ describe "GET /api/v1/games/:game_id/mentions" do
     expect(response.parsed_body["data"]).to eq([venna])
   end
 
+  it "finds this game's NPCs after its characters" do
+    venna = create(:character, game:, name: "Venna", archetype: :cleric, level: 12)
+    archivist = create(:npc, game:, name: "Venn the Archivist", race: "Elf", archetype: nil, location: nil)
+    create(:npc, game: create(:game), name: "Venn Elsewhere", location: nil)
+
+    get api_v1_game_mentions_path(game), headers: @auth_headers, params: { kind: "people", q: "ven" }
+
+    expected = [["Character", venna.id, "Cleric 12"], ["Npc", archivist.id, "Elf · NPC"]]
+    expect(response.parsed_body["data"].map { |r| r.values_at("type", "id", "detail") }).to eq(expected)
+  end
+
   it "finds things across spells, monsters and items" do
     spell = create(:spell, name: "Fireball", level: "3", school: "evocation")
     monster = create(:monster, name: "Fire Elemental", challenge_rating: "5")

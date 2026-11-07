@@ -30,6 +30,18 @@ describe "GET /api/v1/games/:game_id/journal_mentions" do
     expect(data.first).to include("title" => "The vault", "label" => "Wand of Wonder", "excerpt" => "A Wand of Wonder.")
   end
 
+  it "lists entries that mention an NPC" do
+    archivist = create(:npc, game:, name: "The Archivist", location: nil)
+    entry = create(:journal_entry, game:, body: journal_body([person(archivist), " wants the crown back."]))
+    JournalMentionSync.call(entry)
+
+    get api_v1_game_journal_mentions_path(game), headers: @auth_headers, params: { type: "Npc", id: archivist.id }
+
+    expect(response.parsed_body["data"]).to contain_exactly(
+      include("entry_id" => entry.id, "excerpt" => "The Archivist wants the crown back."),
+    )
+  end
+
   it "rejects a type that cannot be mentioned" do
     get api_v1_game_journal_mentions_path(game), headers: @auth_headers, params: { type: "User", id: user.id }
 

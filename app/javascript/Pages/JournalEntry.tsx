@@ -51,10 +51,12 @@ const LinkGroup = ({
   title,
   links,
   missing,
+  gameId,
 }: {
   title: string;
   links: IMentionRef[];
   missing: Set<string>;
+  gameId: number;
 }) =>
   links.length === 0 ? null : (
     <div className="flex flex-col gap-[6px]">
@@ -75,12 +77,12 @@ const LinkGroup = ({
         ) : (
           <Link
             key={refKey(link)}
-            to={hrefFor(link)}
+            to={hrefFor(link, gameId)}
             className="flex min-h-10 items-center gap-[9px] rounded-[9px] px-2 py-[6px] text-[14px] text-foreground hover:bg-secondary"
           >
             <span className="flex-grow">{link.label}</span>
             <span className="font-mono text-[11px] text-muted-foreground">
-              {link.type.toLowerCase()}
+              {link.type === "Npc" ? "NPC" : link.type.toLowerCase()}
             </span>
           </Link>
         ),
@@ -154,8 +156,10 @@ const JournalEntry = () => {
   if (!entry) return null;
 
   const missing = missingSet(entry?.missing_mentions);
-  const people = links.filter((l) => l.type === "Character");
-  const things = links.filter((l) => l.type !== "Character");
+  const isPerson = (l: IMentionRef) =>
+    l.type === "Character" || l.type === "Npc";
+  const people = links.filter(isPerson);
+  const things = links.filter((l) => !isPerson(l));
 
   return (
     <div className="flex flex-col gap-4 p-[14px] pb-28 lg:px-9 lg:py-[26px]">
@@ -272,11 +276,21 @@ const JournalEntry = () => {
               <h2 className="font-display text-[19px] font-semibold">
                 In this entry
               </h2>
-              <LinkGroup title="People" links={people} missing={missing} />
+              <LinkGroup
+                title="People"
+                links={people}
+                missing={missing}
+                gameId={gameId}
+              />
               {people.length > 0 && things.length > 0 && (
                 <div className="h-px bg-hairline" />
               )}
-              <LinkGroup title="Things" links={things} missing={missing} />
+              <LinkGroup
+                title="Things"
+                links={things}
+                missing={missing}
+                gameId={gameId}
+              />
             </div>
           )}
           {entry.previous && (

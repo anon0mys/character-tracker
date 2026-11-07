@@ -2,7 +2,7 @@
 # body. `label` is frozen at the name it was written with.
 class JournalMention < ApplicationRecord
   # Add a type here (and to the typeahead) to make it mentionable.
-  MENTIONABLE_TYPES = %w[Character Item Monster Spell].freeze
+  MENTIONABLE_TYPES = %w[Character Npc Item Monster Spell].freeze
   NODE_TYPES = %w[personMention thingMention].freeze
 
   belongs_to :journal_entry

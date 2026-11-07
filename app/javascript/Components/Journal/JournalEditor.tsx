@@ -7,8 +7,10 @@ import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import { Awareness } from "y-protocols/awareness";
 import { Bold, Heading3, Italic, List } from "lucide-react";
-import { IItemType, IMentionRef } from "../../Api";
+import { Client, IItemType, IMentionRef, INpcType } from "../../Api";
+import { useError } from "../../Errors";
 import { ItemForm } from "../Items";
+import { NpcForm } from "../Inventory/NpcsSection";
 import { cn } from "../../lib/utils";
 import { SyncedDoc } from "./useJournalSync";
 import {
@@ -17,8 +19,10 @@ import {
   refKey,
   MENTION_NODES,
   MentionContext,
+  PERSON,
   THING,
 } from "./mentions";
+import { MentionKind } from "./MentionList";
 
 interface JournalEditorProps {
   synced: SyncedDoc;
@@ -166,7 +170,9 @@ const JournalEditor = ({
   missing,
 }: JournalEditorProps) => {
   const navigate = useNavigate();
+  const errors = useError();
   const [creating, setCreating] = useState<{
+    kind: MentionKind;
     name: string;
     range: Range;
   } | null>(null);
@@ -174,7 +180,7 @@ const JournalEditor = ({
   const ctxRef = useRef<MentionContext>({
     gameId,
     token,
-    onCreateItem: (name, range) => setCreating({ name, range }),
+    onCreate: (kind, name, range) => setCreating({ kind, name, range }),
   });
   ctxRef.current = { ...ctxRef.current, gameId, token, missing };
 
@@ -197,7 +203,8 @@ const JournalEditor = ({
         handleClickOn: (_view, _pos, node) => {
           if (!MENTION_NODES.includes(node.type.name)) return false;
           const ref = { type: node.attrs.type, id: node.attrs.id };
-          if (!ctxRef.current.missing?.has(refKey(ref))) navigate(hrefFor(ref));
+          if (!ctxRef.current.missing?.has(refKey(ref)))
+            navigate(hrefFor(ref, ctxRef.current.gameId));
           return true;
         },
       },
@@ -213,18 +220,42 @@ const JournalEditor = ({
     editor?.commands.updateUser(user);
   }, [editor, user.name, user.color]);
 
-  const linkCreatedItem = (item: IItemType) => {
-    if (!editor || !creating || !item.id) return;
+  /** Replaces the typed @/# query with a chip for the record just created. */
+  const linkCreated = (node: string, attrs: IMentionRef) => {
+    if (!editor || !creating) return;
     editor
       .chain()
       .focus()
       .insertContentAt(creating.range, [
-        { type: THING, attrs: { id: item.id, type: "Item", label: item.name } },
+        { type: node, attrs },
         { type: "text", text: " " },
       ])
       .run();
     setCreating(null);
   };
+
+  const linkCreatedItem = (item: IItemType) =>
+    item.id &&
+    linkCreated(THING, { id: item.id, type: "Item", label: item.name });
+
+  const createNpc = (attrs: Partial<INpcType>) =>
+    Client()
+      .post({
+        path: `/games/${gameId}/npcs`,
+        payload: {
+          npc: {
+            name: attrs.name,
+            description: attrs.description,
+            race: attrs.race,
+            archetype: attrs.archetype,
+          },
+        },
+        token,
+      })
+      .then((r) =>
+        linkCreated(PERSON, { id: r.data.id, type: "Npc", label: r.data.name }),
+      )
+      .catch((e) => errors.setError(e));
 
   if (!editor) return null;
 
@@ -233,12 +264,20 @@ const JournalEditor = ({
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
       {focused && <AccessoryBar editor={editor} />}
-      {creating && (
+      {creating?.kind === "things" && (
         <ItemForm
           open
           initialName={creating.name}
           close={() => setCreating(null)}
           onSaved={linkCreatedItem}
+        />
+      )}
+      {creating?.kind === "people" && (
+        <NpcForm
+          npc={{ name: creating.name }}
+          open
+          onClose={() => setCreating(null)}
+          onSave={createNpc}
         />
       )}
     </div>

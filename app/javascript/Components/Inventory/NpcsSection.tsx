@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Client, INpcType, archetypes } from "../../Api";
 import { useAuth } from "../../Auth";
 import { useError } from "../../Errors";
 import { cn } from "../../lib/utils";
 import { initials } from "../Shell";
+import MentionedInJournal from "../Journal/MentionedInJournal";
 import {
   Button,
   Dialog,
@@ -137,6 +139,15 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
   const [editing, setEditing] = useState<Partial<INpcType> | null>(null);
   const [giving, setGiving] = useState(false);
   const [panel, setPanel] = useState<Panel>({ mode: "npc" });
+  const [searchParams] = useSearchParams();
+  const linkedNpcId = Number(searchParams.get("npc")) || null;
+
+  // Journal chips link here as ?section=npcs&npc=<id>; open that NPC.
+  useEffect(() => {
+    if (!linkedNpcId) return;
+    setSelectedId(linkedNpcId);
+    setPanel({ mode: "npc" });
+  }, [linkedNpcId]);
 
   const loadNpcs = () =>
     client
@@ -401,6 +412,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
                   </p>
                 )}
               </div>
+              <MentionedInJournal type="Npc" id={npc.id} />
             </>
           )}
         </section>
@@ -429,3 +441,4 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
 };
 
 export default NpcsSection;
+export { NpcForm };

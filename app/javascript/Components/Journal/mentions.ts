@@ -30,16 +30,20 @@ const COMPENDIUM_TAB: Record<string, string> = {
   Spell: "spells",
 };
 
-/** Where a chip leads: the character sheet, or the Compendium entry's detail pane. */
-const hrefFor = ({ type, id }: Pick<IMentionRef, "type" | "id">) =>
-  type === "Character"
-    ? `/characters/${id}`
-    : `/compendium/${COMPENDIUM_TAB[type]}?id=${id}`;
+/** Where a chip leads: the character sheet, the campaign's NPC, or the Compendium entry. */
+const hrefFor = (
+  { type, id }: Pick<IMentionRef, "type" | "id">,
+  gameId?: number,
+) => {
+  if (type === "Character") return `/characters/${id}`;
+  if (type === "Npc") return `/campaigns/${gameId}?section=npcs&npc=${id}`;
+  return `/compendium/${COMPENDIUM_TAB[type]}?id=${id}`;
+};
 
 interface MentionContext {
   gameId: number;
   token: string | null;
-  onCreateItem: (name: string, range: Range) => void;
+  onCreate: (kind: MentionKind, name: string, range: Range) => void;
   /** refKeys of chips whose record was deleted. */
   missing?: Set<string>;
 }
@@ -92,7 +96,7 @@ const suggestionRender = (kind: MentionKind, ctxRef: ContextRef) => () => {
       props.command({ id: item.id, type: item.type, label: item.label }),
     onCreate: () => {
       if (renderer) (renderer.element as HTMLElement).style.display = "none";
-      ctxRef.current.onCreateItem(props.query, props.range);
+      ctxRef.current.onCreate(kind, props.query, props.range);
     },
   });
 

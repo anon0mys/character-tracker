@@ -393,7 +393,7 @@ interface ISpellListType {
   spells: ISpellType[];
 }
 
-type MentionableType = "Character" | "Item" | "Monster" | "Spell";
+type MentionableType = "Character" | "Npc" | "Item" | "Monster" | "Spell";
 
 interface IMentionRef {
   type: MentionableType;
