@@ -117,6 +117,7 @@ module Api
           :concentration_spell,
           :notes,
           :subclass,
+          :subrace,
           :trait,
           :ideal,
           :flaw,

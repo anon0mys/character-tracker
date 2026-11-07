@@ -4,8 +4,14 @@ module Api
       before_action :authenticate_user!
       before_action :set_character
 
+      # Derived rows (class, subclass, race, background) are projected from the
+      # compendium; feat rows come from the character_feats join; custom rows
+      # are the character's own. Each row says which via `origin`.
       def index
-        render json: FeatureSerializer.render(@character.features.order(:position, :id), root: :data)
+        derived = DerivedFeatures.for(@character).map { |row| row.to_h.merge(id: nil, origin: "derived") }
+        feats = CharacterFeatSerializer.render_as_hash(@character.character_feats.includes(:feat).order(:id))
+        custom = FeatureSerializer.render_as_hash(@character.features.order(:position, :id))
+        render json: { data: derived + feats + custom }
       end
 
       def create
@@ -29,43 +35,6 @@ module Api
       def destroy
         @character.features.find(params[:id]).destroy
         render json: {}, status: :accepted
-      end
-
-      # Seed "class" features from the archetype's features up to the character's level,
-      # skipping any already present by name.
-      def import_class
-        existing = @character.features.where(category: "class").pluck(:name).to_set
-        imported = []
-        (1..@character.level).each do |lvl|
-          @character.archetype.features_at_level(lvl).each do |feature|
-            name = feature["name"]
-            next if name.blank? || existing.include?(name)
-
-            existing << name
-            imported << @character.features.create!(
-              category: "class", name:, description: feature["description"],
-            )
-          end
-        end
-        render json: FeatureSerializer.render(imported, root: :data)
-      end
-
-      def import_subclass
-        subclass = @character.archetype.try(:subclasses)&.find_by("lower(name) = ?", @character.subclass.to_s.downcase)
-        unless subclass
-          return render json: { errors: ["No matching subclass for this character"] },
-            status: :unprocessable_entity
-        end
-
-        existing = @character.features.where(category: "subclass").pluck(:name).to_set
-        imported = (subclass.features || []).filter_map do |feature|
-          name = feature["name"]
-          next if name.blank? || existing.include?(name)
-
-          existing << name
-          @character.features.create!(category: "subclass", name:, description: feature["description"])
-        end
-        render json: FeatureSerializer.render(imported, root: :data)
       end
 
       private

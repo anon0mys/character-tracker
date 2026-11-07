@@ -8,9 +8,8 @@ class CharacterSerializer < Blueprinter::Base
     :hit_dice_remaining, :hit_die_type, :inspiration, :death_save_successes,
     :death_save_failures, :exhaustion, :spell_slots_used, :spell_slots_max,
     :pact_slot_level, :concentration_spell, :notes, :conditions,
-    :subclass, :trait, :ideal, :flaw, :bond, :languages,
-    :subclass, :trait, :ideal, :flaw, :bond, :languages,
-    :copper, :silver, :electrum, :gold, :platinum
+    :subclass, :subrace, :trait, :ideal, :flaw, :bond, :languages,
+    :copper, :silver, :electrum, :gold, :platinum, :updated_at
 
   association :current_spell_list, blueprint: SpellListSerializer
   association :attacks, blueprint: AttackSerializer
@@ -35,6 +34,30 @@ class CharacterSerializer < Blueprinter::Base
     next [] unless a.respond_to?(:subclasses)
 
     a.subclasses.order(:name).map { |sc| { name: sc.name, description: sc.description } }
+  end
+
+  field :race_details do |character, _options|
+    race = character.race_record
+    next nil unless race
+
+    {
+      size: race.size, speed: race.speed, source: race.source,
+      traits: race.traits, subraces: race.all_subraces.pluck("name")
+    }
+  end
+
+  field :background_details do |character, _options|
+    background = character.background_record
+    next nil unless background
+
+    {
+      source: background.source,
+      skill_proficiencies: background.skill_proficiencies,
+      tool_proficiencies: background.tool_proficiencies,
+      languages: background.languages,
+      features: background.features,
+      characteristics: background.characteristics,
+    }
   end
 
   field :skills do |character, _options|

@@ -6,20 +6,40 @@ describe "character features (4e)" do
 
   before { sign_in(user) }
 
-  it "imports class features up to level, without duplicates" do
-    expect do
-      post import_class_api_v1_character_features_path(character), headers: @auth_headers
-    end.to change { character.features.where(category: "class").count }.from(0).to(be > 0)
+  describe "GET index" do
+    it "projects class features up to level as derived rows, with no id" do
+      get api_v1_character_features_path(character), headers: @auth_headers
+      expect(response).to have_http_status(:success)
 
-    before_count = character.features.count
-    post import_class_api_v1_character_features_path(character), headers: @auth_headers
-    expect(character.features.count).to eq before_count
+      rows = response.parsed_body["data"].select { |r| r["category"] == "class" }
+      expect(rows).not_to be_empty
+      expect(rows.pluck("origin").uniq).to eq ["derived"]
+      expect(rows.pluck("id").uniq).to eq [nil]
+      expect(character.features.count).to eq 0
+    end
+
+    it "projects subclass features once the character has a matching subclass" do
+      character.update!(subclass: "Necromancy")
+      get api_v1_character_features_path(character), headers: @auth_headers
+      rows = response.parsed_body["data"].select { |r| r["category"] == "subclass" }
+      expect(rows).not_to be_empty
+    end
+
+    it "orders derived, then feats, then custom rows tagged by origin" do
+      character.character_feats.create!(feat: create(:feat, name: "Alert"))
+      character.features.create!(category: "blessing", name: "Boon of Luck")
+
+      get api_v1_character_features_path(character), headers: @auth_headers
+      origins = response.parsed_body["data"].pluck("origin")
+      expect(origins.uniq).to eq %w[derived feat custom]
+    end
   end
 
-  it "creates, updates and deletes a feature" do
+  it "creates, updates and deletes a custom feature" do
     post api_v1_character_features_path(character), headers: @auth_headers,
       params: { feature: { category: "feat", name: "Lucky", description: "reroll" } }, as: :json
     expect(response).to have_http_status(:success)
+    expect(response.parsed_body["data"]["origin"]).to eq "custom"
     id = response.parsed_body["data"]["id"]
 
     patch api_v1_character_feature_path(character, id), headers: @auth_headers,
@@ -28,27 +48,5 @@ describe "character features (4e)" do
 
     delete api_v1_character_feature_path(character, id), headers: @auth_headers
     expect(character.features.where(id:)).to be_empty
-  end
-
-  describe "POST import_subclass" do
-    it "seeds subclass features for the character's subclass" do
-      character = create(:character, user:, archetype: :wizard)
-      character.update!(subclass: "Necromancy")
-
-      expect do
-        post import_subclass_api_v1_character_features_path(character), headers: @auth_headers
-      end.to change { character.features.where(category: "subclass").count }.by_at_least(1)
-      expect(response).to have_http_status(:success)
-
-      before_count = character.features.count
-      post import_subclass_api_v1_character_features_path(character), headers: @auth_headers
-      expect(character.features.count).to eq before_count
-    end
-
-    it "422 when no matching subclass" do
-      character = create(:character, user:, archetype: :wizard)
-      post import_subclass_api_v1_character_features_path(character), headers: @auth_headers
-      expect(response).to have_http_status(:unprocessable_entity)
-    end
   end
 end

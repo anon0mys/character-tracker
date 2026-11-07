@@ -23,20 +23,27 @@ type FeatureCategory =
   | "class"
   | "subclass"
   | "racial"
+  | "background"
   | "feat"
   | "infusion"
   | "item"
   | "blessing"
   | "other";
 
+type FeatureOrigin = "derived" | "feat" | "custom";
+
 interface IFeature {
-  id?: number;
+  id?: number | null;
   character_id?: number;
   category: FeatureCategory;
   name: string;
   description?: string;
   tracker_id?: number | null;
   position?: number;
+  /** derived = projected from class/race/background; feat = chosen; custom = the character's own row */
+  origin?: FeatureOrigin;
+  character_feat_id?: number;
+  feat_id?: number;
 }
 
 interface ISkill {
@@ -132,6 +139,22 @@ interface ICharacterType {
   subclass_label?: string;
   subclass_options?: string[];
   subclass_details?: { name: string; description?: string }[];
+  subrace?: string | null;
+  race_details?: {
+    size?: string;
+    speed?: number;
+    source?: string;
+    traits: IRaceTrait[];
+    subraces: string[];
+  } | null;
+  background_details?: {
+    source?: string;
+    skill_proficiencies?: string;
+    tool_proficiencies?: string;
+    languages?: string;
+    features: IBackgroundFeature[];
+    characteristics: IBackgroundType["characteristics"];
+  } | null;
   trait?: string;
   ideal?: string;
   flaw?: string;
@@ -245,6 +268,75 @@ interface IMonsterType {
   };
 }
 
+interface IRaceTrait {
+  name: string;
+  description: string;
+}
+
+interface IRaceSubrace {
+  name: string;
+  description: string;
+  traits: IRaceTrait[];
+}
+
+interface IRaceVersion {
+  source?: string;
+  description: string;
+  traits: IRaceTrait[];
+  subraces: IRaceSubrace[];
+}
+
+interface IRaceType {
+  id?: number;
+  name: string;
+  slug?: string;
+  category?: string;
+  source?: string;
+  description?: string;
+  size?: string;
+  speed?: number;
+  traits: IRaceTrait[];
+  subraces: IRaceSubrace[];
+  alternate_versions: IRaceVersion[];
+}
+
+interface IBackgroundFeature {
+  name: string;
+  description: string;
+}
+
+interface IBackgroundType {
+  id?: number;
+  name: string;
+  slug?: string;
+  source?: string;
+  description?: string;
+  skill_proficiencies?: string;
+  tool_proficiencies?: string;
+  languages?: string;
+  equipment?: string;
+  features: IBackgroundFeature[];
+  variants: IBackgroundFeature[];
+  characteristics: {
+    description?: string;
+    personality_traits?: string[];
+    ideals?: string[];
+    bonds?: string[];
+    flaws?: string[];
+    [k: string]: string | string[] | undefined;
+  };
+}
+
+interface IFeatType {
+  id?: number;
+  name: string;
+  slug?: string;
+  source?: string;
+  prerequisite?: string;
+  description?: string;
+  benefits: string[];
+}
+
 interface ISpellType {
   id: number | null;
   name: string;
@@ -279,6 +371,7 @@ export type {
   IRider,
   ISkill,
   IFeature,
+  FeatureOrigin,
   ILoadout,
   FeatureCategory,
   ActionType,
@@ -290,6 +383,13 @@ export type {
   IItemType,
   IMonsterType,
   IMonsterAction,
+  IRaceType,
+  IRaceTrait,
+  IRaceSubrace,
+  IRaceVersion,
+  IBackgroundType,
+  IBackgroundFeature,
+  IFeatType,
   ISpellType,
   ISpellListType,
   IPaginationType,

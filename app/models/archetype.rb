@@ -4,6 +4,11 @@ class Archetype < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
+  # Case-insensitive id lookup for the free-text name a character stores.
+  def self.id_for(name)
+    where("lower(name) = ?", name.to_s.downcase).pick(:id)
+  end
+
   # --- proficiencies ---------------------------------------------------------
   def armor_proficiencies      = proficiencies["armor"] || []
   def weapon_proficiencies     = proficiencies["weapons"] || []

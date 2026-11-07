@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_10_08_020000) do
+ActiveRecord::Schema.define(version: 2026_11_07_000000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,33 @@ ActiveRecord::Schema.define(version: 2026_10_08_020000) do
     t.jsonb "riders", default: [], null: false
     t.integer "loadout_ids", default: [], null: false, array: true
     t.index ["character_id"], name: "index_attacks_on_character_id"
+  end
+
+  create_table "backgrounds", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug"
+    t.string "source"
+    t.text "description"
+    t.string "skill_proficiencies"
+    t.string "tool_proficiencies"
+    t.string "languages"
+    t.text "equipment"
+    t.jsonb "features", default: [], null: false
+    t.jsonb "variants", default: [], null: false
+    t.jsonb "characteristics", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_backgrounds_on_name", unique: true
+  end
+
+  create_table "character_feats", force: :cascade do |t|
+    t.bigint "character_id", null: false
+    t.bigint "feat_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_id", "feat_id"], name: "index_character_feats_on_character_id_and_feat_id", unique: true
+    t.index ["character_id"], name: "index_character_feats_on_character_id"
+    t.index ["feat_id"], name: "index_character_feats_on_feat_id"
   end
 
   create_table "character_items", force: :cascade do |t|
@@ -146,9 +173,14 @@ ActiveRecord::Schema.define(version: 2026_10_08_020000) do
     t.text "bond"
     t.string "languages", default: [], null: false, array: true
     t.bigint "archetype_id"
+    t.bigint "race_id"
+    t.bigint "background_id"
+    t.string "subrace"
     t.index ["archetype_id"], name: "index_characters_on_archetype_id"
+    t.index ["background_id"], name: "index_characters_on_background_id"
     t.index ["current_spell_list_id"], name: "index_characters_on_current_spell_list_id"
     t.index ["game_id"], name: "index_characters_on_game_id"
+    t.index ["race_id"], name: "index_characters_on_race_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
   end
 
@@ -175,6 +207,18 @@ ActiveRecord::Schema.define(version: 2026_10_08_020000) do
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "feats", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug"
+    t.string "source"
+    t.string "prerequisite"
+    t.text "description"
+    t.jsonb "benefits", default: [], null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_feats_on_name", unique: true
   end
 
   create_table "features", force: :cascade do |t|
@@ -273,6 +317,23 @@ ActiveRecord::Schema.define(version: 2026_10_08_020000) do
     t.index ["location_id"], name: "index_npcs_on_location_id", unique: true
   end
 
+  create_table "races", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug"
+    t.string "category"
+    t.string "source"
+    t.text "description"
+    t.string "size"
+    t.integer "speed"
+    t.jsonb "traits", default: [], null: false
+    t.jsonb "subraces", default: [], null: false
+    t.jsonb "alternate_versions", default: [], null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category"], name: "index_races_on_category"
+    t.index ["name"], name: "index_races_on_name", unique: true
+  end
+
   create_table "spell_list_items", force: :cascade do |t|
     t.bigint "spell_list_id"
     t.bigint "spell_id"
@@ -346,11 +407,15 @@ ActiveRecord::Schema.define(version: 2026_10_08_020000) do
   end
 
   add_foreign_key "attacks", "characters"
+  add_foreign_key "character_feats", "characters"
+  add_foreign_key "character_feats", "feats"
   add_foreign_key "character_items", "characters"
   add_foreign_key "character_items", "items"
   add_foreign_key "character_trackers", "characters"
   add_foreign_key "characters", "archetypes"
+  add_foreign_key "characters", "backgrounds"
   add_foreign_key "characters", "games"
+  add_foreign_key "characters", "races"
   add_foreign_key "faction_locations", "factions"
   add_foreign_key "faction_locations", "locations"
   add_foreign_key "faction_npcs", "factions"

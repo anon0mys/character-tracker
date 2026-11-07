@@ -1,5 +1,5 @@
 class Feature < ApplicationRecord
-  CATEGORIES = %w[class subclass racial feat infusion item blessing other].freeze
+  CATEGORIES = %w[class subclass racial background feat infusion item blessing other].freeze
 
   belongs_to :character
 

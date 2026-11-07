@@ -15,6 +15,21 @@ File.foreach(Rails.root.join("lib/seeds/monster_data.json")) do |line|
   Monster.find_or_initialize_by(name: monster_data["name"]).update!(monster_data)
 end
 
+File.foreach(Rails.root.join("lib/seeds/race_data.json")) do |line|
+  race_data = JSON.parse(line)
+  Race.find_or_initialize_by(name: race_data["name"]).update!(race_data)
+end
+
+File.foreach(Rails.root.join("lib/seeds/background_data.json")) do |line|
+  background_data = JSON.parse(line)
+  Background.find_or_initialize_by(name: background_data["name"]).update!(background_data)
+end
+
+File.foreach(Rails.root.join("lib/seeds/feat_data.json")) do |line|
+  feat_data = JSON.parse(line)
+  Feat.find_or_initialize_by(name: feat_data["name"]).update!(feat_data)
+end
+
 if Rails.env.development? && !AdminUser.exists?(email: "admin@example.com")
   AdminUser.create!(
     email: "admin@example.com",
@@ -37,4 +52,9 @@ ArchetypeSeeder.call
 Character.where(archetype_id: nil).find_each do |character|
   archetype = Archetype.find_by("lower(name) = ?", character[:archetype].to_s.downcase)
   character.update_columns(archetype_id: archetype.id) if archetype
+end
+
+Character.where(race_id: nil).or(Character.where(background_id: nil)).find_each do |character|
+  character.update_columns(race_id: Race.id_for(character.race), # rubocop:disable Rails/SkipsModelValidations
+    background_id: Background.id_for(character.background))
 end

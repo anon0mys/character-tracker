@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Client, ICharacterType, IFeature, FeatureCategory } from "../Api";
+import {
+  Client,
+  ICharacterType,
+  IFeature,
+  IFeatType,
+  FeatureCategory,
+} from "../Api";
+import FeatPicker from "../Components/Compendium/FeatPicker";
 import { useAuth } from "../Auth";
 import { useError } from "../Errors";
 import { IdentityHeader } from "../Components/Sheet";
@@ -28,11 +35,37 @@ const CATEGORIES: FeatureCategory[] = [
   "subclass",
   "infusion",
   "racial",
+  "background",
   "feat",
   "item",
   "blessing",
   "other",
 ];
+
+const CHARACTERISTIC_KEYS = {
+  trait: "personality_traits",
+  ideal: "ideals",
+  bond: "bonds",
+  flaw: "flaws",
+} as const;
+
+/** Stable React key: feat rows by join id, custom rows by row id, derived rows by position (names can repeat across race and subrace). */
+const featureKey = (f: IFeature, index: number): string =>
+  f.origin === "feat"
+    ? `feat-${f.character_feat_id}`
+    : f.id
+      ? `custom-${f.id}`
+      : `derived-${f.category}-${index}`;
+
+/** Rows of the character's background table for one of trait/ideal/bond/flaw. */
+const characteristicTable = (
+  character: ICharacterType,
+  key: keyof typeof CHARACTERISTIC_KEYS,
+): string[] => {
+  const rows =
+    character.background_details?.characteristics?.[CHARACTERISTIC_KEYS[key]];
+  return Array.isArray(rows) ? rows : [];
+};
 
 const emptyFeature = (): IFeature => ({
   category: "other",
@@ -120,6 +153,7 @@ const Features = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<IFeature>(emptyFeature());
   const [filter, setFilter] = useState<FeatureCategory | "all">("all");
+  const [featPickerOpen, setFeatPickerOpen] = useState(false);
 
   const token = auth.getToken();
 
@@ -128,12 +162,19 @@ const Features = () => {
       .get({ path: `/characters/${id}`, token })
       .then((r) => setCharacter(r.data))
       .catch((e) => errors.setError(e));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  // Derived rows follow class, subclass, race, subrace and level, so refetch
+  // once the server has confirmed a character change.
+  useEffect(() => {
+    if (!character.id) return;
     client
       .get({ path: `/characters/${id}/features`, token })
       .then((r) => setFeatures(r.data ?? []))
       .catch((e) => errors.setError(e));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, character.id, character.updated_at]);
 
   const save = (f: IFeature) => {
     const req = { token, payload: { feature: f } };
@@ -158,17 +199,31 @@ const Features = () => {
       .catch((e) => errors.setError(e));
   };
 
-  const importClass = () => {
+  const addFeat = (feat: IFeatType) => {
     client
-      .post({ path: `/characters/${id}/features/import_class`, token })
-      .then((r) => setFeatures((prev) => [...prev, ...(r.data ?? [])]))
+      .post({
+        path: `/characters/${id}/feats`,
+        token,
+        payload: { feat_id: feat.id },
+      })
+      .then((r) => {
+        setFeatures((prev) => [...prev, r.data]);
+        setFeatPickerOpen(false);
+      })
       .catch((e) => errors.setError(e));
   };
 
-  const importSubclass = () => {
+  const removeFeat = (f: IFeature) => {
     client
-      .post({ path: `/characters/${id}/features/import_subclass`, token })
-      .then((r) => setFeatures((prev) => [...prev, ...(r.data ?? [])]))
+      .destroy({
+        path: `/characters/${id}/feats/${f.character_feat_id}`,
+        token,
+      })
+      .then(() =>
+        setFeatures((prev) =>
+          prev.filter((x) => x.character_feat_id !== f.character_feat_id),
+        ),
+      )
       .catch((e) => errors.setError(e));
   };
 
@@ -247,6 +302,34 @@ const Features = () => {
           </p>
         )}
 
+        {(character.race_details?.subraces ?? []).length > 0 && (
+          <div className="flex flex-col gap-1">
+            <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              Subrace
+            </label>
+            <Select
+              value={character.subrace || undefined}
+              onValueChange={(v) => patch({ subrace: v })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Choose subrace" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from(
+                  new Set([
+                    ...(character.subrace ? [character.subrace] : []),
+                    ...(character.race_details?.subraces ?? []),
+                  ]),
+                ).map((name) => (
+                  <SelectItem key={name} value={name}>
+                    {name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
         <div className="flex flex-col gap-1">
           <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
             Languages
@@ -271,27 +354,46 @@ const Features = () => {
             ["bond", "Bond"],
             ["flaw", "Flaw"],
           ] as const
-        ).map(([key, label]) => (
-          <div key={key} className="flex flex-col gap-1">
-            <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-              {label}
-            </label>
-            <Textarea
-              value={(character[key] as string) ?? ""}
-              onChange={(e) => patch({ [key]: e.target.value })}
-              className="min-h-[64px] bg-secondary"
-            />
-          </div>
-        ))}
+        ).map(([key, label]) => {
+          const table = characteristicTable(character, key);
+          return (
+            <div key={key} className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                {label}
+              </label>
+              <Textarea
+                value={(character[key] as string) ?? ""}
+                onChange={(e) => patch({ [key]: e.target.value })}
+                className="min-h-[64px] bg-secondary"
+              />
+              {table.length > 0 && (
+                <Select value="" onValueChange={(v) => patch({ [key]: v })}>
+                  <SelectTrigger className="h-8 text-[12px] text-muted-foreground">
+                    <SelectValue
+                      placeholder={`Pick from ${character.background} table`}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {table.map((row, i) => (
+                      <SelectItem key={i} value={row}>
+                        {row}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <div className="flex items-center gap-2">
         <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
           Features
         </span>
-        <div className="ml-auto flex gap-2">
-          <Button variant="outline" onClick={importClass}>
-            Import class
+        <div className="ml-auto flex flex-wrap justify-end gap-2">
+          <Button variant="outline" onClick={() => setFeatPickerOpen(true)}>
+            Add feat
           </Button>
           <Button onClick={openAdd}>Add feature</Button>
         </div>
@@ -319,7 +421,7 @@ const Features = () => {
 
       {byCategory.length === 0 ? (
         <p className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
-          No features yet. Import your class or add one.
+          No features yet. Pick a class, race or background, or add one.
         </p>
       ) : (
         <div className="columns-1 gap-[14px] lg:columns-3">
@@ -331,31 +433,37 @@ const Features = () => {
               <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-proficiency-ink">
                 {cat}
               </span>
-              {items.map((f) => (
+              {items.map((f, index) => (
                 <div
-                  key={f.id}
+                  key={featureKey(f, index)}
                   className="group flex flex-col gap-1 border-t border-hairline pt-2 first:border-t-0 first:pt-0"
                 >
                   <div className="flex items-start gap-2">
                     <span className="flex-grow font-display text-[15px] font-semibold">
                       {f.name}
                     </span>
-                    <button
-                      type="button"
-                      aria-label="Edit"
-                      onClick={() => openEdit(f)}
-                      className="text-muted-foreground opacity-0 group-hover:opacity-100"
-                    >
-                      <Pencil className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Delete"
-                      onClick={() => remove(f)}
-                      className="text-muted-foreground opacity-0 group-hover:opacity-100"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
+                    {f.origin === "custom" && (
+                      <button
+                        type="button"
+                        aria-label="Edit"
+                        onClick={() => openEdit(f)}
+                        className="text-muted-foreground opacity-0 group-hover:opacity-100"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                    {f.origin !== "derived" && (
+                      <button
+                        type="button"
+                        aria-label="Delete"
+                        onClick={() =>
+                          f.origin === "feat" ? removeFeat(f) : remove(f)
+                        }
+                        className="text-muted-foreground opacity-0 group-hover:opacity-100"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
                   </div>
                   {f.description && (
                     <p className="text-[12.5px] leading-relaxed text-foreground-2">
@@ -368,6 +476,12 @@ const Features = () => {
           ))}
         </div>
       )}
+
+      <FeatPicker
+        open={featPickerOpen}
+        onClose={() => setFeatPickerOpen(false)}
+        onPick={addFeat}
+      />
 
       <FeatureForm
         open={formOpen}

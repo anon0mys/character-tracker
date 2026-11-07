@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { ISpellType, IItemType, IMonsterType } from "../Api";
+import {
+  ISpellType,
+  IItemType,
+  IMonsterType,
+  IRaceType,
+  IBackgroundType,
+  IFeatType,
+} from "../Api";
 import { cn } from "../lib/utils";
 import { Dialog, DialogContent } from "../Components/ui";
 import SpellsTab from "../Components/Compendium/SpellsTab";
@@ -9,23 +16,44 @@ import DetailPane from "../Components/Compendium/DetailPane";
 import ItemDetailPane from "../Components/Compendium/ItemDetailPane";
 import MonstersTab from "../Components/Compendium/MonstersTab";
 import MonsterDetailPane from "../Components/Compendium/MonsterDetailPane";
+import RacesTab from "../Components/Compendium/RacesTab";
+import RaceDetailPane from "../Components/Compendium/RaceDetailPane";
+import BackgroundsTab from "../Components/Compendium/BackgroundsTab";
+import BackgroundDetailPane from "../Components/Compendium/BackgroundDetailPane";
+import FeatsTab from "../Components/Compendium/FeatsTab";
+import FeatDetailPane from "../Components/Compendium/FeatDetailPane";
 import { useIsDesktop } from "../Hooks/useIsDesktop";
 
 const tabs = [
   { key: "spells", label: "Spells" },
   { key: "items", label: "Items" },
   { key: "monsters", label: "Monsters" },
+  { key: "races", label: "Races" },
+  { key: "backgrounds", label: "Backgrounds" },
+  { key: "feats", label: "Feats" },
 ];
 
 const Compendium = () => {
   const { tab } = useParams<{ tab: string }>();
-  const active = ["items", "monsters"].includes(tab ?? "") ? tab! : "spells";
+  const active = [
+    "items",
+    "monsters",
+    "races",
+    "backgrounds",
+    "feats",
+  ].includes(tab ?? "")
+    ? tab!
+    : "spells";
   const isDesktop = useIsDesktop();
   const [selected, setSelected] = useState<ISpellType | null>(null);
   const [selectedItem, setSelectedItem] = useState<IItemType | null>(null);
   const [selectedMonster, setSelectedMonster] = useState<IMonsterType | null>(
     null,
   );
+  const [selectedRace, setSelectedRace] = useState<IRaceType | null>(null);
+  const [selectedBackground, setSelectedBackground] =
+    useState<IBackgroundType | null>(null);
+  const [selectedFeat, setSelectedFeat] = useState<IFeatType | null>(null);
 
   return (
     <div className="flex min-h-[75vh] flex-col gap-4">
@@ -34,7 +62,7 @@ const Compendium = () => {
           Compendium
         </h1>
         <p className="text-sm text-muted-foreground">
-          Spells and items. Add anything here to a character&rsquo;s list.
+          Spells, items, monsters, races, backgrounds and feats.
         </p>
       </div>
 
@@ -46,6 +74,10 @@ const Compendium = () => {
             onClick={() => {
               setSelected(null);
               setSelectedItem(null);
+              setSelectedMonster(null);
+              setSelectedRace(null);
+              setSelectedBackground(null);
+              setSelectedFeat(null);
             }}
             className={cn(
               "flex min-h-[38px] items-center rounded-lg px-4 text-[13px] no-underline",
@@ -59,7 +91,46 @@ const Compendium = () => {
         ))}
       </div>
 
-      {active === "monsters" ? (
+      {active === "races" ? (
+        <div className="flex min-h-0 flex-grow gap-4">
+          <RacesTab onSelect={setSelectedRace} selectedId={selectedRace?.id} />
+          {selectedRace && isDesktop && (
+            <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
+              <RaceDetailPane
+                race={selectedRace}
+                onClose={() => setSelectedRace(null)}
+              />
+            </div>
+          )}
+        </div>
+      ) : active === "backgrounds" ? (
+        <div className="flex min-h-0 flex-grow gap-4">
+          <BackgroundsTab
+            onSelect={setSelectedBackground}
+            selectedId={selectedBackground?.id}
+          />
+          {selectedBackground && isDesktop && (
+            <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
+              <BackgroundDetailPane
+                background={selectedBackground}
+                onClose={() => setSelectedBackground(null)}
+              />
+            </div>
+          )}
+        </div>
+      ) : active === "feats" ? (
+        <div className="flex min-h-0 flex-grow gap-4">
+          <FeatsTab onSelect={setSelectedFeat} selectedId={selectedFeat?.id} />
+          {selectedFeat && isDesktop && (
+            <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
+              <FeatDetailPane
+                feat={selectedFeat}
+                onClose={() => setSelectedFeat(null)}
+              />
+            </div>
+          )}
+        </div>
+      ) : active === "monsters" ? (
         <div className="flex min-h-0 flex-grow gap-4">
           <MonstersTab
             onSelect={setSelectedMonster}
@@ -123,6 +194,39 @@ const Compendium = () => {
             <MonsterDetailPane
               monster={selectedMonster}
               onClose={() => setSelectedMonster(null)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {selectedRace && !isDesktop && (
+        <Dialog open onOpenChange={(o) => !o && setSelectedRace(null)}>
+          <DialogContent className="max-h-[85vh] overflow-y-auto">
+            <RaceDetailPane
+              race={selectedRace}
+              onClose={() => setSelectedRace(null)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {selectedBackground && !isDesktop && (
+        <Dialog open onOpenChange={(o) => !o && setSelectedBackground(null)}>
+          <DialogContent className="max-h-[85vh] overflow-y-auto">
+            <BackgroundDetailPane
+              background={selectedBackground}
+              onClose={() => setSelectedBackground(null)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {selectedFeat && !isDesktop && (
+        <Dialog open onOpenChange={(o) => !o && setSelectedFeat(null)}>
+          <DialogContent className="max-h-[85vh] overflow-y-auto">
+            <FeatDetailPane
+              feat={selectedFeat}
+              onClose={() => setSelectedFeat(null)}
             />
           </DialogContent>
         </Dialog>

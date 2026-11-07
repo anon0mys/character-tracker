@@ -27,10 +27,8 @@ Rails.application.routes.draw do
           post "/add_spell", to: "spell_lists#add_spell"
         end
         resources :items, only: %i[index], controller: "character_items"
-        resources :features, only: %i[index create update destroy] do
-          post :import_class, on: :collection
-          post :import_subclass, on: :collection
-        end
+        resources :features, only: %i[index create update destroy]
+        resources :feats, only: %i[create destroy], controller: "character_feats"
         resources :loadouts, only: %i[index create update destroy] do
           post :activate, on: :member
         end
@@ -39,6 +37,13 @@ Rails.application.routes.draw do
       resources :spells, only: [:index]
       resources :archetypes, only: [:index]
       resources :monsters, only: [:index]
+      resources :races, only: [:index] do
+        get :options, on: :collection
+      end
+      resources :backgrounds, only: [:index] do
+        get :options, on: :collection
+      end
+      resources :feats, only: [:index]
       resources :items, only: %i[index create update]
       resources :games, only: %i[index show create update destroy]
       get "users/me", to: "users#me"

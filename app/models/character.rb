@@ -26,11 +26,15 @@ class Character < ApplicationRecord
   belongs_to :user
   belongs_to :game
   belongs_to :archetype_record, class_name: "Archetype", foreign_key: :archetype_id, optional: true
+  belongs_to :race_record, class_name: "Race", foreign_key: :race_id, optional: true
+  belongs_to :background_record, class_name: "Background", foreign_key: :background_id, optional: true
   belongs_to :current_spell_list, class_name: :SpellList, optional: true
   has_many :spell_lists, dependent: :destroy
   has_many :attacks, dependent: :destroy
   has_many :character_items, dependent: :destroy
   has_many :items, through: :character_items
+  has_many :character_feats, dependent: :destroy
+  has_many :feats, through: :character_feats
   has_many :character_trackers, class_name: "Character::Tracker", dependent: :destroy
   has_many :features, dependent: :destroy
   has_many :loadouts, dependent: :destroy
@@ -53,12 +57,12 @@ class Character < ApplicationRecord
     @archetype = Archetype.find_by("lower(name) = ?", key) || Archetypes.new(self[:archetype])
   end
 
-  before_save :sync_archetype_id
+  before_save :sync_origin_ids
 
-  def sync_archetype_id
-    return if self[:archetype].blank?
-
-    self.archetype_id = Archetype.where("lower(name) = ?", self[:archetype].to_s.downcase).pick(:id)
+  # Link the free-text class / race / background names to their compendium rows.
+  def sync_origin_ids
+    self.archetype_id = Archetype.id_for(self[:archetype]) if self[:archetype].present?
+    assign_attributes(race_id: Race.id_for(race), background_id: Background.id_for(background))
   end
 
   def add_proficiency(ability)
