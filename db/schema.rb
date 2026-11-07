@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_11_07_000000) do
+ActiveRecord::Schema.define(version: 2026_11_07_000003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -261,6 +261,44 @@ ActiveRecord::Schema.define(version: 2026_11_07_000000) do
     t.index ["name"], name: "index_items_on_name", unique: true
   end
 
+  create_table "journal_entries", force: :cascade do |t|
+    t.bigint "game_id", null: false
+    t.integer "number", null: false
+    t.date "played_on", null: false
+    t.string "title"
+    t.jsonb "body", default: {}, null: false
+    t.binary "ydoc_state"
+    t.integer "update_seq", default: 0, null: false
+    t.integer "compacted_through", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id", "number"], name: "index_journal_entries_on_game_id_and_number", unique: true
+    t.index ["game_id"], name: "index_journal_entries_on_game_id"
+  end
+
+  create_table "journal_entry_updates", force: :cascade do |t|
+    t.bigint "journal_entry_id", null: false
+    t.integer "seq", null: false
+    t.binary "payload", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["journal_entry_id", "seq"], name: "index_journal_entry_updates_on_journal_entry_id_and_seq", unique: true
+    t.index ["journal_entry_id"], name: "index_journal_entry_updates_on_journal_entry_id"
+  end
+
+  create_table "journal_mentions", force: :cascade do |t|
+    t.bigint "journal_entry_id", null: false
+    t.string "mentionable_type", null: false
+    t.bigint "mentionable_id", null: false
+    t.string "label", null: false
+    t.text "excerpt"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["journal_entry_id", "mentionable_type", "mentionable_id"], name: "index_journal_mentions_on_entry_and_mentionable", unique: true
+    t.index ["journal_entry_id"], name: "index_journal_mentions_on_journal_entry_id"
+    t.index ["mentionable_type", "mentionable_id"], name: "index_journal_mentions_on_mentionable"
+  end
+
   create_table "loadouts", force: :cascade do |t|
     t.bigint "character_id", null: false
     t.string "name", null: false
@@ -421,6 +459,9 @@ ActiveRecord::Schema.define(version: 2026_11_07_000000) do
   add_foreign_key "faction_npcs", "factions"
   add_foreign_key "faction_npcs", "npcs"
   add_foreign_key "features", "characters"
+  add_foreign_key "journal_entries", "games"
+  add_foreign_key "journal_entry_updates", "journal_entries", on_delete: :cascade
+  add_foreign_key "journal_mentions", "journal_entries", on_delete: :cascade
   add_foreign_key "loadouts", "characters"
   add_foreign_key "npcs", "locations"
   add_foreign_key "subclasses", "archetypes"

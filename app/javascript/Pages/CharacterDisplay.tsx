@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { MentionedInJournal } from "../Components/Journal";
 import { Client, IAttackType, ICharacterType, ISpellListType } from "../Api";
 import { useAuth } from "../Auth";
 import { useError } from "../Errors";
@@ -185,6 +186,12 @@ const CharacterDisplay = () => {
             patch={patch}
           />
         </div>
+
+        <MentionedInJournal
+          type="Character"
+          id={character.id ? Number(character.id) : undefined}
+          className="rounded-2xl border border-border bg-card p-5"
+        />
       </div>
 
       {/* Phone: pinned HP + segmented reference sections. Attacks / Spells /
@@ -258,6 +265,10 @@ const CharacterDisplay = () => {
               <span className="text-[11px] text-muted-foreground">
                 Edit bio on the Features tab.
               </span>
+              <MentionedInJournal
+                type="Character"
+                id={character.id ? Number(character.id) : undefined}
+              />
             </div>
           )}
         </div>

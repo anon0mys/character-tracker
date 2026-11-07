@@ -135,3 +135,29 @@
 
 @layer utilities {
 }
+
+/* Journal editor: other writers' cursors (TipTap collaboration-cursor).
+   Outside @layer on purpose: TipTap adds these classes at runtime, so
+   Tailwind's content scan never sees them and would purge a layered rule. */
+.collaboration-cursor__caret {
+  position: relative;
+  margin-left: -1px;
+  margin-right: -1px;
+  border-left: 2px solid;
+  word-break: normal;
+  pointer-events: none;
+}
+.collaboration-cursor__label {
+  position: absolute;
+  top: -1.3em;
+  left: -2px;
+  padding: 2px 5px;
+  border-radius: 4px 4px 4px 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  color: hsl(var(--primary-foreground));
+  user-select: none;
+}

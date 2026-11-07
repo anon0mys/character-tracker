@@ -1,4 +1,5 @@
 import React from "react";
+import { MentionedInJournal } from "../Journal";
 import { IMonsterType, IMonsterAction } from "../../Api";
 import { X } from "lucide-react";
 
@@ -144,6 +145,7 @@ const MonsterDetailPane = ({
       <Section title="Actions" items={sb.actions} />
       <Section title="Reactions" items={sb.reactions} />
       <Section title="Legendary actions" items={sb.legendary_actions} />
+      <MentionedInJournal type="Monster" id={monster.id} />
 
       {monster.source && (
         <span className="mt-auto text-[11px] text-muted-foreground">

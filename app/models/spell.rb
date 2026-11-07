@@ -16,6 +16,7 @@ class Spell < ApplicationRecord
 
   default_scope { by_level }
   scope :by_level, -> { order(order_by_level) }
+  scope :id_eq, ->(id) { where(id:) }
   scope :name_eq, ->(name) { where "name ILIKE ?", "%#{name.downcase}%" }
   scope :archetype_eq, ->(archetype) { where "archetypes && ?", "{#{archetype.join(',')}}" }
   scope :level_eq, lambda { |levels|

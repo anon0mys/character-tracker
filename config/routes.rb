@@ -45,7 +45,11 @@ Rails.application.routes.draw do
       end
       resources :feats, only: [:index]
       resources :items, only: %i[index create update]
-      resources :games, only: %i[index show create update destroy]
+      resources :games, only: %i[index show create update destroy] do
+        resources :journal_entries, only: %i[index show create update destroy]
+        resources :mentions, only: [:index]
+        resources :journal_mentions, only: [:index]
+      end
       get "users/me", to: "users#me"
       patch "users/current_character", to: "users#set_current_character"
     end

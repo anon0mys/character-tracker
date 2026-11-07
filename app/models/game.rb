@@ -7,6 +7,7 @@ class Game < ApplicationRecord
   enum status: combine_to_hash(STATUSES)
 
   has_many :characters
+  has_many :journal_entries, dependent: :destroy
   has_many :user_games
   has_many :users, through: :user_games
 

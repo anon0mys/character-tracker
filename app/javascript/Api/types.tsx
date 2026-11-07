@@ -357,6 +357,52 @@ interface ISpellListType {
   spells: ISpellType[];
 }
 
+type MentionableType = "Character" | "Item" | "Monster" | "Spell";
+
+interface IMentionRef {
+  type: MentionableType;
+  id: number;
+  label: string;
+}
+
+interface IMentionResult extends IMentionRef {
+  detail: string;
+}
+
+/** A TipTap JSON node; the journal body and list previews use this shape. */
+interface IRichNode {
+  type: string;
+  text?: string;
+  attrs?: Record<string, any>;
+  content?: IRichNode[];
+}
+
+interface IJournalEntry {
+  id: number;
+  game_id: number;
+  number: number;
+  played_on: string;
+  title: string | null;
+  created_at: string;
+  updated_at: string;
+  preview?: IRichNode | null;
+  mention_count?: number;
+  mentions?: IMentionRef[];
+  previous?: Pick<
+    IJournalEntry,
+    "id" | "number" | "title" | "played_on"
+  > | null;
+}
+
+interface IJournalBacklink {
+  entry_id: number;
+  number: number;
+  title: string | null;
+  played_on: string;
+  label: string;
+  excerpt: string | null;
+}
+
 interface IPaginationType {
   data: any[];
   pages: number;
@@ -393,6 +439,12 @@ export type {
   ISpellType,
   ISpellListType,
   IPaginationType,
+  MentionableType,
+  IMentionRef,
+  IMentionResult,
+  IRichNode,
+  IJournalEntry,
+  IJournalBacklink,
   ResetOn,
   SpellSlotsUsed,
 };

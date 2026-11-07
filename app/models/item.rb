@@ -16,6 +16,7 @@ class Item < ApplicationRecord
   has_many :character_items
   has_many :characters, through: :character_items
 
+  scope :id_eq, ->(id) { where(id:) }
   scope :name_eq, ->(name) { where "name ILIKE ?", "%#{name.downcase}%" }
   scope :status_eq, ->(status) { where status: }
   scope :item_type_eq, ->(item_type) { where item_type: }

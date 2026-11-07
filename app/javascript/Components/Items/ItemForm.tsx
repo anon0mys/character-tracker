@@ -26,11 +26,19 @@ interface ItemFormProps {
   item?: IItemType;
   open: boolean;
   close: VoidFunction;
+  initialName?: string;
+  onSaved?: (item: IItemType) => void;
 }
 
-const ItemForm = ({ item, open, close }: ItemFormProps) => {
+const ItemForm = ({
+  item,
+  open,
+  close,
+  initialName,
+  onSaved,
+}: ItemFormProps) => {
   const [itemData, setItemData] = useState<IItemType>({
-    name: "",
+    name: initialName ?? "",
     description: "",
     item_type: "",
     status: "",
@@ -73,6 +81,7 @@ const ItemForm = ({ item, open, close }: ItemFormProps) => {
     makeRequest()
       .then((response) => {
         console.log("probably add a banner indicating success here");
+        onSaved?.(response.data);
         close();
       })
       .catch((error) => errors.setError(error));

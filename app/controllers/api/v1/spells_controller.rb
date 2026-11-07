@@ -11,7 +11,7 @@ module Api
       private
 
       def filtering_params
-        filters = params.slice(:archetype, :level, :school, :name)
+        filters = params.slice(:id, :archetype, :level, :school, :name)
         filters[:archetype] = filters[:archetype].split(",") if filters[:archetype]
         filters[:level] = filters[:level].split(",") if filters[:level]
         filters[:school] = filters[:school].split(",") if filters[:school]

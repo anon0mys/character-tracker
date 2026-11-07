@@ -4,6 +4,7 @@ import { AuthProvider, PrivateRoute } from "./Auth";
 import { GameProvider } from "./Contexts";
 import Layout from "./Components/Layout";
 import {
+  Campaign,
   Characters,
   CharacterDisplay,
   CharacterForm,
@@ -12,6 +13,7 @@ import {
   Features,
   Dashboard,
   Home,
+  JournalEntry,
   Login,
   MobileAttacks,
   MobileGear,
@@ -42,6 +44,11 @@ const App = () => {
                   <Route element={<PrivateRoute />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/settings" element={<Settings />} />
+                    <Route path="/campaigns/:id" element={<Campaign />} />
+                    <Route
+                      path="/campaigns/:id/journal/:entryId"
+                      element={<JournalEntry />}
+                    />
                     <Route
                       path="/compendium"
                       element={<Navigate to="/compendium/spells" replace />}

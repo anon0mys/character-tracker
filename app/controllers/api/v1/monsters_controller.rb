@@ -10,7 +10,7 @@ module Api
       private
 
       def filtering_params
-        params.slice(:name, :creature_type, :challenge_rating, :size)
+        params.slice(:id, :name, :creature_type, :challenge_rating, :size)
       end
     end
   end

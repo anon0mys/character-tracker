@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { IGameType } from "../../Api";
 import { Button, Input, Label } from "../ui";
 import {
   Dialog,
@@ -16,12 +17,15 @@ interface GameFormProps {
     description: string;
     start_date?: string;
   }) => Promise<any>;
+  game?: IGameType;
 }
 
-const GameForm = ({ open, setOpen, onSubmit }: GameFormProps) => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState<string | undefined>();
+const GameForm = ({ open, setOpen, onSubmit, game }: GameFormProps) => {
+  const [name, setName] = useState(game?.name ?? "");
+  const [description, setDescription] = useState(game?.description ?? "");
+  const [startDate, setStartDate] = useState<string | undefined>(
+    game?.start_date?.slice(0, 10),
+  );
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -34,6 +38,7 @@ const GameForm = ({ open, setOpen, onSubmit }: GameFormProps) => {
     }
     onSubmit(attrs).then((response) => {
       setOpen(false);
+      if (game) return;
       setName("");
       setDescription("");
       setStartDate(undefined);
@@ -45,10 +50,12 @@ const GameForm = ({ open, setOpen, onSubmit }: GameFormProps) => {
       <DialogContent className="sm:max-w-[500px] border-border bg-card ">
         <DialogHeader>
           <DialogTitle className="text-2xl text-primary">
-            Create a Game
+            {game ? "Edit campaign" : "Create a Game"}
           </DialogTitle>
           <p className="text-sm text-muted-foreground mt-1">
-            Start a new D&D campaign or adventure
+            {game
+              ? "Rename it, or change what it is about"
+              : "Start a new D&D campaign or adventure"}
           </p>
         </DialogHeader>
         <form onSubmit={submit}>
@@ -98,7 +105,7 @@ const GameForm = ({ open, setOpen, onSubmit }: GameFormProps) => {
               type="submit"
               className="bg-primary text-primary-foreground hover:bg-primary/90 "
             >
-              Create Game
+              {game ? "Save" : "Create Game"}
             </Button>
           </DialogFooter>
         </form>

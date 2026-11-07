@@ -33,7 +33,7 @@ const GameCard = ({ game, deleteGame }: GameCardProps) => {
     event.preventDefault();
     console.log("setting game", game);
     setCurrentGame(game);
-    navigate("/characters");
+    navigate(`/campaigns/${game.id}`);
   };
 
   const submit = (event: React.MouseEvent<HTMLButtonElement>) => {

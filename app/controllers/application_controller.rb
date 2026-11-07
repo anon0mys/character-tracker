@@ -7,25 +7,7 @@ class ApplicationController < ActionController::Base
     auth_header = request.headers["HTTP_AUTHORIZATION"] || request.headers["Authorization"]
     return unless auth_header
 
-    token = auth_header.split.last
-    return if token.blank?
-
-    begin
-      jwt_payload = JWT.decode(token, Rails.application.credentials.secret_key_base).first
-      @current_user = User.find_by(id: jwt_payload["id"])
-    rescue JWT::ExpiredSignature => e
-      Rails.logger.error "JWT ExpiredSignature: #{e.message}"
-      @current_user = nil
-    rescue JWT::VerificationError => e
-      Rails.logger.error "JWT VerificationError: #{e.message}"
-      @current_user = nil
-    rescue JWT::DecodeError => e
-      Rails.logger.error "JWT DecodeError: #{e.message} - Token: #{token[0..20]}..."
-      @current_user = nil
-    rescue StandardError => e
-      Rails.logger.error "Unexpected error parsing auth token: #{e.class} - #{e.message}"
-      @current_user = nil
-    end
+    @current_user = AuthToken.user_for(auth_header.split.last)
   end
 
   attr_reader :current_user

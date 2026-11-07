@@ -2,6 +2,7 @@ import React from "react";
 import { IItemType } from "../../Api";
 import { cn } from "../../lib/utils";
 import { X } from "lucide-react";
+import { MentionedInJournal } from "../Journal";
 
 const badge =
   "rounded-full px-[9px] py-[3px] font-mono text-[10px] uppercase tracking-[0.08em]";
@@ -49,6 +50,7 @@ const ItemDetailPane = ({
     ) : (
       <p className="text-[13px] text-muted-foreground">No description.</p>
     )}
+    <MentionedInJournal type="Item" id={item.id} />
   </div>
 );
 

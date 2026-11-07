@@ -3,6 +3,7 @@ import { ISpellType } from "../../Api";
 import { AddSpellForm } from "../Characters";
 import { Button } from "../ui";
 import { X, Plus } from "lucide-react";
+import { MentionedInJournal } from "../Journal";
 
 const facts = (spell: ISpellType) => [
   { label: "Casting time", value: spell.casting_time },
@@ -69,6 +70,8 @@ const DetailPane = ({ spell, onClose }: DetailPaneProps) => {
           {spell.archetypes.join(", ")}
         </p>
       )}
+
+      <MentionedInJournal type="Spell" id={spell.id} />
 
       <div className="mt-auto">
         <Button className="w-full" onClick={() => setAddOpen(true)}>

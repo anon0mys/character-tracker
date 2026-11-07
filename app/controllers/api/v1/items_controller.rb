@@ -44,7 +44,7 @@ module Api
       end
 
       def filtering_params
-        params.slice(:quality, :status, :item_type, :name)
+        params.slice(:id, :quality, :status, :item_type, :name)
       end
     end
   end

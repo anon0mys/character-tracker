@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useParams, useSearchParams } from "react-router-dom";
 import {
+  Client,
   ISpellType,
   IItemType,
   IMonsterType,
@@ -9,6 +10,7 @@ import {
   IFeatType,
 } from "../Api";
 import { cn } from "../lib/utils";
+import { useAuth } from "../Auth";
 import { Dialog, DialogContent } from "../Components/ui";
 import SpellsTab from "../Components/Compendium/SpellsTab";
 import ItemsTab from "../Components/Compendium/ItemsTab";
@@ -54,6 +56,24 @@ const Compendium = () => {
   const [selectedBackground, setSelectedBackground] =
     useState<IBackgroundType | null>(null);
   const [selectedFeat, setSelectedFeat] = useState<IFeatType | null>(null);
+  const [searchParams] = useSearchParams();
+  const linkedId = searchParams.get("id");
+  const auth = useAuth();
+
+  // Journal chips link here as ?id=<n>; open that entry's detail pane.
+  useEffect(() => {
+    const select: Record<string, (record: any) => void> = {
+      spells: setSelected,
+      items: setSelectedItem,
+      monsters: setSelectedMonster,
+    };
+    if (!linkedId || !select[active]) return;
+    Client()
+      .get({ path: `/${active}?id=${linkedId}`, token: auth.getToken() })
+      .then((r) => r.data?.[0] && select[active](r.data[0]))
+      .catch(() => undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, linkedId]);
 
   return (
     <div className="flex min-h-[75vh] flex-col gap-4">
