@@ -15,4 +15,12 @@ RSpec.describe Game do
     it { is_expected.to have_many(:users).through(:user_games) }
     it { is_expected.to have_many :characters }
   end
+
+  it "destroys nested places in any order" do
+    game = create(:game)
+    coast = create(:location, game:)
+    create(:location, game:, parent: create(:location, game:, parent: coast))
+
+    expect { game.destroy! }.to change(Location, :count).by(-3)
+  end
 end

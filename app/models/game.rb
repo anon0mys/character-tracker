@@ -15,4 +15,7 @@ class Game < ApplicationRecord
   has_many :users, through: :user_games
 
   attribute :status, :string, default: "pending"
+
+  # Nested places would otherwise trip their parent foreign key mid-destroy.
+  before_destroy(prepend: true) { locations.update_all(parent_id: nil) } # rubocop:disable Rails/SkipsModelValidations
 end

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe "/api/v1/games/:game_id/npcs and /locations" do
+describe "/api/v1/games/:game_id/npcs" do
   let(:user) { create(:user) }
   let(:game) { create(:game) }
 
@@ -36,10 +36,12 @@ describe "/api/v1/games/:game_id/npcs and /locations" do
     expect(npc.reload.archetype).to eq("paladin")
   end
 
-  it "lists and creates the campaign's places" do
-    post api_v1_game_locations_path(game), headers: @auth_headers, params: { location: { name: "Home Base" } }
-    get api_v1_game_locations_path(game), headers: @auth_headers
+  it "puts an NPC at a place" do
+    npc = create(:npc, game:, location: nil)
+    flagon = create(:location, game:, name: "The Gilded Flagon")
 
-    expect(response.parsed_body["data"].pluck("name")).to eq(["Home Base"])
+    patch api_v1_game_npc_path(game, npc), headers: @auth_headers, params: { npc: { location_id: flagon.id } }
+
+    expect(response.parsed_body["data"]).to include("location_id" => flagon.id, "location_name" => "The Gilded Flagon")
   end
 end

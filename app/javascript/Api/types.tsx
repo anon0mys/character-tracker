@@ -265,6 +265,11 @@ interface ILocationType {
   name: string;
   description: string | null;
   location_type: string;
+  parent_id: number | null;
+  parent_name: string | null;
+  child_count: number;
+  npc_count: number;
+  holding_count: number;
 }
 
 interface IMonsterAction {

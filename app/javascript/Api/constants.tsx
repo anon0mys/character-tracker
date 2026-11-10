@@ -21,6 +21,7 @@ const archetypes = [
   "warlock",
   "wizard",
 ];
+const locationTypes = ["zone", "city", "building", "site"];
 const spellLevels = ["cantrip", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const schools = [
   "abjuration",
@@ -86,6 +87,7 @@ const backgrounds = [
 export {
   abilities,
   archetypes,
+  locationTypes,
   spellLevels,
   schools,
   holdingStatuses,

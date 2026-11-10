@@ -92,6 +92,7 @@ const MoveHolding = ({
           type: "Location" as HolderType,
           id: p.id,
           label: p.name,
+          hint: p.parent_name ? `${p.parent_name} ›` : undefined,
         })),
         ...containers(holdings, holding).map((h) => ({
           key: `Holding-${h.id}`,

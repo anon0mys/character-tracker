@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Client, INpcType, archetypes } from "../../Api";
+import { Client, ILocationType, INpcType, archetypes } from "../../Api";
 import { useAuth } from "../../Auth";
 import { useError } from "../../Errors";
 import { cn } from "../../lib/utils";
@@ -25,18 +25,23 @@ import AddHolding from "./AddHolding";
 import HoldingDetail from "./HoldingDetail";
 import MoveHolding from "./MoveHolding";
 import { STATUS_CHIP, heldBy, isGone } from "./holdings";
+import { locationTree } from "./locations";
 import { useCampaignHoldings } from "./useCampaignHoldings";
 
 const NO_CLASS = "none";
+const NO_LOCATION = "none";
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
+/** Add or edit an NPC; pass `locations` to offer a location picker. */
 const NpcForm = ({
   npc,
+  locations,
   open,
   onClose,
   onSave,
 }: {
   npc: Partial<INpcType> | null;
+  locations?: ILocationType[];
   open: boolean;
   onClose: () => void;
   onSave: (attrs: Partial<INpcType>) => void;
@@ -98,6 +103,35 @@ const NpcForm = ({
               />
             </div>
           </div>
+          {locations && (
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="npc-location">Location</Label>
+              <Select
+                value={
+                  draft.location_id ? String(draft.location_id) : NO_LOCATION
+                }
+                onValueChange={(v) =>
+                  setDraft({
+                    ...draft,
+                    location_id: v === NO_LOCATION ? null : Number(v),
+                  })
+                }
+              >
+                <SelectTrigger id="npc-location">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={NO_LOCATION}>No location</SelectItem>
+                  {locationTree(locations).map(({ location: l, depth }) => (
+                    <SelectItem key={l.id} value={String(l.id)}>
+                      {"\u00a0\u00a0".repeat(depth)}
+                      {l.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <div className="flex flex-col gap-2">
             <Label htmlFor="npc-description">Description</Label>
             <Input
@@ -134,6 +168,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
   const token = auth.getToken();
   const { holdings, reload } = useCampaignHoldings(gameId);
   const [npcs, setNpcs] = useState<INpcType[]>([]);
+  const [locations, setLocations] = useState<ILocationType[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [query, setQuery] = useState("");
   const [editing, setEditing] = useState<Partial<INpcType> | null>(null);
@@ -160,6 +195,10 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
 
   useEffect(() => {
     loadNpcs();
+    client
+      .get({ path: `/games/${gameId}/locations`, token })
+      .then((r) => setLocations(r.data ?? []))
+      .catch((e) => errors.setError(e));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameId]);
 
@@ -170,6 +209,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
         description: attrs.description,
         race: attrs.race,
         archetype: attrs.archetype,
+        location_id: attrs.location_id ?? null,
       },
     };
     const request = attrs.id
@@ -420,6 +460,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
 
       <NpcForm
         npc={editing}
+        locations={locations}
         open={editing !== null}
         onClose={() => setEditing(null)}
         onSave={save}

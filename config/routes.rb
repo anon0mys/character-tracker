@@ -50,7 +50,7 @@ Rails.application.routes.draw do
         resources :journal_mentions, only: [:index]
         resources :holdings, only: %i[index show create update destroy]
         resources :npcs, only: %i[index show create update]
-        resources :locations, only: %i[index create]
+        resources :locations, only: %i[index show create update destroy]
       end
       get "users/me", to: "users#me"
       patch "users/current_character", to: "users#set_current_character"

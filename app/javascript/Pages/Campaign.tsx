@@ -19,18 +19,34 @@ import { useError } from "../Errors";
 import { GameForm } from "../Components/Games";
 import { initials } from "../Components/Shell";
 import { RichPreview, useJournalPresence } from "../Components/Journal";
-import { CampaignInventory, NpcsSection } from "../Components/Inventory";
+import {
+  CampaignInventory,
+  LocationsSection,
+  NpcsSection,
+} from "../Components/Inventory";
 import { missingSet } from "../Components/Journal/mentions";
 import { cn } from "../lib/utils";
 
-type Section = "journal" | "party" | "inventory" | "npcs";
-const SECTIONS: Section[] = ["journal", "party", "inventory", "npcs"];
-const DESKTOP_SECTIONS: Section[] = ["journal", "inventory", "npcs"];
+type Section = "journal" | "party" | "inventory" | "npcs" | "locations";
+const SECTIONS: Section[] = [
+  "journal",
+  "party",
+  "inventory",
+  "npcs",
+  "locations",
+];
+const DESKTOP_SECTIONS: Section[] = [
+  "journal",
+  "inventory",
+  "npcs",
+  "locations",
+];
 const SECTION_LABEL: Record<Section, string> = {
   journal: "Journal",
   party: "Party",
   inventory: "Inventory",
   npcs: "NPCs",
+  locations: "Places",
 };
 
 const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
@@ -164,7 +180,8 @@ const Campaign = () => {
     requested && SECTIONS.includes(requested) ? requested : "journal";
   const setSection = (s: Section) =>
     setSearchParams(s === "journal" ? {} : { section: s }, { replace: true });
-  const onBoard = section === "inventory" || section === "npcs";
+  const onBoard =
+    section === "inventory" || section === "npcs" || section === "locations";
   const [editing, setEditing] = useState(false);
   const token = auth.getToken();
   const writing = useJournalPresence(game?.id, token);
@@ -320,6 +337,7 @@ const Campaign = () => {
         <CampaignInventory gameId={game.id!} party={party} />
       )}
       {section === "npcs" && <NpcsSection gameId={game.id!} />}
+      {section === "locations" && <LocationsSection gameId={game.id!} />}
 
       <div
         className={cn(
