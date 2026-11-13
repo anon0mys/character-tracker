@@ -18,7 +18,7 @@ bundle exec rubocop                    # Ruby lint (CI)
 npx prettier --write <file>            # no repo config; run per touched file
 ```
 
-Ruby 3.2.1, Node 18, Yarn 1.22. Postgres must be up.
+Ruby 3.2.1, Node 24, Yarn 1.22. Postgres must be up.
 
 ## Conventions
 

@@ -5,7 +5,7 @@ FROM ruby:3.2.9
 ENV BUNDLE_WITHOUT=""
 ENV BUNDLE_PATH="/usr/local/bundle"
 ENV PATH="/usr/local/bundle/bin:$PATH"
-ENV NODE_VERSION="18.x"
+ENV NODE_VERSION="24.x"
 
 # Install system dependencies with apt cache
 # This layer will be cached unless system packages change
@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js 18.x from NodeSource
+# Install Node.js 24.x from NodeSource
 # This layer will be cached unless Node.js version changes
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
