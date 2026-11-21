@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { createContext, useState } from "react";
 import { useToast } from "../Components/ui";
+import { SessionExpiredError } from "../Auth/session";
 
 interface ErrorContextType {
   message: string;
@@ -22,6 +23,9 @@ const ErrorProviderInner = ({ children }: { children: React.ReactNode }) => {
   };
 
   const setError = (error: string | Error | any) => {
+    // The session ending is announced once, by AuthProvider.
+    if (error instanceof SessionExpiredError) return;
+
     let errorMessage = "An error occurred";
 
     if (typeof error === "string") {

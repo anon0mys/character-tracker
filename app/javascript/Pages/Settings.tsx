@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -49,6 +51,7 @@ const Settings = () => {
   const { game, setCurrentGame } = useGame();
   const auth = useAuth();
   const client = Client();
+  const navigate = useNavigate();
   const errors = useError();
 
   const [theme, setThemeState] = useState<ThemeChoice>(getTheme());
@@ -264,6 +267,28 @@ const Settings = () => {
                 </div>
               </div>
             )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-display">Account</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-wrap items-center gap-3">
+            <span className="min-w-0 flex-grow truncate text-[14px] text-foreground-2">
+              Signed in as{" "}
+              <span className="font-medium text-foreground">
+                {auth.user?.email}
+              </span>
+            </span>
+            <Button
+              variant="outline"
+              onClick={() => auth.signout(() => navigate("/login"))}
+              className="min-h-11 border-border-strong text-destructive"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign out
+            </Button>
           </CardContent>
         </Card>
       </div>
