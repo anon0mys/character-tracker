@@ -1,10 +1,17 @@
 # Resolves the user a JWT (from User#generate_jwt) belongs to. Shared by the
 # API's Authorization header and the Action Cable connection's token param.
 class AuthToken
+  # What tokens are signed with. In production that's the SECRET_KEY_BASE
+  # environment variable (falling back to credentials), so rotating it - which
+  # signs everyone out - is a config change. Dev and test generate their own.
+  def self.secret
+    Rails.application.secret_key_base
+  end
+
   def self.user_for(token)
     return if token.blank?
 
-    payload = JWT.decode(token, Rails.application.credentials.secret_key_base).first
+    payload = JWT.decode(token, secret).first
     User.find_by(id: payload["id"])
   rescue JWT::ExpiredSignature => e
     Rails.logger.error "JWT ExpiredSignature: #{e.message}"
