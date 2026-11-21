@@ -428,6 +428,8 @@ interface IJournalEntry {
   updated_at: string;
   preview?: IRichNode | null;
   mention_count?: number;
+  /** Search hits only: the matching text, with ⟦ ⟧ around matched words. */
+  snippet?: string | null;
   mentions?: IMentionRef[];
   /** Chips in the body whose person or thing has been deleted. */
   missing_mentions?: Pick<IMentionRef, "type" | "id">[];
@@ -444,6 +446,43 @@ interface IJournalBacklink {
   played_on: string;
   label: string;
   excerpt: string | null;
+}
+
+/** A member's part in a campaign; admins and DMs run it. */
+type GameRole = "player" | "admin" | "dm";
+
+interface IGameMember {
+  id: number;
+  user_id: number;
+  name: string;
+  role: GameRole;
+  /** This member is the signed-in user. */
+  you: boolean;
+  /** Names of their characters in this campaign. */
+  characters: string[];
+}
+
+interface IGameInvite {
+  id: number;
+  /** Shared as /join/:token. */
+  token: string;
+  role: "player" | "dm";
+  /** null: anyone with the link, until it expires or is revoked. */
+  max_uses: number | null;
+  uses_count: number;
+  expires_at: string;
+  created_by: string;
+}
+
+/** An invite link from the invitee's side. */
+interface IInvitePreview {
+  game_id: number;
+  game_name: string;
+  role: "player" | "dm";
+  invited_by: string;
+  usable: boolean;
+  /** The signed-in user's role if they are already in the campaign. */
+  member_role: GameRole | null;
 }
 
 interface IPaginationType {
@@ -492,6 +531,10 @@ export type {
   IRichNode,
   IJournalEntry,
   IJournalBacklink,
+  GameRole,
+  IGameMember,
+  IGameInvite,
+  IInvitePreview,
   ResetOn,
   SpellSlotsUsed,
 };

@@ -13,6 +13,13 @@ class JournalEntrySerializer < Blueprinter::Base
     field(:mention_count) { |entry| entry.journal_mentions.size }
   end
 
+  # A search hit: the list view plus the matching text, with
+  # JournalSearch::HIGHLIGHT around the matched words.
+  view :search do
+    include_view :list
+    field(:snippet) { |entry| entry.attributes["snippet"] }
+  end
+
   view :detail do
     field(:mentions) do |entry|
       entry.journal_mentions.map do |mention|

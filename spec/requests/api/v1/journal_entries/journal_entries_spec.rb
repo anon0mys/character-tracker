@@ -24,6 +24,20 @@ describe "/api/v1/games/:game_id/journal_entries" do
       expect(data.first["mention_count"]).to eq(1)
       expect(data.first["preview"]["content"].last["attrs"]["label"]).to eq("Kai")
     end
+
+    it "searches the entries' text with ?q=, returning a snippet for each hit" do
+      kai = create(:character, game:, name: "Kai")
+      hit = create(:journal_entry, game:, title: "The vault", body: journal_body([person(kai), " opens the vault door"]))
+      create(:journal_entry, game:, title: "Ashfall road", body: journal_body(["A long walk"]))
+      create(:journal_entry, game: outsider_game, title: "Other vault", body: journal_body(["Kai opens the vault"]))
+
+      get api_v1_game_journal_entries_path(game), headers: @auth_headers, params: { q: "kai vault" }
+
+      data = response.parsed_body["data"]
+      expect(data.pluck("id")).to eq([hit.id])
+      expect(data.first["snippet"]).to include("⟦Kai⟧", "⟦vault⟧")
+      expect(data.first).to include("preview", "mention_count")
+    end
   end
 
   describe "POST create" do

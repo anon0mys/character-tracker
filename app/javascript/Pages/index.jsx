@@ -7,6 +7,7 @@ import Compendium from "./Compendium";
 import Dashboard from "./Dashboard";
 import Features from "./Features";
 import Home from "./Home";
+import Join from "./Join";
 import JournalEntry from "./JournalEntry";
 import Login from "./Login";
 import MobileAttacks from "./MobileAttacks";
@@ -25,6 +26,7 @@ export {
   Dashboard,
   Features,
   Home,
+  Join,
   JournalEntry,
   Login,
   MobileAttacks,

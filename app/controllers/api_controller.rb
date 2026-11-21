@@ -1,6 +1,9 @@
 class ApiController < ApplicationController
   include Pagy::Backend
 
+  # Raise for a signed-in user who may not do this; renders 403.
+  class Forbidden < StandardError; end
+
   respond_to :json
   skip_before_action :verify_authenticity_token
   after_action { pagy_headers_merge(@pagy) if @pagy }
@@ -13,6 +16,7 @@ class ApiController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
   rescue_from ActionController::ParameterMissing, with: :parameter_missing
   rescue_from ActiveRecord::RecordNotUnique, with: :record_not_unique
+  rescue_from Forbidden, with: :forbidden
 
   def paginate(data)
     @pagy, @data = pagy(data)
@@ -56,6 +60,10 @@ class ApiController < ApplicationController
       errors: ["Missing required parameter: #{exception.param}"],
       error_type: "ParameterMissing",
     }, status: :bad_request
+  end
+
+  def forbidden(exception)
+    render json: { errors: [exception.message], error_type: "Forbidden" }, status: :forbidden
   end
 
   def record_not_unique(exception)

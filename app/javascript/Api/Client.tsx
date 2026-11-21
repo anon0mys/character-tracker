@@ -1,5 +1,6 @@
 import { useGame } from "../Contexts";
 import { toast } from "../Components/ui";
+import { SessionExpiredError, announceSessionExpired } from "../Auth/session";
 
 interface Request {
   path: string;
@@ -148,9 +149,17 @@ const Client = () => {
     path?: string,
     showSuccess?: boolean,
     successMessage?: string,
+    sentToken?: boolean,
   ) => {
     if (!response.ok) {
       const statusCode = response.status;
+
+      // The saved token was rejected: end the session (AuthProvider shows one
+      // toast and the login screen) instead of a toast per failed request.
+      if (statusCode === 401 && sentToken) {
+        announceSessionExpired();
+        throw new SessionExpiredError();
+      }
 
       let errorData: any;
       try {
@@ -221,12 +230,18 @@ const Client = () => {
   ) => {
     try {
       const response = await fetch(baseUrl + path, options);
+      const sentToken = Boolean(
+        (options.headers as Record<string, string> | undefined)?.[
+          "Authorization"
+        ],
+      );
       return await parseResponse(
         response,
         method,
         path,
         showSuccess,
         successMessage,
+        sentToken,
       );
     } catch (error) {
       // Network errors or other fetch failures

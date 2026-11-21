@@ -51,6 +51,11 @@ Rails.application.routes.draw do
         resources :holdings, only: %i[index show create update destroy]
         resources :npcs, only: %i[index show create update]
         resources :locations, only: %i[index show create update destroy]
+        resources :members, only: %i[index update destroy], controller: "game_members"
+        resources :invites, only: %i[index create destroy], controller: "game_invites"
+      end
+      resources :invites, only: [:show], param: :token do
+        post :accept, on: :member
       end
       get "users/me", to: "users#me"
       patch "users/current_character", to: "users#set_current_character"

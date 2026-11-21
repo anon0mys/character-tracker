@@ -8,6 +8,8 @@ class JournalEntry < ApplicationRecord
 
   before_validation :assign_number, on: :create
   before_validation :default_played_on, on: :create
+  # Plain text for full-text search (JournalSearch).
+  before_save :index_text, if: :body_changed?
 
   validates :number, presence: true, uniqueness: { scope: :game_id }
   validates :played_on, presence: true
@@ -51,5 +53,9 @@ class JournalEntry < ApplicationRecord
 
   def default_played_on
     self.played_on ||= Date.current
+  end
+
+  def index_text
+    self.search_text = JournalText.call(body)
   end
 end

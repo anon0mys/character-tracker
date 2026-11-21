@@ -13,6 +13,7 @@ import {
   Features,
   Dashboard,
   Home,
+  Join,
   JournalEntry,
   Login,
   MobileAttacks,
@@ -43,6 +44,7 @@ const App = () => {
                   <Route path="/sign-up" element={<SignUp />} />
                   <Route element={<PrivateRoute />}>
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/join/:token" element={<Join />} />
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/campaigns/:id" element={<Campaign />} />
                     <Route
