@@ -37,4 +37,9 @@ class User < ApplicationRecord
   end
 
   alias is_game_admin? game_admin?
+
+  # What other players see: the username, or the start of the email.
+  def display_name
+    username.presence || email.to_s.split("@").first
+  end
 end

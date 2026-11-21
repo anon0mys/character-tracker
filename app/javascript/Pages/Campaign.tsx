@@ -16,7 +16,7 @@ import {
 import { useAuth } from "../Auth";
 import { useGame } from "../Contexts";
 import { useError } from "../Errors";
-import { GameForm } from "../Components/Games";
+import { GameForm, MembersDialog } from "../Components/Games";
 import { initials } from "../Components/Shell";
 import {
   RichPreview,
@@ -199,6 +199,7 @@ const Campaign = () => {
   const onBoard =
     section === "inventory" || section === "npcs" || section === "locations";
   const [editing, setEditing] = useState(false);
+  const [showMembers, setShowMembers] = useState(false);
   const token = auth.getToken();
   const writing = useJournalPresence(game?.id, token);
 
@@ -339,6 +340,13 @@ const Campaign = () => {
             </div>
             <button
               type="button"
+              onClick={() => setShowMembers(true)}
+              className="min-h-11 rounded-[10px] border border-border-strong bg-secondary px-4 py-3 text-[14px] font-medium"
+            >
+              Members
+            </button>
+            <button
+              type="button"
               onClick={() => setEditing(true)}
               className="min-h-11 rounded-[10px] border border-border-strong bg-secondary px-4 py-3 text-[14px] font-medium"
             >
@@ -455,6 +463,11 @@ const Campaign = () => {
         </div>
       </div>
 
+      <MembersDialog
+        open={showMembers}
+        setOpen={setShowMembers}
+        gameId={game.id!}
+      />
       {editing && (
         <GameForm
           open={editing}

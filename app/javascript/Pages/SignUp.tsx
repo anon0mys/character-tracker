@@ -88,6 +88,7 @@ const SignUp = () => {
                 </span>
                 <Link
                   to="/login"
+                  state={location.state}
                   className="text-primary hover:text-primary/80 hover:underline font-medium"
                 >
                   Log In

@@ -71,6 +71,7 @@ const Login = () => {
                 </span>
                 <Link
                   to="/sign-up"
+                  state={location.state}
                   className="text-primary hover:text-primary/80 hover:underline font-medium"
                 >
                   Sign Up

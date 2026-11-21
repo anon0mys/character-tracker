@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_11_21_120000) do
+ActiveRecord::Schema.define(version: 2026_11_21_130000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,6 +221,22 @@ ActiveRecord::Schema.define(version: 2026_11_21_120000) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["character_id"], name: "index_features_on_character_id"
+  end
+
+  create_table "game_invites", force: :cascade do |t|
+    t.bigint "game_id", null: false
+    t.bigint "created_by_id", null: false
+    t.string "token", null: false
+    t.string "role", default: "player", null: false
+    t.integer "max_uses"
+    t.integer "uses_count", default: 0, null: false
+    t.datetime "expires_at", null: false
+    t.datetime "revoked_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_game_invites_on_created_by_id"
+    t.index ["game_id"], name: "index_game_invites_on_game_id"
+    t.index ["token"], name: "index_game_invites_on_token", unique: true
   end
 
   create_table "games", force: :cascade do |t|
@@ -474,6 +490,8 @@ ActiveRecord::Schema.define(version: 2026_11_21_120000) do
   add_foreign_key "faction_npcs", "factions"
   add_foreign_key "faction_npcs", "npcs"
   add_foreign_key "features", "characters"
+  add_foreign_key "game_invites", "games"
+  add_foreign_key "game_invites", "users", column: "created_by_id"
   add_foreign_key "holdings", "games"
   add_foreign_key "holdings", "items"
   add_foreign_key "journal_entries", "games"
