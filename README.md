@@ -25,7 +25,7 @@ A comprehensive D&D 5e campaign tracking utility built with Ruby on Rails and Re
 
 Before you begin, ensure you have the following installed:
 
-- **Ruby** 3.2.1 (recommended to use [rbenv](https://github.com/rbenv/rbenv) or [rvm](https://rvm.io/))
+- **Ruby** 3.3.14 (recommended to use [rbenv](https://github.com/rbenv/rbenv) or [rvm](https://rvm.io/))
 - **Node.js** (v18 or higher) and **Yarn**
 - **PostgreSQL** 12 or higher
 - **Docker** and **Docker Compose** (optional, for containerized setup)
@@ -351,7 +351,7 @@ bin/rails db:seed
 - Clear Rails cache: `bin/rails tmp:clear`
 
 **Bundle install issues:**
-- Ensure Ruby version matches: `ruby -v` should show 3.2.1
+- Ensure Ruby version matches: `ruby -v` should show 3.3.14
 - Clear bundler cache: `bundle clean --force`
 
 **Docker issues:**
