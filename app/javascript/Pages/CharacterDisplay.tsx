@@ -22,6 +22,7 @@ import {
   ReadOnlyBanner,
 } from "../Components/Sheet";
 import { cn } from "../lib/utils";
+import { useBreadcrumbLabel } from "../Components/Shell/breadcrumbs";
 
 const emptyAbility = { value: 10, modifier: 0, save: 0 };
 
@@ -79,6 +80,7 @@ const NO_LIST = "none";
 const CharacterDisplay = () => {
   const { id } = useParams();
   const [character, setCharacter] = useState<ICharacterType>(emptyCharacter);
+  useBreadcrumbLabel(id && `/characters/${id}`, character.name);
   const [attacks, setAttacks] = useState<IAttackType[]>([]);
   const [spellLists, setSpellLists] = useState<ISpellListType[]>([]);
   const [currentSpellList, setCurrentSpellList] = useState<ISpellListType>();

@@ -86,29 +86,32 @@ const Compendium = () => {
         </p>
       </div>
 
-      <div className="flex w-fit gap-[3px] rounded-[10px] border border-border bg-rail p-[3px]">
-        {tabs.map(({ key, label }) => (
-          <NavLink
-            key={key}
-            to={`/compendium/${key}`}
-            onClick={() => {
-              setSelected(null);
-              setSelectedItem(null);
-              setSelectedMonster(null);
-              setSelectedRace(null);
-              setSelectedBackground(null);
-              setSelectedFeat(null);
-            }}
-            className={cn(
-              "flex min-h-[38px] items-center rounded-lg px-4 text-[13px] no-underline",
-              active === key
-                ? "bg-card font-semibold text-foreground"
-                : "text-foreground-2",
-            )}
-          >
-            {label}
-          </NavLink>
-        ))}
+      {/* Six tabs outgrow a phone: they scroll sideways there. */}
+      <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] lg:mx-0 lg:px-0">
+        <div className="flex w-max gap-[3px] rounded-[10px] border border-border bg-rail p-[3px]">
+          {tabs.map(({ key, label }) => (
+            <NavLink
+              key={key}
+              to={`/compendium/${key}`}
+              onClick={() => {
+                setSelected(null);
+                setSelectedItem(null);
+                setSelectedMonster(null);
+                setSelectedRace(null);
+                setSelectedBackground(null);
+                setSelectedFeat(null);
+              }}
+              className={cn(
+                "flex min-h-[38px] items-center rounded-lg px-4 text-[13px] no-underline",
+                active === key
+                  ? "bg-card font-semibold text-foreground"
+                  : "text-foreground-2",
+              )}
+            >
+              {label}
+            </NavLink>
+          ))}
+        </div>
       </div>
 
       {active === "races" ? (

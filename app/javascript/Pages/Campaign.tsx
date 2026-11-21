@@ -382,41 +382,66 @@ const Campaign = () => {
         </div>
       </div>
 
-      <div className="flex gap-2 lg:hidden">
-        <div className="flex flex-grow rounded-[11px] border border-border bg-rail p-[3px]">
-          {SECTIONS.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => setSection(s)}
-              className={cn(
-                "min-h-[38px] flex-grow rounded-[8px] text-[13px]",
-                section === s ? "bg-card font-semibold" : "text-foreground-2",
-              )}
-            >
-              {SECTION_LABEL[s]}
-            </button>
-          ))}
+      {/* Phones: tabs get their own row (scrolling if they must), then the
+          section's actions as labelled buttons. */}
+      <div className="flex flex-col gap-2 lg:hidden">
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setShowMembers(true)}
+            className="min-h-11 flex-1 rounded-[10px] border border-border-strong bg-secondary px-3 text-[14px] font-medium"
+          >
+            Members
+          </button>
+          <button
+            type="button"
+            onClick={() => setEditing(true)}
+            className="min-h-11 flex-1 rounded-[10px] border border-border-strong bg-secondary px-3 text-[14px] font-medium"
+          >
+            Edit campaign
+          </button>
+        </div>
+        <div className="-mx-[14px] overflow-x-auto px-[14px] [scrollbar-width:none]">
+          <div
+            role="tablist"
+            className="flex w-max min-w-full rounded-[11px] border border-border bg-rail p-[3px]"
+          >
+            {SECTIONS.map((s) => (
+              <button
+                key={s}
+                type="button"
+                role="tab"
+                aria-selected={section === s}
+                onClick={() => setSection(s)}
+                className={cn(
+                  "min-h-[40px] flex-grow whitespace-nowrap rounded-[8px] px-3 text-[13px]",
+                  section === s ? "bg-card font-semibold" : "text-foreground-2",
+                )}
+              >
+                {SECTION_LABEL[s]}
+              </button>
+            ))}
+          </div>
         </div>
         {section === "journal" && (
-          <button
-            type="button"
-            aria-label="Import journal pages"
-            onClick={() => setImporting({ id: null })}
-            className="flex h-[46px] w-[46px] items-center justify-center rounded-[11px] border border-border-strong bg-secondary"
-          >
-            <Camera className="h-5 w-5" />
-          </button>
-        )}
-        {section === "journal" && (
-          <button
-            type="button"
-            aria-label="New entry"
-            onClick={newEntry}
-            className="flex h-[46px] w-[46px] items-center justify-center rounded-[11px] bg-primary text-primary-foreground"
-          >
-            <Plus className="h-5 w-5" />
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setImporting({ id: null })}
+              className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-[10px] border border-border-strong bg-secondary px-3 text-[14px] font-medium"
+            >
+              <Camera className="h-4 w-4" />
+              Import pages
+            </button>
+            <button
+              type="button"
+              onClick={newEntry}
+              className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-[10px] bg-primary px-3 text-[14px] font-semibold text-primary-foreground"
+            >
+              <Plus className="h-4 w-4" />
+              New entry
+            </button>
+          </div>
         )}
       </div>
 

@@ -11,12 +11,14 @@ import {
   SheetAccessProvider,
 } from "../Components/Sheet";
 import { useCharacterPatch } from "../Hooks/useCharacterPatch";
+import { useBreadcrumbLabel } from "../Components/Shell/breadcrumbs";
 
 const placeholder = { name: "" } as ICharacterType;
 
 const CharacterNotes = () => {
   const { id } = useParams();
   const [character, setCharacter] = useState<ICharacterType>(placeholder);
+  useBreadcrumbLabel(id && `/characters/${id}`, character.name);
   const { patch } = useCharacterPatch(character, setCharacter);
   const auth = useAuth();
   const client = Client();

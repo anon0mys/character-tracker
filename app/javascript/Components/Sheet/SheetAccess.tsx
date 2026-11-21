@@ -30,8 +30,8 @@ export const SheetAccessProvider = ({
 };
 
 /**
- * Disables every button and input inside it on someone else's sheet. Wrap
- * the controls that change things, not the ones that only navigate.
+ * Disables (and dims) every button and input inside it on someone else's
+ * sheet. Wrap the controls that change things, not the ones that only navigate.
  */
 export const ReadOnlyFieldset = ({
   children,
@@ -40,7 +40,10 @@ export const ReadOnlyFieldset = ({
 }) => {
   const { readOnly } = useSheetAccess();
   return (
-    <fieldset disabled={readOnly} className="contents">
+    <fieldset
+      disabled={readOnly}
+      className="contents [&_button:disabled]:cursor-not-allowed [&_button:disabled]:opacity-40 [&_input:disabled]:opacity-60"
+    >
       {children}
     </fieldset>
   );

@@ -27,6 +27,7 @@ import { ApolloProvider } from "@apollo/client";
 import { useClient } from "./Graphql";
 import GameSubRoute from "./Contexts/GameSubRoute";
 import { Toaster } from "./Components/ui";
+import { BreadcrumbProvider } from "./Components/Shell";
 import "./Components/Shell/appearance";
 
 const App = () => {
@@ -37,71 +38,73 @@ const App = () => {
         <ErrorProvider>
           <AuthProvider>
             <GameProvider>
-              <Layout>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/sign-up" element={<SignUp />} />
-                  <Route element={<PrivateRoute />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/join/:token" element={<Join />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/campaigns/:id" element={<Campaign />} />
-                    <Route
-                      path="/campaigns/:id/journal/:entryId"
-                      element={<JournalEntry />}
-                    />
-                    <Route
-                      path="/compendium"
-                      element={<Navigate to="/compendium/spells" replace />}
-                    />
-                    <Route path="/compendium/:tab" element={<Compendium />} />
-                    <Route
-                      path="/spells"
-                      element={<Navigate to="/compendium/spells" replace />}
-                    />
-                    <Route
-                      path="/items"
-                      element={<Navigate to="/compendium/items" replace />}
-                    />
-                    <Route element={<GameSubRoute />}>
+              <BreadcrumbProvider>
+                <Layout>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/sign-up" element={<SignUp />} />
+                    <Route element={<PrivateRoute />}>
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/join/:token" element={<Join />} />
+                      <Route path="/settings" element={<Settings />} />
+                      <Route path="/campaigns/:id" element={<Campaign />} />
                       <Route
-                        path="characters/create"
-                        element={<CharacterForm />}
+                        path="/campaigns/:id/journal/:entryId"
+                        element={<JournalEntry />}
                       />
                       <Route
-                        path="characters/:id/edit"
-                        element={<CharacterForm />}
+                        path="/compendium"
+                        element={<Navigate to="/compendium/spells" replace />}
+                      />
+                      <Route path="/compendium/:tab" element={<Compendium />} />
+                      <Route
+                        path="/spells"
+                        element={<Navigate to="/compendium/spells" replace />}
                       />
                       <Route
-                        path="characters/:id/features"
-                        element={<Features />}
+                        path="/items"
+                        element={<Navigate to="/compendium/items" replace />}
                       />
-                      <Route
-                        path="characters/:id/notes"
-                        element={<CharacterNotes />}
-                      />
-                      <Route
-                        path="characters/:id/attacks"
-                        element={<MobileAttacks />}
-                      />
-                      <Route
-                        path="characters/:id/spells"
-                        element={<MobileSpells />}
-                      />
-                      <Route
-                        path="characters/:id/gear"
-                        element={<MobileGear />}
-                      />
-                      <Route
-                        path="characters/:id"
-                        element={<CharacterDisplay />}
-                      />
-                      <Route path="characters" element={<Characters />} />
+                      <Route element={<GameSubRoute />}>
+                        <Route
+                          path="characters/create"
+                          element={<CharacterForm />}
+                        />
+                        <Route
+                          path="characters/:id/edit"
+                          element={<CharacterForm />}
+                        />
+                        <Route
+                          path="characters/:id/features"
+                          element={<Features />}
+                        />
+                        <Route
+                          path="characters/:id/notes"
+                          element={<CharacterNotes />}
+                        />
+                        <Route
+                          path="characters/:id/attacks"
+                          element={<MobileAttacks />}
+                        />
+                        <Route
+                          path="characters/:id/spells"
+                          element={<MobileSpells />}
+                        />
+                        <Route
+                          path="characters/:id/gear"
+                          element={<MobileGear />}
+                        />
+                        <Route
+                          path="characters/:id"
+                          element={<CharacterDisplay />}
+                        />
+                        <Route path="characters" element={<Characters />} />
+                      </Route>
                     </Route>
-                  </Route>
-                </Routes>
-              </Layout>
+                  </Routes>
+                </Layout>
+              </BreadcrumbProvider>
             </GameProvider>
           </AuthProvider>
         </ErrorProvider>

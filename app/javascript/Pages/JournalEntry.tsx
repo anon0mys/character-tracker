@@ -14,6 +14,7 @@ import {
 } from "../Components/Journal";
 import { hrefFor, missingSet, refKey } from "../Components/Journal/mentions";
 import { cn } from "../lib/utils";
+import { useBreadcrumbLabel } from "../Components/Shell/breadcrumbs";
 
 /** Cursor colours: the theme's accents, so a writer keeps one colour everywhere. */
 const CURSOR_COLORS = [
@@ -100,6 +101,10 @@ const JournalEntry = () => {
   const { game, setCurrentGame } = useGame();
   const token = auth.getToken();
   const [entry, setEntry] = useState<IJournalEntry | null>(null);
+  useBreadcrumbLabel(
+    entry ? `/campaigns/${id}/journal/${entryId}` : undefined,
+    entry && (entry.title || `Entry ${entry.number}`),
+  );
   const [title, setTitle] = useState("");
   const [mine, setMine] = useState<ICharacterType | null>(null);
   const [links, setLinks] = useState<IMentionRef[]>([]);
@@ -166,7 +171,7 @@ const JournalEntry = () => {
       <div className="flex items-center gap-2 text-[13px]">
         <Link
           to={`/campaigns/${gameId}`}
-          className="flex items-center gap-[6px] font-medium"
+          className="hidden items-center gap-[6px] font-medium lg:flex"
         >
           <ChevronLeft className="h-[15px] w-[15px]" />
           {game?.id === gameId ? game.name : "Campaign"}

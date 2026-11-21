@@ -50,7 +50,7 @@ const GameForm = ({ open, setOpen, onSubmit, game }: GameFormProps) => {
       <DialogContent className="sm:max-w-[500px] border-border bg-card ">
         <DialogHeader>
           <DialogTitle className="text-2xl text-primary">
-            {game ? "Edit campaign" : "Create a Game"}
+            {game ? "Edit campaign" : "New campaign"}
           </DialogTitle>
           <p className="text-sm text-muted-foreground mt-1">
             {game
@@ -61,10 +61,10 @@ const GameForm = ({ open, setOpen, onSubmit, game }: GameFormProps) => {
         <form onSubmit={submit}>
           <div className="space-y-5 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Game Name</Label>
+              <Label htmlFor="name">Campaign name</Label>
               <Input
                 id="name"
-                placeholder="Enter game name"
+                placeholder="e.g. Race Wars"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="h-11"
@@ -74,7 +74,7 @@ const GameForm = ({ open, setOpen, onSubmit, game }: GameFormProps) => {
               <Label htmlFor="description">Description</Label>
               <Input
                 id="description"
-                placeholder="Enter game description"
+                placeholder="What the campaign is about"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="h-11"
@@ -105,7 +105,7 @@ const GameForm = ({ open, setOpen, onSubmit, game }: GameFormProps) => {
               type="submit"
               className="bg-primary text-primary-foreground hover:bg-primary/90 "
             >
-              {game ? "Save" : "Create Game"}
+              {game ? "Save" : "Create campaign"}
             </Button>
           </DialogFooter>
         </form>

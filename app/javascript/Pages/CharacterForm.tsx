@@ -221,7 +221,7 @@ const CharacterForm = () => {
               variant="outline"
               size="lg"
               className="w-full sm:w-auto border-border min-h-[44px]"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate(id ? `/characters/${id}` : "/characters")}
             >
               Cancel
             </Button>

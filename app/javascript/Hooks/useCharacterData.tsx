@@ -3,6 +3,7 @@ import { Client, ICharacterType } from "../Api";
 import { useAuth } from "../Auth";
 import { useError } from "../Errors";
 import { useCharacterPatch } from "./useCharacterPatch";
+import { useBreadcrumbLabel } from "../Components/Shell/breadcrumbs";
 
 const placeholder = { name: "" } as ICharacterType;
 
@@ -14,6 +15,7 @@ export const useCharacterData = (id?: string) => {
   const errors = useError();
   const [character, setCharacter] = useState<ICharacterType>(placeholder);
   const { patch } = useCharacterPatch(character, setCharacter);
+  useBreadcrumbLabel(id && `/characters/${id}`, character.name);
 
   useEffect(() => {
     if (!id) return;

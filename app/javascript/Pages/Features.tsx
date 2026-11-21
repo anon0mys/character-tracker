@@ -35,6 +35,7 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useCharacterPatch } from "../Hooks/useCharacterPatch";
+import { useBreadcrumbLabel } from "../Components/Shell/breadcrumbs";
 
 const CATEGORIES: FeatureCategory[] = [
   "class",
@@ -154,6 +155,7 @@ const Features = () => {
   const [character, setCharacter] = useState<ICharacterType>({
     name: "",
   } as ICharacterType);
+  useBreadcrumbLabel(id && `/characters/${id}`, character.name);
   const [features, setFeatures] = useState<IFeature[]>([]);
   const { patch } = useCharacterPatch(character, setCharacter);
   const readOnly = useIsReadOnly(character);
