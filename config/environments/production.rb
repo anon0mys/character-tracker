@@ -71,7 +71,11 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter     = :resque
+  # Background jobs (journal page transcription) run in the web process's own
+  # thread pool: no worker dyno. A job caught by a restart shows as failed with
+  # a Retry button (see JournalPageImport#stalled?). Move to a real queue
+  # (Sidekiq on the existing Redis, a worker dyno) if that becomes a problem.
+  config.active_job.queue_adapter = :async
   # config.active_job.queue_name_prefix = "character_tracker_production"
 
   config.action_mailer.perform_caching = false

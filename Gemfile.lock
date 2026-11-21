@@ -69,10 +69,16 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    anthropic (2.12.0)
+      base64 (~> 0.1)
+      connection_pool (>= 2, < 4)
+      opentelemetry-api (>= 1.2.4, < 2)
+      standardwebhooks (~> 1.0)
     arbre (1.5.0)
       activesupport (>= 3.0.0, < 7.1)
       ruby2_keywords (>= 0.0.2, < 1.0)
     ast (2.4.2)
+    base64 (0.3.0)
     bcrypt (3.1.18)
     bindex (0.8.1)
     blueprinter (0.25.3)
@@ -82,6 +88,7 @@ GEM
     byebug (11.1.3)
     coderay (1.1.3)
     concurrent-ruby (1.1.10)
+    connection_pool (3.0.3)
     crass (1.0.6)
     cssbundling-rails (1.3.3)
       railties (>= 6.0.0)
@@ -160,6 +167,7 @@ GEM
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    logger (1.7.0)
     loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -187,6 +195,8 @@ GEM
     nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
+    opentelemetry-api (1.11.1)
+      logger
     orm_adapter (0.5.0)
     pagy (5.10.1)
       activesupport
@@ -319,6 +329,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    standardwebhooks (1.3.0)
+      base64 (~> 0.3.0)
     thor (1.2.1)
     tilt (2.0.11)
     timeout (0.3.0)
@@ -346,6 +358,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin
+  anthropic (~> 2.12)
   blueprinter
   bootsnap (>= 1.4.4)
   byebug
@@ -385,6 +398,9 @@ DEPENDENCIES
   spring
   tzinfo-data
   web-console (>= 4.1.0)
+
+BUNDLED WITH
+   2.3.26
 
 RUBY VERSION
    ruby 3.2.9p265

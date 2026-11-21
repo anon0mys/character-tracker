@@ -45,6 +45,8 @@ gem "jwt"
 
 # Use Pundit for authorization
 gem "pundit"
+# Claude API: transcribes photographed journal pages (JournalPageTranscriber)
+gem "anthropic", "~> 2.12", require: false # loaded by config/initializers/anthropic.rb
 
 # Web requests and parsing
 gem "faraday"
