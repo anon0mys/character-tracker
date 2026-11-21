@@ -4,9 +4,16 @@ module Api
       before_action :authenticate_user!
       before_action :set_game
 
+      # ?q= searches the entries' titles and text (JournalSearch): best match
+      # first, each with a snippet of where it matched.
       def index
         entries = @game.journal_entries.includes(:journal_mentions).order(number: :desc)
-        render json: JournalEntrySerializer.render(entries, view: :list, root: :data)
+        if params[:q].present?
+          entries = JournalSearch.call(entries, params[:q])
+          render json: JournalEntrySerializer.render(entries, view: :search, root: :data)
+        else
+          render json: JournalEntrySerializer.render(entries, view: :list, root: :data)
+        end
       end
 
       def show

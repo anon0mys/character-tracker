@@ -18,7 +18,11 @@ import { useGame } from "../Contexts";
 import { useError } from "../Errors";
 import { GameForm } from "../Components/Games";
 import { initials } from "../Components/Shell";
-import { RichPreview, useJournalPresence } from "../Components/Journal";
+import {
+  RichPreview,
+  SearchSnippet,
+  useJournalPresence,
+} from "../Components/Journal";
 import {
   CampaignInventory,
   LocationsSection,
@@ -48,6 +52,10 @@ const SECTION_LABEL: Record<Section, string> = {
   npcs: "NPCs",
   locations: "Places",
 };
+
+/** Shorter queries just filter titles and previews in the browser. */
+const MIN_SEARCH = 2;
+const SEARCH_DELAY_MS = 250;
 
 const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
   pending: { label: "Prepping", cls: "bg-arcane-soft text-arcane-ink" },
@@ -98,13 +106,19 @@ const EntryCard = ({
           {entry.played_on}
         </span>
       </div>
-      {entry.preview && (
-        <p className="line-clamp-2 text-[13.5px] leading-[1.6] text-foreground-2">
-          <RichPreview
-            node={entry.preview}
-            missing={missingSet(entry.missing_mentions)}
-          />
+      {entry.snippet ? (
+        <p className="line-clamp-3 text-[13.5px] leading-[1.6] text-foreground-2">
+          <SearchSnippet text={entry.snippet} />
         </p>
+      ) : (
+        entry.preview && (
+          <p className="line-clamp-2 text-[13.5px] leading-[1.6] text-foreground-2">
+            <RichPreview
+              node={entry.preview}
+              missing={missingSet(entry.missing_mentions)}
+            />
+          </p>
+        )
       )}
     </div>
     <div className="flex flex-shrink-0 items-center gap-2 lg:flex-col lg:items-end">
@@ -174,6 +188,8 @@ const Campaign = () => {
   const [entries, setEntries] = useState<IJournalEntry[]>([]);
   const [party, setParty] = useState<ICharacterType[]>([]);
   const [query, setQuery] = useState("");
+  /** Server search hits for the current query; null until they arrive. */
+  const [results, setResults] = useState<IJournalEntry[] | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const requested = searchParams.get("section") as Section | null;
   const section: Section =
@@ -206,6 +222,29 @@ const Campaign = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  const needle = query.trim().toLowerCase();
+  const searching = needle.length >= MIN_SEARCH;
+
+  // Full-text search runs on the server, a moment after typing stops. Until
+  // its hits arrive the list filters titles and previews locally.
+  useEffect(() => {
+    setResults(null);
+    if (!id || !searching) return;
+    let current = true;
+    const timer = setTimeout(() => {
+      const params = new URLSearchParams({ q: needle });
+      client
+        .get({ path: `/games/${id}/journal_entries?${params}`, token })
+        .then((r) => current && setResults(r.data ?? []))
+        .catch(() => current && setResults(null));
+    }, SEARCH_DELAY_MS);
+    return () => {
+      current = false;
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, needle, searching]);
+
   const newEntry = () =>
     client
       .post({
@@ -227,12 +266,16 @@ const Campaign = () => {
 
   if (!game?.id) return null;
 
-  const needle = query.trim().toLowerCase();
-  const visible = entries.filter(
-    (e) =>
-      !needle ||
-      `${e.title ?? ""} ${plainText(e.preview)}`.toLowerCase().includes(needle),
-  );
+  const visible =
+    searching && results
+      ? results
+      : entries.filter(
+          (e) =>
+            !needle ||
+            `${e.title ?? ""} ${plainText(e.preview)}`
+              .toLowerCase()
+              .includes(needle),
+        );
   const status = game.status && STATUS_LABEL[game.status];
 
   return (
@@ -360,7 +403,9 @@ const Campaign = () => {
               Journal
             </h2>
             <span className="font-mono text-[12px] text-muted-foreground">
-              {entries.length} {entries.length === 1 ? "entry" : "entries"}
+              {needle
+                ? `${visible.length} of ${entries.length}`
+                : `${entries.length} ${entries.length === 1 ? "entry" : "entries"}`}
             </span>
             <label htmlFor="journal-q" className="sr-only">
               Search the journal
@@ -390,6 +435,14 @@ const Campaign = () => {
               writers={writing[entry.id] ?? []}
             />
           ))}
+          {needle &&
+            (!searching || results) &&
+            entries.length > 0 &&
+            visible.length === 0 && (
+              <p className="rounded-[14px] border border-dashed border-border-strong p-6 text-center text-[14px] text-foreground-2">
+                No entries mention “{query.trim()}”.
+              </p>
+            )}
           {entries.length === 0 && (
             <p className="rounded-[14px] border border-dashed border-border-strong p-6 text-center text-[14px] text-foreground-2">
               Nothing written yet. Start the first entry after your next

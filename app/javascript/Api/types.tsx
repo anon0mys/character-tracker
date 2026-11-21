@@ -428,6 +428,8 @@ interface IJournalEntry {
   updated_at: string;
   preview?: IRichNode | null;
   mention_count?: number;
+  /** Search hits only: the matching text, with ⟦ ⟧ around matched words. */
+  snippet?: string | null;
   mentions?: IMentionRef[];
   /** Chips in the body whose person or thing has been deleted. */
   missing_mentions?: Pick<IMentionRef, "type" | "id">[];

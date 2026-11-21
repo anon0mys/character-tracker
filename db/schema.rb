@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_11_07_100006) do
+ActiveRecord::Schema.define(version: 2026_11_21_120000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -279,6 +279,8 @@ ActiveRecord::Schema.define(version: 2026_11_07_100006) do
     t.integer "compacted_through", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "search_text", default: "", null: false
+    t.index "((setweight(to_tsvector('english'::regconfig, COALESCE((title)::text, ''::text)), 'A'::\"char\") || setweight(to_tsvector('english'::regconfig, search_text), 'B'::\"char\")))", name: "index_journal_entries_on_search", using: :gin
     t.index ["game_id", "number"], name: "index_journal_entries_on_game_id_and_number", unique: true
     t.index ["game_id"], name: "index_journal_entries_on_game_id"
   end
