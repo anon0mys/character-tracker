@@ -53,6 +53,10 @@ Rails.application.routes.draw do
         resources :locations, only: %i[index show create update destroy]
         resources :members, only: %i[index update destroy], controller: "game_members"
         resources :invites, only: %i[index create destroy], controller: "game_invites"
+        resources :journal_page_imports, only: %i[index create show update destroy] do
+          post :retry, action: :retry_transcription, on: :member
+          post :confirm, on: :member
+        end
       end
       resources :invites, only: [:show], param: :token do
         post :accept, on: :member

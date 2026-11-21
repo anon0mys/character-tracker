@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_11_21_130000) do
+ActiveRecord::Schema.define(version: 2026_11_22_100000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -324,6 +324,29 @@ ActiveRecord::Schema.define(version: 2026_11_21_130000) do
     t.index ["mentionable_type", "mentionable_id"], name: "index_journal_mentions_on_mentionable"
   end
 
+  create_table "journal_page_import_pages", force: :cascade do |t|
+    t.bigint "journal_page_import_id", null: false
+    t.integer "position", null: false
+    t.string "content_type", null: false
+    t.binary "data", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["journal_page_import_id"], name: "index_journal_page_import_pages_on_journal_page_import_id"
+  end
+
+  create_table "journal_page_imports", force: :cascade do |t|
+    t.bigint "game_id", null: false
+    t.bigint "created_by_id", null: false
+    t.string "status", default: "transcribing", null: false
+    t.integer "page_count", default: 0, null: false
+    t.jsonb "entries", default: [], null: false
+    t.text "error"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_journal_page_imports_on_created_by_id"
+    t.index ["game_id"], name: "index_journal_page_imports_on_game_id"
+  end
+
   create_table "loadouts", force: :cascade do |t|
     t.bigint "character_id", null: false
     t.string "name", null: false
@@ -497,6 +520,9 @@ ActiveRecord::Schema.define(version: 2026_11_21_130000) do
   add_foreign_key "journal_entries", "games"
   add_foreign_key "journal_entry_updates", "journal_entries", on_delete: :cascade
   add_foreign_key "journal_mentions", "journal_entries", on_delete: :cascade
+  add_foreign_key "journal_page_import_pages", "journal_page_imports"
+  add_foreign_key "journal_page_imports", "games"
+  add_foreign_key "journal_page_imports", "users", column: "created_by_id"
   add_foreign_key "loadouts", "characters"
   add_foreign_key "locations", "games"
   add_foreign_key "locations", "locations", column: "parent_id"

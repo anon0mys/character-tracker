@@ -485,6 +485,34 @@ interface IInvitePreview {
   member_role: GameRole | null;
 }
 
+/** A journal entry Claude transcribed from photographed pages, before it's added. */
+interface IJournalDraftEntry {
+  /** YYYY-MM-DD; null when the page had no date and none could be estimated. */
+  played_on: string | null;
+  /** The date was guessed from neighbouring sessions. */
+  date_estimated: boolean;
+  title: string;
+  /** Notebook format: "### Heading", "- bullet" (two spaces per nesting level), "1. item". */
+  body: string;
+  /** Words Claude couldn't read (written as [?] in the body). */
+  unreadable: string[];
+  /** 1-based page numbers this entry came from. */
+  pages: number[];
+}
+
+type JournalPageImportStatus = "transcribing" | "ready" | "failed" | "done";
+
+interface IJournalPageImport {
+  id: number;
+  game_id: number;
+  status: JournalPageImportStatus;
+  page_count: number;
+  entries: IJournalDraftEntry[];
+  error: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 interface IPaginationType {
   data: any[];
   pages: number;
@@ -535,6 +563,9 @@ export type {
   IGameMember,
   IGameInvite,
   IInvitePreview,
+  IJournalDraftEntry,
+  IJournalPageImport,
+  JournalPageImportStatus,
   ResetOn,
   SpellSlotsUsed,
 };

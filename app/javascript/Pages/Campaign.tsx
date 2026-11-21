@@ -5,12 +5,13 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { ChevronLeft, Plus } from "lucide-react";
+import { Camera, ChevronLeft, Plus } from "lucide-react";
 import {
   Client,
   ICharacterType,
   IGameType,
   IJournalEntry,
+  IJournalPageImport,
   IRichNode,
 } from "../Api";
 import { useAuth } from "../Auth";
@@ -19,6 +20,7 @@ import { useError } from "../Errors";
 import { GameForm, MembersDialog } from "../Components/Games";
 import { initials } from "../Components/Shell";
 import {
+  PageImportDialog,
   RichPreview,
   SearchSnippet,
   useJournalPresence,
@@ -200,6 +202,11 @@ const Campaign = () => {
     section === "inventory" || section === "npcs" || section === "locations";
   const [editing, setEditing] = useState(false);
   const [showMembers, setShowMembers] = useState(false);
+  /** Photo imports of journal pages still being read or reviewed. */
+  const [pageImports, setPageImports] = useState<IJournalPageImport[]>([]);
+  const [importing, setImporting] = useState<{ id: number | null } | null>(
+    null,
+  );
   const token = auth.getToken();
   const writing = useJournalPresence(game?.id, token);
 
@@ -212,10 +219,8 @@ const Campaign = () => {
         setCurrentGame(r.data);
       })
       .catch((e) => errors.setError(e));
-    client
-      .get({ path: `/games/${id}/journal_entries`, token })
-      .then((r) => setEntries(r.data ?? []))
-      .catch((e) => errors.setError(e));
+    loadEntries();
+    loadPageImports();
     client
       .get({ path: `/characters?game_id=${id}`, token })
       .then((r) => setParty(r.data ?? []))
@@ -245,6 +250,27 @@ const Campaign = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, needle, searching]);
+
+  const loadEntries = () =>
+    client
+      .get({ path: `/games/${id}/journal_entries`, token })
+      .then((r) => setEntries(r.data ?? []))
+      .catch((e) => errors.setError(e));
+
+  const loadPageImports = () =>
+    client
+      .get({ path: `/games/${id}/journal_page_imports`, token })
+      .then((r) => setPageImports(r.data ?? []))
+      .catch(() => setPageImports([]));
+
+  // A page import being read: look again shortly, so its banner turns into
+  // "ready to review" without a reload.
+  useEffect(() => {
+    if (!pageImports.some((p) => p.status === "transcribing")) return;
+    const timer = setTimeout(loadPageImports, 8000);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageImports]);
 
   const newEntry = () =>
     client
@@ -375,6 +401,16 @@ const Campaign = () => {
         {section === "journal" && (
           <button
             type="button"
+            aria-label="Import journal pages"
+            onClick={() => setImporting({ id: null })}
+            className="flex h-[46px] w-[46px] items-center justify-center rounded-[11px] border border-border-strong bg-secondary"
+          >
+            <Camera className="h-5 w-5" />
+          </button>
+        )}
+        {section === "journal" && (
+          <button
+            type="button"
             aria-label="New entry"
             onClick={newEntry}
             className="flex h-[46px] w-[46px] items-center justify-center rounded-[11px] bg-primary text-primary-foreground"
@@ -428,6 +464,14 @@ const Campaign = () => {
             />
             <button
               type="button"
+              onClick={() => setImporting({ id: null })}
+              className="flex min-h-11 items-center gap-[7px] rounded-[10px] border border-border-strong bg-secondary px-4 py-3 text-[14px] font-medium"
+            >
+              <Camera className="h-4 w-4" />
+              Import pages
+            </button>
+            <button
+              type="button"
               onClick={newEntry}
               className="flex min-h-11 items-center gap-[7px] rounded-[10px] bg-primary px-4 py-3 text-[14px] font-semibold text-primary-foreground"
             >
@@ -435,6 +479,27 @@ const Campaign = () => {
               New entry
             </button>
           </div>
+          {pageImports.map((pageImport) => (
+            <button
+              key={pageImport.id}
+              type="button"
+              onClick={() => setImporting({ id: pageImport.id })}
+              className="flex min-h-[52px] items-center gap-3 rounded-[14px] border border-dashed border-border-strong bg-secondary px-4 py-3 text-left text-[14px]"
+            >
+              <Camera className="h-5 w-5 flex-shrink-0 text-muted-foreground" />
+              <span className="flex-grow">
+                {pageImport.status === "transcribing" &&
+                  `Reading ${pageImport.page_count} photographed ${pageImport.page_count === 1 ? "page" : "pages"}…`}
+                {pageImport.status === "ready" &&
+                  `${pageImport.entries.length} ${pageImport.entries.length === 1 ? "entry" : "entries"} from your photos ${pageImport.entries.length === 1 ? "is" : "are"} ready to review`}
+                {pageImport.status === "failed" &&
+                  "Your photographed pages couldn't be read"}
+              </span>
+              <span className="font-medium text-primary">
+                {pageImport.status === "transcribing" ? "View" : "Review"}
+              </span>
+            </button>
+          ))}
           {visible.map((entry) => (
             <EntryCard
               key={entry.id}
@@ -463,6 +528,16 @@ const Campaign = () => {
         </div>
       </div>
 
+      {importing && (
+        <PageImportDialog
+          open={importing !== null}
+          setOpen={(open) => !open && setImporting(null)}
+          gameId={game.id!}
+          importId={importing.id}
+          onAdded={loadEntries}
+          onChanged={loadPageImports}
+        />
+      )}
       <MembersDialog
         open={showMembers}
         setOpen={setShowMembers}

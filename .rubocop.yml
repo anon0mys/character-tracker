@@ -30,7 +30,7 @@ AllCops:
   DisplayStyleGuide: true
   
   # Use the default target Ruby version
-  TargetRubyVersion: 3.2
+  TargetRubyVersion: 3.3
 
 # Layout cops
 Layout/LineLength:

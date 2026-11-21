@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.9"
+ruby "3.3.14"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem "rails", "~> 6.1.4", ">= 6.1.4.4"
@@ -45,6 +45,8 @@ gem "jwt"
 
 # Use Pundit for authorization
 gem "pundit"
+# Claude API: transcribes photographed journal pages (JournalPageTranscriber)
+gem "anthropic", "~> 2.12", require: false # loaded by config/initializers/anthropic.rb
 
 # Web requests and parsing
 gem "faraday"

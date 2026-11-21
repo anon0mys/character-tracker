@@ -1,4 +1,4 @@
-FROM ruby:3.2.9
+FROM ruby:3.3.14
 
 # Set environment variables that affect dependency installation early
 # This ensures these layers are cached separately from dependency changes
