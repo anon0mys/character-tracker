@@ -30,6 +30,17 @@ describe "party visibility (Phase 5)" do
     expect(kai.reload.name).to eq "Kai"
   end
 
+  it "a DM with no character of their own sees the whole party and who plays each" do
+    owner.update!(username: "Evan")
+    dm = create(:user)
+    dm.user_games.create!(game:, status: :active, role: :dm)
+    sign_in(dm)
+
+    get "#{api_v1_characters_path}?game_id=#{game.id}", headers: @auth_headers
+
+    expect(response.parsed_body["data"].map { |c| c.slice("name", "player") }).to eq([{ "name" => "Kai", "player" => "Evan" }])
+  end
+
   it "a non-member only sees their own characters" do
     sign_in(viewer)
     get "#{api_v1_characters_path}?game_id=#{game.id}", headers: @auth_headers

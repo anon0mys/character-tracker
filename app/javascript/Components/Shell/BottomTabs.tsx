@@ -8,7 +8,9 @@ import {
   BookOpen,
   Settings as SettingsIcon,
   Home,
+  Castle,
 } from "lucide-react";
+import { useGame } from "../../Contexts";
 import { cn } from "../../lib/utils";
 
 interface Tab {
@@ -27,8 +29,12 @@ const characterIdFromPath = (pathname: string): string | null => {
   return match[1];
 };
 
-const globalTabs: Tab[] = [
-  { to: "/dashboard", label: "Campaigns", Icon: Home },
+// With a campaign selected, its page is the first tab (the full list is one
+// tap away in the header's breadcrumbs); without one, the list is.
+const globalTabs = (gameId?: number): Tab[] => [
+  gameId
+    ? { to: `/campaigns/${gameId}`, label: "Campaign", Icon: Castle }
+    : { to: "/dashboard", label: "Campaigns", Icon: Home },
   { to: "/compendium", label: "Compendium", Icon: BookOpen },
   { to: "/settings", label: "Settings", Icon: SettingsIcon },
 ];
@@ -43,13 +49,14 @@ const characterTabs = (id: string): Tab[] => [
 
 const BottomTabs = () => {
   const { pathname } = useLocation();
+  const { game } = useGame();
   const characterId = characterIdFromPath(pathname);
-  const tabs = characterId ? characterTabs(characterId) : globalTabs;
+  const tabs = characterId ? characterTabs(characterId) : globalTabs(game?.id);
 
   return (
     <nav
       aria-label="Sections"
-      className="flex flex-shrink-0 items-center border-t border-border bg-rail px-[2px] pb-[14px] pt-[6px] lg:hidden"
+      className="sticky bottom-0 z-40 flex flex-shrink-0 items-center border-t border-border bg-rail px-[2px] pb-[max(14px,env(safe-area-inset-bottom))] pt-[6px] lg:hidden"
       style={{ paddingBottom: "calc(14px + env(safe-area-inset-bottom, 0px))" }}
     >
       {tabs.map(({ to, label, Icon, end }, i) => (

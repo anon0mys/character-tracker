@@ -12,6 +12,8 @@ import {
 /**
  * Renders one TipTap block read-only: text, plus @/# links as chips. A chip
  * whose record was deleted (its refKey in `missing`) shows as plain text.
+ * Nested blocks (list items, paragraphs) are separated by a space so lines
+ * don't run together.
  */
 const RichPreview = ({
   node,
@@ -42,7 +44,12 @@ const RichPreview = ({
           </span>
         );
       }
-      return <RichPreview key={i} node={child} missing={missing} />;
+      return (
+        <React.Fragment key={i}>
+          {i > 0 && " "}
+          <RichPreview node={child} missing={missing} />
+        </React.Fragment>
+      );
     })}
   </>
 );

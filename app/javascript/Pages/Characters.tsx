@@ -1,96 +1,135 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "../Components/ui";
 import { useAuth } from "../Auth";
+import { useGame } from "../Contexts";
 import { useError } from "../Errors";
 import { Client, ICharacterType } from "../Api";
 import { CharacterCard } from "../Components/Characters";
-import { Link } from "react-router-dom";
+import { initials } from "../Components/Shell";
+import { cn } from "../lib/utils";
 
+/**
+ * The current campaign's party: everyone's characters, yours marked, each
+ * opening its sheet (read-only when it isn't yours). Below, your characters in
+ * other campaigns. A DM with no character of their own still sees the party.
+ */
 const Characters = () => {
-  const [characters, setCharacters] = useState<ICharacterType[]>([]);
   const auth = useAuth();
+  const { game } = useGame();
   const client = Client();
   const errors = useError();
+  const [party, setParty] = useState<ICharacterType[]>([]);
+  const [mine, setMine] = useState<ICharacterType[]>([]);
+  const token = auth.getToken();
 
-  const fetchCharacters = () => {
+  const load = () => {
+    if (game?.id)
+      client
+        .get({ path: `/characters?game_id=${game.id}`, token })
+        .then((r) => setParty(r.data ?? []))
+        .catch((e) => errors.setError(e));
     client
-      .get({ path: "/characters", token: auth.getToken() })
-      .then((response) => setCharacters(response.data))
-      .catch((error) => errors.setError(error));
+      .get({ path: "/characters", token })
+      .then((r) => setMine(r.data ?? []))
+      .catch((e) => errors.setError(e));
   };
 
   useEffect(() => {
-    fetchCharacters();
-  }, []);
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [game?.id]);
 
-  const deleteCharacter = () => {
-    fetchCharacters();
-  };
-
-  const characterCards = characters.map((character) => {
-    return (
-      <CharacterCard
-        key={character.id}
-        character={character}
-        deleteCharacter={deleteCharacter}
-      />
-    );
-  });
+  const elsewhere = mine.filter((c) => c.game_id !== game?.id);
 
   return (
-    <>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-1 sm:mb-2 text-primary">
-            Characters
+          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+            Party
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
-            Create and manage your D&D characters
+          <p className="text-sm text-muted-foreground">
+            {game?.name
+              ? `Everyone adventuring in ${game.name}.`
+              : "Your characters."}
           </p>
         </div>
         <Button
           asChild
           size="lg"
-          className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90  min-h-[44px]"
+          className="min-h-[44px] w-full bg-primary text-primary-foreground hover:bg-primary/90 sm:w-auto"
         >
-          <Link to="/characters/create">Create Character</Link>
+          <Link to="/characters/create">Create character</Link>
         </Button>
       </div>
-      {characterCards.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {characterCards}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center py-16 px-4">
-          <div className="text-center space-y-4">
-            <div className="mx-auto h-24 w-24 rounded-full bg-muted flex items-center justify-center">
-              <svg
-                className="h-12 w-12 text-muted-foreground"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-1">No characters yet</h3>
-              <p className="text-muted-foreground mb-4">
-                Create your first character to get started
-              </p>
-              <Button asChild>
-                <Link to="/characters/create">Create Your First Character</Link>
-              </Button>
-            </div>
-          </div>
+
+      {game?.id && party.length > 0 && (
+        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {party.map((c) => {
+            const yours = c.user_id === auth.user?.id;
+            return (
+              <li key={c.id}>
+                <Link
+                  to={`/characters/${c.id}`}
+                  className={cn(
+                    "flex min-h-[72px] items-center gap-3 rounded-[14px] border bg-card px-4 py-3 text-foreground hover:border-border-strong",
+                    yours ? "border-border-strong" : "border-border",
+                  )}
+                >
+                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-arcane font-mono text-[12px] text-primary-foreground">
+                    {initials(c.name)}
+                  </span>
+                  <span className="flex min-w-0 flex-grow flex-col">
+                    <span className="truncate font-display text-[17px] font-semibold">
+                      {c.name}
+                    </span>
+                    <span className="truncate font-mono text-[11.5px] text-muted-foreground">
+                      {c.archetype} {c.level}
+                      {yours ? " · you" : c.player ? ` · ${c.player}` : ""}
+                    </span>
+                  </span>
+                  <span className="font-mono text-[13px] text-foreground-2">
+                    {c.current_hitpoints}/{c.total_hitpoints}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      {game?.id && party.length === 0 && (
+        <div className="rounded-[14px] border border-dashed border-border-strong p-8 text-center">
+          <p className="font-display text-lg font-semibold">
+            No one in this party yet
+          </p>
+          <p className="mt-1 text-[14px] text-foreground-2">
+            Invite your players from Members on the campaign page, or create a
+            character.
+          </p>
         </div>
       )}
-    </>
+
+      {elsewhere.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <h2 className="font-display text-xl font-semibold">
+            {game?.id
+              ? "Your characters in other campaigns"
+              : "Your characters"}
+          </h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {elsewhere.map((character) => (
+              <CharacterCard
+                key={character.id}
+                character={character}
+                deleteCharacter={load}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
   );
 };
 

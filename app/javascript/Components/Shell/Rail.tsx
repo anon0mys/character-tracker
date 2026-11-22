@@ -4,7 +4,7 @@ import {
   Shield,
   PanelLeft,
   ChevronsUpDown,
-  Users,
+  Castle,
   BookOpen,
   Settings as SettingsIcon,
 } from "lucide-react";
@@ -25,8 +25,7 @@ import UserProfile from "../User/UserProfile";
 
 const RAIL_COLLAPSED_KEY = "railCollapsed";
 
-const navItems = [
-  { to: "/characters", label: "Party", Icon: Users },
+const appNavItems = [
   { to: "/compendium", label: "Compendium", Icon: BookOpen },
   { to: "/settings", label: "Settings", Icon: SettingsIcon },
 ];
@@ -47,7 +46,6 @@ const Rail = () => {
   });
   const [games, setGames] = useState<IGameType[]>([]);
   const [characters, setCharacters] = useState<ICharacterType[]>([]);
-  const [party, setParty] = useState<ICharacterType[]>([]);
 
   useEffect(() => {
     try {
@@ -73,18 +71,14 @@ const Rail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.user, pathname]);
 
-  useEffect(() => {
-    const token = auth.getToken();
-    if (!token || !game?.id) {
-      setParty([]);
-      return;
-    }
-    client
-      .get({ path: `/characters?game_id=${game.id}`, token })
-      .then((res) => setParty(res.data ?? []))
-      .catch(() => setParty([]));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.user, game?.id, pathname]);
+  // The current campaign's page (journal, party, inventory, NPCs, places)
+  // comes first; the party lives there rather than in its own nav item.
+  const navItems = game?.id
+    ? [
+        { to: `/campaigns/${game.id}`, label: "Campaign", Icon: Castle },
+        ...appNavItems,
+      ]
+    : appNavItems;
 
   // Only your characters in the campaign you're looking at.
   const mine = characters.filter((c) => c.game_id === game?.id);
@@ -97,12 +91,6 @@ const Rail = () => {
     await auth.setCurrentCharacter(Number(character.id));
     navigate(`/characters/${character.id}`);
   };
-
-  // Your own character becomes current; anyone else's opens read-only.
-  const openPartyMember = (character: ICharacterType) =>
-    character.user_id === auth.user?.id
-      ? switchCharacter(character)
-      : navigate(`/characters/${character.id}`);
 
   const brandMark = (
     <span className="flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-[7px] bg-primary text-primary-foreground">
@@ -146,22 +134,6 @@ const Rail = () => {
           >
             <Icon className="h-[17px] w-[17px]" />
           </NavLink>
-        ))}
-
-        {party.length > 0 && <div className="h-px w-6 bg-border" />}
-        {party.map((c) => (
-          <button
-            key={c.id}
-            type="button"
-            title={c.name}
-            onClick={() => openPartyMember(c)}
-            className={cn(
-              "flex h-7 w-7 items-center justify-center rounded-full font-mono text-[8.5px] text-primary-foreground",
-              current?.id === Number(c.id) ? "bg-proficiency" : "bg-arcane",
-            )}
-          >
-            {initials(c.name)}
-          </button>
         ))}
 
         <div className="mt-auto">
@@ -216,7 +188,13 @@ const Rail = () => {
             <DropdownMenuLabel>Campaigns</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {games.map((g) => (
-              <DropdownMenuItem key={g.id} onClick={() => setCurrentGame(g)}>
+              <DropdownMenuItem
+                key={g.id}
+                onClick={() => {
+                  setCurrentGame(g);
+                  navigate(`/campaigns/${g.id}`);
+                }}
+              >
                 {g.name}
               </DropdownMenuItem>
             ))}
@@ -292,53 +270,6 @@ const Rail = () => {
           </NavLink>
         ))}
       </div>
-
-      {/* Party */}
-      {party.length > 0 && (
-        <div className="flex flex-col gap-[5px] border-t border-border pt-[14px]">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-            The party
-          </span>
-          {party.map((c) => {
-            const isCurrent = current?.id === Number(c.id);
-            return (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => openPartyMember(c)}
-                className="flex items-center gap-[9px] rounded-md px-1 py-[5px] text-left hover:bg-card"
-              >
-                <span
-                  className={cn(
-                    "flex h-[26px] w-[26px] items-center justify-center rounded-full font-mono text-[10px] text-primary-foreground",
-                    isCurrent ? "bg-proficiency" : "bg-arcane",
-                  )}
-                >
-                  {initials(c.name)}
-                </span>
-                <span
-                  className={cn(
-                    "flex-grow truncate text-[13px]",
-                    isCurrent
-                      ? "font-semibold text-foreground"
-                      : "text-foreground-2",
-                  )}
-                >
-                  {c.name}
-                </span>
-                <span
-                  className={cn(
-                    "font-mono text-[11px]",
-                    isCurrent ? "text-primary" : "text-foreground-2",
-                  )}
-                >
-                  {c.current_hitpoints}/{c.total_hitpoints}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      )}
 
       {/* Account */}
       <div className="mt-auto flex items-center gap-[10px] border-t border-border pt-4">

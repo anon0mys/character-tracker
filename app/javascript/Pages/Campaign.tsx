@@ -30,7 +30,7 @@ import {
   LocationsSection,
   NpcsSection,
 } from "../Components/Inventory";
-import { missingSet } from "../Components/Journal/mentions";
+import { PERSON, THING, missingSet } from "../Components/Journal/mentions";
 import { cn } from "../lib/utils";
 
 type Section = "journal" | "party" | "inventory" | "npcs" | "locations";
@@ -65,12 +65,21 @@ const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
   finished: { label: "Wrapped", cls: "bg-secondary text-foreground-2" },
 };
 
+/** Inline node types; everything else is a block and gets a space before it. */
+const INLINE = new Set(["text", PERSON, THING]);
+
 const plainText = (node: IRichNode | null | undefined): string =>
   !node
     ? ""
     : (node.text ??
       node.attrs?.label ??
-      (node.content ?? []).map(plainText).join(""));
+      (node.content ?? [])
+        .map((child, i) =>
+          i > 0 && !INLINE.has(child.type ?? "")
+            ? ` ${plainText(child)}`
+            : plainText(child),
+        )
+        .join(""));
 
 const EntryCard = ({
   entry,

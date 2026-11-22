@@ -8,7 +8,7 @@ module Api
         # A player in the game can see the whole party (light payload);
         # otherwise you only see your own characters (full payload).
         if game_id.present? && current_user.in_game?(game_id)
-          characters = Game.find(game_id).characters
+          characters = Game.find(game_id).characters.includes(:user).order(:name)
           render json: PartyCharacterSerializer.render(characters, root: :data)
         else
           render json: CharacterSerializer.render(current_user.characters.all, root: :data)

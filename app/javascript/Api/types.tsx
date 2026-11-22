@@ -97,6 +97,8 @@ interface ICharacterType {
   id?: string;
   game_id?: number;
   name: string;
+  /** Party list only: the display name of whoever plays this character. */
+  player?: string | null;
   race: string;
   archetype: string;
   background: string;
