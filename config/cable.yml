@@ -4,7 +4,10 @@ development:
 test:
   adapter: test
 
+# Postgres LISTEN/NOTIFY: works across Puma workers and dynos with the
+# database the app already has, so production needs no Redis. NOTIFY payloads
+# are capped at 8000 bytes; JournalEntryChannel sends oversized edits as a
+# "resync" instead.
 production:
-  adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  adapter: postgresql
   channel_prefix: character_tracker_production

@@ -20,7 +20,7 @@ const MobileHeader = ({ right }: MobileHeaderProps) => {
   const parent = ancestors[ancestors.length - 1];
 
   return (
-    <header className="sticky top-0 z-40 flex h-[52px] flex-shrink-0 items-center gap-1 border-b border-border bg-rail px-[6px] lg:hidden">
+    <header className="z-40 flex h-[52px] flex-shrink-0 items-center gap-1 border-b border-border bg-rail px-[6px] lg:hidden">
       {parent ? (
         <Link
           to={parent.to}

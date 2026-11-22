@@ -38,6 +38,15 @@ RSpec.describe JournalEntryChannel do
     expect(entry.pending_updates.pluck(:payload)).to eq(["u"])
   end
 
+  it "logs an edit too big to broadcast and tells peers to rejoin instead" do
+    subscribe(entry_id: entry.id)
+    big = "x" * 5_000
+
+    expect { perform :update, update: encode.call(big), from: "tab-1" }
+      .to have_broadcasted_to(entry).with(type: "resync", seq: 1, from: "tab-1")
+    expect(entry.pending_updates.pluck(:payload)).to eq([big])
+  end
+
   it "relays awareness without storing it" do
     subscribe(entry_id: entry.id)
 

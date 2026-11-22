@@ -44,36 +44,48 @@ const useJournalSync = (entryId: number, token: string | null) => {
       while (seen.has(watermark + 1)) seen.delete(++watermark);
     };
 
-    const subscription = cableFor(token).subscriptions.create(
-      { channel: "JournalEntryChannel", entry_id: entryId },
-      {
-        connected: () => setStatus("live"),
-        disconnected: () => setStatus("offline"),
-        rejected: () => setStatus("offline"),
-        received: (msg: any) => {
-          if (msg.type === "init") {
-            if (msg.state) Y.applyUpdate(doc, fromBase64(msg.state), REMOTE);
-            watermark = Math.max(watermark, msg.compacted_through);
-            msg.updates.forEach(([seq, update]: [number, string]) => {
-              Y.applyUpdate(doc, fromBase64(update), REMOTE);
-              markSeen(seq);
-            });
-            setSynced({ doc, awareness });
-            sendAwareness();
-          } else if (msg.type === "update") {
-            if (msg.from !== clientId)
-              Y.applyUpdate(doc, fromBase64(msg.update), REMOTE);
-            markSeen(msg.seq);
-          } else if (msg.type === "awareness" && msg.from !== clientId) {
-            applyAwarenessUpdate(awareness, fromBase64(msg.update), REMOTE);
-            if (!knownPeers.has(msg.from)) {
-              knownPeers.add(msg.from);
+    // Rejoining re-sends the whole state; Yjs merges it into this same doc, so
+    // the editor stays put. Used when a peer's edit was too big to broadcast.
+    const join = () =>
+      cableFor(token).subscriptions.create(
+        { channel: "JournalEntryChannel", entry_id: entryId },
+        {
+          connected: () => setStatus("live"),
+          disconnected: () => setStatus("offline"),
+          rejected: () => setStatus("offline"),
+          received: (msg: any) => {
+            if (msg.type === "init") {
+              if (msg.state) Y.applyUpdate(doc, fromBase64(msg.state), REMOTE);
+              watermark = Math.max(watermark, msg.compacted_through);
+              msg.updates.forEach(([seq, update]: [number, string]) => {
+                Y.applyUpdate(doc, fromBase64(update), REMOTE);
+                markSeen(seq);
+              });
+              setSynced((current) =>
+                current?.doc === doc ? current : { doc, awareness },
+              );
               sendAwareness();
+            } else if (msg.type === "update") {
+              if (msg.from !== clientId)
+                Y.applyUpdate(doc, fromBase64(msg.update), REMOTE);
+              markSeen(msg.seq);
+            } else if (msg.type === "resync") {
+              if (msg.from === clientId) markSeen(msg.seq);
+              else {
+                subscription.unsubscribe();
+                subscription = join();
+              }
+            } else if (msg.type === "awareness" && msg.from !== clientId) {
+              applyAwarenessUpdate(awareness, fromBase64(msg.update), REMOTE);
+              if (!knownPeers.has(msg.from)) {
+                knownPeers.add(msg.from);
+                sendAwareness();
+              }
             }
-          }
+          },
         },
-      },
-    );
+      );
+    let subscription = join();
 
     const sendAwareness = () =>
       subscription.perform("awareness", {

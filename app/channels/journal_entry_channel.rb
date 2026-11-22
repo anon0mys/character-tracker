@@ -3,10 +3,15 @@
 # base64 because Action Cable speaks JSON.
 #
 #   join      → init { state, compacted_through, updates: [[seq, update]] }
-#   update    → logged with the next seq, broadcast { update, seq, from }
+#   update    → logged with the next seq, broadcast { update, seq, from }, or
+#               { type: "resync", seq, from } when too big to broadcast
+#               (Postgres NOTIFY caps payloads); peers then rejoin
 #   awareness → cursors and names, relayed only
 #   snapshot  → { state, body, through_seq } stored; log compacted; mentions synced
 class JournalEntryChannel < ApplicationCable::Channel
+  # Base64 update bytes that fit in a NOTIFY (8000) with room for the envelope.
+  MAX_BROADCAST_UPDATE = 6_000
+
   def subscribed
     entry = find_entry
     return reject unless entry
@@ -18,7 +23,12 @@ class JournalEntryChannel < ApplicationCable::Channel
   def update(data)
     entry = find_entry
     seq = entry.append_update!(decode(data["update"]))
-    self.class.broadcast_to(entry, { type: "update", update: data["update"], seq:, from: data["from"] })
+    message = if data["update"].to_s.bytesize > MAX_BROADCAST_UPDATE
+                { type: "resync", seq:, from: data["from"] }
+              else
+                { type: "update", update: data["update"], seq:, from: data["from"] }
+              end
+    self.class.broadcast_to(entry, message)
   end
 
   # Cursor and name updates (y-protocols awareness): relayed, never stored.

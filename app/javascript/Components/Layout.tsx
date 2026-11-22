@@ -19,12 +19,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="min-h-screen bg-background lg:flex">
+    // Phones: the shell is exactly the screen tall and only <main> scrolls, so
+    // the top bar and the bottom tabs never leave the screen. Desktop: the
+    // page scrolls as usual next to the sticky rail.
+    <div className="h-[100dvh] overflow-hidden bg-background lg:flex lg:h-auto lg:min-h-screen lg:overflow-visible">
       <Rail />
-      <div className="flex min-h-screen flex-1 flex-col">
+      <div className="flex h-full flex-1 flex-col lg:h-auto lg:min-h-screen">
         <MobileHeader />
         <ErrorBanner />
-        <main className="flex-1 px-4 py-4 lg:px-8 lg:py-6">{children}</main>
+        <main className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 lg:overflow-visible lg:px-8 lg:py-6">
+          {children}
+        </main>
         <BottomTabs />
       </div>
     </div>

@@ -19,9 +19,8 @@ const injuryStyles: Record<string, string> = {
   Mangled: "bg-harm text-primary-foreground",
 };
 
-// Phone-only HP strip. Sticky under the header when the viewer keeps the
-// "pin HP" preference on. The page (document) is the scroll container, so
-// position: sticky is iOS-safe here.
+// Phone-only HP strip. Sticky at the top of the scrolling content (just under
+// the fixed top bar) when the viewer keeps the "pin HP" preference on.
 const PinnedHp = ({ character, patch }: PinnedHpProps) => {
   const [amount, setAmount] = useState("1");
   const total = character.total_hitpoints || 0;
@@ -41,7 +40,7 @@ const PinnedHp = ({ character, patch }: PinnedHpProps) => {
     <div
       className={cn(
         "z-30 flex items-center gap-[11px] border-b border-border bg-card px-[14px] py-[10px] lg:hidden",
-        getPinHp() && "sticky top-[52px]",
+        getPinHp() && "sticky top-0",
       )}
     >
       <div className="flex min-w-0 flex-grow flex-col gap-[5px]">
