@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         get :options, on: :collection
       end
       resources :feats, only: [:index]
+      resources :rules, only: [:index]
       resources :items, only: %i[index create update]
       resources :games, only: %i[index show create update destroy] do
         resources :journal_entries, only: %i[index show create update destroy]

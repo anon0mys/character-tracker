@@ -380,6 +380,17 @@ interface IFeatType {
   benefits: string[];
 }
 
+/** A section of the rules (SRD 5.1), body in markdown. */
+interface IRuleType {
+  id: number;
+  name: string;
+  slug: string;
+  category: string;
+  position: number;
+  body: string;
+  source?: string | null;
+}
+
 interface ISpellType {
   id: number | null;
   name: string;
@@ -552,6 +563,7 @@ export type {
   IBackgroundType,
   IBackgroundFeature,
   IFeatType,
+  IRuleType,
   ISpellType,
   ISpellListType,
   IPaginationType,

@@ -30,6 +30,9 @@ File.foreach(Rails.root.join("lib/seeds/feat_data.json")) do |line|
   Feat.find_or_initialize_by(name: feat_data["name"]).update!(feat_data)
 end
 
+require Rails.root.join("lib/seeds/rule_seeder")
+Seeds::RuleSeeder.call
+
 if Rails.env.development? && !AdminUser.exists?(email: "admin@example.com")
   AdminUser.create!(
     email: "admin@example.com",

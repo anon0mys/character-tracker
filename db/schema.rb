@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_11_22_100000) do
+ActiveRecord::Schema.define(version: 2026_11_22_120000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -424,6 +424,19 @@ ActiveRecord::Schema.define(version: 2026_11_22_100000) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["category"], name: "index_races_on_category"
     t.index ["name"], name: "index_races_on_name", unique: true
+  end
+
+  create_table "rules", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.string "category", null: false
+    t.integer "position", default: 0, null: false
+    t.text "body", default: "", null: false
+    t.string "source"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["position"], name: "index_rules_on_position"
+    t.index ["slug"], name: "index_rules_on_slug", unique: true
   end
 
   create_table "spell_list_items", force: :cascade do |t|

@@ -8,6 +8,7 @@ import {
   IRaceType,
   IBackgroundType,
   IFeatType,
+  IRuleType,
 } from "../Api";
 import { cn } from "../lib/utils";
 import { useAuth } from "../Auth";
@@ -24,6 +25,8 @@ import BackgroundsTab from "../Components/Compendium/BackgroundsTab";
 import BackgroundDetailPane from "../Components/Compendium/BackgroundDetailPane";
 import FeatsTab from "../Components/Compendium/FeatsTab";
 import FeatDetailPane from "../Components/Compendium/FeatDetailPane";
+import RulesTab from "../Components/Compendium/RulesTab";
+import RuleDetailPane from "../Components/Compendium/RuleDetailPane";
 import { useIsDesktop } from "../Hooks/useIsDesktop";
 
 const tabs = [
@@ -33,6 +36,7 @@ const tabs = [
   { key: "races", label: "Races" },
   { key: "backgrounds", label: "Backgrounds" },
   { key: "feats", label: "Feats" },
+  { key: "rules", label: "Rules" },
 ];
 
 const Compendium = () => {
@@ -43,6 +47,7 @@ const Compendium = () => {
     "races",
     "backgrounds",
     "feats",
+    "rules",
   ].includes(tab ?? "")
     ? tab!
     : "spells";
@@ -56,6 +61,7 @@ const Compendium = () => {
   const [selectedBackground, setSelectedBackground] =
     useState<IBackgroundType | null>(null);
   const [selectedFeat, setSelectedFeat] = useState<IFeatType | null>(null);
+  const [selectedRule, setSelectedRule] = useState<IRuleType | null>(null);
   const [searchParams] = useSearchParams();
   const linkedId = searchParams.get("id");
   const auth = useAuth();
@@ -82,11 +88,11 @@ const Compendium = () => {
           Compendium
         </h1>
         <p className="text-sm text-muted-foreground">
-          Spells, items, monsters, races, backgrounds and feats.
+          Spells, items, monsters, races, backgrounds, feats and the rules.
         </p>
       </div>
 
-      {/* Six tabs outgrow a phone: they scroll sideways there. */}
+      {/* The tabs outgrow a phone: they scroll sideways there. */}
       <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] lg:mx-0 lg:px-0">
         <div className="flex w-max gap-[3px] rounded-[10px] border border-border bg-rail p-[3px]">
           {tabs.map(({ key, label }) => (
@@ -100,6 +106,7 @@ const Compendium = () => {
                 setSelectedRace(null);
                 setSelectedBackground(null);
                 setSelectedFeat(null);
+                setSelectedRule(null);
               }}
               className={cn(
                 "flex min-h-[38px] items-center rounded-lg px-4 text-[13px] no-underline",
@@ -114,7 +121,27 @@ const Compendium = () => {
         </div>
       </div>
 
-      {active === "races" ? (
+      {active === "rules" ? (
+        <div className="flex min-h-0 flex-grow gap-4">
+          <RulesTab
+            onSelect={setSelectedRule}
+            selectedId={selectedRule?.id}
+            onLoad={(rules) => {
+              // A link's ?id= opens that rule; desktop otherwise opens the first.
+              const linked = rules.find((r) => String(r.id) === linkedId);
+              if (linked) setSelectedRule(linked);
+              else if (isDesktop && rules[0]) setSelectedRule(rules[0]);
+            }}
+          />
+          {selectedRule && isDesktop && (
+            <div className="hidden min-w-0 flex-grow overflow-y-auto rounded-2xl border border-border bg-card p-[22px_26px] lg:block lg:max-h-[calc(100vh-170px)]">
+              <div className="mx-auto max-w-[72ch]">
+                <RuleDetailPane rule={selectedRule} />
+              </div>
+            </div>
+          )}
+        </div>
+      ) : active === "races" ? (
         <div className="flex min-h-0 flex-grow gap-4">
           <RacesTab onSelect={setSelectedRace} selectedId={selectedRace?.id} />
           {selectedRace && isDesktop && (
@@ -239,6 +266,17 @@ const Compendium = () => {
             <BackgroundDetailPane
               background={selectedBackground}
               onClose={() => setSelectedBackground(null)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {selectedRule && !isDesktop && (
+        <Dialog open onOpenChange={(o) => !o && setSelectedRule(null)}>
+          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
+            <RuleDetailPane
+              rule={selectedRule}
+              onClose={() => setSelectedRule(null)}
             />
           </DialogContent>
         </Dialog>
