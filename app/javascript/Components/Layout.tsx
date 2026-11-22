@@ -19,10 +19,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    // Phones: the shell is exactly the screen tall and only <main> scrolls, so
-    // the top bar and the bottom tabs never leave the screen. Desktop: the
+    // Phones: the shell is pinned to the screen's edges (not sized with vh/dvh
+    // units, which disagree with mobile browser toolbars) and only <main>
+    // scrolls, so the top bar and the bottom tabs never move. Desktop: the
     // page scrolls as usual next to the sticky rail.
-    <div className="h-[100dvh] overflow-hidden bg-background lg:flex lg:h-auto lg:min-h-screen lg:overflow-visible">
+    <div className="fixed inset-0 overflow-hidden bg-background lg:static lg:flex lg:min-h-screen lg:overflow-visible">
       <Rail />
       <div className="flex h-full flex-1 flex-col lg:h-auto lg:min-h-screen">
         <MobileHeader />

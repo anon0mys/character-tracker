@@ -56,8 +56,7 @@ const BottomTabs = () => {
   return (
     <nav
       aria-label="Sections"
-      className="z-40 flex flex-shrink-0 items-center border-t border-border bg-rail px-[2px] pb-[max(14px,env(safe-area-inset-bottom))] pt-[6px] lg:hidden"
-      style={{ paddingBottom: "calc(14px + env(safe-area-inset-bottom, 0px))" }}
+      className="z-40 flex flex-shrink-0 items-center border-t border-border bg-rail px-[2px] py-1 lg:hidden"
     >
       {tabs.map(({ to, label, Icon, end }, i) => (
         <NavLink
