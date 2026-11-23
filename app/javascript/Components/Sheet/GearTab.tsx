@@ -13,6 +13,8 @@ import {
   useCampaignHoldings,
 } from "../Inventory";
 import { ReadOnlyFieldset } from "./SheetAccess";
+import useRecordView from "../../Hooks/useRecordView";
+import { PHONE_TAKEOVER } from "../Shared/recordPanel";
 
 interface GearTabProps {
   character: ICharacterType;
@@ -117,7 +119,15 @@ const HoldingRow = ({
 
 const GearTab = ({ character, patch, onTakeoverChange }: GearTabProps) => {
   const { holdings, loading, reload } = useCampaignHoldings(character.game_id);
-  const [view, setView] = useState<View>({ mode: "list" });
+  // The open holding (and its Move step) live in the URL: ?holding=12&move=1.
+  const record = useRecordView();
+  const openId = Number(record.params.get("holding")) || null;
+  const openHolding = holdings.find((h) => h.id === openId);
+  const view: View = !openId
+    ? { mode: "list" }
+    : record.params.get("move") === "1" && openHolding
+      ? { mode: "move", holding: openHolding }
+      : { mode: "detail", id: openId };
   const [collapsed, setCollapsed] = useState<number[]>([]);
   const [adding, setAdding] = useState(false);
 
@@ -131,32 +141,31 @@ const GearTab = ({ character, patch, onTakeoverChange }: GearTabProps) => {
   );
   const equipped = mine.filter((h) => h.status === "equipped");
   const carried = mine.filter((h) => h.status !== "equipped");
-  const open = (h: IHoldingType) => setView({ mode: "detail", id: h.id });
+  const open = (h: IHoldingType) => record.open({ holding: h.id, move: null });
 
-  if (view.mode === "detail")
-    return (
+  // Desktop: the detail takes over the panel. Phone: it covers the screen and
+  // the list stays underneath, where it was.
+  const detail =
+    view.mode === "detail" ? (
       <HoldingDetail
         gameId={gameId}
         holdingId={view.id}
-        onBack={() => setView({ mode: "list" })}
-        onMove={(h) => setView({ mode: "move", holding: h })}
+        onBack={() => record.close({ holding: null, move: null })}
+        onMove={() => record.push({ move: 1 })}
         onChanged={reload}
       />
-    );
-
-  if (view.mode === "move")
-    return (
+    ) : view.mode === "move" ? (
       <MoveHolding
         gameId={gameId}
         holding={view.holding}
         holdings={holdings}
-        onBack={() => setView({ mode: "detail", id: view.holding.id })}
+        onBack={() => record.close({ move: null })}
         onMoved={() => {
           reload();
-          setView({ mode: "list" });
+          record.closeAll({ holding: null, move: null });
         }}
       />
-    );
+    ) : null;
 
   const toggle = (id: number) =>
     setCollapsed((ids) =>
@@ -216,91 +225,103 @@ const GearTab = ({ character, patch, onTakeoverChange }: GearTabProps) => {
   };
 
   return (
-    <div className="flex min-h-0 flex-grow flex-col gap-3">
-      <div className="flex min-h-0 flex-grow flex-col gap-[3px] overflow-y-auto pr-1">
-        {loading ? (
-          <p className="py-6 text-center text-[13px] text-muted-foreground">
-            Loading gear…
-          </p>
-        ) : (
-          <>
-            <SectionHeading title="Equipped" count={equipped.length} />
-            {equipped.length === 0 && (
-              <p className="px-[10px] pb-2 text-[12.5px] text-muted-foreground">
-                Nothing equipped. Open an item to equip it.
-              </p>
-            )}
-            {equipped.map((h) => (
-              <HoldingRow
-                key={h.id}
-                holding={h}
-                emphasis
-                onOpen={() => open(h)}
-              />
-            ))}
-
-            <div className="mx-[10px] my-[7px] h-px bg-hairline" />
-
-            <SectionHeading title="Carried" count={carried.length}>
-              <button
-                type="button"
-                onClick={() => setAdding(true)}
-                className="ml-auto min-h-[30px] rounded-full border border-border-strong px-[11px] py-1 text-[11px] text-foreground-2"
-              >
-                Add item
-              </button>
-            </SectionHeading>
-            {carried.length === 0 && (
-              <p className="px-[10px] text-[12.5px] text-muted-foreground">
-                No gear carried.
-              </p>
-            )}
-            {carried.map(renderCarried)}
-          </>
-        )}
-      </div>
-
-      <ReadOnlyFieldset>
-        <div className="flex flex-shrink-0 items-center gap-[6px] border-t border-hairline pt-[11px]">
-          <span className="mr-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
-            Coin
-          </span>
-          {COINS.map(({ field, label }) => (
-            <label
-              key={field}
-              className="flex flex-grow items-center gap-1 rounded-md bg-secondary px-[6px]"
-            >
-              <span className="font-mono text-[11px] text-proficiency-ink">
-                {label}
-              </span>
-              <input
-                inputMode="numeric"
-                aria-label={`${field} pieces`}
-                value={(character[field] as number) ?? 0}
-                onChange={(e) =>
-                  patch({
-                    [field]: Math.max(0, parseInt(e.target.value || "0", 10)),
-                  } as Partial<ICharacterType>)
-                }
-                className="h-8 w-full min-w-0 bg-transparent text-center font-mono text-[11px]"
-              />
-            </label>
-          ))}
+    <>
+      {detail && (
+        <div className={cn("flex min-h-0 flex-grow flex-col", PHONE_TAKEOVER)}>
+          {detail}
         </div>
-      </ReadOnlyFieldset>
+      )}
+      <div
+        className={cn(
+          "flex min-h-0 flex-grow flex-col gap-3",
+          detail && "lg:hidden",
+        )}
+      >
+        <div className="flex min-h-0 flex-grow flex-col gap-[3px] overflow-y-auto pr-1">
+          {loading ? (
+            <p className="py-6 text-center text-[13px] text-muted-foreground">
+              Loading gear…
+            </p>
+          ) : (
+            <>
+              <SectionHeading title="Equipped" count={equipped.length} />
+              {equipped.length === 0 && (
+                <p className="px-[10px] pb-2 text-[12.5px] text-muted-foreground">
+                  Nothing equipped. Open an item to equip it.
+                </p>
+              )}
+              {equipped.map((h) => (
+                <HoldingRow
+                  key={h.id}
+                  holding={h}
+                  emphasis
+                  onOpen={() => open(h)}
+                />
+              ))}
 
-      <AddHolding
-        open={adding}
-        onClose={() => setAdding(false)}
-        gameId={gameId}
-        holder={{
-          type: "Character",
-          id: Number(character.id),
-          name: character.name,
-        }}
-        onAdded={reload}
-      />
-    </div>
+              <div className="mx-[10px] my-[7px] h-px bg-hairline" />
+
+              <SectionHeading title="Carried" count={carried.length}>
+                <button
+                  type="button"
+                  onClick={() => setAdding(true)}
+                  className="ml-auto min-h-[30px] rounded-full border border-border-strong px-[11px] py-1 text-[11px] text-foreground-2"
+                >
+                  Add item
+                </button>
+              </SectionHeading>
+              {carried.length === 0 && (
+                <p className="px-[10px] text-[12.5px] text-muted-foreground">
+                  No gear carried.
+                </p>
+              )}
+              {carried.map(renderCarried)}
+            </>
+          )}
+        </div>
+
+        <ReadOnlyFieldset>
+          <div className="flex flex-shrink-0 items-center gap-[6px] border-t border-hairline pt-[11px]">
+            <span className="mr-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              Coin
+            </span>
+            {COINS.map(({ field, label }) => (
+              <label
+                key={field}
+                className="flex flex-grow items-center gap-1 rounded-md bg-secondary px-[6px]"
+              >
+                <span className="font-mono text-[11px] text-proficiency-ink">
+                  {label}
+                </span>
+                <input
+                  inputMode="numeric"
+                  aria-label={`${field} pieces`}
+                  value={(character[field] as number) ?? 0}
+                  onChange={(e) =>
+                    patch({
+                      [field]: Math.max(0, parseInt(e.target.value || "0", 10)),
+                    } as Partial<ICharacterType>)
+                  }
+                  className="h-8 w-full min-w-0 bg-transparent text-center font-mono text-[11px]"
+                />
+              </label>
+            ))}
+          </div>
+        </ReadOnlyFieldset>
+
+        <AddHolding
+          open={adding}
+          onClose={() => setAdding(false)}
+          gameId={gameId}
+          holder={{
+            type: "Character",
+            id: Number(character.id),
+            name: character.name,
+          }}
+          onAdded={reload}
+        />
+      </div>
+    </>
   );
 };
 

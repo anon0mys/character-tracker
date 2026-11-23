@@ -1,6 +1,8 @@
+import useRecordView from "../Hooks/useRecordView";
+import { PHONE_TAKEOVER } from "../Components/Shared/recordPanel";
 import React, { useEffect, useState } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import { Client, ISpellListType, ISpellType, ICharacterType } from "../Api";
+import { Client, ISpellListType, ICharacterType } from "../Api";
 import { useAuth } from "../Auth";
 import { useError } from "../Errors";
 import { useCharacterData } from "../Hooks/useCharacterData";
@@ -34,7 +36,10 @@ const MobileSpells = () => {
   const { character, patch } = useCharacterData(id);
   const [spellLists, setSpellLists] = useState<ISpellListType[]>([]);
   const [currentList, setCurrentList] = useState<ISpellListType | undefined>();
-  const [selected, setSelected] = useState<ISpellType | null>(null);
+  // The open spell lives in the URL (?spell=12): Back closes it, and the list
+  // stays where it was underneath.
+  const record = useRecordView();
+  const spellParam = Number(record.params.get("spell")) || null;
 
   useEffect(() => {
     if (character.current_spell_list)
@@ -78,18 +83,19 @@ const MobileSpells = () => {
       .catch((e) => errors.setError(e));
   };
 
-  if (selected) {
-    return (
-      <div className="-mx-4 -my-4 flex min-h-[70vh] flex-col p-4">
-        <SpellDetail spell={selected} onBack={() => setSelected(null)} />
-      </div>
-    );
-  }
-
   const spells = currentList?.spells ?? [];
+  const selected = spells.find((s) => s.id === spellParam) ?? null;
 
   return (
     <SheetAccessProvider character={character}>
+      {selected && (
+        <div className={PHONE_TAKEOVER}>
+          <SpellDetail
+            spell={selected}
+            onBack={() => record.close({ spell: null })}
+          />
+        </div>
+      )}
       <div className="-mx-4 -my-4 flex flex-col">
         <ReadOnlyFieldset>
           <PinnedHp character={character as ICharacterType} patch={patch} />
@@ -173,7 +179,7 @@ const MobileSpells = () => {
               <button
                 key={spell.id}
                 type="button"
-                onClick={() => setSelected(spell)}
+                onClick={() => record.open({ spell: spell.id })}
                 className="flex min-h-[56px] items-center gap-[11px] rounded-xl border border-border bg-card px-3 py-[10px] text-left"
               >
                 <span className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-lg bg-arcane font-mono text-[12px] text-primary-foreground">

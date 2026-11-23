@@ -32,6 +32,7 @@ import {
 } from "../Components/Inventory";
 import { PERSON, THING, missingSet } from "../Components/Journal/mentions";
 import { cn } from "../lib/utils";
+import { useUpLink } from "../Components/Shell/breadcrumbs";
 
 type Section = "journal" | "party" | "inventory" | "npcs" | "locations";
 const SECTIONS: Section[] = [
@@ -300,6 +301,7 @@ const Campaign = () => {
         setCurrentGame(r.data);
       });
 
+  const goUp = useUpLink("/dashboard");
   if (!game?.id) return null;
 
   const visible =
@@ -314,11 +316,13 @@ const Campaign = () => {
         );
   const status = game.status && STATUS_LABEL[game.status];
 
+
   return (
     <div className="flex flex-col gap-[18px] p-[14px] lg:gap-[22px] lg:px-10 lg:py-[30px]">
       <div className="flex flex-col gap-[10px]">
         <Link
           to="/dashboard"
+          onClick={goUp}
           className="hidden items-center gap-[6px] self-start text-[13px] font-medium lg:flex"
         >
           <ChevronLeft className="h-[15px] w-[15px]" />

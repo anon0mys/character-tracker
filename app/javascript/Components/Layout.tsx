@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ErrorBanner } from "../Errors";
 import { useAuth } from "../Auth";
 import { Rail, BottomTabs, MobileHeader } from "./Shell";
+import useScrollMemory from "./Shell/scrollMemory";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const auth = useAuth();
+  const main = useRef<HTMLElement>(null);
+  useScrollMemory(main);
 
   // Signed-out visitors (Home / Login / Sign-up) get no shell chrome.
   if (!auth.user) {
@@ -28,7 +31,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex h-full flex-1 flex-col lg:h-auto lg:min-h-screen">
         <MobileHeader />
         <ErrorBanner />
-        <main className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 lg:overflow-visible lg:px-8 lg:py-6">
+        <main
+          ref={main}
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 lg:overflow-visible lg:px-8 lg:py-6"
+        >
           {children}
         </main>
         <BottomTabs />

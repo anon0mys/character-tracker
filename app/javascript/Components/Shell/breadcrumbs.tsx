@@ -1,5 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useLocation, useNavigate, useNavigationType } from "react-router-dom";
 import { useGame } from "../../Contexts";
 
 interface Crumb {
@@ -13,7 +19,9 @@ type Labels = Record<string, string>;
 const BreadcrumbContext = createContext<{
   labels: Labels;
   setLabel: (path: string, label: string) => void;
-}>({ labels: {}, setLabel: () => undefined });
+  /** Pathnames of this tab's in-app history, oldest first. */
+  visited: React.MutableRefObject<string[]>;
+}>({ labels: {}, setLabel: () => undefined, visited: { current: [] } });
 
 const BreadcrumbProvider = ({ children }: { children: React.ReactNode }) => {
   const [labels, setLabels] = useState<Labels>({});
@@ -21,8 +29,24 @@ const BreadcrumbProvider = ({ children }: { children: React.ReactNode }) => {
     setLabels((current) =>
       current[path] === label ? current : { ...current, [path]: label },
     );
+
+  // Follow in-app navigation, so "up" can tell when it's really "back".
+  const location = useLocation();
+  const navigation = useNavigationType();
+  const visited = useRef<string[]>([]);
+  useEffect(() => {
+    const here = location.pathname;
+    const trail = visited.current;
+    if (navigation === "PUSH") trail.push(here);
+    else if (navigation === "REPLACE" || trail.length === 0)
+      trail.splice(Math.max(trail.length - 1, 0), 1, here);
+    else if (trail[trail.length - 2] === here) trail.pop();
+    else visited.current = [here];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.key]);
+
   return (
-    <BreadcrumbContext.Provider value={{ labels, setLabel }}>
+    <BreadcrumbContext.Provider value={{ labels, setLabel, visited }}>
       {children}
     </BreadcrumbContext.Provider>
   );
@@ -110,6 +134,24 @@ const crumbsFor = (
   }
 };
 
+/**
+ * A click handler for an "up" link to `to`: when `to` is the page you just
+ * came from, it goes Back (so you land where you were scrolled) instead of
+ * stacking a new copy of it. Otherwise the link navigates normally.
+ */
+const useUpLink = (to: string) => {
+  const { visited } = useContext(BreadcrumbContext);
+  const navigate = useNavigate();
+  return (event: React.MouseEvent) => {
+    const trail = visited.current;
+    const target = to.split("?")[0];
+    if (trail.length > 1 && trail[trail.length - 2] === target) {
+      event.preventDefault();
+      navigate(-1);
+    }
+  };
+};
+
 /** The breadcrumb trail for the current page. */
 const useBreadcrumbs = (): Crumb[] => {
   const { pathname } = useLocation();
@@ -118,5 +160,11 @@ const useBreadcrumbs = (): Crumb[] => {
   return crumbsFor(pathname, game, labels);
 };
 
-export { BreadcrumbProvider, crumbsFor, useBreadcrumbLabel, useBreadcrumbs };
+export {
+  BreadcrumbProvider,
+  crumbsFor,
+  useBreadcrumbLabel,
+  useBreadcrumbs,
+  useUpLink,
+};
 export type { Crumb };

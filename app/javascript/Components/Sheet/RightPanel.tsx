@@ -1,5 +1,6 @@
+import useRecordView from "../../Hooks/useRecordView";
 import React, { useState } from "react";
-import { ICharacterType, ISpellListType, ISpellType } from "../../Api";
+import { ICharacterType, ISpellListType } from "../../Api";
 import {
   Select,
   SelectContent,
@@ -90,7 +91,9 @@ const RightPanel = ({
   patch,
 }: RightPanelProps) => {
   const [tab, setTab] = useState<Tab>("spells");
-  const [selectedSpell, setSelectedSpell] = useState<ISpellType | null>(null);
+  // The open spell lives in the URL (?spell=12), so Back closes it.
+  const record = useRecordView();
+  const spellParam = Number(record.params.get("spell")) || null;
   const [gearTakeover, setGearTakeover] = useState(false);
 
   const tabs: { key: Tab; label: string }[] = [
@@ -100,6 +103,7 @@ const RightPanel = ({
   ];
 
   const spells = currentSpellList?.spells ?? [];
+  const selectedSpell = spells.find((s) => s.id === spellParam) ?? null;
   const slotsMax = character.spell_slots_max ?? [];
   const slotsUsed = character.spell_slots_used ?? {};
 
@@ -135,7 +139,7 @@ const RightPanel = ({
         (selectedSpell ? (
           <SpellDetail
             spell={selectedSpell}
-            onBack={() => setSelectedSpell(null)}
+            onBack={() => record.close({ spell: null })}
           />
         ) : (
           <>
@@ -198,7 +202,7 @@ const RightPanel = ({
                   <button
                     key={spell.id}
                     type="button"
-                    onClick={() => setSelectedSpell(spell)}
+                    onClick={() => record.open({ spell: spell.id })}
                     className="flex items-center gap-[9px] rounded-lg px-2 py-2 text-left hover:bg-secondary"
                   >
                     <span className="flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-md bg-arcane-soft font-mono text-[10px] text-arcane-ink">

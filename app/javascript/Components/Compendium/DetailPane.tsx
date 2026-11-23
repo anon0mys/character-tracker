@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { ISpellType } from "../../Api";
 import { AddSpellForm } from "../Characters";
 import { Button } from "../ui";
-import { X, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { MentionedInJournal } from "../Journal";
+import PaneBack from "./PaneBack";
 
 const facts = (spell: ISpellType) => [
   { label: "Casting time", value: spell.casting_time },
@@ -27,6 +28,7 @@ const DetailPane = ({ spell, onClose }: DetailPaneProps) => {
 
   return (
     <div className="flex min-h-0 flex-col gap-4 overflow-y-auto">
+      <PaneBack onBack={onClose} label="Back to spells" />
       <div className="flex items-start gap-2">
         <div className="flex flex-col gap-[3px]">
           <h2 className="font-display text-[26px] font-semibold leading-tight">
@@ -36,14 +38,6 @@ const DetailPane = ({ spell, onClose }: DetailPaneProps) => {
             Level {spell.level} · {spell.school}
           </span>
         </div>
-        <button
-          type="button"
-          aria-label="Close detail"
-          onClick={onClose}
-          className="ml-auto flex h-9 w-9 items-center justify-center rounded-[9px] text-muted-foreground hover:bg-secondary"
-        >
-          <X className="h-[18px] w-[18px]" />
-        </button>
       </div>
 
       <div className="grid grid-cols-2 gap-[10px]">

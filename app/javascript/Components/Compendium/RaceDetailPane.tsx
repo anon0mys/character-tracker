@@ -1,6 +1,6 @@
 import React from "react";
 import { IRaceType, IRaceTrait, IRaceSubrace, IRaceVersion } from "../../Api";
-import { X } from "lucide-react";
+import PaneBack from "./PaneBack";
 
 const Caption = ({ children }: { children: React.ReactNode }) => (
   <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-proficiency-ink">
@@ -57,6 +57,7 @@ const RaceDetailPane = ({
   onClose: () => void;
 }) => (
   <div className="flex min-h-0 flex-col gap-4 overflow-y-auto">
+    <PaneBack onBack={onClose} label="Back to races" />
     <div className="flex items-start gap-2">
       <div className="flex flex-col gap-[3px]">
         <h2 className="font-display text-[26px] font-semibold leading-tight">
@@ -67,14 +68,6 @@ const RaceDetailPane = ({
           {race.source ? ` · ${race.source}` : ""}
         </span>
       </div>
-      <button
-        type="button"
-        aria-label="Close detail"
-        onClick={onClose}
-        className="ml-auto flex h-9 w-9 items-center justify-center rounded-[9px] text-muted-foreground hover:bg-secondary"
-      >
-        <X className="h-[18px] w-[18px]" />
-      </button>
     </div>
 
     <div className="grid grid-cols-2 gap-[10px]">

@@ -8,6 +8,8 @@ import HoldingDetail from "./HoldingDetail";
 import MoveHolding from "./MoveHolding";
 import { STATUS_CHIP, isGone } from "./holdings";
 import { useCampaignHoldings } from "./useCampaignHoldings";
+import useRecordView from "../../Hooks/useRecordView";
+import { PHONE_TAKEOVER } from "../Shared/recordPanel";
 
 type Filter = "held" | "equipped" | "stored" | "gone";
 type Panel =
@@ -202,7 +204,15 @@ const CampaignInventory = ({
   const [opened, setOpened] = useState<string[] | null>(null);
   const [showAll, setShowAll] = useState<string[]>([]);
   const [closedBags, setClosedBags] = useState<string[]>([]);
-  const [panel, setPanel] = useState<Panel>({ mode: "jump" });
+  // The open holding (and its Move step) live in the URL: ?holding=12&move=1.
+  const view = useRecordView();
+  const openId = Number(view.params.get("holding")) || null;
+  const openHolding = holdings.find((h) => h.id === openId);
+  const panel: Panel = !openId
+    ? { mode: "jump" }
+    : view.params.get("move") === "1" && openHolding
+      ? { mode: "move", holding: openHolding }
+      : { mode: "detail", id: openId };
   const [adding, setAdding] = useState(false);
 
   const needle = query.trim().toLowerCase();
@@ -247,7 +257,8 @@ const CampaignInventory = ({
   };
 
   const selectedId = panel.mode === "detail" ? panel.id : undefined;
-  const open = (h: IHoldingType) => setPanel({ mode: "detail", id: h.id });
+  const open = (h: IHoldingType) => view.open({ holding: h.id, move: null });
+  const closeAll = () => view.closeAll({ holding: null, move: null });
   const member = (card: Card) =>
     card.type === "Character"
       ? party.find((c) => Number(c.id) === card.id)
@@ -470,10 +481,7 @@ const CampaignInventory = ({
       <div className="flex min-h-0 flex-col gap-[18px] lg:flex-row">
         <section
           aria-label="Holders"
-          className={cn(
-            "min-w-0 flex-grow flex-col gap-3",
-            panel.mode === "jump" ? "flex" : "hidden lg:flex",
-          )}
+          className="flex min-w-0 flex-grow flex-col gap-3"
         >
           {loading && (
             <p className="py-8 text-center text-[13px] text-muted-foreground">
@@ -501,15 +509,18 @@ const CampaignInventory = ({
             "flex w-full flex-shrink-0 flex-col gap-1 self-start rounded-[14px] border bg-card p-[14px] lg:sticky lg:top-4 lg:max-h-[calc(100vh-120px)]",
             panel.mode === "jump"
               ? "hidden border-border lg:flex lg:w-[240px]"
-              : "min-h-[560px] border-border-strong lg:w-[400px]",
+              : cn(
+                  "min-h-[560px] border-border-strong lg:w-[400px]",
+                  PHONE_TAKEOVER,
+                ),
           )}
         >
           {panel.mode === "detail" && (
             <HoldingDetail
               gameId={gameId}
               holdingId={panel.id}
-              onBack={() => setPanel({ mode: "jump" })}
-              onMove={(h) => setPanel({ mode: "move", holding: h })}
+              onBack={() => view.close({ holding: null, move: null })}
+              onMove={() => view.push({ move: 1 })}
               onChanged={reload}
               backLabel="Back to inventory"
             />
@@ -519,10 +530,10 @@ const CampaignInventory = ({
               gameId={gameId}
               holding={panel.holding}
               holdings={holdings}
-              onBack={() => setPanel({ mode: "detail", id: panel.holding.id })}
+              onBack={() => view.close({ move: null })}
               onMoved={() => {
                 reload();
-                setPanel({ mode: "jump" });
+                closeAll();
               }}
             />
           )}

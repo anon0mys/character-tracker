@@ -3,8 +3,19 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 
 import { cn } from "../../lib/utils";
+import useBackToClose from "../../Hooks/useBackToClose";
 
-const Dialog = DialogPrimitive.Root;
+/** Radix's Dialog, closed by the browser's Back instead of leaving the page. */
+const Dialog = ({
+  open,
+  onOpenChange,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Root>) => {
+  useBackToClose(!!open, () => onOpenChange?.(false));
+  return (
+    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange} {...props} />
+  );
+};
 
 const DialogTrigger = DialogPrimitive.Trigger;
 

@@ -4,10 +4,10 @@ import { Client, IHoldingType, IItemType } from "../../Api";
 import { useAuth } from "../../Auth";
 import { useGame } from "../../Contexts";
 import { cn } from "../../lib/utils";
-import { X } from "lucide-react";
 import { MentionedInJournal } from "../Journal";
 import { ItemForm } from "../Items";
 import { isGone } from "../Inventory";
+import PaneBack from "./PaneBack";
 
 const badge =
   "rounded-full px-[9px] py-[3px] font-mono text-[10px] uppercase tracking-[0.08em]";
@@ -67,6 +67,7 @@ const ItemDetailPane = ({
 
   return (
     <div className="flex min-h-0 flex-col gap-4 overflow-y-auto">
+      <PaneBack onBack={onClose} label="Back to items" />
       <div className="flex items-center gap-2">
         {item.homebrew && (
           <span className={cn(badge, "bg-proficiency text-primary-foreground")}>
@@ -87,17 +88,6 @@ const ItemDetailPane = ({
             Edit
           </button>
         )}
-        <button
-          type="button"
-          aria-label="Close detail"
-          onClick={onClose}
-          className={cn(
-            "flex h-9 w-9 items-center justify-center rounded-[9px] text-muted-foreground hover:bg-secondary",
-            !item.homebrew && "ml-auto",
-          )}
-        >
-          <X className="h-[18px] w-[18px]" />
-        </button>
       </div>
       <h2 className="font-display text-[26px] font-semibold leading-tight">
         {item.name}

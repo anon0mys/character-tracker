@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { Client, ILocationType, INpcType, archetypes } from "../../Api";
 import { useAuth } from "../../Auth";
 import { useError } from "../../Errors";
@@ -22,6 +21,9 @@ import {
   SelectValue,
 } from "../ui";
 import AddHolding from "./AddHolding";
+import useRecordView from "../../Hooks/useRecordView";
+import { useIsDesktop } from "../../Hooks/useIsDesktop";
+import { PHONE_TAKEOVER } from "../Shared/recordPanel";
 import HoldingDetail from "./HoldingDetail";
 import MoveHolding from "./MoveHolding";
 import { STATUS_CHIP, heldBy, isGone } from "./holdings";
@@ -169,27 +171,33 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
   const { holdings, reload } = useCampaignHoldings(gameId);
   const [npcs, setNpcs] = useState<INpcType[]>([]);
   const [locations, setLocations] = useState<ILocationType[]>([]);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [query, setQuery] = useState("");
   const [editing, setEditing] = useState<Partial<INpcType> | null>(null);
   const [giving, setGiving] = useState(false);
-  const [panel, setPanel] = useState<Panel>({ mode: "npc" });
-  const [searchParams] = useSearchParams();
-  const linkedNpcId = Number(searchParams.get("npc")) || null;
-
-  // Journal chips link here as ?section=npcs&npc=<id>; open that NPC.
-  useEffect(() => {
-    if (!linkedNpcId) return;
-    setSelectedId(linkedNpcId);
-    setPanel({ mode: "npc" });
-  }, [linkedNpcId]);
+  // The open NPC, and a holding they carry (plus its Move step), live in the
+  // URL: ?npc=5&holding=12&move=1 (journal chips link to ?npc=). Desktop
+  // shows the first NPC when none is chosen; phones start on the list.
+  const view = useRecordView();
+  const isDesktop = useIsDesktop();
+  const npcParam = Number(view.params.get("npc")) || null;
+  const holdingParam = Number(view.params.get("holding")) || null;
+  const panel: Panel = !holdingParam
+    ? { mode: "npc" }
+    : view.params.get("move") === "1"
+      ? { mode: "move", holdingId: holdingParam }
+      : { mode: "detail", id: holdingParam };
+  const selectedId = npcParam ?? (isDesktop ? (npcs[0]?.id ?? null) : null);
+  const npcView = (id: number | null) => ({
+    npc: id,
+    holding: null,
+    move: null,
+  });
 
   const loadNpcs = () =>
     client
       .get({ path: `/games/${gameId}/npcs`, token })
       .then((r) => {
         setNpcs(r.data ?? []);
-        setSelectedId((id) => id ?? r.data?.[0]?.id ?? null);
       })
       .catch((e) => errors.setError(e));
 
@@ -222,7 +230,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
     request
       .then((r) => {
         setEditing(null);
-        setSelectedId(r.data.id);
+        view.open(npcView(r.data.id));
         loadNpcs();
       })
       .catch((e) => errors.setError(e));
@@ -247,7 +255,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
         aria-label="NPCs in this campaign"
         className={cn(
           "w-full flex-shrink-0 flex-col gap-[10px] self-start rounded-[14px] border border-border bg-card p-3 lg:flex lg:w-[360px]",
-          npc ? "hidden" : "flex",
+          "flex",
         )}
       >
         <div className="flex items-center gap-2">
@@ -274,10 +282,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
           <button
             key={n.id}
             type="button"
-            onClick={() => {
-              setSelectedId(n.id);
-              setPanel({ mode: "npc" });
-            }}
+            onClick={() => view.open(npcView(n.id))}
             className={cn(
               "flex min-h-[52px] items-center gap-[10px] rounded-[9px] px-[10px] py-2 text-left",
               n.id === selectedId && "bg-proficiency-soft",
@@ -309,14 +314,17 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
       {npc && (
         <section
           aria-labelledby="npc-h"
-          className="flex min-h-[560px] min-w-0 flex-grow flex-col gap-4 rounded-[14px] border border-border-strong bg-card p-[18px] lg:px-[22px] lg:py-5"
+          className={cn(
+            "flex min-h-[560px] min-w-0 flex-grow flex-col gap-4 rounded-[14px] border border-border-strong bg-card p-[18px] lg:px-[22px] lg:py-5",
+            (npcParam || holdingParam) && PHONE_TAKEOVER,
+          )}
         >
           {panel.mode === "detail" && (
             <HoldingDetail
               gameId={gameId}
               holdingId={panel.id}
-              onBack={() => setPanel({ mode: "npc" })}
-              onMove={(h) => setPanel({ mode: "move", holdingId: h.id })}
+              onBack={() => view.close({ holding: null, move: null })}
+              onMove={() => view.push({ move: 1 })}
               onChanged={reload}
               backLabel={`Back to ${npc.name}`}
             />
@@ -326,11 +334,11 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
               gameId={gameId}
               holding={moving}
               holdings={holdings}
-              onBack={() => setPanel({ mode: "detail", id: moving.id })}
+              onBack={() => view.close({ move: null })}
               onMoved={() => {
                 reload();
                 loadNpcs();
-                setPanel({ mode: "npc" });
+                view.close({ holding: null, move: null }, 2);
               }}
             />
           )}
@@ -338,7 +346,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
             <>
               <button
                 type="button"
-                onClick={() => setSelectedId(null)}
+                onClick={() => view.closeAll(npcView(null))}
                 className="self-start text-[13px] font-medium text-primary lg:hidden"
               >
                 All NPCs
@@ -414,7 +422,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
                   <button
                     key={h.id}
                     type="button"
-                    onClick={() => setPanel({ mode: "detail", id: h.id })}
+                    onClick={() => view.push({ holding: h.id, move: null })}
                     className="grid grid-cols-[2.2fr_0.5fr_0.9fr] items-center gap-3 rounded-[9px] px-3 py-[10px] text-left hover:bg-secondary lg:grid-cols-[2.2fr_0.5fr_0.9fr_2.6fr]"
                   >
                     <span

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
-import { useBreadcrumbs } from "./breadcrumbs";
+import { useBreadcrumbs, useUpLink } from "./breadcrumbs";
 
 interface MobileHeaderProps {
   right?: React.ReactNode;
@@ -18,12 +18,14 @@ const MobileHeader = ({ right }: MobileHeaderProps) => {
   const current = crumbs[crumbs.length - 1];
   const ancestors = crumbs.slice(0, -1);
   const parent = ancestors[ancestors.length - 1];
+  const goUp = useUpLink(parent?.to ?? "");
 
   return (
     <header className="z-40 flex h-[52px] flex-shrink-0 items-center gap-1 border-b border-border bg-rail px-[6px] lg:hidden">
       {parent ? (
         <Link
           to={parent.to}
+          onClick={goUp}
           aria-label={`Back to ${parent.label}`}
           className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[10px] text-foreground-2"
         >

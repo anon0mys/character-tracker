@@ -1,6 +1,6 @@
 import React from "react";
 import { IBackgroundType, IBackgroundFeature } from "../../Api";
-import { X } from "lucide-react";
+import PaneBack from "./PaneBack";
 
 const Caption = ({ children }: { children: React.ReactNode }) => (
   <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-proficiency-ink">
@@ -53,6 +53,7 @@ const BackgroundDetailPane = ({
   const chars = background.characteristics ?? {};
   return (
     <div className="flex min-h-0 flex-col gap-4 overflow-y-auto">
+      <PaneBack onBack={onClose} label="Back to backgrounds" />
       <div className="flex items-start gap-2">
         <div className="flex flex-col gap-[3px]">
           <h2 className="font-display text-[26px] font-semibold leading-tight">
@@ -64,14 +65,6 @@ const BackgroundDetailPane = ({
             </span>
           )}
         </div>
-        <button
-          type="button"
-          aria-label="Close detail"
-          onClick={onClose}
-          className="ml-auto flex h-9 w-9 items-center justify-center rounded-[9px] text-muted-foreground hover:bg-secondary"
-        >
-          <X className="h-[18px] w-[18px]" />
-        </button>
       </div>
 
       <div className="flex flex-col gap-1 rounded-[10px] bg-secondary p-[11px_13px] text-[12.5px] text-foreground-2">

@@ -26,4 +26,5 @@ Ruby 3.3.14, Node 24, Yarn 1.22. Postgres must be up.
 - Every number in the UI is `font-mono`; headings `font-display`; body `font-body`.
 - Theme = shadcn HSL vars in `app/assets/stylesheets/application.postcss.css`; `:root` is Vellum, `.dark` is Nocturne. Don't hardcode hexes in components.
 - New API fields go in the serializer **and** `app/javascript/Api/types.tsx` in the same change.
+- Navigation (Evan's call, 2026-11-23). **Viewing a record from its list** (item, NPC, place, compendium entry, sheet spell/gear): the open record lives in the URL via `useRecordView` (`?holding=12`); desktop shows it in the side panel, phones cover the list with it (`PHONE_TAKEOVER`) so the list keeps its scroll. **Modals** (`ui/dialog`) are for short tasks (forms, confirms, pickers, import) and quick read-only looks from elsewhere; Back closes them (`useBackToClose`). New pages start at the top; Back restores scroll (`Shell/scrollMemory.ts`); "up" links use `useUpLink` so they go back when they can.
 - No git operations (commit, branch, PR) without an explicit go from Evan.

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams, useSearchParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import {
   Client,
   ISpellType,
@@ -12,7 +12,6 @@ import {
 } from "../Api";
 import { cn } from "../lib/utils";
 import { useAuth } from "../Auth";
-import { Dialog, DialogContent } from "../Components/ui";
 import SpellsTab from "../Components/Compendium/SpellsTab";
 import ItemsTab from "../Components/Compendium/ItemsTab";
 import DetailPane from "../Components/Compendium/DetailPane";
@@ -28,6 +27,8 @@ import FeatDetailPane from "../Components/Compendium/FeatDetailPane";
 import RulesTab from "../Components/Compendium/RulesTab";
 import RuleDetailPane from "../Components/Compendium/RuleDetailPane";
 import { useIsDesktop } from "../Hooks/useIsDesktop";
+import useRecordView from "../Hooks/useRecordView";
+import { PHONE_TAKEOVER } from "../Components/Shared/recordPanel";
 
 const tabs = [
   { key: "spells", label: "Spells" },
@@ -62,12 +63,48 @@ const Compendium = () => {
     useState<IBackgroundType | null>(null);
   const [selectedFeat, setSelectedFeat] = useState<IFeatType | null>(null);
   const [selectedRule, setSelectedRule] = useState<IRuleType | null>(null);
-  const [searchParams] = useSearchParams();
-  const linkedId = searchParams.get("id");
+  // The open entry lives in the URL (?id=12), so Back closes it and journal
+  // chips can link to it. Desktop shows it beside the list; phones cover the
+  // list with it, which stays where it was underneath.
+  const view = useRecordView();
+  const linkedId = view.params.get("id");
   const auth = useAuth();
+  function pick<T extends { id?: number | null }>(
+    set: React.Dispatch<React.SetStateAction<T | null>>,
+  ) {
+    return (record: T) => {
+      set(record);
+      if (record.id) view.open({ id: record.id });
+    };
+  }
+  const closeDetail = () => view.close({ id: null });
+  const current =
+    {
+      spells: selected,
+      items: selectedItem,
+      monsters: selectedMonster,
+      races: selectedRace,
+      backgrounds: selectedBackground,
+      feats: selectedFeat,
+      rules: selectedRule,
+    }[active] ?? null;
 
-  // Journal chips link here as ?id=<n>; open that entry's detail pane.
+  // Back (or a link without ?id) closes whatever was open.
   useEffect(() => {
+    if (linkedId) return;
+    setSelected(null);
+    setSelectedItem(null);
+    setSelectedMonster(null);
+    setSelectedRace(null);
+    setSelectedBackground(null);
+    setSelectedFeat(null);
+    if (!isDesktop) setSelectedRule(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [linkedId]);
+
+  // A link (or Forward) to ?id=<n>: fetch that entry.
+  useEffect(() => {
+    if (String(current?.id ?? "") === linkedId) return;
     const select: Record<string, (record: any) => void> = {
       spells: setSelected,
       items: setSelectedItem,
@@ -124,7 +161,7 @@ const Compendium = () => {
       {active === "rules" ? (
         <div className="flex min-h-0 flex-grow gap-4">
           <RulesTab
-            onSelect={setSelectedRule}
+            onSelect={pick(setSelectedRule)}
             selectedId={selectedRule?.id}
             onLoad={(rules) => {
               // A link's ?id= opens that rule; desktop otherwise opens the first.
@@ -143,76 +180,76 @@ const Compendium = () => {
         </div>
       ) : active === "races" ? (
         <div className="flex min-h-0 flex-grow gap-4">
-          <RacesTab onSelect={setSelectedRace} selectedId={selectedRace?.id} />
+          <RacesTab
+            onSelect={pick(setSelectedRace)}
+            selectedId={selectedRace?.id}
+          />
           {selectedRace && isDesktop && (
             <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
-              <RaceDetailPane
-                race={selectedRace}
-                onClose={() => setSelectedRace(null)}
-              />
+              <RaceDetailPane race={selectedRace} onClose={closeDetail} />
             </div>
           )}
         </div>
       ) : active === "backgrounds" ? (
         <div className="flex min-h-0 flex-grow gap-4">
           <BackgroundsTab
-            onSelect={setSelectedBackground}
+            onSelect={pick(setSelectedBackground)}
             selectedId={selectedBackground?.id}
           />
           {selectedBackground && isDesktop && (
             <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
               <BackgroundDetailPane
                 background={selectedBackground}
-                onClose={() => setSelectedBackground(null)}
+                onClose={closeDetail}
               />
             </div>
           )}
         </div>
       ) : active === "feats" ? (
         <div className="flex min-h-0 flex-grow gap-4">
-          <FeatsTab onSelect={setSelectedFeat} selectedId={selectedFeat?.id} />
+          <FeatsTab
+            onSelect={pick(setSelectedFeat)}
+            selectedId={selectedFeat?.id}
+          />
           {selectedFeat && isDesktop && (
             <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
-              <FeatDetailPane
-                feat={selectedFeat}
-                onClose={() => setSelectedFeat(null)}
-              />
+              <FeatDetailPane feat={selectedFeat} onClose={closeDetail} />
             </div>
           )}
         </div>
       ) : active === "monsters" ? (
         <div className="flex min-h-0 flex-grow gap-4">
           <MonstersTab
-            onSelect={setSelectedMonster}
+            onSelect={pick(setSelectedMonster)}
             selectedId={selectedMonster?.id}
           />
           {selectedMonster && isDesktop && (
             <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
               <MonsterDetailPane
                 monster={selectedMonster}
-                onClose={() => setSelectedMonster(null)}
+                onClose={closeDetail}
               />
             </div>
           )}
         </div>
       ) : active === "items" ? (
         <div className="flex min-h-0 flex-grow gap-4">
-          <ItemsTab onSelect={setSelectedItem} selectedId={selectedItem?.id} />
+          <ItemsTab
+            onSelect={pick(setSelectedItem)}
+            selectedId={selectedItem?.id}
+          />
           {selectedItem && isDesktop && (
             <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
-              <ItemDetailPane
-                item={selectedItem}
-                onClose={() => setSelectedItem(null)}
-              />
+              <ItemDetailPane item={selectedItem} onClose={closeDetail} />
             </div>
           )}
         </div>
       ) : (
         <div className="flex min-h-0 flex-grow gap-4">
-          <SpellsTab onSelect={setSelected} selectedId={selected?.id} />
+          <SpellsTab onSelect={pick(setSelected)} selectedId={selected?.id} />
           {selected && isDesktop && (
             <div className="hidden w-[396px] flex-shrink-0 rounded-2xl border border-border bg-card p-[22px] lg:flex">
-              <DetailPane spell={selected} onClose={() => setSelected(null)} />
+              <DetailPane spell={selected} onClose={closeDetail} />
             </div>
           )}
         </div>
@@ -220,77 +257,48 @@ const Compendium = () => {
 
       {/* Phone: detail as a dialog takeover */}
       {selected && !isDesktop && (
-        <Dialog open onOpenChange={(o) => !o && setSelected(null)}>
-          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
-            <DetailPane spell={selected} onClose={() => setSelected(null)} />
-          </DialogContent>
-        </Dialog>
+        <div className={PHONE_TAKEOVER}>
+          <DetailPane spell={selected} onClose={closeDetail} />
+        </div>
       )}
 
       {selectedItem && !isDesktop && (
-        <Dialog open onOpenChange={(o) => !o && setSelectedItem(null)}>
-          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
-            <ItemDetailPane
-              item={selectedItem}
-              onClose={() => setSelectedItem(null)}
-            />
-          </DialogContent>
-        </Dialog>
+        <div className={PHONE_TAKEOVER}>
+          <ItemDetailPane item={selectedItem} onClose={closeDetail} />
+        </div>
       )}
 
       {selectedMonster && !isDesktop && (
-        <Dialog open onOpenChange={(o) => !o && setSelectedMonster(null)}>
-          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
-            <MonsterDetailPane
-              monster={selectedMonster}
-              onClose={() => setSelectedMonster(null)}
-            />
-          </DialogContent>
-        </Dialog>
+        <div className={PHONE_TAKEOVER}>
+          <MonsterDetailPane monster={selectedMonster} onClose={closeDetail} />
+        </div>
       )}
 
       {selectedRace && !isDesktop && (
-        <Dialog open onOpenChange={(o) => !o && setSelectedRace(null)}>
-          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
-            <RaceDetailPane
-              race={selectedRace}
-              onClose={() => setSelectedRace(null)}
-            />
-          </DialogContent>
-        </Dialog>
+        <div className={PHONE_TAKEOVER}>
+          <RaceDetailPane race={selectedRace} onClose={closeDetail} />
+        </div>
       )}
 
       {selectedBackground && !isDesktop && (
-        <Dialog open onOpenChange={(o) => !o && setSelectedBackground(null)}>
-          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
-            <BackgroundDetailPane
-              background={selectedBackground}
-              onClose={() => setSelectedBackground(null)}
-            />
-          </DialogContent>
-        </Dialog>
+        <div className={PHONE_TAKEOVER}>
+          <BackgroundDetailPane
+            background={selectedBackground}
+            onClose={closeDetail}
+          />
+        </div>
       )}
 
       {selectedRule && !isDesktop && (
-        <Dialog open onOpenChange={(o) => !o && setSelectedRule(null)}>
-          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
-            <RuleDetailPane
-              rule={selectedRule}
-              onClose={() => setSelectedRule(null)}
-            />
-          </DialogContent>
-        </Dialog>
+        <div className={PHONE_TAKEOVER}>
+          <RuleDetailPane rule={selectedRule} onClose={closeDetail} />
+        </div>
       )}
 
       {selectedFeat && !isDesktop && (
-        <Dialog open onOpenChange={(o) => !o && setSelectedFeat(null)}>
-          <DialogContent hideClose className="max-h-[85vh] overflow-y-auto">
-            <FeatDetailPane
-              feat={selectedFeat}
-              onClose={() => setSelectedFeat(null)}
-            />
-          </DialogContent>
-        </Dialog>
+        <div className={PHONE_TAKEOVER}>
+          <FeatDetailPane feat={selectedFeat} onClose={closeDetail} />
+        </div>
       )}
     </div>
   );

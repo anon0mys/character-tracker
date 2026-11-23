@@ -14,7 +14,7 @@ import {
 } from "../Components/Journal";
 import { hrefFor, missingSet, refKey } from "../Components/Journal/mentions";
 import { cn } from "../lib/utils";
-import { useBreadcrumbLabel } from "../Components/Shell/breadcrumbs";
+import { useBreadcrumbLabel, useUpLink } from "../Components/Shell/breadcrumbs";
 
 /** Cursor colours: the theme's accents, so a writer keeps one colour everywhere. */
 const CURSOR_COLORS = [
@@ -158,6 +158,7 @@ const JournalEntry = () => {
       .then((r) => setEntry(r.data))
       .catch((e) => errors.setError(e));
 
+  const goUp = useUpLink(`/campaigns/${gameId}`);
   if (!entry) return null;
 
   const missing = missingSet(entry?.missing_mentions);
@@ -166,11 +167,13 @@ const JournalEntry = () => {
   const people = links.filter(isPerson);
   const things = links.filter((l) => !isPerson(l));
 
+
   return (
     <div className="flex flex-col gap-4 p-[14px] pb-28 lg:px-9 lg:py-[26px]">
       <div className="flex items-center gap-2 text-[13px]">
         <Link
           to={`/campaigns/${gameId}`}
+          onClick={goUp}
           className="hidden items-center gap-[6px] font-medium lg:flex"
         >
           <ChevronLeft className="h-[15px] w-[15px]" />

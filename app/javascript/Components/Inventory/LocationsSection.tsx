@@ -7,6 +7,9 @@ import { cn } from "../../lib/utils";
 import { initials } from "../Shell";
 import AddHolding from "./AddHolding";
 import DeleteLocation from "./DeleteLocation";
+import useRecordView from "../../Hooks/useRecordView";
+import { useIsDesktop } from "../../Hooks/useIsDesktop";
+import { PHONE_TAKEOVER } from "../Shared/recordPanel";
 import HoldingDetail from "./HoldingDetail";
 import LocationForm from "./LocationForm";
 import MoveHolding from "./MoveHolding";
@@ -29,12 +32,29 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
   const { holdings, reload } = useCampaignHoldings(gameId);
   const [locations, setLocations] = useState<ILocationType[]>([]);
   const [npcs, setNpcs] = useState<INpcType[]>([]);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [query, setQuery] = useState("");
   const [editing, setEditing] = useState<Partial<ILocationType> | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [storing, setStoring] = useState(false);
-  const [panel, setPanel] = useState<Panel>({ mode: "location" });
+  // The open place, and a holding in it (plus its Move step), live in the
+  // URL: ?place=4&holding=12&move=1. Desktop shows the first place when none
+  // is chosen; phones start on the list.
+  const view = useRecordView();
+  const isDesktop = useIsDesktop();
+  const placeParam = Number(view.params.get("place")) || null;
+  const holdingParam = Number(view.params.get("holding")) || null;
+  const panel: Panel = !holdingParam
+    ? { mode: "location" }
+    : view.params.get("move") === "1"
+      ? { mode: "move", holdingId: holdingParam }
+      : { mode: "detail", id: holdingParam };
+  const firstPlace = childrenOf(locations, null)[0]?.id ?? locations[0]?.id;
+  const selectedId = placeParam ?? (isDesktop ? (firstPlace ?? null) : null);
+  const placeView = (id: number | null) => ({
+    place: id,
+    holding: null,
+    move: null,
+  });
 
   const loadLocations = () =>
     client
@@ -42,9 +62,6 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
       .then((r) => {
         const rows: ILocationType[] = r.data ?? [];
         setLocations(rows);
-        setSelectedId(
-          (id) => id ?? childrenOf(rows, null)[0]?.id ?? rows[0]?.id ?? null,
-        );
       })
       .catch((e) => errors.setError(e));
 
@@ -60,10 +77,11 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameId]);
 
-  const select = (id: number) => {
-    setSelectedId(id);
-    setPanel({ mode: "location" });
-  };
+  // From the list: open (or switch) a place. From inside one (its parent
+  // trail, the places in it): a step deeper, so Back comes back here.
+  const select = (id: number) => view.open(placeView(id));
+  const visit = (id: number) => view.push(placeView(id));
+  const closeHolding = () => view.close({ holding: null, move: null });
 
   const save = (attrs: Partial<ILocationType>) => {
     const payload = {
@@ -84,7 +102,7 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
     request
       .then((r) => {
         setEditing(null);
-        setSelectedId(r.data.id);
+        view.open(placeView(r.data.id));
         loadLocations();
       })
       .catch((e) => errors.setError(e));
@@ -98,7 +116,8 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
       })
       .then(() => {
         setDeleting(false);
-        setSelectedId(target.parent_id);
+        if (target.parent_id) view.open(placeView(target.parent_id));
+        else view.closeAll(placeView(null));
         loadLocations();
         loadNpcs();
         reload();
@@ -127,7 +146,7 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
         aria-label="Places in this campaign"
         className={cn(
           "w-full flex-shrink-0 flex-col gap-[10px] self-start rounded-[14px] border border-border bg-card p-3 lg:flex lg:w-[360px]",
-          location ? "hidden" : "flex",
+          "flex",
         )}
       >
         <div className="flex items-center gap-2">
@@ -182,14 +201,17 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
       {location && (
         <section
           aria-labelledby="location-h"
-          className="flex min-h-[560px] min-w-0 flex-grow flex-col gap-4 rounded-[14px] border border-border-strong bg-card p-[18px] lg:px-[22px] lg:py-5"
+          className={cn(
+            "flex min-h-[560px] min-w-0 flex-grow flex-col gap-4 rounded-[14px] border border-border-strong bg-card p-[18px] lg:px-[22px] lg:py-5",
+            (placeParam || holdingParam) && PHONE_TAKEOVER,
+          )}
         >
           {panel.mode === "detail" && (
             <HoldingDetail
               gameId={gameId}
               holdingId={panel.id}
-              onBack={() => setPanel({ mode: "location" })}
-              onMove={(h) => setPanel({ mode: "move", holdingId: h.id })}
+              onBack={closeHolding}
+              onMove={() => view.push({ move: 1 })}
               onChanged={() => {
                 reload();
                 loadLocations();
@@ -202,11 +224,11 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
               gameId={gameId}
               holding={moving}
               holdings={holdings}
-              onBack={() => setPanel({ mode: "detail", id: moving.id })}
+              onBack={() => view.close({ move: null })}
               onMoved={() => {
                 reload();
                 loadLocations();
-                setPanel({ mode: "location" });
+                view.close({ holding: null, move: null }, 2);
               }}
             />
           )}
@@ -214,7 +236,7 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
             <>
               <button
                 type="button"
-                onClick={() => setSelectedId(null)}
+                onClick={() => view.closeAll(placeView(null))}
                 className="self-start text-[13px] font-medium text-primary lg:hidden"
               >
                 All places
@@ -228,7 +250,7 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
                     <React.Fragment key={a.id}>
                       <button
                         type="button"
-                        onClick={() => select(a.id)}
+                        onClick={() => visit(a.id)}
                         className="font-medium text-primary"
                       >
                         {a.name}
@@ -284,7 +306,7 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
                     <button
                       key={c.id}
                       type="button"
-                      onClick={() => select(c.id)}
+                      onClick={() => visit(c.id)}
                       className="min-h-9 text-left text-[14px] font-semibold text-primary"
                     >
                       {c.name}
@@ -339,7 +361,7 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
                   <button
                     key={h.id}
                     type="button"
-                    onClick={() => setPanel({ mode: "detail", id: h.id })}
+                    onClick={() => view.push({ holding: h.id, move: null })}
                     className="grid grid-cols-[2.2fr_0.5fr_0.9fr] items-center gap-3 rounded-[9px] px-3 py-[10px] text-left hover:bg-secondary lg:grid-cols-[2.2fr_0.5fr_0.9fr_2.6fr]"
                   >
                     <span
