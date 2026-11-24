@@ -316,7 +316,6 @@ const Campaign = () => {
         );
   const status = game.status && STATUS_LABEL[game.status];
 
-
   return (
     <div className="flex flex-col gap-[18px] p-[14px] lg:gap-[22px] lg:px-10 lg:py-[30px]">
       <div className="flex flex-col gap-[10px]">
@@ -455,6 +454,27 @@ const Campaign = () => {
               New entry
             </button>
           </div>
+        )}
+        {/* Phones: the desktop header (with its search) is hidden. */}
+        {section === "journal" && (
+          <>
+            <label htmlFor="journal-q-phone" className="sr-only">
+              Search the journal
+            </label>
+            <input
+              id="journal-q-phone"
+              type="search"
+              placeholder="Search the journal"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="min-h-11 w-full rounded-[10px] border border-border bg-card px-[13px] py-[10px] text-[14px]"
+            />
+            {needle && (
+              <span className="font-mono text-[12px] text-muted-foreground">
+                {visible.length} of {entries.length}
+              </span>
+            )}
+          </>
         )}
       </div>
 
