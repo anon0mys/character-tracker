@@ -8,7 +8,6 @@ import { initials } from "../Shell";
 import AddHolding from "./AddHolding";
 import DeleteLocation from "./DeleteLocation";
 import useRecordView from "../../Hooks/useRecordView";
-import { useIsDesktop } from "../../Hooks/useIsDesktop";
 import { PHONE_TAKEOVER } from "../Shared/recordPanel";
 import HoldingDetail from "./HoldingDetail";
 import LocationForm from "./LocationForm";
@@ -37,10 +36,9 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
   const [deleting, setDeleting] = useState(false);
   const [storing, setStoring] = useState(false);
   // The open place, and a holding in it (plus its Move step), live in the
-  // URL: ?place=4&holding=12&move=1. Desktop shows the first place when none
-  // is chosen; phones start on the list.
+  // URL: ?place=4&holding=12&move=1. With none chosen, the tab shows just
+  // the list.
   const view = useRecordView();
-  const isDesktop = useIsDesktop();
   const placeParam = Number(view.params.get("place")) || null;
   const holdingParam = Number(view.params.get("holding")) || null;
   const panel: Panel = !holdingParam
@@ -48,8 +46,7 @@ const LocationsSection = ({ gameId }: { gameId: number }) => {
     : view.params.get("move") === "1"
       ? { mode: "move", holdingId: holdingParam }
       : { mode: "detail", id: holdingParam };
-  const firstPlace = childrenOf(locations, null)[0]?.id ?? locations[0]?.id;
-  const selectedId = placeParam ?? (isDesktop ? (firstPlace ?? null) : null);
+  const selectedId = placeParam;
   const placeView = (id: number | null) => ({
     place: id,
     holding: null,

@@ -98,7 +98,7 @@ const Compendium = () => {
     setSelectedRace(null);
     setSelectedBackground(null);
     setSelectedFeat(null);
-    if (!isDesktop) setSelectedRule(null);
+    setSelectedRule(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [linkedId]);
 
@@ -164,10 +164,9 @@ const Compendium = () => {
             onSelect={pick(setSelectedRule)}
             selectedId={selectedRule?.id}
             onLoad={(rules) => {
-              // A link's ?id= opens that rule; desktop otherwise opens the first.
+              // A link's ?id= opens that rule; otherwise start on the list.
               const linked = rules.find((r) => String(r.id) === linkedId);
               if (linked) setSelectedRule(linked);
-              else if (isDesktop && rules[0]) setSelectedRule(rules[0]);
             }}
           />
           {selectedRule && isDesktop && (

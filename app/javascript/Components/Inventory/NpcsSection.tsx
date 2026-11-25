@@ -22,7 +22,6 @@ import {
 } from "../ui";
 import AddHolding from "./AddHolding";
 import useRecordView from "../../Hooks/useRecordView";
-import { useIsDesktop } from "../../Hooks/useIsDesktop";
 import { PHONE_TAKEOVER } from "../Shared/recordPanel";
 import HoldingDetail from "./HoldingDetail";
 import MoveHolding from "./MoveHolding";
@@ -175,10 +174,9 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
   const [editing, setEditing] = useState<Partial<INpcType> | null>(null);
   const [giving, setGiving] = useState(false);
   // The open NPC, and a holding they carry (plus its Move step), live in the
-  // URL: ?npc=5&holding=12&move=1 (journal chips link to ?npc=). Desktop
-  // shows the first NPC when none is chosen; phones start on the list.
+  // URL: ?npc=5&holding=12&move=1 (journal chips link to ?npc=). With none
+  // chosen, the tab shows just the list.
   const view = useRecordView();
-  const isDesktop = useIsDesktop();
   const npcParam = Number(view.params.get("npc")) || null;
   const holdingParam = Number(view.params.get("holding")) || null;
   const panel: Panel = !holdingParam
@@ -186,7 +184,7 @@ const NpcsSection = ({ gameId }: { gameId: number }) => {
     : view.params.get("move") === "1"
       ? { mode: "move", holdingId: holdingParam }
       : { mode: "detail", id: holdingParam };
-  const selectedId = npcParam ?? (isDesktop ? (npcs[0]?.id ?? null) : null);
+  const selectedId = npcParam;
   const npcView = (id: number | null) => ({
     npc: id,
     holding: null,
